@@ -1,0 +1,142 @@
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using PhoneStoreBackend.Api.Response;
+using PhoneStoreBackend.DTOs;
+using PhoneStoreBackend.Entities;
+using PhoneStoreBackend.Repository;
+
+namespace PhoneStoreBackend.Controllers
+{
+    [Route("api/products")]
+    [ApiController]
+    public class ProductController : ControllerBase
+    {
+        private readonly IProductRepository _productRepository;
+
+        public ProductController(IProductRepository productRepository)
+        {
+            _productRepository = productRepository;
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetAllProducts()
+        {
+            try
+            {
+                var products = await _productRepository.GetAllAsync();
+                var response = Response<ICollection<ProductDTO>>.CreateSuccessResponse(products, "Danh sách tất cả sản phẩm");
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = Response<object>.CreateErrorResponse($"Đã xảy ra lỗi: {ex.Message}");
+                return BadRequest(errorResponse);
+            }
+        }
+
+        [HttpGet("{id}")]
+        [Authorize]
+        public async Task<IActionResult> GetProductById(int id)
+        {
+            try
+            {
+                var product = await _productRepository.GetProductByIdAsync(id);
+                if (product == null)
+                {
+                    var notFoundResponse = Response<object>.CreateErrorResponse("Không tìm thấy sản phẩm.");
+                    return NotFound(notFoundResponse);
+                }
+
+                var response = Response<ProductDTO>.CreateSuccessResponse(product, "Thông tin sản phẩm");
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = Response<object>.CreateErrorResponse($"Đã xảy ra lỗi: {ex.Message}");
+                return BadRequest(errorResponse);
+            }
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "ADMIN")]
+        public async Task<IActionResult> AddProduct([FromBody] Product product)
+        {
+            try
+            {
+                var createdProduct = await _productRepository.AddProductAsync(product);
+                var response = Response<ProductDTO>.CreateSuccessResponse(createdProduct, "Sản phẩm đã được thêm thành công");
+                return CreatedAtAction(nameof(GetProductById), new { id = createdProduct.ProductId }, response);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = Response<object>.CreateErrorResponse($"Đã xảy ra lỗi: {ex.Message}");
+                return BadRequest(errorResponse);
+            }
+        }
+
+        [HttpPut("{id}")]
+        [Authorize(Roles = "ADMIN")]
+        public async Task<IActionResult> UpdateProduct(int id, [FromBody] Product updatedProduct)
+        {
+            try
+            {
+
+                var isUpdated = await _productRepository.UpdateProductAsync(id, updatedProduct);
+                if (!isUpdated)
+                {
+                    var notFoundResponse = Response<object>.CreateErrorResponse("Không tìm thấy sản phẩm để cập nhật.");
+                    return NotFound(notFoundResponse);
+                }
+
+                var response = Response<object>.CreateSuccessResponse(null, "Sản phẩm đã được cập nhật thành công");
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = Response<object>.CreateErrorResponse($"Đã xảy ra lỗi: {ex.Message}");
+                return BadRequest(errorResponse);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "ADMIN")]
+        public async Task<IActionResult> DeleteProduct(int id)
+        {
+            try
+            {
+                var isDeleted = await _productRepository.DeleteProductAsync(id);
+                if (!isDeleted)
+                {
+                    var notFoundResponse = Response<object>.CreateErrorResponse("Không tìm thấy sản phẩm để xóa.");
+                    return NotFound(notFoundResponse);
+                }
+
+                var response = Response<object>.CreateSuccessResponse(null, "Sản phẩm đã được xóa thành công");
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = Response<object>.CreateErrorResponse($"Đã xảy ra lỗi: {ex.Message}");
+                return BadRequest(errorResponse);
+            }
+        }
+
+        [HttpGet("search")]
+        [Authorize]
+        public async Task<IActionResult> SearchProducts([FromQuery] string keyword)
+        {
+            try
+            {
+                var products = await _productRepository.SearchProductsAsync(keyword);
+                var response = Response<ICollection<ProductDTO>>.CreateSuccessResponse(products, "Kết quả tìm kiếm sản phẩm");
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = Response<object>.CreateErrorResponse($"Đã xảy ra lỗi: {ex.Message}");
+                return BadRequest(errorResponse);
+            }
+        }
+    }
+}
