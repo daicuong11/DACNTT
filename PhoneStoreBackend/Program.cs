@@ -1,15 +1,18 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using PhoneStoreBackend.Api.Response;
 using PhoneStoreBackend.DbContexts;
 using PhoneStoreBackend.Enums;
 using PhoneStoreBackend.Repository;
 using PhoneStoreBackend.Repository.Implements;
 using System.Text;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -137,6 +140,19 @@ builder.Services.AddHttpClient();
 // Configure AutoMapper
 builder.Services.AddAutoMapper(typeof(Program));
 
+// Thêm CORS policy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("FrontendPolicy", builder =>
+    {
+        builder.WithOrigins("http://localhost:3000") // Địa chỉ frontend
+               .AllowAnyMethod() // Cho phép mọi HTTP method
+               .AllowAnyHeader() // Cho phép mọi HTTP header
+               .AllowCredentials(); // Nếu cần sử dụng cookie
+    });
+});
+
+
 // Build application
 var app = builder.Build();
 
@@ -152,8 +168,39 @@ app.UseExceptionHandler("/error");
 app.UseStatusCodePages("text/plain", "Status code: {0}");
 
 app.UseHttpsRedirection();
+
+app.UseCors("FrontendPolicy");
+
+app.Use(async (context, next) =>
+{
+    await next();
+
+    if (context.Response.StatusCode == 401)
+    {
+        context.Response.ContentType = "application/json";
+
+        context.Response.StatusCode = 401;
+
+        // Create a structured response object
+        var response = new Response<object>
+        {
+            Success = false,
+            Message = "Unauthorized",
+            Data = null 
+        };
+
+        var jsonResponse = JsonSerializer.Serialize(response, new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase, 
+            DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull 
+        });
+
+        await context.Response.WriteAsync(jsonResponse);
+    }
+});
+
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+//app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 app.Run();

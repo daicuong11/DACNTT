@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { UserAuthType, UserType } from '../../types/user.type'
+import { UserAuthType } from '../../types/user.type'
+import { AuthResponseType } from '../../types/auth.type'
+import { clearToken, setToken } from '../../utils/auth_helper'
 
 export interface AuthState {
   currentUser: UserAuthType | null
@@ -13,16 +15,18 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setCurrentUser: (state, action: PayloadAction<UserAuthType>) => {
-      state.currentUser = action.payload
+    setAuth: (state, action: PayloadAction<AuthResponseType>) => {
+      state.currentUser = action.payload.user
+      setToken(action.payload)
     },
-    clearCurrentUser: (state) => {
+    clearAuth: (state) => {
       state.currentUser = null
+      clearToken()
     }
   }
 })
 
-export const { setCurrentUser, clearCurrentUser } = authSlice.actions
+export const { setAuth, clearAuth } = authSlice.actions
 
 export const selectAuth = (state: { auth: AuthState }) => state.auth.currentUser
 

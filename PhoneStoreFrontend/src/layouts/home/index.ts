@@ -1,3 +1,1 @@
-import HomeLayout from './HomeLayout'
-
-export { HomeLayout }
+export { default } from './HomeLayout'

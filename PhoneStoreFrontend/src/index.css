@@ -1,3 +1,33 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .btn {
+    @apply flex items-center justify-center gap-2 px-4 py-1.5 cursor-pointer font-semibold rounded-lg shadow-md transition-colors duration-100;
+  }
+
+  .btn.btn-light {
+    @apply text-gray-800 bg-white hover:bg-gray-100;
+  }
+
+  .btn.btn-danger {
+    @apply bg-gradient-to-b from-[#f52f32] to-[#e11b1e] text-white hover:from-[#e11b1e] hover:to-[#c2181a];
+  }
+
+  .btn.btn-option {
+    @apply bg-gradient-to-b from-[#3a78d0] to-[#277cea] text-white hover:from-[#277cea] hover:to-[#1a5bb8];
+  }
+
+  .btn.btn-warning {
+    @apply bg-gradient-to-b from-[#ec8104] to-[#d97706] text-white hover:from-[#d97706] hover:to-[#b45309];
+  }
+
+  .btn.btn-primary {
+    @apply bg-[#d70018] text-white hover:bg-[#d70018de];
+  }
+}
+
+:root {
+  --color-primary: #d70018;
+}

@@ -1,73 +1,54 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
+import axios from 'axios'
+import { getAccessToken, getRefreshToken, setAccessToken } from './auth_helper'
+import { data } from 'react-router-dom'
+import { BaseResponse } from '../types/auth.type'
 
-class Http {
-  instance: AxiosInstance
+const baseUrl: string = import.meta.env.VITE_API_BASE_URL || ''
 
-  constructor() {
-    this.instance = axios.create({
-      baseURL: 'https://localhost:7130/api/',
-      timeout: 10000,
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
+const axiosInstance = axios.create({
+  baseURL: baseUrl,
+  timeout: 10000
+})
 
-    // // Interceptor cho request
-    // this.instance.interceptors.request.use(
-    //   (config: InternalAxiosRequestConfig) => {
-    //     const token = localStorage.getItem('token') // Lấy accessToken từ localStorage
-    //     if (token) {
-    //       config.headers.Authorization = `Bearer ${token}`
-    //     }
-    //     return config
-    //   },
-    //   (error) => Promise.reject(error)
-    // )
-
-    // // Interceptor cho response
-    // this.instance.interceptors.response.use(
-    //   (response: AxiosResponse) => response.data,
-    //   async (error) => {
-    //     const originalRequest = error.config
-    //     if (error.response?.status === 401 && !originalRequest._retry) {
-    //       originalRequest._retry = true
-    //       try {
-    //         const newAccessToken = await refreshToken()
-    //         axios.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`
-    //         originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`
-    //         return axios(originalRequest) // Gửi lại request gốc với token mới
-    //       } catch (refreshError) {
-    //         return Promise.reject(refreshError)
-    //       }
-    //     }
-    //     return Promise.reject(error)
-    //   }
-    // )
-  }
-}
-
-const http = new Http().instance
-
-export default http
-
-// Hàm làm mới token
-const refreshToken = async () => {
-  try {
-    const refreshToken = document.cookie
-      .split('; ')
-      .find((row) => row.startsWith('refreshToken='))
-      ?.split('=')[1]
-    if (!refreshToken) {
-      throw new Error('Refresh token not found in cookies.')
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const accessToken = getAccessToken()
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`
     }
-    const response = await axios.post('https://localhost:7130/api/auth/refresh-token', {
-      token: refreshToken
-    })
-    const newAccessToken = response.data.accessToken
-    localStorage.setItem('token', newAccessToken) // Lưu accessToken mới
-    return newAccessToken
-  } catch (error) {
-    console.error('Failed to refresh token:', error)
-    throw error
+    return config
+  },
+  (error) => {
+    return Promise.reject(error)
   }
-}
+)
+
+axiosInstance.interceptors.response.use(
+  (response) => (response.data ? response.data : response),
+  async (error) => {
+    const originalRequest = error.config
+
+    if (error.response?.status === 401 && !originalRequest._retry && getRefreshToken()) {
+      originalRequest._retry = true
+
+      try {
+        const refreshToken = getRefreshToken()
+        const { data } = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/auth/refresh-token`, {
+          refreshToken
+        })
+
+        setAccessToken(data.accessToken)
+
+        originalRequest.headers.Authorization = `Bearer ${data.accessToken}`
+        return axiosInstance(originalRequest)
+      } catch (refreshError) {
+        console.error('Error refreshing token:', refreshError)
+        localStorage.removeItem('token')
+        return Promise.reject(error)
+      }
+    }
+    return Promise.reject(error)
+  }
+)
+
+export default axiosInstance

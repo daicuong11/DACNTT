@@ -1,4 +1,6 @@
 import { FC } from 'react'
+import Header from '../../pages/home/header'
+import Footer from '../../pages/home/footer'
 
 interface HomeLayoutProps {
   children: React.ReactNode
@@ -7,9 +9,9 @@ interface HomeLayoutProps {
 const HomeLayout: FC<HomeLayoutProps> = ({ children }) => {
   return (
     <div className=''>
-      {/* <Header /> */}
+      <Header />
       <div>{children}</div>
-      {/* <Footer /> */}
+      <Footer />
     </div>
   )
 }
