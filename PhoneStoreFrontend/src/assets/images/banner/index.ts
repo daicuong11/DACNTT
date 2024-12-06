@@ -1,0 +1,7 @@
+export { default as samsungS24UltraHome20_banner } from './samsung-s24-ultra-home-20_banner.png'
+export { default as manHinhLG_banner } from './lg-home-12-06.png'
+export { default as OPPOFind_banner } from './oppo-find-x8-dat-truoc-home-6-12.png'
+export { default as Iphone19_banner } from './sliding-home-iphone-16-pro-km-mo.png'
+export { default as TecnoCamon_banner } from './tecno-camon-30s-banner-home.png'
+export { default as TourPro3_banner } from './tour-pro-3-home-26-11.png'
+export { default as Xiaomi_banner } from './xiaomi-14T-home-3-12-24.png'

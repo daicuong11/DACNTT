@@ -8,23 +8,43 @@
   }
 
   .btn.btn-light {
-    @apply text-gray-800 bg-white hover:bg-gray-100;
+    @apply text-gray-800 bg-white hover:!bg-gray-100;
   }
 
   .btn.btn-danger {
-    @apply bg-gradient-to-b from-[#f52f32] to-[#e11b1e] text-white hover:from-[#e11b1e] hover:to-[#c2181a];
+    @apply bg-gradient-to-b from-[#f52f32] to-[#e11b1e] text-white hover:!from-[#e11b1e] hover:!to-[#c2181a];
   }
 
   .btn.btn-option {
-    @apply bg-gradient-to-b from-[#3a78d0] to-[#277cea] text-white hover:from-[#277cea] hover:to-[#1a5bb8];
+    @apply bg-gradient-to-b from-[#3a78d0] to-[#277cea] text-white hover:!from-[#277cea] hover:!to-[#1a5bb8];
   }
 
   .btn.btn-warning {
-    @apply bg-gradient-to-b from-[#ec8104] to-[#d97706] text-white hover:from-[#d97706] hover:to-[#b45309];
+    @apply bg-gradient-to-b from-[#ec8104] to-[#d97706] text-white hover:!from-[#d97706] hover:!to-[#b45309];
   }
 
   .btn.btn-primary {
-    @apply bg-[#d70018] text-white hover:bg-[#d70018de];
+    @apply bg-[#d70018] text-white hover:!bg-[#d70018de];
+  }
+
+  .reset-default-input-number {
+    input[type='number']::-webkit-inner-spin-button,
+    input[type='number']::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+
+  .shadow-all {
+    box-shadow:
+      0 -2px 6px rgba(0, 0, 0, 0.000001),
+      0 4px 12px rgba(0, 0, 0, 0.000001),
+      -3px 0 6px rgba(0, 0, 0, 0.08),
+      3px 0 6px rgba(0, 0, 0, 0.08);
+  }
+
+  .bg-gradient-to-r-from-primary {
+    @apply bg-gradient-to-b from-[#F83E60] to-[#FE5048] bg-cover;
   }
 }
 

@@ -1,6 +1,6 @@
 import { FC } from 'react'
-import Header from '../../pages/home/header'
-import Footer from '../../pages/home/footer'
+import Header from './header'
+import Footer from './footer'
 
 interface HomeLayoutProps {
   children: React.ReactNode
@@ -10,7 +10,9 @@ const HomeLayout: FC<HomeLayoutProps> = ({ children }) => {
   return (
     <div className=''>
       <Header />
-      <div>{children}</div>
+      <div className='px-4'>
+        <div className='min-h-screen max-w-[1200px] mx-auto'>{children}</div>
+      </div>
       <Footer />
     </div>
   )
