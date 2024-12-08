@@ -21,14 +21,14 @@ namespace PhoneStoreBackend.Repository.Implements
         // Lấy tất cả wishlist
         public async Task<ICollection<WishlistDTO>> GetAllWishlistsAsync()
         {
-            var wishlists = await _context.Wishlists.ToListAsync();
+            var wishlists = await _context.Wishlists.Include(wl => wl.WishlistItems).ToListAsync();
             return wishlists.Select(w => _mapper.Map<WishlistDTO>(w)).ToList();
         }
 
         // Lấy wishlist theo WishlistId
         public async Task<WishlistDTO> GetWishlistByIdAsync(int wishlistId)
         {
-            var wishlist = await _context.Wishlists.FirstOrDefaultAsync(w => w.WishlistId == wishlistId);
+            var wishlist = await _context.Wishlists.Include(wl => wl.WishlistItems).FirstOrDefaultAsync(w => w.WishlistId == wishlistId);
             if (wishlist == null)
             {
                 throw new Exception("Wishlist not found.");
@@ -39,7 +39,7 @@ namespace PhoneStoreBackend.Repository.Implements
         // Lấy wishlist theo UserId
         public async Task<WishlistDTO> GetWishlistByUserIdAsync(int userId)
         {
-            var wishlist = await _context.Wishlists.FirstOrDefaultAsync(w => w.UserId == userId);
+            var wishlist = await _context.Wishlists.Include(wl => wl.WishlistItems).FirstOrDefaultAsync(w => w.UserId == userId);
             if (wishlist == null)
             {
                 throw new Exception("Wishlist not found.");

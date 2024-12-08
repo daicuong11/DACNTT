@@ -13,6 +13,7 @@ import instagram from './instagram.png'
 import QC1 from './m55-10190-rightbanner-4-12-24.png'
 import QC2 from './right-banner-mac-mini-m4.png'
 import QC3 from './udsv-right-laptop.png'
+import Not_Found from './not_found.png'
 
 import { GiaoHangIcon } from './svgs'
 import {
@@ -25,7 +26,7 @@ import {
   Xiaomi_banner
 } from './banner'
 
-export { banner_Chinhhang, banner_Giaohang, banner_Smember, banner_Thucu, logo, GiaoHangIcon, momo, vnpay }
+export { banner_Chinhhang, banner_Giaohang, banner_Smember, banner_Thucu, logo, GiaoHangIcon, momo, vnpay, Not_Found }
 
 export const socialNetworkImages = [
   {

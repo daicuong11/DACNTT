@@ -1,3 +1,10 @@
+export interface CategoryType {
+  categoryId: number
+  name: string
+  description?: string
+  imageUrl: string
+}
+
 export type ListSelectionOfOptionOfCategoryRenderType = {
   id?: number
   title: string
@@ -14,4 +21,13 @@ export type CategoryRenderType = {
   icon: JSX.Element
   name: string
   options: OptionOfCategoryRenderType[]
+}
+
+export type ListCategorySaleType = {
+  categoryId: number
+  name: string
+  imageUrl: string
+  sale: number
+  startTime: string
+  endTime: string
 }

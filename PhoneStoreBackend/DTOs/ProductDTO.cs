@@ -18,7 +18,7 @@ namespace PhoneStoreBackend.DTOs
 
         public CategoryDTO? Category { get; set; } 
 
-        public BrandDTO? Brand { get; set; } // Toàn bộ thông tin từ bảng Brand
+        public BrandDTO? Brand { get; set; } 
 
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }

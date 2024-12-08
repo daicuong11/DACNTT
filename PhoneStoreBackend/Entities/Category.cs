@@ -14,5 +14,7 @@ namespace PhoneStoreBackend.Entities
         public string Name { get; set; }
 
         public string Description { get; set; }
+
+        public string? imageUrl { get; set; }
     }
 }

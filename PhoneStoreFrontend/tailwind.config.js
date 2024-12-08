@@ -13,6 +13,7 @@ export default {
         text: '#444',
         'text-light': '#FFFFFF',
       },
+
     },
   },
   plugins: [],

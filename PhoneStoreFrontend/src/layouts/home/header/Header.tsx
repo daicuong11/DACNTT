@@ -8,7 +8,7 @@ const Header = () => {
   const { isOpen, openModal, toggleModal, closeModal } = useModal()
 
   return (
-    <div className='h-[64px] sticky top-0 z-10 w-full bg-primary shadow-md px-4'>
+    <div className='h-[64px] sticky top-0 z-[999] w-full bg-primary shadow-md px-4'>
       <div className='max-w-[1200px] flex items-center gap-x-3 mx-auto leading-[64px]'>
         <div className='py-2 rounded'>
           <img className='object-cover w-40 h-[30px]' src={logo} alt='logo' />

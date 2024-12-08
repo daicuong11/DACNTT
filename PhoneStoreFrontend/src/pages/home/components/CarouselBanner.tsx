@@ -8,7 +8,6 @@ import classNames from 'classnames'
 import { useEffect, useRef, useState } from 'react'
 import { CarouselRef } from 'antd/es/carousel'
 import SwiperSlideItem from './SwiperSlideItem'
-import { Pagination, Virtual } from 'swiper/modules'
 import { Link } from 'react-router-dom'
 
 const CarouselBanner = () => {

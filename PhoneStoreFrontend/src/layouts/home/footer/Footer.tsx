@@ -7,10 +7,10 @@ export default function Footer() {
   return (
     <footer className='w-full bg-[#181821] text-base text-[#a9b3bb]'>
       <div className='w-[1200px] mx-auto py-4'>
-        <div className='grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4'>
+        <div className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4'>
           <div className='flex flex-col gap-2'>
             <Link className='flex items-center h-9' to={'/'}>
-              <img className='object-cover h-[30px] cursor-pointer border rounded-md p-1' src={logo} alt='' />
+              <img className='object-cover h-[30px] cursor-pointer border bg-primary rounded' src={logo} alt='' />
             </Link>
             <div className='flex flex-col gap-y-1.5 text-sm'>
               <div className='py-1 text-xl font-semibold text-white'>Tổng đài hỗ trợ miễn phí</div>
@@ -128,7 +128,7 @@ export default function Footer() {
           </div>
           <div className='flex flex-col'>
             <div className='flex flex-col gap-y-1.5 text-sm'>
-              <div className='py-1 text-xl font-semibold text-white uppercase'>Đăng ký nhận tin khuyến mãi</div>
+              <div className='py-1 text-xl font-semibold text-white'>Đăng ký nhận tin khuyến mãi</div>
               <div className='text-red-600'>(*) Nhận ngay voucher 10%</div>
               <div className=''>*Voucher sẽ được gửi sau 24h, chỉ áp dụng cho khách hàng mới</div>
               <div className='mt-4'>

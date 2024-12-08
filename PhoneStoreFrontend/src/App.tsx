@@ -3,6 +3,7 @@ import { privateRoutes, publicRoutes } from './routes/index.ts'
 import HomeLayout from './layouts/home/HomeLayout.tsx'
 import { Fragment } from 'react/jsx-runtime'
 import { ToastContainer } from 'react-toastify'
+import NotFoundPage from './pages/NotFoundPage.tsx'
 
 function App() {
   return (
@@ -49,7 +50,7 @@ function App() {
               }
             />
           })} */}
-          {/* <Route path="*" element={<NotFoundPage />} /> */}
+          <Route path='*' element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>
       <ToastContainer />
