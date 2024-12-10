@@ -1,31 +1,45 @@
 import classNames from 'classnames'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { FC, useRef } from 'react'
+import { FC, useRef, useState } from 'react'
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react'
 import ProductCard from '../../../components/items/ProductCard'
-import { Autoplay } from 'swiper/modules'
 import { ProductType } from '../../../types/product.type'
 
+import { Autoplay, Grid } from 'swiper/modules'
+
 interface CarouselProductType {
+  row?: 1 | 2
   autoPlay?: boolean
   dataSource: ProductType[]
 }
-const CarouselProduct: FC<CarouselProductType> = ({ autoPlay = true, dataSource }) => {
+const CarouselProduct: FC<CarouselProductType> = ({ row = 1, autoPlay = true, dataSource }) => {
   const swiperRef = useRef<SwiperRef>(null)
+  const [currentSlide, setCurrentSlide] = useState<number>(0)
 
   return (
-    <div className='relative w-full mt-6 group'>
+    <div className='relative w-full group'>
       <Swiper
         ref={swiperRef}
         initialSlide={0}
         autoplay={autoPlay}
-        draggable
+        loop={false}
+        onSlideChange={(swiper) => {
+          setCurrentSlide(swiper.realIndex)
+        }}
+        grid={{
+          rows: row
+        }}
         slidesPerView={5}
         slidesPerGroup={1}
         spaceBetween={10}
         freeMode={true}
-        modules={[Autoplay]}
-        className='mySwiper'
+        modules={[Autoplay, Grid]}
+        style={{
+          padding: '10px'
+        }}
+        className={classNames('mySwiper', {
+          'h-[814px] ': row !== 1
+        })}
       >
         {dataSource.map((item, index) => (
           <SwiperSlide key={index} className={classNames('h-full')}>
@@ -34,13 +48,13 @@ const CarouselProduct: FC<CarouselProductType> = ({ autoPlay = true, dataSource 
         ))}
       </Swiper>
 
-      {!swiperRef.current?.swiper.isBeginning && (
+      {currentSlide != 0 && (
         <button
           onClick={() => {
             swiperRef.current?.swiper.slidePrev()
           }}
           className={classNames(
-            'absolute z-20 -translate-y-1/2 py-1 -left-2 bg-gray-50 shadow-all shadow-slate-900/20 rounded-r-full bg-opacity-60 transition-all top-1/2 text-black/40',
+            'absolute z-20 -translate-y-1/2 py-1 left-0.5 bg-gray-50 shadow-all shadow-slate-900/20 rounded-r-full bg-opacity-60 transition-all top-1/2 text-black/40',
             'hover:text-text hover:bg-gray-100 hover:bg-opacity-60 scale-75 group-hover:scale-100'
           )}
         >
@@ -53,7 +67,7 @@ const CarouselProduct: FC<CarouselProductType> = ({ autoPlay = true, dataSource 
             swiperRef.current?.swiper.slideNext()
           }}
           className={classNames(
-            'absolute z-20 -translate-y-1/2 py-1 -right-2 bg-gray-50 shadow-all shadow-slate-400 rounded-l-full bg-opacity-60 transition-all top-1/2 text-black/40',
+            'absolute z-20 -translate-y-1/2 py-1 right-0.5 bg-gray-50 shadow-all shadow-slate-400 rounded-l-full bg-opacity-60 transition-all top-1/2 text-black/40',
             'hover:text-text hover:bg-gray-100 hover:bg-opacity-60 scale-75 group-hover:scale-100'
           )}
         >

@@ -17,22 +17,19 @@ const CarouselBanner = () => {
   const swiperRef = useRef<SwiperRef>(null)
 
   const onChange = (slideNumber: number) => {
-    setCurrentSlide(slideNumber)
+    if (swiperRef.current) {
+      swiperRef.current.swiper.slideTo(slideNumber)
+      setCurrentSlide(slideNumber)
+    }
   }
 
   const handleSwiperClick = (index: number) => {
-    setCurrentSlide(index)
+    if (carouselRef.current) {
+      carouselRef.current.goTo(index)
+      setCurrentSlide(index)
+    }
     setIsAutoPlay(false)
   }
-
-  useEffect(() => {
-    if (carouselRef.current) {
-      carouselRef.current.goTo(currentSlide)
-    }
-    if (swiperRef.current) {
-      swiperRef.current.swiper.slideTo(currentSlide)
-    }
-  }, [currentSlide])
 
   return (
     <div className='flex flex-col w-full h-full'>
@@ -41,7 +38,7 @@ const CarouselBanner = () => {
           ref={carouselRef}
           draggable
           arrows
-          initialSlide={currentSlide}
+          initialSlide={0}
           afterChange={onChange}
           autoplay={isAutoPlay}
           dots={false}
@@ -57,7 +54,7 @@ const CarouselBanner = () => {
       <div className='h-full'>
         <Swiper
           ref={swiperRef}
-          initialSlide={currentSlide}
+          initialSlide={0}
           slidesPerView={5}
           slidesPerGroup={1}
           spaceBetween={0}

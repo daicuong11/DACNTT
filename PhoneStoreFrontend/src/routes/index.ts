@@ -1,3 +1,4 @@
+import { CheckSlug } from '../components'
 import HomeLayout from '../layouts/home'
 import { HomePage } from '../pages/home'
 import { Login } from '../pages/login'
@@ -17,6 +18,11 @@ const publicRoutes: RouteType[] = [
   {
     path: '/',
     component: HomePage,
+    layout: HomeLayout
+  },
+  {
+    path: '/:categorySlug/:productSlug',
+    component: CheckSlug,
     layout: HomeLayout
   }
 ]

@@ -4,8 +4,10 @@ import { ConfigProvider, Flex, Rate, Tag } from 'antd'
 import FavoriteButton from '../buttons/FavoriteButton'
 import { WishlistType } from '../../types/wishlist.type'
 import { toast } from 'react-toastify'
-import { ReviewResponseType } from '../../types/response.type'
 import classNames from 'classnames'
+import { useNavigate } from 'react-router-dom'
+import { getProductRoute } from '../../utils/getProductRoute'
+import { getRating } from '../../utils/getRating'
 
 interface ProductCardType extends HTMLAttributes<HTMLDivElement> {
   item: ProductType
@@ -28,41 +30,11 @@ const myFavorite: WishlistType = {
   ]
 }
 
-const exampleReview = [
-  {
-    reviewId: 1,
-    productId: 1,
-    rating: 5
-  },
-  {
-    reviewId: 2,
-    productId: 2,
-    rating: 4.8
-  },
-  {
-    reviewId: 3,
-    productId: 3,
-    rating: 3.5
-  },
-  {
-    reviewId: 4,
-    productId: 0,
-    rating: 5
-  },
-  {
-    reviewId: 5,
-    productId: 6,
-    rating: 4.7
-  }
-] as { reviewId: number; productId: number; rating: number }[]
-
 const ProductCard: FC<ProductCardType> = ({ item, ...props }) => {
+  const navigate = useNavigate()
+
   const checkWishList = (productId: number): boolean => {
     return myFavorite.wishListItems.some((item) => item.productId === productId)
-  }
-
-  const getRating = (productId: number): any => {
-    return exampleReview.find((item) => item.productId === productId)?.rating || -1
   }
 
   const handleSetWishList = (productId: number) => {
@@ -83,8 +55,8 @@ const ProductCard: FC<ProductCardType> = ({ item, ...props }) => {
   return (
     <div
       {...props}
-      onClick={() => console.log('ProductCard')}
-      className='relative h-[392px] min-w-[224px] cursor-pointer rounded-xl bg-white p-[10px] flex flex-col shadow shadow-slate-900/20'
+      onClick={() => navigate(getProductRoute(item))}
+      className='relative h-[392px] min-w-[224px] cursor-pointer rounded-xl bg-white p-[10px] flex flex-col shadow drop-shadow-lg shadow-slate-900/20'
     >
       <div className='flex-[5] flex items-center justify-center'>
         <img

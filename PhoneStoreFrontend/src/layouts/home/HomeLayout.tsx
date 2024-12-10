@@ -11,7 +11,7 @@ const HomeLayout: FC<HomeLayoutProps> = ({ children }) => {
     <div className=''>
       <Header />
       <div className='px-4'>
-        <div className='min-h-screen max-w-[1200px] mx-auto'>{children}</div>
+        <div className='min-h-screen max-w-[1200px] mx-auto bg-white'>{children}</div>
       </div>
       <Footer />
     </div>

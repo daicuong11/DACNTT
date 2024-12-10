@@ -7,3 +7,4 @@ export const useAppSelector = useSelector.withTypes<RootState>()
 export { default as useDebounce } from './useDebounce'
 export { default as useQueryString } from './useQueryString'
 export { default as useModal } from './useModal'
+export { default as useElementWidth } from './useElementWidth'

@@ -1,6 +1,5 @@
 import classNames from 'classnames'
 import { FC } from 'react'
-import { useSwiper } from 'swiper/react'
 interface SwiperSlideItemProps {
   item: {
     title: string

@@ -7,6 +7,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import './index.css'
 import 'react-toastify/dist/ReactToastify.css'
 import App from './App.tsx'
+import 'swiper/swiper-bundle.css'
 
 const queryClient = new QueryClient()
 
