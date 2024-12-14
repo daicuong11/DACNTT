@@ -3,6 +3,7 @@ import { GiaoHangIcon, logo } from '../../../assets/images'
 import { ButtonHeader, Search } from './components'
 import { CategoryModal } from '../../../components'
 import { useModal } from '../../../hooks'
+import { Link } from 'react-router-dom'
 
 const Header = () => {
   const { isOpen, openModal, toggleModal, closeModal } = useModal()
@@ -10,9 +11,9 @@ const Header = () => {
   return (
     <div className='h-[64px] sticky top-0 z-[999] w-full bg-primary shadow-md px-4'>
       <div className='max-w-[1200px] flex items-center gap-x-3 mx-auto leading-[64px]'>
-        <div className='py-2 rounded'>
+        <Link to={'/'} className='py-2 rounded'>
           <img className='object-cover w-40 h-[30px]' src={logo} alt='logo' />
-        </div>
+        </Link>
 
         <ButtonHeader
           onClick={toggleModal}

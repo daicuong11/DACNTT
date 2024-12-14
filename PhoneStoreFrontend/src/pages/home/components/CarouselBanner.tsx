@@ -2,7 +2,6 @@ import { Carousel } from 'antd'
 import { listBanner } from '../../../assets/images'
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react'
 
-// Import required modules for Swiper
 import 'swiper/swiper-bundle.css'
 import classNames from 'classnames'
 import { useEffect, useRef, useState } from 'react'

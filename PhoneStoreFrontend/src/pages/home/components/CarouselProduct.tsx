@@ -54,7 +54,7 @@ const CarouselProduct: FC<CarouselProductType> = ({ row = 1, autoPlay = true, da
             swiperRef.current?.swiper.slidePrev()
           }}
           className={classNames(
-            'absolute z-20 -translate-y-1/2 py-1 left-0.5 bg-gray-50 shadow-all shadow-slate-900/20 rounded-r-full bg-opacity-60 transition-all top-1/2 text-black/40',
+            'absolute z-20 -translate-y-1/2 py-1 left-0 bg-gray-50 shadow-all shadow-slate-900/20 rounded-r-full bg-opacity-60 transition-all top-1/2 text-black/40',
             'hover:text-text hover:bg-gray-100 hover:bg-opacity-60 scale-75 group-hover:scale-100'
           )}
         >
@@ -67,7 +67,7 @@ const CarouselProduct: FC<CarouselProductType> = ({ row = 1, autoPlay = true, da
             swiperRef.current?.swiper.slideNext()
           }}
           className={classNames(
-            'absolute z-20 -translate-y-1/2 py-1 right-0.5 bg-gray-50 shadow-all shadow-slate-400 rounded-l-full bg-opacity-60 transition-all top-1/2 text-black/40',
+            'absolute z-20 -translate-y-1/2 py-1 right-0 bg-gray-50 shadow-all shadow-slate-400 rounded-l-full bg-opacity-60 transition-all top-1/2 text-black/40',
             'hover:text-text hover:bg-gray-100 hover:bg-opacity-60 scale-75 group-hover:scale-100'
           )}
         >

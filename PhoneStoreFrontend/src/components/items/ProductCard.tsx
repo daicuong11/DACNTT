@@ -1,4 +1,4 @@
-import { FC, HTMLAttributes } from 'react'
+import { FC, HTMLAttributes, useState } from 'react'
 import { ProductType } from '../../types/product.type'
 import { ConfigProvider, Flex, Rate, Tag } from 'antd'
 import FavoriteButton from '../buttons/FavoriteButton'
@@ -30,17 +30,21 @@ const myFavorite: WishlistType = {
   ]
 }
 
+const checkWishList = (productId: number): boolean => {
+  return myFavorite.wishListItems.some((item) => item.productId === productId)
+}
+
 const ProductCard: FC<ProductCardType> = ({ item, ...props }) => {
   const navigate = useNavigate()
 
-  const checkWishList = (productId: number): boolean => {
-    return myFavorite.wishListItems.some((item) => item.productId === productId)
-  }
+  const [isFavorite, setIsFavorite] = useState(checkWishList(item.productId))
 
   const handleSetWishList = (productId: number) => {
     const isExist = checkWishList(productId)
     if (isExist) {
       myFavorite.wishListItems = myFavorite.wishListItems.filter((item) => item.productId !== productId)
+      setIsFavorite(false)
+
       toast.success('Đã xóa khỏi yêu thích')
     } else {
       myFavorite.wishListItems.push({
@@ -48,6 +52,7 @@ const ProductCard: FC<ProductCardType> = ({ item, ...props }) => {
         wishListId: myFavorite.wishListId,
         productId
       })
+      setIsFavorite(true)
       toast.success('Đã thêm vào yêu thích')
     }
   }
@@ -73,7 +78,7 @@ const ProductCard: FC<ProductCardType> = ({ item, ...props }) => {
             <span className='text-sm leading-none line-through text-slate-600'>12.790.000đ</span>
           </div>
           <Flex gap='4px 0' wrap>
-            <Tag color='green'>Fre ship</Tag>
+            <Tag color='green'>Free ship</Tag>
             <Tag color='cyan'>Trả góp 0%</Tag>
             <Tag color='volcano'>Đang bán chạy</Tag>
             <Tag color='purple'>Rẻ vô địch</Tag>
@@ -94,10 +99,7 @@ const ProductCard: FC<ProductCardType> = ({ item, ...props }) => {
             </div>
             <div onClick={(e) => e.stopPropagation()} className='flex items-center'>
               <span className='text-xs text-gray-500'>Yêu thích</span>
-              <FavoriteButton
-                isLove={checkWishList(item.productId)}
-                onClick={() => handleSetWishList(item.productId)}
-              />
+              <FavoriteButton isLove={isFavorite} onClick={() => handleSetWishList(item.productId)} />
             </div>
           </div>
         </div>
