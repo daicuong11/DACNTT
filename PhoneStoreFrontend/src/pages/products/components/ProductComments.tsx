@@ -19,6 +19,28 @@ const commentsEx: CommentType[] = [
         content: 'Dạ sản phẩm còn nhé bạn.',
         time: '30 giây trước',
         replies: []
+      },
+      {
+        id: 3,
+        author: 'Đạo Thanh Hưng',
+        content: 'Cảm ơn bạn nhiều nhé.',
+        time: '10 giây trước',
+        replies: []
+      }
+    ]
+  },
+  {
+    id: 1,
+    author: 'Đạo Thanh Hưng',
+    content: 'Sản phẩm còn không ạ?',
+    time: '1 phút trước',
+    replies: [
+      {
+        id: 2,
+        author: 'Nguyễn Văn A',
+        content: 'Dạ sản phẩm còn nhé bạn.',
+        time: '30 giây trước',
+        replies: []
       }
     ]
   }

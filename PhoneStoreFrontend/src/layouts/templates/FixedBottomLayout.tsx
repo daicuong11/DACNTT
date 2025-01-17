@@ -1,7 +1,7 @@
 import { ArrowLeft } from 'lucide-react'
 import React, { FC, ReactNode } from 'react'
-import { AppDivider } from '../../components'
 import { useNavigate } from 'react-router-dom'
+import { MyDivider } from '../../components'
 
 interface FixedBottomLayoutProps {
   title: string
@@ -23,7 +23,7 @@ const FixedBottomLayout: FC<FixedBottomLayoutProps> = ({ title, body, footer }) 
             <ArrowLeft size={28} strokeWidth={1.6} />
           </button>
         </div>
-        <AppDivider className='mt-1 mb-3' />
+        <MyDivider className='mt-1 mb-3' />
         {body}
       </div>
       <div className='max-w-[600px] mx-auto sticky bottom-0 border border-x-gray-200 shadow bg-white p-2.5 rounded-t-lg pb-4'>
