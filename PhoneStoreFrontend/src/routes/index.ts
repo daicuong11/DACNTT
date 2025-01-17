@@ -1,7 +1,10 @@
 import { CheckSlug } from '../components'
-import HomeLayout from '../layouts/home'
+import { CartLayout, HomeLayout } from '../layouts'
+import { CartPage } from '../pages/cart'
 import { HomePage } from '../pages/home'
 import { Login } from '../pages/login'
+import PaymentInfoPage from '../pages/payment_info/PaymentInfoPage'
+import { ProductDetailPage } from '../pages/products'
 
 interface RouteType<Props = {}> {
   path: string
@@ -21,9 +24,19 @@ const publicRoutes: RouteType[] = [
     layout: HomeLayout
   },
   {
-    path: '/:categorySlug/:productSlug',
-    component: CheckSlug,
+    path: '/:category/:productSlug',
+    component: ProductDetailPage,
     layout: HomeLayout
+  },
+  {
+    path: '/cart',
+    component: CartPage,
+    layout: CartLayout
+  },
+  {
+    path: '/cart/payment-info',
+    component: PaymentInfoPage,
+    layout: CartLayout
   }
 ]
 

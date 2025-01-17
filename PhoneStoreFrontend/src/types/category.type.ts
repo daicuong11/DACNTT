@@ -1,7 +1,7 @@
 export interface CategoryType {
   categoryId: number
   name: string
-  slug: string
+  url: string
   description?: string
   imageUrl: string
 }

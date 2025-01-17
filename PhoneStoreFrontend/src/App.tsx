@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Route, Routes, ScrollRestoration } from 'react-router-dom'
 import { privateRoutes, publicRoutes } from './routes/index.ts'
 import HomeLayout from './layouts/home/HomeLayout.tsx'
 import { Fragment } from 'react/jsx-runtime'
@@ -18,6 +18,7 @@ function App() {
               Layout = Fragment
             }
             const Page = route.component
+
             return (
               <Route
                 key={index}

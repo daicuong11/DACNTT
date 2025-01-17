@@ -9,6 +9,7 @@ import listIphoneImage from '../../../assets/images/iphone'
 import { ChevronLeft, ChevronRight, Star } from 'lucide-react'
 import getPreviewNumber from '../../../utils/getPreviewNumber'
 import { useElementWidth } from '../../../hooks'
+import { FavoriteButton } from '../../../components'
 
 const CarouselProductImages = () => {
   const [currentSlide, setCurrentSlide] = useState<number>(0)
@@ -133,6 +134,7 @@ const CarouselProductImages = () => {
             <ChevronRight size={32} strokeWidth={1.6} />
           </button>
         )}
+        <FavoriteButton className='absolute top-1 left-1' />
       </div>
 
       <div ref={swiperContainerRef} className='h-[50px]'>

@@ -2,11 +2,11 @@ import { StarFilled } from '@ant-design/icons'
 import { Progress } from 'antd'
 import { FC } from 'react'
 
-interface ReviewItemProps {
+interface ReviewRatingItemProps {
   rating: number
   productId: number
 }
-const ReviewItem: FC<ReviewItemProps> = ({ rating, productId }) => {
+const ReviewRatingItem: FC<ReviewRatingItemProps> = ({ rating, productId }) => {
   const randomPercent = rating == 5 ? 100 : 0
   const countReview = rating == 5 ? 10 : 0
   return (
@@ -23,4 +23,4 @@ const ReviewItem: FC<ReviewItemProps> = ({ rating, productId }) => {
   )
 }
 
-export default ReviewItem
+export default ReviewRatingItem

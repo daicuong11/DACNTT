@@ -1,350 +1,62 @@
+import slug from 'slug'
 import { ProductType } from '../types/product.type'
-import { generateSlug } from '../utils/generateSlug'
 
-export const listItems: ProductType[] = [
-  {
-    productId: 1,
-    name: 'Apple MacBook Air M2 2024 8CPU 8GPU 16GB 256GB I Chính hãng Apple Việt Nam',
-    slug: generateSlug('Apple MacBook Air M2 2024 8CPU 8GPU 16GB 256GB I Chính hãng Apple Việt Nam'),
-    description: 'Flagship killer with Snapdragon 888',
-    price: 729,
-    stock: 20,
-    imageUrl: 'https://example.com/oneplus9.jpg',
+export const listItems: ProductType[] = Array.from({ length: 20 }, (_, index) => {
+  const productNames = [
+    'Apple MacBook Air M2 2024 8CPU 8GPU 16GB 256GB I Chính hãng Apple Việt Nam',
+    'Samsung Galaxy S23 Ultra 5G 12GB 512GB',
+    'Dell XPS 13 Plus 9320 Laptop 2024 16GB 512GB SSD',
+    'Asus ROG Zephyrus G14 Gaming Laptop Ryzen 9 16GB 1TB SSD',
+    'Sony WH-1000XM5 Wireless Noise-Canceling Headphones',
+    'Xiaomi Mi 13 Pro 12GB 256GB 5G Smartphone',
+    'Google Pixel 7 Pro 12GB 256GB',
+    'HP Spectre x360 Convertible Laptop 16GB 512GB SSD',
+    'Lenovo ThinkPad X1 Carbon Gen 11 Ultrabook 16GB 1TB SSD',
+    'Microsoft Surface Pro 9 2-in-1 Tablet Intel Core i7 16GB 512GB SSD',
+    'Canon EOS R8 Mirrorless Camera Full-Frame 24.2MP',
+    'DJI Mavic 3 Pro Drone 4K Camera',
+    'Apple iPhone 15 Pro Max 5G 1TB Titanium',
+    'Samsung Galaxy Tab S9 Ultra 14.6-inch AMOLED',
+    'Bose QuietComfort Earbuds II Wireless',
+    'Logitech MX Master 3S Wireless Mouse',
+    'Razer BlackWidow V4 Pro Mechanical Gaming Keyboard',
+    'Sony A7R V Mirrorless Camera 61MP Full-Frame',
+    'Asus TUF Gaming F15 Laptop i7 16GB 512GB RTX 3060',
+    'Apple Watch Ultra 2 Titanium Case with Ocean Band'
+  ]
+
+  const productName = productNames[index % productNames.length]
+  const slugName = slug(productName, { lower: true })
+
+  return {
+    productId: index + 1,
+    name: productName,
+    slug: slugName,
+    description: `${productName} - sản phẩm chất lượng cao, đáp ứng mọi nhu cầu sử dụng.`,
+    price: Math.floor(Math.random() * (30000000 - 10000000) + 10000000),
+    stock: Math.floor(Math.random() * 100 + 1),
+    imageUrl: `https://example.com/product.jpg`,
     category: {
-      categoryId: 1,
-      name: 'Điện thoại, Tablet',
-      slug: generateSlug('Điện thoại'),
-      description: 'Smartphones and tablets',
-      imageUrl: 'https://example.com/category1.jpg'
+      categoryId: Math.floor(index / 5) + 1,
+      name: ['Điện thoại', 'Laptop', 'Máy ảnh', 'Phụ kiện'][index % 4],
+      url: ['mobile', 'laptop', 'camera', 'accessory'][index % 4],
+      description: [
+        'Smartphones and tablets',
+        'Powerful laptops',
+        'High-quality cameras',
+        'Accessories for all devices'
+      ][index % 4],
+      imageUrl: `https://example.com/category${(index % 4) + 1}.jpg`
     },
-    brand: { brandId: 3, name: 'OnePlus', description: 'Leading smartphone manufacturer' },
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  {
-    productId: 2,
-    name: 'Sony WH-1000XM4',
-    slug: generateSlug('Sony WH-1000XM4'),
-    description: 'Industry leading noise cancelling headphones',
-    price: 349,
-    stock: 100,
-    imageUrl: 'https://example.com/sonywh1000xm4.jpg',
-    category: {
-      categoryId: 2,
-      name: 'Phụ kiện',
-      slug: generateSlug('Phụ kiện'),
-      description: 'Accessories and televisions',
-      imageUrl: 'https://example.com/category2.jpg'
+    brand: {
+      brandId: Math.floor(Math.random() * 10 + 1),
+      name: ['Apple', 'Samsung', 'Sony', 'Dell', 'Asus', 'Xiaomi', 'Google', 'HP', 'Lenovo', 'Microsoft'][index % 10],
+      description: 'Leading brand in technology'
     },
-    brand: { brandId: 4, name: 'Sony', description: 'Renowned electronics manufacturer' },
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  {
-    productId: 3,
-    name: 'iPhone 13',
-    slug: generateSlug('iPhone 13'),
-    description: 'Latest Apple iPhone with A15 Bionic chip',
-    price: 999,
-    stock: 50,
-    imageUrl: 'https://example.com/iphone13.jpg',
-    category: {
-      categoryId: 1,
-      name: 'Điện thoại, Tablet',
-      slug: generateSlug('Điện thoại'),
-      description: 'Smartphones and tablets',
-      imageUrl: 'https://example.com/category1.jpg'
-    },
-    brand: { brandId: 1, name: 'Apple', description: 'Innovative technology company' },
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  {
-    productId: 4,
-    name: 'Samsung Galaxy S21',
-    slug: generateSlug('Samsung Galaxy S21'),
-    description: 'Latest Samsung Galaxy with Exynos 2100',
-    price: 899,
-    stock: 30,
-    imageUrl: 'https://example.com/galaxys21.jpg',
-    category: {
-      categoryId: 1,
-      name: 'Điện thoại, Tablet',
-      slug: generateSlug('Điện thoại'),
-      description: 'Smartphones and tablets',
-      imageUrl: 'https://example.com/category1.jpg'
-    },
-    brand: { brandId: 2, name: 'Samsung', description: 'Global electronics leader' },
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  {
-    productId: 5,
-    name: 'OnePlus 9',
-    slug: generateSlug('OnePlus 9'),
-    description: 'Flagship killer with Snapdragon 888',
-    price: 729,
-    stock: 20,
-    imageUrl: 'https://example.com/oneplus9.jpg',
-    category: {
-      categoryId: 1,
-      name: 'Điện thoại, Tablet',
-      slug: generateSlug('Điện thoại'),
-      description: 'Smartphones and tablets',
-      imageUrl: 'https://example.com/category1.jpg'
-    },
-    brand: { brandId: 3, name: 'OnePlus', description: 'Leading smartphone manufacturer' },
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  {
-    productId: 6,
-    name: 'Sony WH-1000XM4',
-    slug: generateSlug('Sony WH-1000XM4'),
-    description: 'Industry leading noise cancelling headphones',
-    price: 349,
-    stock: 100,
-    imageUrl: 'https://example.com/sonywh1000xm4.jpg',
-    category: {
-      categoryId: 2,
-      name: 'Phụ kiện, TV',
-      slug: generateSlug('Phụ kiện'),
-      description: 'Accessories and televisions',
-      imageUrl: 'https://example.com/category2.jpg'
-    },
-    brand: { brandId: 4, name: 'Sony', description: 'Renowned electronics manufacturer' },
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  {
-    productId: 7,
-    name: 'iPhone 13',
-    slug: generateSlug('iPhone 13'),
-    description: 'Latest Apple iPhone with A15 Bionic chip',
-    price: 999,
-    stock: 50,
-    imageUrl: 'https://example.com/iphone13.jpg',
-    category: {
-      categoryId: 1,
-      name: 'Điện thoại, Tablet',
-      slug: generateSlug('Điện thoại'),
-      description: 'Smartphones and tablets',
-      imageUrl: 'https://example.com/category1.jpg'
-    },
-    brand: { brandId: 1, name: 'Apple', description: 'Innovative technology company' },
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  {
-    productId: 8,
-    name: 'Samsung Galaxy S21',
-    slug: generateSlug('Samsung Galaxy S21'),
-    description: 'Latest Samsung Galaxy with Exynos 2100',
-    price: 899,
-    stock: 30,
-    imageUrl: 'https://example.com/galaxys21.jpg',
-    category: {
-      categoryId: 1,
-      name: 'Điện thoại, Tablet',
-      slug: generateSlug('Điện thoại'),
-      description: 'Smartphones and tablets',
-      imageUrl: 'https://example.com/category1.jpg'
-    },
-    brand: { brandId: 2, name: 'Samsung', description: 'Global electronics leader' },
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  {
-    productId: 9,
-    name: 'Google Pixel 6',
-    slug: generateSlug('Google Pixel 6'),
-    description: "Google's latest smartphone with Tensor chip",
-    price: 799,
-    stock: 40,
-    imageUrl: 'https://example.com/pixel6.jpg',
-    category: {
-      categoryId: 1,
-      name: 'Điện thoại, Tablet',
-      slug: generateSlug('Điện thoại'),
-      description: 'Smartphones and tablets',
-      imageUrl: 'https://example.com/category1.jpg'
-    },
-    brand: { brandId: 5, name: 'Google', description: 'Tech giant' },
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  {
-    productId: 10,
-    name: 'Dell XPS 13',
-    slug: generateSlug('Dell XPS 13'),
-    description: 'High performance ultrabook',
-    price: 1199,
-    stock: 15,
-    imageUrl: 'https://example.com/dellxps13.jpg',
-    category: {
-      categoryId: 3,
-      name: 'Laptop',
-      slug: generateSlug('Laptop'),
-      description: 'Laptops and notebooks',
-      imageUrl: 'https://example.com/category3.jpg'
-    },
-    brand: { brandId: 6, name: 'Dell', description: 'Leading computer manufacturer' },
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  {
-    productId: 11,
-    name: 'HP Spectre x360',
-    slug: generateSlug('HP Spectre x360'),
-    description: 'Convertible laptop with touch screen',
-    price: 1299,
-    stock: 10,
-    imageUrl: 'https://example.com/hpspectrex360.jpg',
-    category: {
-      categoryId: 3,
-      name: 'Laptop',
-      slug: generateSlug('Laptop'),
-      description: 'Laptops and notebooks',
-      imageUrl: 'https://example.com/category3.jpg'
-    },
-    brand: { brandId: 7, name: 'HP', description: 'Global PC manufacturer' },
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  {
-    productId: 12,
-    name: 'Microsoft Surface Pro 8',
-    slug: generateSlug('Microsoft Surface Pro 8'),
-    description: 'Versatile 2-in-1 laptop',
-    price: 1399,
-    stock: 25,
-    imageUrl: 'https://example.com/surfacepro8.jpg',
-    category: {
-      categoryId: 3,
-      name: 'Laptop',
-      slug: generateSlug('Laptop'),
-      description: 'Laptops and notebooks',
-      imageUrl: 'https://example.com/category3.jpg'
-    },
-    brand: { brandId: 8, name: 'Microsoft', description: 'Software and hardware giant' },
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  {
-    productId: 13,
-    name: 'Asus ROG Strix',
-    slug: generateSlug('Asus ROG Strix'),
-    description: 'Gaming laptop with high-end specs',
-    price: 1599,
-    stock: 5,
-    imageUrl: 'https://example.com/asusrogstrix.jpg',
-    category: {
-      categoryId: 3,
-      name: 'Laptop',
-      slug: generateSlug('Laptop'),
-      description: 'Laptops and notebooks',
-      imageUrl: 'https://example.com/category3.jpg'
-    },
-    brand: { brandId: 9, name: 'Asus', description: 'Leading gaming hardware manufacturer' },
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  {
-    productId: 14,
-    name: 'Lenovo ThinkPad X1 Carbon',
-    slug: generateSlug('Lenovo ThinkPad X1 Carbon'),
-    description: 'Business laptop with robust build',
-    price: 1499,
-    stock: 20,
-    imageUrl: 'https://example.com/thinkpadx1carbon.jpg',
-    category: {
-      categoryId: 3,
-      name: 'Laptop',
-      slug: generateSlug('Laptop'),
-      description: 'Laptops and notebooks',
-      imageUrl: 'https://example.com/category3.jpg'
-    },
-    brand: { brandId: 10, name: 'Lenovo', description: 'Global PC manufacturer' },
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  {
-    productId: 15,
-    name: 'Acer Predator Helios 300',
-    slug: generateSlug('Acer Predator Helios 300'),
-    description: 'Gaming laptop with powerful performance',
-    price: 1299,
-    stock: 8,
-    imageUrl: 'https://example.com/acerpredator.jpg',
-    category: {
-      categoryId: 3,
-      name: 'Laptop',
-      slug: generateSlug('Laptop'),
-      description: 'Laptops and notebooks',
-      imageUrl: 'https://example.com/category3.jpg'
-    },
-    brand: { brandId: 11, name: 'Acer', description: 'Leading computer manufacturer' },
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  {
-    productId: 16,
-    name: 'Razer Blade 15',
-    slug: generateSlug('Razer Blade 15'),
-    description: 'High-end gaming laptop',
-    price: 1799,
-    stock: 12,
-    imageUrl: 'https://example.com/razerblade15.jpg',
-    category: {
-      categoryId: 3,
-      name: 'Laptop',
-      slug: generateSlug('Laptop'),
-      description: 'Laptops and notebooks',
-      imageUrl: 'https://example.com/category3.jpg'
-    },
-    brand: { brandId: 12, name: 'Razer', description: 'Gaming hardware manufacturer' },
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  {
-    productId: 17,
-    name: 'LG Gram 17',
-    slug: generateSlug('LG Gram 17'),
-    description: 'Lightweight laptop with large screen',
-    price: 1399,
-    stock: 18,
-    imageUrl: 'https://example.com/lggram17.jpg',
-    category: {
-      categoryId: 3,
-      name: 'Laptop',
-      slug: generateSlug('Laptop'),
-      description: 'Laptops and notebooks',
-      imageUrl: 'https://example.com/category3.jpg'
-    },
-    brand: { brandId: 13, name: 'LG', description: 'Global electronics manufacturer' },
-    createdAt: new Date(),
-    updatedAt: new Date()
-  },
-  {
-    productId: 18,
-    name: 'Huawei MateBook X Pro',
-    slug: generateSlug('Huawei MateBook X Pro'),
-    description: 'Premium ultrabook with sleek design',
-    price: 1499,
-    stock: 22,
-    imageUrl: 'https://example.com/matebookxpro.jpg',
-    category: {
-      categoryId: 3,
-      name: 'Laptop',
-      slug: generateSlug('Laptop'),
-      description: 'Laptops and notebooks',
-      imageUrl: 'https://example.com/category3.jpg'
-    },
-    brand: { brandId: 14, name: 'Huawei', description: 'Leading technology company' },
     createdAt: new Date(),
     updatedAt: new Date()
   }
-]
+})
 
 export const exampleReview = [
   {

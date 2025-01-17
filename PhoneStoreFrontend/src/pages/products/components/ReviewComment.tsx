@@ -1,4 +1,5 @@
-import { ConfigProvider, Divider, Flex, Rate, Tag } from 'antd'
+import { UserOutlined } from '@ant-design/icons'
+import { Avatar, ConfigProvider, Divider, Flex, Rate, Tag } from 'antd'
 import { Clock } from 'lucide-react'
 
 const ReviewComment = () => {
@@ -6,13 +7,13 @@ const ReviewComment = () => {
   const dateTimeCreated = '2023-10-05 14:30' // Example date and time
 
   return (
-    <div className='w-full p-4 mx-auto space-y-4 bg-white border border-gray-200 shadow-md rounded-xl'>
+    <div className='w-full p-4 mx-auto space-y-4 bg-white border border-gray-200 shadow-sm shadow-gray-200 rounded-xl'>
       <div className='flex items-center gap-x-3'>
         <div className='flex items-center space-x-4'>
-          <img className='w-10 h-10 rounded-full' src='https://via.placeholder.com/150' alt='User avatar' />
+          <Avatar size='default' icon={<UserOutlined />} />
           <div className='text-sm font-medium text-black'>John Doe</div>
         </div>
-        <div className='flex items-center gap-1 text-sm text-gray-400'>
+        <div className='flex items-center gap-1 text-xs text-gray-700'>
           <span>
             <Clock size={16} strokeWidth={1.6} />
           </span>
@@ -31,9 +32,15 @@ const ReviewComment = () => {
         </ConfigProvider>
         <Divider type='vertical' />
         <Flex gap='4px 0' wrap>
-          <Tag color='default'>Hiệu năng siêu mạnh mẽ</Tag>
-          <Tag color='default'>Thời lượng pin Cực khủng</Tag>
-          <Tag color='default'>Chất lượng camera Chụp đẹp, chuyên nghiệp</Tag>
+          <Tag color='default' className='text-gray-500'>
+            Hiệu năng siêu mạnh mẽ
+          </Tag>
+          <Tag color='default' className='text-gray-500'>
+            Thời lượng pin Cực khủng
+          </Tag>
+          <Tag color='default' className='text-gray-500'>
+            Chất lượng camera Chụp đẹp, chuyên nghiệp
+          </Tag>
         </Flex>
       </div>
       <div className='text-sm font-medium text-gray-500'>

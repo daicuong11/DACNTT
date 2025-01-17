@@ -1,3 +1,4 @@
+import useSetDocTitle from '../../hooks/useSetDocTitle'
 import CarouselBanner from './components/CarouselBanner'
 import CategoryContainer from './components/CategoryContainer'
 import FlashSaleView from './components/FlashSaleView'
@@ -6,6 +7,7 @@ import MobileSaleView from './components/MobileSaleView'
 import RightBanner from './components/RightBanner'
 
 const HomePage = () => {
+  useSetDocTitle('PhoneStore')
   return (
     <div className='w-full py-4'>
       <div className='flex items-start justify-between gap-x-4'>

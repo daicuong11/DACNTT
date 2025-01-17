@@ -1,22 +1,44 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { ContainerPanel, FilterButton } from '../../../components'
 import { ProductType } from '../../../types/product.type'
 import { ConfigProvider, Rate } from 'antd'
 import { getRating } from '../../../utils/getRating'
-import ReviewItem from './ReviewItem'
 import { StarFilled } from '@ant-design/icons'
 import ReviewComment from './ReviewComment'
 import { ChevronDown } from 'lucide-react'
+import ReviewRatingItem from './ReviewItem'
 
 interface ProductReviewsProps {
   product?: ProductType
 }
 
+const initialFilter: string[] = []
+const initialFilterRating: string = ''
+
 const ProductReviews: FC<ProductReviewsProps> = ({ product }) => {
-  const [activeFilter, setActiveFilter] = useState<string>('Tất cả')
+  const [activeFilter, setActiveFilter] = useState<string[]>(initialFilter)
+  const [activeFilterRating, setActiveFilterRating] = useState<string>(initialFilterRating)
+
+  useEffect(() => {
+    console.log('activeFilter', activeFilter)
+    console.log('activeFilterRating', activeFilterRating)
+  }, [activeFilter, activeFilterRating])
 
   const handleFilterClick = (filter: string) => {
-    setActiveFilter(activeFilter === filter ? 'Tất cả' : filter)
+    setActiveFilter((prevFilters) =>
+      prevFilters.includes(filter) ? prevFilters.filter((item) => item !== filter) : [...prevFilters, filter]
+    )
+  }
+
+  const handleFilterRatingClick = (filter: string) => {
+    if (activeFilterRating !== filter) {
+      setActiveFilterRating(filter)
+    }
+  }
+
+  const handleFilterAllClick = () => {
+    setActiveFilter(initialFilter)
+    setActiveFilterRating(initialFilterRating)
   }
 
   return (
@@ -37,7 +59,7 @@ const ProductReviews: FC<ProductReviewsProps> = ({ product }) => {
         </div>
         <div className='flex flex-col col-span-6 px-6 gap-y-1.5'>
           {Array.from({ length: 5 }).map((_, index) => (
-            <ReviewItem key={index} rating={5 - index} productId={product!.productId} />
+            <ReviewRatingItem key={index} rating={5 - index} productId={product!.productId} />
           ))}
         </div>
       </div>
@@ -51,12 +73,26 @@ const ProductReviews: FC<ProductReviewsProps> = ({ product }) => {
 
       <div className='w-full h-[0.5px] bg-slate-200'></div>
 
-      <div className='font-bold text-black/70'>Lọc theo</div>
+      <div className='text-[18px] font-bold text-black/70'>Lọc theo</div>
       <div className='flex items-center gap-x-2.5'>
-        <FilterButton isActive={activeFilter === 'Tất cả'} onClick={() => handleFilterClick('Tất cả')}>
+        <FilterButton
+          isActive={activeFilter.length === 0 && activeFilterRating.length === 0}
+          onClick={() => handleFilterAllClick()}
+        >
           Tất cả
         </FilterButton>
-        <FilterButton isActive={activeFilter === 'Đã mua hàng'} onClick={() => handleFilterClick('Đã mua hàng')}>
+        <FilterButton
+          isShowCloseIcon
+          isActive={activeFilter.includes('Có hình ảnh')}
+          onClick={() => handleFilterClick('Có hình ảnh')}
+        >
+          Có hình ảnh
+        </FilterButton>
+        <FilterButton
+          isShowCloseIcon
+          isActive={activeFilter.includes('Đã mua hàng')}
+          onClick={() => handleFilterClick('Đã mua hàng')}
+        >
           Đã mua hàng
         </FilterButton>
       </div>
@@ -66,8 +102,8 @@ const ProductReviews: FC<ProductReviewsProps> = ({ product }) => {
           return (
             <FilterButton
               key={rating}
-              isActive={activeFilter === rating.toString()}
-              onClick={() => handleFilterClick(rating.toString())}
+              isActive={activeFilterRating === rating.toString()}
+              onClick={() => handleFilterRatingClick(rating.toString())}
             >
               <span>
                 {rating}

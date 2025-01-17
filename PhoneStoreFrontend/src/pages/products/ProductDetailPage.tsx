@@ -3,7 +3,7 @@ import { listItems } from '../../datas'
 import { useParams } from 'react-router-dom'
 import { ConfigProvider, Rate } from 'antd'
 import { getRating } from '../../utils/getRating'
-import { BookmarkCheck, CalendarClock, Heart, PackageOpen, Plus, ShoppingCart, Smartphone } from 'lucide-react'
+import { BookmarkCheck, CalendarClock, Check, Heart, PackageOpen, Plus, ShoppingCart, Smartphone } from 'lucide-react'
 import CarouselProductImages from './components/CarouselProductImages'
 import { iphone16_hong } from '../../assets/images/iphone'
 import PriceButton from './components/PriceButton'
@@ -15,6 +15,7 @@ import CarouselProduct from '../home/components/CarouselProduct'
 import ProductSpecifications from './components/ProductSpecifications'
 import ProductFeatures from './components/ProductFeatures'
 import ProductReviews from './components/ProductReviews'
+import ProductComments from './components/ProductComments'
 
 interface ProductDetailPageProps {}
 const ProductDetailPage: FC<ProductDetailPageProps> = () => {
@@ -95,38 +96,70 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
               <ColorPriceButton isActive={false} title='Vàng' price={21990000} img={iphone16_hong} />
             </div>
             <div className='flex flex-col gap-2.5 mt-2'>
-              <button className='flex flex-col items-center w-full gap-0 btn btn-danger'>
-                <span className='text-lg font-bold uppercase'>Mua ngay</span>
-                <div className='flex items-center gap-3'>
-                  <span className='text-lg font-bold'>{formatPrice(21990000)}</span>
-                  <span className='text-sm font-semibold line-through text-black/50'>{formatPrice(23990000)}</span>
+              <div className='flex items-center justify-center px-2 py-0.5 border rounded-lg border-primary'>
+                <div className='flex flex-col items-center'>
+                  <span className='text-xl font-bold text-primary'>{formatPrice(21990000)}</span>
+                  <span className='text-sm font-semibold text-gray-800 line-through'>{formatPrice(23990000)}</span>
                 </div>
-              </button>
-              <button className='items-center w-full py-2 btn btn-warning'>
-                <span>Thêm vào giỏ hàng</span>
-                <span className=''>
-                  <ShoppingCart size={24} strokeWidth={1.6} />
-                </span>
-              </button>
-              <button className='btn btn-outline'>
-                <span>Thêm vào yêu thích</span>
-                <span>
-                  <Heart size={24} strokeWidth={1.6} />
-                </span>
-              </button>
+              </div>
+              <div className='flex flex-col mt-2 border rounded-xl border-primary/10'>
+                <div className='flex gap-2 px-3 py-3 bg-primary/15 text-primary rounded-t-xl'>
+                  <span>
+                    <GiftFilled className='text-xl' />
+                  </span>
+                  <span className='font-bold'>Khuyến mãi</span>
+                </div>
+                <div className='flex flex-col gap-4 p-3'>
+                  <div className='flex items-start gap-2 cursor-pointer group'>
+                    <div className='flex items-center justify-center flex-shrink-0 w-5 h-5 overflow-hidden text-xs font-bold text-white rounded-full bg-primary'>
+                      1
+                    </div>
+                    <p className='text-sm font-normal text-gray-900 group-hover:underline'>
+                      Nhập mã VNPAY5 giảm từ 50,000đ đến 200,000đ (áp dụng tùy giá trị đơn hàng) khi thanh toán qua
+                      VNPAY-QR.
+                    </p>
+                  </div>
+                  <div className='flex items-start gap-2 cursor-pointer group'>
+                    <div className='flex items-center justify-center flex-shrink-0 w-5 h-5 overflow-hidden text-xs font-bold text-white rounded-full bg-primary'>
+                      2
+                    </div>
+                    <p className='text-sm font-normal text-gray-900 group-hover:underline'>
+                      Nhập mã MOMO5 giảm từ 50,000đ đến 200,000đ (áp dụng tùy giá trị đơn hàng) khi thanh toán qua
+                      MOMO-QR.
+                    </p>
+                  </div>
+
+                  <div className='flex items-start gap-2 cursor-pointer group'>
+                    <div className='flex items-center justify-center flex-shrink-0 w-5 h-5 overflow-hidden text-xs font-bold text-white rounded-full bg-primary'>
+                      3
+                    </div>
+                    <p className='text-sm font-normal text-gray-900 group-hover:underline'>
+                      Xem chính sách ưu đãi dành cho thành viên Smember
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className='flex gap-2.5'>
+                <button className='flex items-center w-full flex-1 btn btn-danger h-[60px]'>
+                  <span className='text-lg font-bold leading-none uppercase'>Mua ngay</span>
+                </button>
+                <button className='items-center p-0 gap-1 btn btn-outline flex-col w-[60px] flex-shrink-0'>
+                  <span className=''>
+                    <ShoppingCart size={28} strokeWidth={1.6} />
+                  </span>
+                  <span className='text-[8px] font-medium text-nowrap'>Thêm vào giỏ</span>
+                </button>
+              </div>
             </div>
 
             <div className='flex flex-col mt-2 border rounded-xl border-primary/10'>
-              <div className='flex gap-2 px-3 py-3 bg-primary/15 text-primary rounded-t-xl'>
-                <span>
-                  <GiftFilled className='text-xl' />
-                </span>
-                <span className='font-bold'>Khuyến mãi</span>
+              <div className='flex gap-2 px-3 py-3 text-black bg-gray-300 rounded-t-xl'>
+                <span className='font-bold uppercase'>Ưu đãi thêm</span>
               </div>
               <div className='flex flex-col gap-4 p-3'>
                 <div className='flex items-start gap-2 cursor-pointer group'>
-                  <div className='flex items-center justify-center flex-shrink-0 w-5 h-5 overflow-hidden text-xs font-bold text-white rounded-full bg-primary'>
-                    1
+                  <div className='flex items-center justify-center flex-shrink-0 w-4 h-4 overflow-hidden text-xs font-bold text-white bg-green-500 rounded-full'>
+                    <Check size={12} strokeWidth={2} />
                   </div>
                   <p className='text-sm font-normal text-gray-900 group-hover:underline'>
                     Nhập mã VNPAY5 giảm từ 50,000đ đến 200,000đ (áp dụng tùy giá trị đơn hàng) khi thanh toán qua
@@ -134,8 +167,8 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
                   </p>
                 </div>
                 <div className='flex items-start gap-2 cursor-pointer group'>
-                  <div className='flex items-center justify-center flex-shrink-0 w-5 h-5 overflow-hidden text-xs font-bold text-white rounded-full bg-primary'>
-                    2
+                  <div className='flex items-center justify-center flex-shrink-0 w-4 h-4 overflow-hidden text-xs font-bold text-white bg-green-500 rounded-full'>
+                    <Check size={12} strokeWidth={2} />
                   </div>
                   <p className='text-sm font-normal text-gray-900 group-hover:underline'>
                     Nhập mã MOMO5 giảm từ 50,000đ đến 200,000đ (áp dụng tùy giá trị đơn hàng) khi thanh toán qua
@@ -143,8 +176,8 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
                   </p>
                 </div>
                 <div className='flex items-start gap-2 cursor-pointer group'>
-                  <div className='flex items-center justify-center flex-shrink-0 w-5 h-5 overflow-hidden text-xs font-bold text-white rounded-full bg-primary'>
-                    3
+                  <div className='flex items-center justify-center flex-shrink-0 w-4 h-4 overflow-hidden text-xs font-bold text-white bg-green-500 rounded-full'>
+                    <Check size={12} strokeWidth={2} />
                   </div>
                   <p className='text-sm font-normal text-gray-900 group-hover:underline'>
                     Nhập mã VNPAY5 giảm từ 50,000đ đến 200,000đ (áp dụng tùy giá trị đơn hàng) khi thanh toán qua
@@ -152,8 +185,8 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
                   </p>
                 </div>
                 <div className='flex items-start gap-2 cursor-pointer group'>
-                  <div className='flex items-center justify-center flex-shrink-0 w-5 h-5 overflow-hidden text-xs font-bold text-white rounded-full bg-primary'>
-                    4
+                  <div className='flex items-center justify-center flex-shrink-0 w-4 h-4 overflow-hidden text-xs font-bold text-white bg-green-500 rounded-full'>
+                    <Check size={12} strokeWidth={2} />
                   </div>
                   <p className='text-sm font-normal text-gray-900 group-hover:underline'>
                     Nhập mã MOMO5 giảm từ 50,000đ đến 200,000đ (áp dụng tùy giá trị đơn hàng) khi thanh toán qua
@@ -161,16 +194,16 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
                   </p>
                 </div>
                 <div className='flex items-start gap-2 cursor-pointer group'>
-                  <div className='flex items-center justify-center flex-shrink-0 w-5 h-5 overflow-hidden text-xs font-bold text-white rounded-full bg-primary'>
-                    5
+                  <div className='flex items-center justify-center flex-shrink-0 w-4 h-4 overflow-hidden text-xs font-bold text-white bg-green-500 rounded-full'>
+                    <Check size={12} strokeWidth={2} />
                   </div>
                   <p className='text-sm font-normal text-gray-900 group-hover:underline'>
                     Liên hệ B2B để được tư vấn giá tốt nhất cho khách hàng doanh nghiệp khi mua số lượng nhiều
                   </p>
                 </div>
                 <div className='flex items-start gap-2 cursor-pointer group'>
-                  <div className='flex items-center justify-center flex-shrink-0 w-5 h-5 overflow-hidden text-xs font-bold text-white rounded-full bg-primary'>
-                    6
+                  <div className='flex items-center justify-center flex-shrink-0 w-4 h-4 overflow-hidden text-xs font-bold text-white bg-green-500 rounded-full'>
+                    <Check size={12} strokeWidth={2} />
                   </div>
                   <p className='text-sm font-normal text-gray-900 group-hover:underline'>
                     Xem chính sách ưu đãi dành cho thành viên Smember
@@ -193,6 +226,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
           <div className='flex flex-col col-span-7 gap-y-4'>
             <ProductFeatures product={product} />
             <ProductReviews product={product} />
+            <ProductComments product={product} />
           </div>
           <div className='col-span-3'>
             <ProductSpecifications />

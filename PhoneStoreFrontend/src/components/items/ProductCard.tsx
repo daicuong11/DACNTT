@@ -8,6 +8,8 @@ import classNames from 'classnames'
 import { useNavigate } from 'react-router-dom'
 import { getProductRoute } from '../../utils/getProductRoute'
 import { getRating } from '../../utils/getRating'
+import formatPrice from '../../utils/formatPrice'
+import breadcrumbConfig from '../../configs/breadcrumbConfig'
 
 interface ProductCardType extends HTMLAttributes<HTMLDivElement> {
   item: ProductType
@@ -57,10 +59,14 @@ const ProductCard: FC<ProductCardType> = ({ item, ...props }) => {
     }
   }
 
+  const handleProductClick = (product: ProductType) => {
+    navigate(getProductRoute(product))
+  }
+
   return (
     <div
       {...props}
-      onClick={() => navigate(getProductRoute(item))}
+      onClick={() => handleProductClick(item)}
       className='relative h-[392px] min-w-[224px] cursor-pointer rounded-xl bg-white p-[10px] flex flex-col shadow drop-shadow-lg shadow-slate-900/20'
     >
       <div className='flex-[5] flex items-center justify-center'>
@@ -74,8 +80,8 @@ const ProductCard: FC<ProductCardType> = ({ item, ...props }) => {
         <div className='flex flex-col gap-3 mt-2'>
           <h2 className='h-[60px] text-sm font-bold text-black/80 line-clamp-3'>{item.name}</h2>
           <div className='flex items-end gap-1 font-sans font-bold'>
-            <span className='leading-none text-primary'>12.790.000đ</span>
-            <span className='text-sm leading-none line-through text-slate-600'>12.790.000đ</span>
+            <span className='leading-none text-primary'>{formatPrice(item.price)}</span>
+            <span className='text-sm leading-none line-through text-slate-600'>{formatPrice(item.price)}</span>
           </div>
           <Flex gap='4px 0' wrap>
             <Tag color='green'>Free ship</Tag>

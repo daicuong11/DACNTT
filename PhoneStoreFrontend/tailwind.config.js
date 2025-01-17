@@ -16,7 +16,14 @@ export default {
         text: '#444',
         'text-light': '#FFFFFF',
       },
-
+      keyframes: {
+        smallPing: {
+          '75%, 100%': { transform: 'scale(1.25)', opacity: '0.3' },
+        },
+      },
+      animation: {
+        smallPing: 'smallPing 1s cubic-bezier(0, 0, 0.2, 1) infinite',
+      },
     },
   },
   plugins: [scrollbarHide],
