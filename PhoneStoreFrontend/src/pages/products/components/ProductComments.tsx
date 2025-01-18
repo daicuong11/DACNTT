@@ -26,6 +26,25 @@ const commentsEx: CommentType[] = [
         content: 'Cảm ơn bạn nhiều nhé.',
         time: '10 giây trước',
         replies: []
+      },
+      {
+        id: 2,
+        author: 'Nguyễn Văn A',
+        content: 'Dạ sản phẩm còn nhé bạn.',
+        time: '30 giây trước',
+        replies: []
+      },
+      {
+        id: 3,
+        author: 'CellphoneS',
+        content: `CellphoneS xin chào anh Phi
+            Dạ trả góp qua Fundiin mình đặt hàng và thanh toán trả góp trên web ạ
+            XIAOMI REDMI NOTE 13 6GB 128GB giá dự kiến thu lại được 1.850.000đ , giá thu chính xác mình đến shop kỹ thuật kiểm tra và định giá ạ
+            XIAOMI REDMI NOTE 14 6GB 128GB ĐEN giá hiện tại 4.790.000đ , bù dự kiến 2.440.000 ( đã gồm giá thu và trợ giá ) , còn hàng ở chi nhánh 253 Nguyễn An Ninh, Dĩ An, Bình Dương ạ
+            Chi tiết hơn bên em liên hệ mình tư vấn qua SĐT *****455 và hỗ trợ mình đặt hàng ạ
+            Thân mến`,
+        time: '10 giây trước',
+        replies: []
       }
     ]
   },
@@ -70,7 +89,7 @@ const ProductComments: FC<ProductCommentsProps> = ({ product }) => {
       <MyDivider />
       <div className='flex flex-col text-black gap-y-2'>
         {commentsEx.map((comment, index) => (
-          <CommentItem key={comment.id} comment={comment} />
+          <CommentItem key={comment.id + '' + index} comment={comment} />
         ))}
       </div>
     </ContainerPanel>

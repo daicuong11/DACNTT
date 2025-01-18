@@ -10,7 +10,7 @@ const Breadcrumbs = () => {
   const navigate = useNavigate()
 
   return (
-    <div className={classNames('py-1', { hidden: breadcrumbs.length === 1 })}>
+    <div className={classNames('py-1 px-4', { hidden: breadcrumbs.length === 1 })}>
       <Breadcrumb
         separator={<RightOutlined style={{ fontSize: '10px', height: '100%' }} />}
         items={breadcrumbs}

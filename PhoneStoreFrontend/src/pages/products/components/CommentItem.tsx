@@ -3,7 +3,7 @@ import { Avatar } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
 import classNames from 'classnames'
 import { SendHorizonal } from 'lucide-react'
-import React, { FC, useEffect } from 'react'
+import React, { FC, useEffect, useRef } from 'react'
 
 export interface CommentType {
   id: number
@@ -22,11 +22,25 @@ const CommentItem: FC<CommentItemProps> = ({ comment, isReply }) => {
   const [showReply, setShowReply] = React.useState<boolean>(false)
   const [rep, setRep] = React.useState<boolean>(false)
   const [commentReply, setCommentReply] = React.useState<string>('')
+  const commentInputRef = useRef<HTMLDivElement>(null)
+
+  const handleScrollToCommentInput = () => {
+    if (commentInputRef.current) {
+      const rect = commentInputRef.current.getBoundingClientRect()
+      const isFullyVisible = rect.top >= 0 && rect.bottom <= window.innerHeight
+      if (!isFullyVisible) commentInputRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' })
+    }
+  }
+
+  const handleRepCommentClick = () => {
+    setRep(true)
+    handleScrollToCommentInput()
+  }
 
   return (
     <div className='pt-1.5 relative'>
       <div className='relative flex gap-x-2'>
-        <Avatar size={isReply ? 'small' : 'default'} icon={<UserOutlined />} />
+        <Avatar className='flex-shrink-0' size={isReply ? 'small' : 'default'} icon={<UserOutlined />} />
         <div className='flex flex-col'>
           <div className='flex flex-col px-3 py-2 bg-gray-200 gap-y-1 rounded-xl'>
             <div className='text-xs font-medium'>{comment.author}</div>
@@ -34,23 +48,23 @@ const CommentItem: FC<CommentItemProps> = ({ comment, isReply }) => {
           </div>
           <div className='flex items-center text-xs text-gray-700 gap-x-2'>
             <button className='py-1 px-1.5 font-medium'>{comment.time}</button>
-            <button onClick={() => setRep(true)} className='py-1 px-1.5 font-medium hover:underline'>
+            <button onClick={handleRepCommentClick} className='py-1 px-1.5 font-medium hover:underline'>
               Phản hồi
             </button>
           </div>
           <div
-            className={classNames('w-0.5 bg-gray-300 h-full absolute rounded-full', {
+            className={classNames('w-0.5 bg-gray-300 absolute rounded-full', {
               hidden: isReply,
               'top-9 left-4': !isReply,
-              'h-full': !isReply && showReply,
-              'h-2/3': !isReply && !showReply
+              'h-full': showReply,
+              'h-2/3': !showReply
             })}
           ></div>
         </div>
       </div>
       {showReply && comment.replies && comment.replies.length > 0 && (
         <div className='pl-11'>
-          {comment.replies?.map((reply, index) => <CommentItem key={reply.id} isReply comment={reply} />)}
+          {comment.replies?.map((reply, index) => <CommentItem key={'' + reply.id + index} isReply comment={reply} />)}
         </div>
       )}
       <div className='pl-11'>
@@ -80,7 +94,7 @@ const CommentItem: FC<CommentItemProps> = ({ comment, isReply }) => {
             onClick={() => setShowReply(true)}
             className='relative py-1 text-sm font-medium text-gray-500 cursor-pointer'
           >
-            Xem 1 phản hồi
+            Xem {comment.replies?.length} phản hồi
             <div
               className={classNames('w-6 h-6 rounded-bl-lg border-b-2 border-l-2 border-gray-300 absolute ', {
                 hidden: isReply,
@@ -92,7 +106,10 @@ const CommentItem: FC<CommentItemProps> = ({ comment, isReply }) => {
       </div>
       <div className='pl-11'>
         {rep && !showReply && !isReply && (
-          <div className='relative flex flex-1 w-full p-2 pb-8 mt-2 border border-gray-200 rounded-lg shadow-md'>
+          <div
+            ref={commentInputRef}
+            className='relative flex flex-1 w-full p-2 pb-8 mt-2 border border-gray-200 rounded-lg shadow-md'
+          >
             <TextArea
               className='!border-none !outline-none focus:!outline-none focus:!border-none focus:!shadow-none'
               rows={1}
@@ -109,7 +126,7 @@ const CommentItem: FC<CommentItemProps> = ({ comment, isReply }) => {
               })}
             ></div>
             <div
-              className={classNames('w-0.5 bg-gray-300 h-full absolute rounded-full', {
+              className={classNames('w-0.5 bg-gray-300 absolute rounded-full', {
                 hidden: !rep,
                 '-top-8 -left-[28.5px]': rep,
                 'h-2/3': rep

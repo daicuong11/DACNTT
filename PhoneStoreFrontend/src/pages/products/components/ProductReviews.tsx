@@ -19,10 +19,7 @@ const ProductReviews: FC<ProductReviewsProps> = ({ product }) => {
   const [activeFilter, setActiveFilter] = useState<string[]>(initialFilter)
   const [activeFilterRating, setActiveFilterRating] = useState<string>(initialFilterRating)
 
-  useEffect(() => {
-    console.log('activeFilter', activeFilter)
-    console.log('activeFilterRating', activeFilterRating)
-  }, [activeFilter, activeFilterRating])
+  useEffect(() => {}, [activeFilter, activeFilterRating])
 
   const handleFilterClick = (filter: string) => {
     setActiveFilter((prevFilters) =>
