@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react'
-import { listItems } from '../../datas'
+import { exampleProductVariant, listItems } from '../../datas'
 import { useParams } from 'react-router-dom'
 import { ConfigProvider, Rate } from 'antd'
 import { getRating } from '../../utils/getRating'
@@ -218,7 +218,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
       </div>
       <div className='flex flex-col gap-y-4'>
         <div className='text-xl font-bold leading-none uppercase text-black/70'>Sản phẩm tương tự</div>
-        <CarouselProduct autoPlay={false} dataSource={listItems} />
+        <CarouselProduct autoPlay={false} dataSource={exampleProductVariant} />
 
         <div className='w-full h-[1px] bg-slate-200'></div>
 

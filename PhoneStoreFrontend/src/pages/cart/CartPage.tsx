@@ -1,40 +1,52 @@
 import { FC, useState, useEffect, useMemo } from 'react'
 import useSetDocTitle from '../../hooks/useSetDocTitle'
-import { ArrowLeft, ChevronRight, TicketPercent } from 'lucide-react'
-import { Link } from 'react-router-dom'
-import { AppCheckBox, AppDivider } from '../../components'
+import { useNavigate } from 'react-router-dom'
+import { AppCheckBox } from '../../components'
 import CartItem from './components/CartItem'
-import { listItems } from '../../datas'
+import { exampleProductVariant } from '../../datas'
 import formatPrice from '../../utils/formatPrice'
 import classNames from 'classnames'
 import { FixedBottomLayout } from '../../layouts'
+import { useAppDispatch, useAppSelector } from '../../hooks'
+import { CartItemPayloadType } from '../../types/cart_item.type'
+import { removeCartItem, setNewCartItems } from '../../features/order/order.slice'
 
 interface CartPageProps {}
 
-const initialCartItemExample = listItems.slice(0, 5)
+const initialCartItemExample: CartItemPayloadType[] = exampleProductVariant.slice(0, 5).map((item) => ({
+  productVariantID: item.productId,
+  productVariant: item,
+  quantity: 1,
+  price: item.price
+}))
+
 const CartPage: FC<CartPageProps> = () => {
   useSetDocTitle('PhoneStore Cart')
+
+  const navigate = useNavigate()
+
+  const dispatch = useAppDispatch()
+
+  const orderTemp = useAppSelector((state) => state.order)
+
+  const [cartItems, setCartItems] = useState<CartItemPayloadType[]>(initialCartItemExample)
   const [selectAllProduct, setSelectAllProduct] = useState<boolean>(false)
-  const [listSelected, setListSelected] = useState<number[]>([])
+  const [listSelected, setListSelected] = useState<number[]>(orderTemp.cartItems.map((item) => item.productVariantID))
 
   const onSelectAllProduct = () => {
     if (selectAllProduct) {
       setListSelected([])
     } else {
-      setListSelected(initialCartItemExample.map((product) => product.productId))
+      setListSelected(initialCartItemExample.map((item) => item.productVariantID))
     }
     setSelectAllProduct(!selectAllProduct)
   }
 
-  const getChecked = (id: number) => {
-    return listSelected.includes(id)
-  }
-
-  const setSelectProduct = (id: number) => {
-    if (listSelected.includes(id)) {
-      setListSelected(listSelected.filter((item) => item !== id))
+  const setSelectProduct = (productVariantID: number) => {
+    if (listSelected.includes(productVariantID)) {
+      setListSelected(listSelected.filter((item) => item !== productVariantID))
     } else {
-      setListSelected([...listSelected, id])
+      setListSelected([...listSelected, productVariantID])
     }
   }
 
@@ -46,15 +58,53 @@ const CartPage: FC<CartPageProps> = () => {
     }
   }, [listSelected])
 
+  const handleOnchangeQuantity = (product: CartItemPayloadType, quantity: number) => {
+    if (quantity <= 0) {
+      const removeCartItemList = cartItems.filter((item) => item.productVariantID !== product.productVariantID)
+      setCartItems(removeCartItemList)
+      return
+    }
+    const newCartItems = cartItems.map((item) => {
+      if (item.productVariantID === product.productVariantID) {
+        return {
+          ...item,
+          quantity
+        }
+      }
+      return item
+    })
+    setCartItems(newCartItems)
+  }
+
+  const handleRemoveCartItem = (productVariantID: number) => {
+    const newCartItems = cartItems.filter((item) => item.productVariantID !== productVariantID)
+    setCartItems(newCartItems)
+    setListSelected(listSelected.filter((item) => item !== productVariantID))
+    dispatch(removeCartItem(productVariantID))
+  }
+
   const totalOrderAmount = useMemo(() => {
-    return listSelected.reduce((total, id) => {
-      const product = initialCartItemExample.find((item) => item.productId === id)
-      return total + (product ? product.price : 0)
+    return listSelected.reduce((total, productVariantID) => {
+      const product = cartItems.find((item) => item.productVariantID === productVariantID)
+      if (!product) {
+        return total
+      }
+      return total + product.price * product.quantity
     }, 0)
-  }, [listSelected])
+  }, [listSelected, handleOnchangeQuantity])
+
+  const handleSubmit = () => {
+    if (listSelected.length === 0) {
+      return
+    }
+    const newCartItems = cartItems.filter((item) => listSelected.includes(item.productVariantID))
+    dispatch(setNewCartItems(newCartItems))
+    navigate('/cart/payment-info')
+  }
 
   return (
     <FixedBottomLayout
+      navigateTo={() => navigate('/')}
       title='Giỏ hàng của bạn'
       body={
         <>
@@ -69,12 +119,14 @@ const CartPage: FC<CartPageProps> = () => {
             )}
           </div>
           <div className='flex flex-col pb-16 mt-2 gap-y-4'>
-            {initialCartItemExample.map((product, index) => (
+            {cartItems.map((product, index) => (
               <CartItem
-                checked={getChecked(product.productId)}
-                onClick={() => setSelectProduct(product.productId)}
-                product={product}
+                checked={listSelected.includes(product.productVariantID)}
+                handleSelect={() => setSelectProduct(product.productVariantID)}
+                cartItem={product}
                 key={index}
+                onChangeQuantity={(quantity) => handleOnchangeQuantity(product, quantity)}
+                handleRemove={handleRemoveCartItem}
               />
             ))}
           </div>
@@ -88,19 +140,14 @@ const CartPage: FC<CartPageProps> = () => {
             </div>
             <div className='text-xs text-gray-500'>Chưa bao gồm chiết khấu</div>
           </div>
-          <Link
-            to={'/cart/payment-info'}
+          <div
+            onClick={handleSubmit}
             className={classNames('btn btn-danger', {
               'opacity-50 cursor-not-allowed bg-gray-300': listSelected.length === 0
             })}
-            onClick={(e) => {
-              if (listSelected.length === 0) {
-                e.preventDefault()
-              }
-            }}
           >
             Mua ngay ({listSelected.length})
-          </Link>
+          </div>
         </div>
       }
     />

@@ -1,9 +1,10 @@
-import { BrowserRouter, Route, Routes, ScrollRestoration } from 'react-router-dom'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { privateRoutes, publicRoutes } from './routes/index.ts'
 import HomeLayout from './layouts/home/HomeLayout.tsx'
 import { Fragment } from 'react/jsx-runtime'
 import { ToastContainer } from 'react-toastify'
 import NotFoundPage from './pages/NotFoundPage.tsx'
+import CartWatcher from './middlewares/CartWatcher.tsx'
 
 function App() {
   return (
@@ -24,9 +25,11 @@ function App() {
                 key={index}
                 path={route.path}
                 element={
-                  <Layout>
-                    <Page />
-                  </Layout>
+                  <CartWatcher>
+                    <Layout>
+                      <Page />
+                    </Layout>
+                  </CartWatcher>
                 }
               />
             )
@@ -54,7 +57,7 @@ function App() {
           <Route path='*' element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>
-      <ToastContainer />
+      <ToastContainer position='top-center' autoClose={2400} closeOnClick />
     </>
   )
 }

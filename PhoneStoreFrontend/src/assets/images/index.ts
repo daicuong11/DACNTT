@@ -15,6 +15,9 @@ import QC2 from './right-banner-mac-mini-m4.png'
 import QC3 from './udsv-right-laptop.png'
 import Not_Found from './not_found.png'
 import robot_img from './robot.png'
+import atm_card_img from './atm-card.png'
+
+export * from './payment_methods'
 
 import { GiaoHangIcon } from './svgs'
 import {
@@ -37,7 +40,8 @@ export {
   GiaoHangIcon,
   momo,
   vnpay,
-  Not_Found
+  Not_Found,
+  atm_card_img
 }
 
 export const socialNetworkImages = [

@@ -7,9 +7,10 @@ interface FixedBottomLayoutProps {
   title: string
   body: ReactNode
   footer: ReactNode
+  navigateTo?: () => void
 }
 
-const FixedBottomLayout: FC<FixedBottomLayoutProps> = ({ title, body, footer }) => {
+const FixedBottomLayout: FC<FixedBottomLayoutProps> = ({ title, body, footer, navigateTo }) => {
   const navigate = useNavigate()
   return (
     <div className='w-full px-4 pt-2'>
@@ -17,7 +18,7 @@ const FixedBottomLayout: FC<FixedBottomLayoutProps> = ({ title, body, footer }) 
         <div className='relative font-semibold text-center py-1.5 text-lg'>
           {title}
           <button
-            onClick={() => navigate(-1)}
+            onClick={navigateTo ? navigateTo : () => navigate(-1)}
             className='absolute left-0 p-1 -translate-y-1/2 top-1/2 text-black/70 hover:text-black'
           >
             <ArrowLeft size={28} strokeWidth={1.6} />

@@ -1,3 +1,5 @@
+import { ProductVariantType } from './product_variant.type'
+
 export interface WishlistType {
   wishListId: number
   userId: number
@@ -7,5 +9,6 @@ export interface WishlistType {
 export interface WishListItemType {
   wishListItemId: number
   wishListId: number
-  productId: number
+  productVariantId: number
+  productVariant: ProductVariantType
 }

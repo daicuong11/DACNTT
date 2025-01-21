@@ -8,8 +8,8 @@ export interface UserType {
   active: boolean
   profilePicture: string
   isGoogleAccount: boolean
-  createdAt: Date
-  updatedAt: Date
+  createdAt: string
+  updatedAt: string
 }
 
 export type UserAuthType = Pick<UserType, 'id' | 'email' | 'name' | 'role'>

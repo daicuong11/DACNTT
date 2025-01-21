@@ -3,37 +3,38 @@ import formatPrice from '../../../utils/formatPrice'
 import { Link } from 'react-router-dom'
 import { AppCheckBox } from '../../../components'
 import { iphone1 } from '../../../assets/images/iphone'
-import { FC, useState } from 'react'
-import { CheckboxChangeEvent } from 'antd/es/checkbox'
-import { ProductType } from '../../../types/product.type'
+import { FC } from 'react'
+import { CartItemPayloadType } from '../../../types/cart_item.type'
 
 interface CartItemProps {
   checked?: boolean
-  onChange?: (e: CheckboxChangeEvent) => void
-  product: ProductType
-  onClick?: () => void
+  cartItem: CartItemPayloadType
+  handleSelect?: () => void
+  onChangeQuantity: (quantity: number) => void
+  handleRemove: (productVariantID: number) => void
 }
 
-const CartItem: FC<CartItemProps> = ({ product, checked, onChange, onClick }) => {
-  const [quantity, setQuantity] = useState<number>(1)
-
-  const handleIncrease = () => {
-    setQuantity((prevQuantity) => prevQuantity + 1)
-  }
-
-  const handleDecrease = () => {
-    setQuantity((prevQuantity) => (prevQuantity > 1 ? prevQuantity - 1 : 1))
+const CartItem: FC<CartItemProps> = ({ cartItem, checked, handleSelect, onChangeQuantity, handleRemove }) => {
+  const HandleChangeQuantity = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, quantity: number) => {
+    e.stopPropagation()
+    onChangeQuantity(quantity)
   }
 
   return (
     <div
-      className='max-w-[600px] relative px-2 py-4 pl-8 shadow-sm border rounded-lg border-gray-200 bg-white min-h-10'
-      onClick={onClick}
+      className='max-w-[600px] relative px-2 py-4 pl-8 shadow-sm border rounded-lg cursor-pointer border-gray-200 bg-white min-h-10'
+      onClick={handleSelect}
     >
       <button className='absolute left-3 top-4 '>
-        <AppCheckBox value={checked} onChange={onChange} />
+        <AppCheckBox value={checked} />
       </button>
-      <button onClick={(e) => e.stopPropagation()} className='absolute p-2 rounded hover:bg-gray-100 right-2 top-4'>
+      <button
+        onClick={(e) => {
+          e.stopPropagation()
+          handleRemove(cartItem.productVariantID)
+        }}
+        className='absolute p-2 rounded hover:bg-gray-100 right-2 top-4'
+      >
         <Trash2 size={16} strokeWidth={1.6} />
       </button>
       <div className='flex gap-x-4'>
@@ -44,27 +45,29 @@ const CartItem: FC<CartItemProps> = ({ product, checked, onChange, onClick }) =>
           <Link
             onClick={(e) => e.stopPropagation()}
             to={''}
-            className='w-[70%] line-clamp-2 text-[#3a3a3a] text-[17px]'
+            className='w-[70%] line-clamp-2 text-[#3a3a3a] text-[17px] hover:underline'
           >
-            {product.name}
+            {cartItem.productVariant.product.name}
           </Link>
           <div className='flex items-end justify-between w-full'>
             <div className='flex items-end gap-x-2'>
-              <span className='text-lg font-medium leading-none text-primary'>{formatPrice(product.price)}</span>
+              <span className='text-lg font-medium leading-none text-primary'>
+                {formatPrice(cartItem.productVariant.price)}
+              </span>
               <span className='font-medium text-[#707070] text-sm leading-none line-through'>
-                {formatPrice(product.price)}
+                {formatPrice(cartItem.productVariant.price)}
               </span>
             </div>
             <div onClick={(e) => e.stopPropagation()} className='flex gap-x-0.5 '>
               <button
-                onClick={handleDecrease}
+                onClick={(e) => HandleChangeQuantity(e, cartItem.quantity - 1)}
                 className='flex items-center justify-center p-2 bg-gray-100 rounded hover:bg-gray-200'
               >
                 <Minus size={14} strokeWidth={2} />
               </button>
-              <div className='w-[30px] h-[30px] flex items-center justify-center'>{quantity}</div>
+              <div className='w-[30px] h-[30px] flex items-center justify-center'>{cartItem.quantity}</div>
               <button
-                onClick={handleIncrease}
+                onClick={(e) => HandleChangeQuantity(e, cartItem.quantity + 1)}
                 className='flex items-center justify-center p-2 bg-gray-100 rounded hover:bg-gray-200'
               >
                 <Plus size={14} strokeWidth={2} />

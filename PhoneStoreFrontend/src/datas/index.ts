@@ -1,5 +1,7 @@
 import slug from 'slug'
 import { ProductType } from '../types/product.type'
+import { ReviewType } from '../types/review.type'
+import { ProductVariantType } from '../types/product_variant.type'
 
 export const listItems: ProductType[] = Array.from({ length: 20 }, (_, index) => {
   const productNames = [
@@ -32,59 +34,76 @@ export const listItems: ProductType[] = Array.from({ length: 20 }, (_, index) =>
     productId: index + 1,
     name: productName,
     slug: slugName,
-    description: `${productName} - sản phẩm chất lượng cao, đáp ứng mọi nhu cầu sử dụng.`,
-    price: Math.floor(Math.random() * (30000000 - 10000000) + 10000000),
-    stock: Math.floor(Math.random() * 100 + 1),
-    imageUrl: `https://example.com/product.jpg`,
+    description: `This is the description for ${productName}`,
+    imageUrl: `https://via.placeholder.com/300x300?text=${slugName}`,
+    categoryId: 1,
     category: {
-      categoryId: Math.floor(index / 5) + 1,
-      name: ['Điện thoại', 'Laptop', 'Máy ảnh', 'Phụ kiện'][index % 4],
-      url: ['mobile', 'laptop', 'camera', 'accessory'][index % 4],
-      description: [
-        'Smartphones and tablets',
-        'Powerful laptops',
-        'High-quality cameras',
-        'Accessories for all devices'
-      ][index % 4],
-      imageUrl: `https://example.com/category${(index % 4) + 1}.jpg`
+      categoryId: 1,
+      name: 'Laptop',
+      url: 'laptop',
+      description: 'Laptop description',
+      imageUrl: 'https://via.placeholder.com/300x300?text=laptop'
     },
+    brandId: 1,
     brand: {
-      brandId: Math.floor(Math.random() * 10 + 1),
-      name: ['Apple', 'Samsung', 'Sony', 'Dell', 'Asus', 'Xiaomi', 'Google', 'HP', 'Lenovo', 'Microsoft'][index % 10],
-      description: 'Leading brand in technology'
+      brandId: 1,
+      name: 'Apple',
+      description: 'Apple description',
+      imageUrl: 'https://via.placeholder.com/300x300?text=apple'
     },
-    createdAt: new Date(),
-    updatedAt: new Date()
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
   }
 })
 
-export const exampleReview = [
+export const exampleProductVariant: ProductVariantType[] = [
+  ...Array.from({ length: 20 }, (_, index) => ({
+    productVariantId: index + 1,
+    productId: (index % 20) + 1,
+    product: listItems[index % 20],
+    color: ['Black', 'White', 'Gold', 'Silver'][index % 4],
+    storage: ['256GB', '512GB', '1TB'][index % 3],
+    price: 29000000 + (index % 3) * 3000000,
+    stock: 10 - (index % 5)
+  }))
+]
+
+export const exampleReview: ReviewType[] = [
   {
     reviewId: 1,
     productId: 1,
-    rating: 5
+    userId: 1,
+    userCreatedInfo: {
+      id: 1,
+      name: 'Nguyễn Văn A',
+      email: 'dfasf@gmai.com',
+      numberPhone: '0987654321',
+      address: 'Hà Nội',
+      role: 'CUSTOMER',
+      profilePicture: 'https://via.placeholder.com/300x300?text=profile'
+    },
+    rating: 5,
+    comment: 'Sản phẩm rất tốt',
+    createdAt: new Date().toISOString()
   },
   {
     reviewId: 2,
-    productId: 2,
-    rating: 4.8
-  },
-  {
-    reviewId: 3,
-    productId: 3,
-    rating: 3.5
-  },
-  {
-    reviewId: 4,
-    productId: 0,
-    rating: 5
-  },
-  {
-    reviewId: 5,
-    productId: 6,
-    rating: 4.7
+    productId: 1,
+    userId: 2,
+    userCreatedInfo: {
+      id: 2,
+      name: 'Nguyễn Văn B',
+      email: 'fsdafa',
+      numberPhone: '0987654321',
+      address: 'Hà Nội',
+      role: 'CUSTOMER',
+      profilePicture: 'https://via.placeholder.com/300x300?text=profile'
+    },
+    rating: 4,
+    comment: 'Sản phẩm tốt',
+    createdAt: new Date().toISOString()
   }
-] as { reviewId: number; productId: number; rating: number }[]
+]
 
 export const productSpecificationsArray = [
   { name: 'Kích thước màn hình', value: '6.9 inches' },

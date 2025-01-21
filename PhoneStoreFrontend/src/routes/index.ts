@@ -3,6 +3,7 @@ import { CartLayout, HomeLayout } from '../layouts'
 import { CartPage } from '../pages/cart'
 import { HomePage } from '../pages/home'
 import { Login } from '../pages/login'
+import { PaymentConfirmPage } from '../pages/payment_confirm'
 import PaymentInfoPage from '../pages/payment_info/PaymentInfoPage'
 import { ProductDetailPage } from '../pages/products'
 
@@ -36,6 +37,11 @@ const publicRoutes: RouteType[] = [
   {
     path: '/cart/payment-info',
     component: PaymentInfoPage,
+    layout: CartLayout
+  },
+  {
+    path: '/cart/payment',
+    component: PaymentConfirmPage,
     layout: CartLayout
   }
 ]

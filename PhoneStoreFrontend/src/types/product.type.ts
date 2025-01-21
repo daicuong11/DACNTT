@@ -6,11 +6,11 @@ export interface ProductType {
   name: string
   slug: string
   description: string
-  price: number
-  stock: number
   imageUrl?: string
+  categoryId: number
   category: CategoryType
+  brandId: number
   brand: BrandType
-  createdAt: Date
-  updatedAt: Date
+  createdAt: string
+  updatedAt: string
 }

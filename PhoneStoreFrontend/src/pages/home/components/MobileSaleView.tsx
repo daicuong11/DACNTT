@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import CarouselProduct from './CarouselProduct'
-import { listItems } from '../../../datas'
+import { exampleProductVariant, listItems } from '../../../datas'
 
 interface MobileSaleView {}
 const MobileSaleView: FC<MobileSaleView> = () => {
@@ -23,7 +23,7 @@ const MobileSaleView: FC<MobileSaleView> = () => {
           <button className='btn btn-light !text-slate-600 !text-xs'>Google</button>
         </div>
       </div>
-      <CarouselProduct row={2} autoPlay={false} dataSource={listItems} />
+      <CarouselProduct row={2} autoPlay={false} dataSource={exampleProductVariant} />
     </div>
   )
 }

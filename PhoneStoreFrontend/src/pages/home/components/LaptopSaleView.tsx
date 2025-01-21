@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import CarouselProduct from './CarouselProduct'
-import { listItems } from '../../../datas'
+import { exampleProductVariant } from '../../../datas'
 
 interface LaptopSaleViewProps {}
 const LaptopSaleView: FC<LaptopSaleViewProps> = () => {
@@ -18,7 +18,7 @@ const LaptopSaleView: FC<LaptopSaleViewProps> = () => {
           <button className='btn btn-light !text-slate-600 !text-xs'>MSI</button>
         </div>
       </div>
-      <CarouselProduct row={2} autoPlay={false} dataSource={listItems} />
+      <CarouselProduct row={2} autoPlay={false} dataSource={exampleProductVariant} />
     </div>
   )
 }

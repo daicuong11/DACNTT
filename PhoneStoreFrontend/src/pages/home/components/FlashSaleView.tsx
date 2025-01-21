@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 import CarouselProduct from './CarouselProduct'
 import { SkeletonFlashSaleView } from '../../../components'
 import CountdownTimer from './CountdownTimer'
-import { listItems } from '../../../datas'
+import { exampleProductVariant } from '../../../datas'
 
 interface FlashSaleViewProps {}
 
@@ -73,7 +73,7 @@ const FlashSaleView: React.FC<FlashSaleViewProps> = ({}) => {
         </div>
       </div>
 
-      <CarouselProduct dataSource={listItems} />
+      <CarouselProduct dataSource={exampleProductVariant} />
     </div>
   )
 }
