@@ -13,7 +13,7 @@ const Header = () => {
 
   return (
     <header className='sticky top-0 z-[999] w-full shadow-md bg-white'>
-      <div className='h-[64px] bg-primary px-4'>
+      <div className='h-[64px] bg-primary px-2.5'>
         <div className='max-w-[1200px] flex items-center gap-x-3 mx-auto leading-[64px]'>
           <Link to={'/'} className='py-2 rounded'>
             <img className='object-cover w-40 h-[30px]' src={logo} alt='logo' />
@@ -38,10 +38,14 @@ const Header = () => {
             </div>
           </ButtonHeader>
           <ButtonHeader
+            className='relative'
             onClick={() => navigate('/cart')}
             icon={<ShoppingBag strokeWidth={1.6} size={26} color='white' />}
           >
             Giỏ hàng
+            <span className='absolute flex w-[16px] h-[15px] items-center justify-center text-sm font-semibold text-center leading-none text-white -translate-y-1/2 bg-primary left-[12.5px] top-[55%]'>
+              3
+            </span>
           </ButtonHeader>
           <ButtonHeader
             direction='vertical'

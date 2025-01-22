@@ -107,7 +107,7 @@ const CartPage: FC<CartPageProps> = () => {
       navigateTo={() => navigate('/')}
       title='Giỏ hàng của bạn'
       body={
-        <>
+        <div className='pb-10'>
           <div className='flex items-center justify-between'>
             <AppCheckBox value={selectAllProduct} onChange={onSelectAllProduct}>
               {selectAllProduct ? 'Bỏ chọn tất cả' : 'Chọn tất cả'}
@@ -130,7 +130,7 @@ const CartPage: FC<CartPageProps> = () => {
               />
             ))}
           </div>
-        </>
+        </div>
       }
       footer={
         <div className='flex items-center justify-between'>

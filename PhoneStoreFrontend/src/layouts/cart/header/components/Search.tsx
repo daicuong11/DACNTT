@@ -31,7 +31,7 @@ const Search: FC<SearchProps> = ({}) => {
       <input
         value={query}
         onChange={handleInputChange}
-        className='px-8 py-[5px] text-base font-[490] rounded-lg outline-none w-full min-w-[320px]'
+        className='px-8 py-[5px] text-base font-[490] rounded-lg outline-none w-full'
         placeholder='Bạn cần tìm gì?'
       />
       <div className='absolute text-gray-600 -translate-y-1/2 top-1/2 left-1.5'>

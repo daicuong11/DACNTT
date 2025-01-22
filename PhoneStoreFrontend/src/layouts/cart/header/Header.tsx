@@ -11,7 +11,7 @@ const Header = () => {
   const navigate = useNavigate()
 
   return (
-    <div className='h-[64px] z-[999] w-full bg-primary shadow-md px-4'>
+    <div className='h-[64px] z-[999] w-full bg-primary shadow-md px-2.5'>
       <div className='max-w-[1200px] flex items-center gap-x-3 mx-auto leading-[64px]'>
         <Link to={'/'} className='py-2 rounded'>
           <img className='object-cover w-40 h-[30px]' src={logo} alt='logo' />
@@ -21,7 +21,7 @@ const Header = () => {
           onClick={toggleModal}
           disPlayBackground
           icon={<SquareMenu strokeWidth={1.6} size={20} color='white' />}
-          className='relative'
+          className='relative hidden sm:flex'
         >
           Danh mục
           <CategoryModal isOpen={isOpen} closeModal={closeModal} />
@@ -29,17 +29,21 @@ const Header = () => {
         <div className='flex-1'>
           <Search />
         </div>
-        <ButtonHeader icon={GiaoHangIcon}>
+        <ButtonHeader className='hidden sm:flex' icon={GiaoHangIcon}>
           <div className='flex flex-col gap-y-1'>
             <span className='text-wrap'>Tra cứu</span>
             <span className='line-clamp-1 text-wrap'>đơn hàng</span>
           </div>
         </ButtonHeader>
         <ButtonHeader
+          className='relative hidden sm:flex'
           onClick={() => navigate('/cart')}
           icon={<ShoppingBag strokeWidth={1.6} size={26} color='white' />}
         >
           Giỏ hàng
+          <span className='absolute flex w-[16px] h-[15px] items-center justify-center text-sm font-semibold text-center leading-none text-white -translate-y-1/2 bg-primary left-[12.5px] top-[55%]'>
+            3
+          </span>
         </ButtonHeader>
         <ButtonHeader
           direction='vertical'

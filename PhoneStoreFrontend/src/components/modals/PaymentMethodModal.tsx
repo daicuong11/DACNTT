@@ -1,5 +1,5 @@
 import { Modal } from 'antd'
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import PaymentMethodItem from './components/PaymentMethodItem'
 import { PaymentMethodType } from '../../types/app.type'
 import { listPaymentMethod } from '../../datas/paymentMethod.data'
@@ -12,7 +12,11 @@ interface PaymentMethodModal {
 }
 
 const PaymentMethodModal: FC<PaymentMethodModal> = ({ isOpen, onClose, onFinish, selectMethod }) => {
-  const [activePaymentMethod, setActivePaymentMethod] = useState<PaymentMethodType | null>(selectMethod)
+  const [activePaymentMethod, setActivePaymentMethod] = useState<PaymentMethodType | null>(null)
+
+  useEffect(() => {
+    setActivePaymentMethod(selectMethod)
+  }, [selectMethod])
 
   const handleSubmitPaymentMethod = () => {
     onFinish(activePaymentMethod)

@@ -22,7 +22,7 @@ const CartItem: FC<CartItemProps> = ({ cartItem, checked, handleSelect, onChange
 
   return (
     <div
-      className='max-w-[600px] relative px-2 py-4 pl-8 shadow-sm border rounded-lg cursor-pointer border-gray-200 bg-white min-h-10'
+      className='max-w-[600px] relative px-3 py-4 pl-8 shadow-sm border rounded-lg cursor-pointer border-gray-200 bg-white min-h-10'
       onClick={handleSelect}
     >
       <button className='absolute left-3 top-4 '>
@@ -49,7 +49,7 @@ const CartItem: FC<CartItemProps> = ({ cartItem, checked, handleSelect, onChange
           >
             {cartItem.productVariant.product.name}
           </Link>
-          <div className='flex items-end justify-between w-full'>
+          <div className='flex flex-col justify-between w-full gap-2 sm:items-end sm:flex-row'>
             <div className='flex items-end gap-x-2'>
               <span className='text-lg font-medium leading-none text-primary'>
                 {formatPrice(cartItem.productVariant.price)}
@@ -58,7 +58,7 @@ const CartItem: FC<CartItemProps> = ({ cartItem, checked, handleSelect, onChange
                 {formatPrice(cartItem.productVariant.price)}
               </span>
             </div>
-            <div onClick={(e) => e.stopPropagation()} className='flex gap-x-0.5 '>
+            <div onClick={(e) => e.stopPropagation()} className='flex gap-x-0.5 justify-end'>
               <button
                 onClick={(e) => HandleChangeQuantity(e, cartItem.quantity - 1)}
                 className='flex items-center justify-center p-2 bg-gray-100 rounded hover:bg-gray-200'

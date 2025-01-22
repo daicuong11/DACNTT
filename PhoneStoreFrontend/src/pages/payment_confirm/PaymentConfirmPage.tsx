@@ -1,7 +1,7 @@
 import { FixedBottomLayout } from '../../layouts'
 import formatPrice from '../../utils/formatPrice'
 import classNames from 'classnames'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Input } from 'antd'
 import { AppCheckBox, MyDivider, PaymentMethodModal } from '../../components'
 import useSetDocTitle from '../../hooks/useSetDocTitle'
@@ -10,7 +10,7 @@ import { ChevronRight } from 'lucide-react'
 import { atm_card_img } from '../../assets/images'
 import { useAppDispatch, useAppSelector, useModal } from '../../hooks'
 import { PaymentMethodType } from '../../types/app.type'
-import { setCoupon, setPaymentMethod } from '../../features/order/order.slice'
+import { clearCoupon, setCoupon, setPaymentMethod } from '../../features/order/order.slice'
 import { listPaymentMethod } from '../../datas/paymentMethod.data'
 import { toast } from 'react-toastify'
 import { CouponType } from '../../types/coupon.type'
@@ -34,9 +34,20 @@ const PaymentConfirmPage = () => {
   const [couponCodeInput, setCouponCodeInput] = useState('')
   const [couponActive, setCouponActive] = useState<CouponType | null>(null)
   const [isCheckTerms, setIsCheckTerms] = useState(true)
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<PaymentMethodType | null>(
-    listPaymentMethod.find((method) => method.name === orderSlice.paymentMethod) || null
-  )
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<PaymentMethodType | null>(null)
+
+  useEffect(() => {
+    if (orderSlice.cartItems.length === 0) {
+      navigate('/cart/')
+    }
+  }, [orderSlice.cartItems])
+
+  useEffect(() => {
+    setSelectedPaymentMethod(listPaymentMethod.find((method) => method.name === orderSlice.paymentMethod) || null)
+    if (orderSlice.coupon) {
+      setCouponActive(orderSlice.coupon)
+    }
+  }, [orderSlice.coupon, orderSlice.paymentMethod])
 
   const handleSelectPaymentMethod = (method: PaymentMethodType | null) => {
     setSelectedPaymentMethod(method)
@@ -67,12 +78,19 @@ const PaymentConfirmPage = () => {
     toast(`Áp dụng mã giảm giá thành công.`)
   }
 
+  const handleClearCoupon = () => {
+    setCouponActive(null)
+    dispatch(clearCoupon())
+    setCouponCodeInput('')
+    toast(`Đã xóa mã giảm giá thành công.`)
+  }
+
   return (
     <FixedBottomLayout
       navigateTo={() => navigate('/cart/payment-info')}
       title='Thông tin'
       body={
-        <div className='flex flex-col mb-4'>
+        <div className='flex flex-col pb-40'>
           <PaymentMethodModal
             selectMethod={selectedPaymentMethod}
             onFinish={handleSelectPaymentMethod}
@@ -106,9 +124,11 @@ const PaymentConfirmPage = () => {
           <div className='flex flex-col mt-2 gap-y-5'>
             <div className='p-5 space-y-4 bg-white border border-gray-300 rounded-lg'>
               {couponActive ? (
-                <div className='flex items-center gap-x-3'>
-                  <span className=''>Mã giảm giá:</span>
-                  <CouponItem coupon={couponActive} onRemove={() => setCoupon(null)} />
+                <div className='flex flex-col items-start gap-y-2'>
+                  <div className='text-xs text-gray-500 uppercase group-focus-within:text-blue-600'>Mã giảm giá</div>
+                  <div className='ml-6'>
+                    <CouponItem coupon={couponActive} onRemove={handleClearCoupon} />
+                  </div>
                 </div>
               ) : (
                 <div className='flex items-end justify-between gap-x-4'>
@@ -120,7 +140,7 @@ const PaymentConfirmPage = () => {
                       variant='borderless'
                       placeholder='Nhập mã giảm giá (chỉ áp dụng 1 lần)'
                       allowClear
-                      className='font-semibold'
+                      className='text-base'
                     />
                   </div>
                   <div className=''>

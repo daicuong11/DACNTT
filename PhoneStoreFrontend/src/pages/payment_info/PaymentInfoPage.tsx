@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import { useEffect, useState } from 'react'
 import Item from './components/Item'
 import { ChevronDown, ChevronRight, ChevronUp } from 'lucide-react'
-import { Input, Select } from 'antd'
+import { ConfigProvider, Input, Select } from 'antd'
 import { toast } from 'react-toastify'
 import { SelectAddressModal } from '../../components'
 import { useAppDispatch, useAppSelector, useModal } from '../../hooks'
@@ -99,6 +99,12 @@ const PaymentInfoPage = () => {
   const [couponCode, setCouponCode] = useState('')
 
   const { isOpen, closeModal, openModal } = useModal()
+
+  useEffect(() => {
+    if (orderSlice.cartItems.length === 0) {
+      navigate('/cart/')
+    }
+  }, [orderSlice.cartItems])
 
   useEffect(() => {
     if (selectedAddress) {
@@ -212,7 +218,7 @@ const PaymentInfoPage = () => {
       navigateTo={() => navigate('/cart')}
       title='Thông tin'
       body={
-        <div className='flex flex-col mb-4'>
+        <div className='flex flex-col pb-40'>
           {exampleListAddress.length > 1 && (
             <SelectAddressModal
               isOpen={isOpen}
@@ -241,21 +247,22 @@ const PaymentInfoPage = () => {
           </div>
           <div
             className={classNames(
-              'flex flex-col mt-2 bg-white border border-gray-200 rounded-lg px-4',
+              'flex flex-col mt-2 bg-white border border-gray-200 rounded-lg px-3 sm:px-4',
               'overflow-hidden transition-all duration-500 ease-in-out'
             )}
           >
             {orderSlice.cartItems.map((item, index) => (
               <Item
                 key={index}
-                productVariant={item.productVariant}
+                cartItem={item}
                 className={classNames('overflow-hidden transition-all duration-300 ease-in-out rounded-none', {
                   ' invisible py-0 max-h-0': !showAllProduct && index > 0,
-                  'max-h-screen visible box-border border-b border-gray-200': showAllProduct
+                  'max-h-screen visible box-border': showAllProduct,
+                  'border-b border-gray-200': index < orderSlice.cartItems.length - 1 && showAllProduct
                 })}
               />
             ))}
-            {!showAllProduct && (
+            {!showAllProduct && orderSlice.cartItems.length > 1 && (
               <div
                 onClick={() => setShowAllProduct(true)}
                 className='flex py-1.5 mb-1 gap-x-1 items-center justify-center cursor-pointer text-gray-500 hover:underline'
@@ -264,7 +271,7 @@ const PaymentInfoPage = () => {
                 <ChevronDown size={16} strokeWidth={2} />
               </div>
             )}
-            {showAllProduct && (
+            {showAllProduct && orderSlice.cartItems.length > 1 && (
               <div
                 onClick={() => setShowAllProduct(false)}
                 className='flex py-1.5 mb-2 gap-x-2 items-center justify-center cursor-pointer text-gray-500 hover:underline'
@@ -292,7 +299,7 @@ const PaymentInfoPage = () => {
                   variant='borderless'
                   placeholder='Nhập email nhận hóa đơn'
                   allowClear
-                  className='font-semibold'
+                  className='text-base'
                 />
               </div>
               <div className='text-[11px] font-medium italic text-gray-400'>
@@ -304,127 +311,146 @@ const PaymentInfoPage = () => {
             <div className='uppercase'>Thông tin nhận hàng</div>
 
             <div className='p-5 space-y-4 bg-white border border-gray-300 rounded-lg'>
-              <div className='flex flex-col sm:grid sm:grid-cols-2 gap-x-3 gap-y-5'>
-                <div className='flex flex-col gap-y-2.5 border-b transition-all focus-within:border-blue-600 group'>
-                  <div className='text-xs text-gray-500 uppercase group-focus-within:text-blue-600'>tên người nhận</div>
-                  <Input
-                    value={infoCustomer.name}
-                    onChange={(e) => handleInfoCustomer('name', e.target.value)}
-                    variant='borderless'
-                    placeholder='Họ tên người nhận'
-                    allowClear
-                    className='font-semibold'
-                  />
-                </div>
-                <div className='flex flex-col gap-y-2.5 border-b transition-all focus-within:border-blue-600 group'>
-                  <div className='text-xs text-gray-500 uppercase group-focus-within:text-blue-600'>sđt người nhận</div>
-                  <Input
-                    value={infoCustomer.phone}
-                    onChange={(e) => handleInfoCustomer('phone', e.target.value)}
-                    variant='borderless'
-                    placeholder='Số điện thoại người nhận'
-                    allowClear
-                    className='font-semibold'
-                  />
-                </div>
-                {!selectedAddress && (
+              <ConfigProvider
+                theme={{
+                  components: {
+                    Select: {
+                      fontSize: 16
+                    }
+                  }
+                }}
+              >
+                <div className='flex flex-col sm:grid sm:grid-cols-2 gap-x-3 gap-y-5'>
                   <div className='flex flex-col gap-y-2.5 border-b transition-all focus-within:border-blue-600 group'>
                     <div className='text-xs text-gray-500 uppercase group-focus-within:text-blue-600'>
-                      tỉnh/thành phố
+                      tên người nhận
                     </div>
-                    <Select
-                      showSearch
-                      value={infoCustomer.province || undefined}
-                      onChange={(value) => handleInfoCustomer('province', value)}
-                      variant='borderless'
-                      options={districtOptions}
-                      placeholder='Chọn tỉnh thành'
-                    />
-                  </div>
-                )}
-                {!selectedAddress && (
-                  <div className='flex flex-col gap-y-2.5 border-b transition-all focus-within:border-blue-600 group'>
-                    <div className='text-xs text-gray-500 uppercase group-focus-within:text-blue-600'>Quận/huyện</div>
-                    <Select
-                      showSearch
-                      value={infoCustomer.district || undefined}
-                      onChange={(value) => handleInfoCustomer('district', value)}
-                      placeholder={'Chọn quận huyện'}
-                      variant='borderless'
-                      options={districtOptions}
-                    />
-                  </div>
-                )}
-                {!selectedAddress && (
-                  <div className='flex flex-col gap-y-2.5 border-b transition-all focus-within:border-blue-600 group'>
-                    <div className='text-xs text-gray-500 uppercase group-focus-within:text-blue-600'>phường/xã</div>
-                    <Select
-                      showSearch
-                      value={infoCustomer.ward || undefined}
-                      onChange={(value) => handleInfoCustomer('ward', value)}
-                      placeholder={'Chọn phường/xã'}
-                      variant='borderless'
-                      options={districtOptions}
-                    />
-                  </div>
-                )}
-                {!selectedAddress && (
-                  <div className='flex flex-col gap-y-2.5 border-b transition-all focus-within:border-blue-600 group'>
-                    <div className='text-xs text-gray-500 uppercase group-focus-within:text-blue-600'>Địa chỉ</div>
                     <Input
-                      value={infoCustomer.address}
-                      onChange={(e) => handleInfoCustomer('address', e.target.value)}
+                      value={infoCustomer.name}
+                      onChange={(e) => handleInfoCustomer('name', e.target.value)}
                       variant='borderless'
-                      placeholder='Số nhà, tên đường'
+                      placeholder='Họ tên người nhận'
                       allowClear
+                      className='text-base'
                     />
                   </div>
-                )}
-                {selectedAddress && exampleListAddress.length > 1 && (
-                  <div className='col-span-2'>
-                    <div className='flex items-start cursor-pointer gap-x-1'>
-                      <div className='flex items-start justify-between w-full gap-x-4'>
-                        <span className='font-normal'>Địa chỉ:</span>
-                        <div className='flex flex-col items-start justify-center flex-1 w-full h-full pt-1 gap-y-1'>
-                          <div className='text-sm font-medium'>{getAddressString(selectedAddress)}</div>
-                          {selectedAddress.isDefault && (
-                            <div className=''>
-                              <span className='flex-shrink-0 h-min text-[12px] rounded-md text-primary py-0.5 px-3 bg-primary/10 inline-flex items-center justify-center'>
-                                Mặc định
-                              </span>
-                            </div>
-                          )}
+                  <div className='flex flex-col gap-y-2.5 border-b transition-all focus-within:border-blue-600 group'>
+                    <div className='text-xs text-gray-500 uppercase group-focus-within:text-blue-600'>
+                      sđt người nhận
+                    </div>
+                    <Input
+                      value={infoCustomer.phone}
+                      onChange={(e) => handleInfoCustomer('phone', e.target.value)}
+                      variant='borderless'
+                      placeholder='Số điện thoại người nhận'
+                      allowClear
+                      className='text-base'
+                    />
+                  </div>
+                  {!selectedAddress && (
+                    <div className='flex flex-col gap-y-2.5 border-b transition-all focus-within:border-blue-600 group'>
+                      <div className='text-xs text-gray-500 uppercase group-focus-within:text-blue-600'>
+                        tỉnh/thành phố
+                      </div>
+                      <Select
+                        showSearch
+                        value={infoCustomer.province || undefined}
+                        onChange={(value) => handleInfoCustomer('province', value)}
+                        variant='borderless'
+                        options={districtOptions}
+                        placeholder='Chọn tỉnh thành'
+                        className='text-base'
+                      />
+                    </div>
+                  )}
+                  {!selectedAddress && (
+                    <div className='flex flex-col gap-y-2.5 border-b transition-all focus-within:border-blue-600 group'>
+                      <div className='text-xs text-gray-500 uppercase group-focus-within:text-blue-600'>Quận/huyện</div>
+                      <Select
+                        showSearch
+                        value={infoCustomer.district || undefined}
+                        onChange={(value) => handleInfoCustomer('district', value)}
+                        placeholder={'Chọn quận huyện'}
+                        variant='borderless'
+                        options={districtOptions}
+                        className='text-base'
+                      />
+                    </div>
+                  )}
+                  {!selectedAddress && (
+                    <div className='flex flex-col gap-y-2.5 border-b transition-all focus-within:border-blue-600 group'>
+                      <div className='text-xs text-gray-500 uppercase group-focus-within:text-blue-600'>phường/xã</div>
+                      <Select
+                        showSearch
+                        value={infoCustomer.ward || undefined}
+                        onChange={(value) => handleInfoCustomer('ward', value)}
+                        placeholder={'Chọn phường/xã'}
+                        variant='borderless'
+                        options={districtOptions}
+                        className='text-base'
+                      />
+                    </div>
+                  )}
+                  {!selectedAddress && (
+                    <div className='flex flex-col gap-y-2.5 border-b transition-all focus-within:border-blue-600 group'>
+                      <div className='text-xs text-gray-500 uppercase group-focus-within:text-blue-600'>Địa chỉ</div>
+                      <Input
+                        value={infoCustomer.address}
+                        onChange={(e) => handleInfoCustomer('address', e.target.value)}
+                        variant='borderless'
+                        placeholder='Số nhà, tên đường'
+                        allowClear
+                        className='text-base'
+                      />
+                    </div>
+                  )}
+                  {selectedAddress && exampleListAddress.length > 1 && (
+                    <div className='col-span-2'>
+                      <div className='flex items-start cursor-pointer gap-x-1'>
+                        <div className='flex items-start justify-between w-full gap-x-4'>
+                          <span className='font-normal'>Địa chỉ:</span>
+                          <div className='flex flex-col items-start justify-center flex-1 w-full h-full pt-1 gap-y-1'>
+                            <div className='text-sm font-medium'>{getAddressString(selectedAddress)}</div>
+                            {selectedAddress.isDefault && (
+                              <div className=''>
+                                <span className='flex-shrink-0 h-min text-[12px] rounded-md text-primary py-0.5 px-3 bg-primary/10 inline-flex items-center justify-center'>
+                                  Mặc định
+                                </span>
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                )}
-                {exampleListAddress.length > 1 && (
-                  <div className='col-span-2'>
-                    <div
-                      onClick={selectedAddress ? () => handleOpenNewForm() : openModal}
-                      className='flex items-center justify-end py-1 cursor-pointer text-primary hover:underline'
-                    >
-                      <span className='text-xs font-medium line-clamp-1'>
-                        {selectedAddress ? 'Nhập địa chỉ mới' : 'Chọn địa chỉ đã lưu'}
-                      </span>
-                      <span className='ml-1'>
-                        <ChevronRight size={16} />
-                      </span>
+                  )}
+                  {exampleListAddress.length > 1 && (
+                    <div className='col-span-2'>
+                      <div
+                        onClick={selectedAddress ? () => handleOpenNewForm() : openModal}
+                        className='flex items-center justify-end py-1 cursor-pointer text-primary hover:underline'
+                      >
+                        <span className='text-xs font-medium line-clamp-1'>
+                          {selectedAddress ? 'Nhập địa chỉ mới' : 'Chọn địa chỉ đã lưu'}
+                        </span>
+                        <span className='ml-1'>
+                          <ChevronRight size={16} />
+                        </span>
+                      </div>
                     </div>
+                  )}
+                  <div className='flex flex-col gap-y-2.5 border-b transition-all focus-within:border-blue-600 group col-span-2'>
+                    <div className='text-xs text-gray-500 uppercase group-focus-within:text-blue-600'>Ghi chú</div>
+                    <Input
+                      value={infoCustomer.note}
+                      onChange={(e) => handleInfoCustomer('note', e.target.value)}
+                      variant='borderless'
+                      placeholder='Ghi chú khác (nếu có)'
+                      allowClear
+                      className='text-base'
+                    />
                   </div>
-                )}
-                <div className='flex flex-col gap-y-2.5 border-b transition-all focus-within:border-blue-600 group col-span-2'>
-                  <div className='text-xs text-gray-500 uppercase group-focus-within:text-blue-600'>Ghi chú</div>
-                  <Input
-                    value={infoCustomer.note}
-                    onChange={(e) => handleInfoCustomer('note', e.target.value)}
-                    variant='borderless'
-                    placeholder='Ghi chú khác (nếu có)'
-                    allowClear
-                  />
                 </div>
-              </div>
+              </ConfigProvider>
             </div>
           </div>
 
