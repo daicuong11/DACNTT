@@ -31,14 +31,6 @@
     @apply border border-[#d70018] text-[#d70018] bg-white hover:bg-[#d70018] hover:text-white;
   }
 
-  .reset-default-input-number {
-    input[type='number']::-webkit-inner-spin-button,
-    input[type='number']::-webkit-outer-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-  }
-
   .shadow-all {
     box-shadow:
       0 -1px 4px rgba(0, 0, 0, 0.000001),
