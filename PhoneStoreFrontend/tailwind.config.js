@@ -24,6 +24,7 @@ export default {
       },
       colors: {
         primary: '#d70018',
+        dark: '#64748B',
         background: '#F5F5F5',
         'background-hover': '#EAEAEA',
         text: '#444',
@@ -56,6 +57,7 @@ export default {
         graydark: '#333A48',
         whiten: '#FFFFFF',
         whiter: '#F5F7FD',
+        boxlight: '#F1F5F9',
         boxdark: '#24303F',
         'boxdark-2': '#1A222C',
         strokedark: '#2E3A47',
