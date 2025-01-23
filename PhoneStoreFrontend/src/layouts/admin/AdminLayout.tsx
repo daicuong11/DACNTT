@@ -10,7 +10,7 @@ const AdminLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
-    <div className='dark:bg-boxdark-2 dark:text-bodydark bg-boxlight text-dark'>
+    <div className='dark:bg-boxdark-2 dark:text-bodydark bg-boxlight text-light'>
       {/* <!-- ===== Page Wrapper Start ===== --> */}
       <div className='flex h-screen overflow-hidden'>
         {/* <!-- ===== Sidebar Start ===== --> */}

@@ -24,7 +24,7 @@ export default {
       },
       colors: {
         primary: '#d70018',
-        dark: '#64748B',
+        light: '#64748B',
         background: '#F5F5F5',
         'background-hover': '#EAEAEA',
         text: '#444',
