@@ -101,7 +101,7 @@ const PaymentConfirmPage = () => {
             isOpen={reviewCartItemModalController.isOpen}
             onClose={reviewCartItemModalController.closeModal}
           />
-          <div className='sticky top-0 z-20 flex justify-between gap-x-6 bg-[#f4f6f8] pb-3'>
+          <div className='sticky top-0 z-[5] flex justify-between gap-x-6 bg-[#f4f6f8] pb-3'>
             <div
               onClick={() => navigate('/cart/payment-info')}
               className={classNames(

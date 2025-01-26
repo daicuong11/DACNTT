@@ -47,7 +47,7 @@ const ProductCard: FC<ProductCardType> = ({ product, ...props }) => {
     <div
       {...props}
       onClick={() => handleProductClick(product)}
-      className='relative h-[392px] min-w-[224px] cursor-pointer rounded-xl bg-white p-[10px] flex flex-col shadow drop-shadow-lg shadow-slate-900/20'
+      className='relative h-[392px] min-w-[224px] cursor-pointer rounded-xl bg-white p-[10px] flex flex-col shadow drop-shadow-lg shadow-slate-900/20 border border-gray-200'
     >
       <div className='flex-[5] flex items-center justify-center'>
         <img

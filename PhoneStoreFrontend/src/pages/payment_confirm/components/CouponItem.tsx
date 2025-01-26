@@ -15,7 +15,7 @@ const CouponItem: FC<CouponItemProps> = ({ coupon, onRemove }) => {
       <span className='absolute right-0 w-3 h-3 translate-x-1/2 -translate-y-1/2 bg-white rounded-full top-1/2'></span>
       <span
         onClick={onRemove}
-        className='absolute z-10 p-1 transition-all -translate-y-1/2 bg-gray-100 rounded-full cursor-pointer group-hover:bg-gray-200 -right-7 bg- top-1/2'
+        className='absolute z-[1] p-1 transition-all -translate-y-1/2 bg-gray-100 rounded-full cursor-pointer group-hover:bg-gray-200 -right-7 bg- top-1/2'
       >
         <X size={16} strokeWidth={2.8} className='bg-transparent' />
       </span>

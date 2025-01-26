@@ -8,11 +8,11 @@ import { ConfigProvider, Input, Select } from 'antd'
 import { toast } from 'react-toastify'
 import { SelectAddressModal } from '../../components'
 import { useAppDispatch, useAppSelector, useModal } from '../../hooks'
-import { AddressType } from '../../types/address.type'
+import { AddressFormType, AddressType } from '../../types/address.type'
 import getAddressString from '../../utils/getAddressString'
 import useSetDocTitle from '../../hooks/useSetDocTitle'
 import { useNavigate } from 'react-router-dom'
-import { setEmail, setInfoShipping, setNote } from '../../features/order/order.slice'
+import { setEmail, setInfoShipping, setNote, setShippingAddress } from '../../features/order/order.slice'
 interface InfoCustomerType {
   name: string
   phone: string
@@ -62,13 +62,28 @@ const exampleListAddress: AddressType[] = [
 
 const handleGetAddressDefault = () => {
   if (exampleListAddress.length === 0) {
-    return undefined
+    return null
   }
   const addressDefault = exampleListAddress.find((address) => address.isDefault)
   if (addressDefault) {
     return addressDefault
   }
   return exampleListAddress[0]
+}
+
+const checkShippingAddress = (shippingAddress: AddressType | null): boolean => {
+  if (!shippingAddress) {
+    return false
+  }
+  if (
+    shippingAddress.province === '' ||
+    shippingAddress.district === '' ||
+    shippingAddress.ward === '' ||
+    shippingAddress.street === ''
+  ) {
+    return false
+  }
+  return true
 }
 
 const PaymentInfoPage = () => {
@@ -80,7 +95,7 @@ const PaymentInfoPage = () => {
   const dispatch = useAppDispatch()
 
   const [showAllProduct, setShowAllProduct] = useState<boolean>(false)
-  const [selectedAddress, setSelectedAddress] = useState<AddressType | undefined>(handleGetAddressDefault())
+  const [selectedAddress, setSelectedAddress] = useState<AddressType | null>(null)
 
   const [infoCustomer, setInfoCustomer] = useState<InfoCustomerType>(
     orderSlice.shippingAddress
@@ -96,7 +111,6 @@ const PaymentInfoPage = () => {
       : initialInfoCustomer
   )
   const [emailInput, setEmailInput] = useState(orderSlice.email || '')
-  const [couponCode, setCouponCode] = useState('')
 
   const { isOpen, closeModal, openModal } = useModal()
 
@@ -119,18 +133,23 @@ const PaymentInfoPage = () => {
   }, [selectedAddress])
 
   useEffect(() => {
-    dispatch(
-      setInfoShipping({
-        customerInfo: { name: infoCustomer.name, phone: infoCustomer.phone },
-        address: {
-          province: infoCustomer.province,
-          district: infoCustomer.district,
-          ward: infoCustomer.ward,
-          street: infoCustomer.address
-        }
-      })
-    )
-  }, [infoCustomer])
+    if (checkShippingAddress(orderSlice.shippingAddress)) {
+      if (orderSlice.shippingAddress?.addressId == -1) {
+        setSelectedAddress(null)
+        setInfoCustomer({
+          ...infoCustomer,
+          province: orderSlice.shippingAddress.province,
+          district: orderSlice.shippingAddress.district,
+          ward: orderSlice.shippingAddress.ward,
+          address: orderSlice.shippingAddress.street
+        })
+      } else {
+        setSelectedAddress(orderSlice.shippingAddress)
+      }
+    } else {
+      setSelectedAddress(handleGetAddressDefault())
+    }
+  }, [])
 
   const handleInfoCustomer = (key: string, value: string) => {
     setInfoCustomer({ ...infoCustomer, [key]: value })
@@ -150,7 +169,7 @@ const PaymentInfoPage = () => {
   }
 
   const handleOpenNewForm = () => {
-    setSelectedAddress(undefined)
+    setSelectedAddress(null)
     setInfoCustomer({
       ...infoCustomer,
       province: '',
@@ -195,19 +214,18 @@ const PaymentInfoPage = () => {
       toast.error('Quý khách vui lòng kiểm tra lại số điện thoại người nhận thay')
       return
     }
-    console.log('infoCustomer', infoCustomer)
     dispatch(
-      dispatch(
-        setInfoShipping({
-          customerInfo: { name: infoCustomer.name, phone: infoCustomer.phone },
-          address: {
-            province: infoCustomer.province,
-            district: infoCustomer.district,
-            ward: infoCustomer.ward,
-            street: infoCustomer.address
-          }
-        })
-      )
+      setInfoShipping({
+        customerInfo: { name: infoCustomer.name, phone: infoCustomer.phone },
+        address: selectedAddress || {
+          addressId: -1,
+          province: infoCustomer.province,
+          district: infoCustomer.district,
+          ward: infoCustomer.ward,
+          street: infoCustomer.address,
+          isDefault: false
+        }
+      })
     )
     dispatch(setNote(infoCustomer.note))
     navigate('/cart/payment')
@@ -228,7 +246,7 @@ const PaymentInfoPage = () => {
             />
           )}
 
-          <div className='sticky top-0 z-10 flex justify-between gap-x-6 bg-[#f4f6f8] pb-3'>
+          <div className='sticky top-0 z-[5] flex justify-between gap-x-6 bg-[#f4f6f8] pb-3'>
             <div
               className={classNames(
                 'border-b-[3px] w-full text-center font-bold text-primary border-primary uppercase py-1.5'
@@ -294,7 +312,6 @@ const PaymentInfoPage = () => {
                 <Input
                   value={emailInput}
                   onChange={(e) => handleEmailInput(e.target.value)}
-                  // onBlur={() => handleCheckEmail()}
                   type='email'
                   variant='borderless'
                   placeholder='Nhập email nhận hóa đơn'

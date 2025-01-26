@@ -17,7 +17,16 @@ const Breadcrumbs = () => {
         className='text-[12px] w-[1200px] mx-auto'
         itemRender={(route, params, routes, paths) => {
           return (
-            <div onClick={() => navigate(route.href || '/')} className='cursor-pointer py-0.5'>
+            <div
+              onClick={() => {
+                if (route.title !== routes[routes.length - 1].title) {
+                  navigate(route.href || '/')
+                }
+              }}
+              className={classNames('py-0.5', {
+                'cursor-pointer ': route.title !== routes[routes.length - 1].title
+              })}
+            >
               {route.href === '/' ? <HomeFilled style={{ fontSize: '12px' }} className='mr-2 text-primary' /> : ''}
               {route.title}
             </div>

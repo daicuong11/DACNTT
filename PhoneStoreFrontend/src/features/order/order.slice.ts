@@ -1,8 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ShippingInfoType } from '../../types/app.type'
 import { CartItemPayloadType } from '../../types/cart_item.type'
-import { AddressFormType } from '../../types/address.type'
-import { get } from 'http'
+import { AddressFormType, AddressType } from '../../types/address.type'
 import { getTotalAmountOfCartItems } from '../../utils/getTotalAmountOfCartItems'
 import { CouponType } from '../../types/coupon.type'
 import { getCouponDiscount } from '../../utils/getCouponDiscount'
@@ -14,7 +13,7 @@ interface OrderState {
   totalAmount: number
   paymentMethod: string | null
   email: string | null
-  shippingAddress: Omit<AddressFormType, 'isDefault'> | null
+  shippingAddress: AddressType | null
   note: string | null
 }
 
@@ -61,7 +60,7 @@ const orderSlice = createSlice({
     },
     setInfoShipping: (
       state,
-      action: PayloadAction<{ customerInfo: ShippingInfoType; address: Omit<AddressFormType, 'isDefault'> }>
+      action: PayloadAction<{ customerInfo: ShippingInfoType; address: AddressType | null }>
     ) => {
       state.shippingInfo = action.payload.customerInfo
       state.shippingAddress = action.payload.address
@@ -85,7 +84,7 @@ const orderSlice = createSlice({
     setNote: (state, action: PayloadAction<string>) => {
       state.note = action.payload
     },
-    setShippingAddress: (state, action: PayloadAction<Omit<AddressFormType, 'isDefault'>>) => {
+    setShippingAddress: (state, action: PayloadAction<AddressType | null>) => {
       state.shippingAddress = action.payload
     },
     clearListCartItems: (state) => {

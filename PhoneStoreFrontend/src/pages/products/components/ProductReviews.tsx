@@ -117,7 +117,7 @@ const ProductReviews: FC<ProductReviewsProps> = ({ product }) => {
         <ReviewComment />
       </div>
       <div className='my-2'>
-        <button className='items-end mx-auto text-[15px] w-min text-nowrap px-20 font-medium border border-gray-100 shadow-md btn btn-light drop-shadow-sm'>
+        <button className='items-center flex mx-auto text-[15px] w-min text-nowrap px-20 font-medium border border-gray-100 shadow-md btn btn-light drop-shadow-sm'>
           Xem thêm
           <span>
             <ChevronDown size={18} strokeWidth={2} />

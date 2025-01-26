@@ -3,7 +3,7 @@ import { ContainerPanel, MyDivider } from '../../../components'
 import { ProductType } from '../../../types/product.type'
 import TextArea from 'antd/es/input/TextArea'
 import { robot_img } from '../../../assets/images'
-import { SendHorizonal } from 'lucide-react'
+import { ChevronDown, SendHorizonal } from 'lucide-react'
 import CommentItem, { CommentType } from './CommentItem'
 
 const commentsEx: CommentType[] = [
@@ -91,6 +91,14 @@ const ProductComments: FC<ProductCommentsProps> = ({ product }) => {
         {commentsEx.map((comment, index) => (
           <CommentItem key={comment.id + '' + index} comment={comment} />
         ))}
+      </div>
+      <div className='my-2'>
+        <button className='items-center mx-auto text-[15px] w-min text-nowrap px-20 font-medium border border-gray-200 shadow-md btn btn-light drop-shadow-sm'>
+          Xem thêm
+          <span>
+            <ChevronDown size={18} strokeWidth={2} />
+          </span>
+        </button>
       </div>
     </ContainerPanel>
   )

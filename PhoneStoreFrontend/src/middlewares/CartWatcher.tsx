@@ -14,7 +14,7 @@ const CartWatcher: FC<CartWatcherProps> = ({ children }) => {
 
   useEffect(() => {
     if (orderSlice.cartItems.length > 0) {
-      if (!location.pathname.startsWith('/cart/')) {
+      if (!location.pathname.startsWith('/cart')) {
         dispatch(clearOrder())
       }
     }
