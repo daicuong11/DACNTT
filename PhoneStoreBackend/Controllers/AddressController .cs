@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PhoneStoreBackend.Api.Request;
 using PhoneStoreBackend.Api.Response;
 using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
@@ -54,11 +55,20 @@ namespace PhoneStoreBackend.Controllers
 
         [HttpPost]
         [Authorize]  
-        public async Task<IActionResult> AddAddress([FromBody] Address address)
+        public async Task<IActionResult> AddAddress([FromBody] AddressRequest address)
         {
             try
             {
-                var newAddress = await _addressRepository.AddAddressAsync(address);
+                var createAddress = new Address
+                {
+                    UserId = address.UserId,
+                    Province = address.Province,
+                    District = address.District,
+                    Ward = address.Ward,
+                    Street = address.Street,
+                    IsDefault = address.IsDefault
+                };
+                var newAddress = await _addressRepository.AddAddressAsync(createAddress);
                 var response = Response<AddressDTO>.CreateSuccessResponse(newAddress, "Địa chỉ đã được tạo thành công");
                 return CreatedAtAction(nameof(GetAddressById), new { addressId = newAddress.AddressId }, response);
             }
@@ -71,11 +81,20 @@ namespace PhoneStoreBackend.Controllers
 
         [HttpPut("{addressId}")]
         [Authorize] 
-        public async Task<IActionResult> UpdateAddress(int addressId, [FromBody] Address address)
+        public async Task<IActionResult> UpdateAddress(int addressId, [FromBody] AddressRequest address)
         {
             try
             {
-                var result = await _addressRepository.UpdateAddressAsync(addressId, address);
+                var createAddress = new Address
+                {
+                    UserId = address.UserId,
+                    Province = address.Province,
+                    District = address.District,
+                    Ward = address.Ward,
+                    Street = address.Street,
+                    IsDefault = address.IsDefault
+                };
+                var result = await _addressRepository.UpdateAddressAsync(addressId, createAddress);
                 if (result)
                 {
                     var response = Response<object>.CreateSuccessResponse(null, "Địa chỉ đã được cập nhật");

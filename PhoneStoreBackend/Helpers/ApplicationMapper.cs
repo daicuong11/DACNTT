@@ -10,7 +10,9 @@ namespace PhoneStoreBackend.Helpers
         {
             CreateMap<User, UserDTO>().ReverseMap();
             CreateMap<Product, ProductDTO>().ReverseMap();
+            CreateMap<ProductVariant, ProductVariantDTO>().ReverseMap();
             CreateMap<Category, CategoryDTO>().ReverseMap();
+            CreateMap<Customer, CustomerDTO>().ReverseMap();
             CreateMap<Brand, BrandDTO>().ReverseMap();
             CreateMap<Order, OrderDTO>().ReverseMap();
             CreateMap<OrderDetail, OrderDetailDTO>().ReverseMap();
@@ -19,7 +21,6 @@ namespace PhoneStoreBackend.Helpers
             CreateMap<Discount, DiscountDTO>().ReverseMap();
             CreateMap<Coupon, CouponDTO>().ReverseMap();
             CreateMap<Address, AddressDTO>().ReverseMap();
-            CreateMap<ShippingAddress, ShippingAddressDTO>().ReverseMap();
             CreateMap<Payment, PaymentDTO>().ReverseMap();
             CreateMap<ProductImage, ProductImageDTO>().ReverseMap();
             CreateMap<ProductSpecification, ProductSpecificationDTO>().ReverseMap();

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PhoneStoreBackend.Api.Request;
 using PhoneStoreBackend.Api.Response;
 using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
@@ -77,19 +78,20 @@ namespace PhoneStoreBackend.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> AddPayment([FromBody] PaymentDTO paymentDto)
+        public async Task<IActionResult> AddPayment([FromBody] PaymentRequest payment)
         {
             try
             {
-                var payment = new Payment
+                var createPayment = new Payment
                 {
-                    OrderId = paymentDto.OrderId,
-                    Amount = paymentDto.Amount,
-                    PaymentDate = paymentDto.PaymentDate,
-                    PaymentMethod = paymentDto.PaymentMethod
+                    OrderId = payment.OrderId,
+                    PaymentStatus = payment.PaymentStatus,
+                    Amount = payment.Amount,
+                    PaymentDate = DateTime.Now,
+                    PaymentMethod = payment.PaymentMethod
                 };
 
-                var createdPayment = await _paymentRepository.AddPaymentAsync(payment);
+                var createdPayment = await _paymentRepository.AddPaymentAsync(createPayment);
                 var response = Response<PaymentDTO>.CreateSuccessResponse(createdPayment, "Thanh toán đã được thêm thành công");
                 return CreatedAtAction(nameof(GetPaymentById), new { id = createdPayment.PaymentId }, response);
             }
@@ -102,19 +104,20 @@ namespace PhoneStoreBackend.Controllers
 
         [HttpPut("{id}")]
         [Authorize(Roles = "ADMIN")]
-        public async Task<IActionResult> UpdatePayment(int id, [FromBody] PaymentDTO paymentDto)
+        public async Task<IActionResult> UpdatePayment(int id, [FromBody] PaymentRequest payment)
         {
             try
             {
-                var payment = new Payment
+                var createPayment = new Payment
                 {
-                    OrderId = paymentDto.OrderId,
-                    Amount = paymentDto.Amount,
-                    PaymentDate = paymentDto.PaymentDate,
-                    PaymentMethod = paymentDto.PaymentMethod
+                    OrderId = payment.OrderId,
+                    PaymentStatus = payment.PaymentStatus,
+                    Amount = payment.Amount,
+                    PaymentDate = DateTime.Now,
+                    PaymentMethod = payment.PaymentMethod
                 };
 
-                var isUpdated = await _paymentRepository.UpdatePaymentAsync(id, payment);
+                var isUpdated = await _paymentRepository.UpdatePaymentAsync(id, createPayment);
                 if (!isUpdated)
                 {
                     var notFoundResponse = Response<object>.CreateErrorResponse("Không tìm thấy thông tin thanh toán để cập nhật.");

@@ -8,11 +8,11 @@ import { ConfigProvider, Input, Select } from 'antd'
 import { toast } from 'react-toastify'
 import { SelectAddressModal } from '../../components'
 import { useAppDispatch, useAppSelector, useModal } from '../../hooks'
-import { AddressFormType, AddressType } from '../../types/address.type'
+import { AddressType } from '../../types/address.type'
 import getAddressString from '../../utils/getAddressString'
 import useSetDocTitle from '../../hooks/useSetDocTitle'
 import { useNavigate } from 'react-router-dom'
-import { setEmail, setInfoShipping, setNote, setShippingAddress } from '../../features/order/order.slice'
+import { setEmail, setInfoShipping, setNote } from '../../features/order/order.slice'
 interface InfoCustomerType {
   name: string
   phone: string

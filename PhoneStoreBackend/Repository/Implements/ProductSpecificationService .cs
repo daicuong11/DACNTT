@@ -37,9 +37,9 @@ namespace PhoneStoreBackend.Repository.Implements
         }
 
         // Lấy các thông số kỹ thuật của sản phẩm theo ProductId
-        public async Task<ICollection<ProductSpecificationDTO>> GetProductSpecificationsByProductIdAsync(int productId)
+        public async Task<ICollection<ProductSpecificationDTO>> GetProductSpecificationsByProductIdAsync(int productVariantId)
         {
-            var productSpecifications = await _context.ProductSpecifications.Where(ps => ps.ProductId == productId).ToListAsync();
+            var productSpecifications = await _context.ProductSpecifications.Where(ps => ps.ProductVariantId == productVariantId).ToListAsync();
             return productSpecifications.Select(ps => _mapper.Map<ProductSpecificationDTO>(ps)).ToList();
         }
 

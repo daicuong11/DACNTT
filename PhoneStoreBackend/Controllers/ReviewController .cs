@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PhoneStoreBackend.Api.Request;
 using PhoneStoreBackend.Api.Response;
 using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
@@ -94,11 +95,19 @@ namespace PhoneStoreBackend.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> AddReview([FromBody] Review review)
+        public async Task<IActionResult> AddReview([FromBody] ReviewRequest review)
         {
             try
             {
-                var createdReview = await _reviewRepository.AddReviewAsync(review);
+                var createReview = new Review
+                {
+                    ProductVariantId = review.ProductVariantId,
+                    UserId = review.UserId,
+                    Rating = review.Rating,
+                    Comment = review.Comment,
+                    CreatedAt = DateTime.Now,
+                };
+                var createdReview = await _reviewRepository.AddReviewAsync(createReview);
                 var response = Response<ReviewDTO>.CreateSuccessResponse(createdReview, "Đánh giá đã được thêm thành công");
                 return CreatedAtAction(nameof(GetReviewById), new { id = createdReview.ReviewId }, response);
             }
@@ -111,11 +120,19 @@ namespace PhoneStoreBackend.Controllers
 
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> UpdateReview(int id, [FromBody] Review updatedReview)
+        public async Task<IActionResult> UpdateReview(int id, [FromBody] ReviewRequest review)
         {
             try
             {
-                var isUpdated = await _reviewRepository.UpdateReviewAsync(id, updatedReview);
+                var createReview = new Review
+                {
+                    ProductVariantId = review.ProductVariantId,
+                    UserId = review.UserId,
+                    Rating = review.Rating,
+                    Comment = review.Comment,
+                    CreatedAt = DateTime.Now,
+                };
+                var isUpdated = await _reviewRepository.UpdateReviewAsync(id, createReview);
                 if (!isUpdated)
                 {
                     var notFoundResponse = Response<object>.CreateErrorResponse("Không tìm thấy đánh giá để cập nhật.");

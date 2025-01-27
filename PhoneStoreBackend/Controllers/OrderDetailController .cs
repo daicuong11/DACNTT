@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PhoneStoreBackend.Api.Request;
 using PhoneStoreBackend.Api.Response;
 using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
@@ -77,16 +78,18 @@ namespace PhoneStoreBackend.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> AddOrderDetail([FromBody] OrderDetailDTO orderDetailDto)
+        public async Task<IActionResult> AddOrderDetail([FromBody] OrderDetailRequest orderDetailReq)
         {
             try
             {
                 var orderDetail = new OrderDetail
                 {
-                    OrderId = orderDetailDto.OrderId,
-                    ProductId = orderDetailDto.ProductId,
-                    Quantity = orderDetailDto.Quantity,
-                    UnitPrice = orderDetailDto.UnitPrice
+                    OrderId = orderDetailReq.OrderId,
+                    ProductVariantId = orderDetailReq.ProductVariantId,
+                    Price = orderDetailReq.Price,
+                    Discount = orderDetailReq.Discount,
+                    Quantity = orderDetailReq.Quantity,
+                    UnitPrice = orderDetailReq.UnitPrice
                 };
 
                 var createdOrderDetail = await _orderDetailRepository.AddOrderDetailAsync(orderDetail);
@@ -102,16 +105,18 @@ namespace PhoneStoreBackend.Controllers
 
         [HttpPut("{id}")]
         [Authorize(Roles = "ADMIN")]
-        public async Task<IActionResult> UpdateOrderDetail(int id, [FromBody] OrderDetailDTO orderDetailDto)
+        public async Task<IActionResult> UpdateOrderDetail(int id, [FromBody] OrderDetailRequest orderDetailReq)
         {
             try
             {
                 var orderDetail = new OrderDetail
                 {
-                    OrderId = orderDetailDto.OrderId,
-                    ProductId = orderDetailDto.ProductId,
-                    Quantity = orderDetailDto.Quantity,
-                    UnitPrice = orderDetailDto.UnitPrice
+                    OrderId = orderDetailReq.OrderId,
+                    ProductVariantId = orderDetailReq.ProductVariantId,
+                    Price = orderDetailReq.Price,
+                    Discount = orderDetailReq.Discount,
+                    Quantity = orderDetailReq.Quantity,
+                    UnitPrice = orderDetailReq.UnitPrice
                 };
 
                 var isUpdated = await _orderDetailRepository.UpdateOrderDetailAsync(id, orderDetail);

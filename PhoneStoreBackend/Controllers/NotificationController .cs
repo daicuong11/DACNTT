@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PhoneStoreBackend.Api.Request;
 using PhoneStoreBackend.Api.Response;
 using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
@@ -77,11 +78,20 @@ namespace PhoneStoreBackend.Controllers
 
         [HttpPost]
         [Authorize(Roles = "ADMIN")]
-        public async Task<IActionResult> AddNotification([FromBody] Notification notification)
+        public async Task<IActionResult> AddNotification([FromBody] NotificationRequest notification)
         {
             try
             {
-                var createdNotification = await _notificationRepository.AddNotificationAsync(notification);
+                var createNotifi = new Notification
+                {
+                    Id = notification.Id,
+                    SenderId = notification.SenderId,
+                    Title = notification.Title,
+                    Message = notification.Message,
+                    IsRead = notification.IsRead,
+                    CreatedAt = DateTime.Now
+                };
+                var createdNotification = await _notificationRepository.AddNotificationAsync(createNotifi);
                 var response = Response<NotificationDTO>.CreateSuccessResponse(createdNotification, "Thông báo đã được thêm thành công");
                 return CreatedAtAction(nameof(GetNotificationById), new { id = createdNotification.NotificationId }, response);
             }
@@ -94,11 +104,20 @@ namespace PhoneStoreBackend.Controllers
 
         [HttpPut("{id}")]
         [Authorize]
-        public async Task<IActionResult> UpdateNotification(int id, [FromBody] Notification notification)
+        public async Task<IActionResult> UpdateNotification(int id, [FromBody] NotificationRequest notification)
         {
             try
             {
-                var result = await _notificationRepository.UpdateNotificationAsync(id, notification);
+                var createNotifi = new Notification
+                {
+                    Id = notification.Id,
+                    SenderId = notification.SenderId,
+                    Title = notification.Title,
+                    Message = notification.Message,
+                    IsRead = notification.IsRead,
+                    CreatedAt = DateTime.Now
+                };
+                var result = await _notificationRepository.UpdateNotificationAsync(id, createNotifi);
                 if (!result)
                 {
                     var notFoundResponse = Response<object>.CreateErrorResponse("Thông báo không tồn tại.");

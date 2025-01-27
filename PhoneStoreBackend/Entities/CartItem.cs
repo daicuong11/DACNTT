@@ -13,9 +13,9 @@ namespace PhoneStoreBackend.Entities
         [ForeignKey("CartId")]
         public Cart Cart { get; set; }
 
-        public int ProductId { get; set; }
-        [ForeignKey("ProductId")]
-        public Product Product { get; set; }
+        public int ProductVariantId { get; set; }
+        [ForeignKey("ProductVariantId")]
+        public ProductVariant ProductVariant { get; set; }
 
         [Required]
         public int Quantity { get; set; }

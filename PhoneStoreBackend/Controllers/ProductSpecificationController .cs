@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PhoneStoreBackend.Api.Request;
 using PhoneStoreBackend.Api.Response;
 using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
@@ -77,15 +78,18 @@ namespace PhoneStoreBackend.Controllers
 
         [HttpPost]
         [Authorize(Roles = "ADMIN")]
-        public async Task<IActionResult> AddProductSpecification([FromBody] ProductSpecificationDTO specificationDto)
+        public async Task<IActionResult> AddProductSpecification([FromBody] SpecificationRequest specificationReq)
         {
             try
             {
                 var specification = new ProductSpecification
                 {
-                    Key = specificationDto.Key,
-                    Value = specificationDto.Value,
-                    ProductId = specificationDto.ProductId
+                    ProductVariantId = specificationReq.ProductVariantId,
+                    ProductSpecificationGroupId = specificationReq.SpecificationGroupId,
+                    Key = specificationReq.Key,
+                    Value = specificationReq.Value,
+                    DisplayOrder = specificationReq.DisplayOrder,
+                    IsSpecial = specificationReq.IsSpecial,
                 };
 
                 var createdSpecification = await _productSpecificationRepository.AddProductSpecificationAsync(specification);
@@ -101,18 +105,21 @@ namespace PhoneStoreBackend.Controllers
 
         [HttpPut("{id}")]
         [Authorize(Roles = "ADMIN")]
-        public async Task<IActionResult> UpdateProductSpecification(int id, [FromBody] ProductSpecificationDTO specificationDto)
+        public async Task<IActionResult> UpdateProductSpecification(int id, [FromBody] SpecificationRequest specificationReq)
         {
             try
             {
-                var updatedSpecification = new ProductSpecification
+                var specification = new ProductSpecification
                 {
-                    Key = specificationDto.Key,
-                    Value = specificationDto.Value,
-                    ProductId = specificationDto.ProductId
+                    ProductVariantId = specificationReq.ProductVariantId,
+                    ProductSpecificationGroupId = specificationReq.SpecificationGroupId,
+                    Key = specificationReq.Key,
+                    Value = specificationReq.Value,
+                    DisplayOrder = specificationReq.DisplayOrder,
+                    IsSpecial = specificationReq.IsSpecial,
                 };
 
-                var isUpdated = await _productSpecificationRepository.UpdateProductSpecificationAsync(id, updatedSpecification);
+                var isUpdated = await _productSpecificationRepository.UpdateProductSpecificationAsync(id, specification);
                 if (!isUpdated)
                 {
                     var notFoundResponse = Response<object>.CreateErrorResponse("Không tìm thấy thông số kỹ thuật sản phẩm để cập nhật.");

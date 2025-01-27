@@ -9,9 +9,9 @@ namespace PhoneStoreBackend.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ReviewId { get; set; }
 
-        public int ProductId { get; set; }
-        [ForeignKey("ProductId")]
-        public Product Product { get; set; }
+        public int ProductVariantId { get; set; }
+        [ForeignKey("ProductVariantId")]
+        public ProductVariant ProductVariant { get; set; }
 
         public int UserId { get; set; }
         [ForeignKey("UserId")]
@@ -22,7 +22,7 @@ namespace PhoneStoreBackend.Entities
         public int Rating { get; set; } // Scale: 1 - 5
 
         [StringLength(1000)]
-        public string Comment { get; set; }
+        public string? Comment { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
     }

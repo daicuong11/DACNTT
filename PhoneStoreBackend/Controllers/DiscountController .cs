@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PhoneStoreBackend.Api.Request;
 using PhoneStoreBackend.Api.Response;
 using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
@@ -81,11 +82,19 @@ namespace PhoneStoreBackend.Controllers
 
         [HttpPost]
         [Authorize(Roles = "ADMIN")]
-        public async Task<IActionResult> AddDiscount([FromBody] Discount discount)
+        public async Task<IActionResult> AddDiscount([FromBody] DiscountRequest discount)
         {
             try
             {
-                var newDiscount = await _discountRepository.AddDiscountAsync(discount);
+                var createDiscount = new Discount
+                {
+                    Code = discount.Code,
+                    Percentage = discount.Percentage,
+                    StartDate = DateTime.Now,
+                    EndDate = DateTime.Now,
+                    IsActive = discount.IsActive,
+                };
+                var newDiscount = await _discountRepository.AddDiscountAsync(createDiscount);
                 var response = Response<DiscountDTO>.CreateSuccessResponse(newDiscount, "Giảm giá đã được tạo");
                 return CreatedAtAction(nameof(GetDiscountById), new { id = newDiscount.DiscountId }, response);
             }
@@ -98,17 +107,25 @@ namespace PhoneStoreBackend.Controllers
 
         [HttpPut("{id}")]
         [Authorize(Roles = "ADMIN")]
-        public async Task<IActionResult> UpdateDiscount(int id, [FromBody] Discount discount)
+        public async Task<IActionResult> UpdateDiscount(int id, [FromBody] DiscountRequest discount)
         {
             try
             {
-                var updatedDiscount = await _discountRepository.UpdateDiscountAsync(id, discount);
+                var createDiscount = new Discount
+                {
+                    Code = discount.Code,
+                    Percentage = discount.Percentage,
+                    StartDate = DateTime.Now,
+                    EndDate = DateTime.Now,
+                    IsActive = discount.IsActive,
+                };
+                var updatedDiscount = await _discountRepository.UpdateDiscountAsync(id, createDiscount);
                 if (!updatedDiscount)
                 {
                     var errorResponse = Response<object>.CreateErrorResponse("Không tìm thấy giảm giá để cập nhật");
                     return NotFound(errorResponse);
                 }
-                var response = Response<Discount>.CreateSuccessResponse(discount, "Giảm giá đã được cập nhật");
+                var response = Response<Discount>.CreateSuccessResponse(createDiscount, "Giảm giá đã được cập nhật");
                 return Ok(response);
             }
             catch (Exception ex)

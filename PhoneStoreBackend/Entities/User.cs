@@ -21,11 +21,11 @@ namespace PhoneStoreBackend.Entities
         [StringLength(100, MinimumLength = 6)]
         public string? Password { get; set; }
 
-        public string? NumberPhone { get; set; } 
+        public string? PhoneNumber { get; set; } 
 
         public string? Address { get; set; }
 
-        public string? ProfilePicture { get; set; } // Không bắt buộc
+        public string? ProfilePicture { get; set; } 
 
         [Column(TypeName = "nvarchar(20)")]
         [EnumDataType(typeof(RoleEnum))]
@@ -38,5 +38,13 @@ namespace PhoneStoreBackend.Entities
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
 
+        public ICollection<Cart> Carts { get; set; }
+        public ICollection<Review> Reviews { get; set; }
+        public ICollection<Order> Orders { get; set; }
+        public ICollection<Coupon> Coupons { get; set; }
+        public ICollection<Address> Addresses { get; set; }
+        public ICollection<Wishlist> Wishlists { get; set; }
+        public ICollection<Notification> Notifications { get; set; } 
+        public ICollection<Notification> SentNotifications { get; set; } 
     }
 }

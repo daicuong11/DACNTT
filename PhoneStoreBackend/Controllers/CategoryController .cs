@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PhoneStoreBackend.Api.Request;
 using PhoneStoreBackend.Api.Response;
 using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
@@ -59,11 +60,17 @@ namespace PhoneStoreBackend.Controllers
 
         [HttpPost]
         [Authorize(Roles = "ADMIN")]
-        public async Task<IActionResult> AddCategory([FromBody] Category category)
+        public async Task<IActionResult> AddCategory([FromBody] CategoryRequest category)
         {
             try
             {
-                var newCategory = await _categoryRepository.AddAsync(category);
+                var createCategory = new Category
+                {
+                    Name = category.Name,
+                    Description = category.Description,
+                    ImageUrl = category.ImageUrl,
+                };
+                var newCategory = await _categoryRepository.AddAsync(createCategory);
                 var response = Response<CategoryDTO>.CreateSuccessResponse(newCategory, "Danh mục đã được tạo");
                 return CreatedAtAction(nameof(GetCategoryById), new { id = newCategory.CategoryId }, response);
             }
@@ -76,11 +83,17 @@ namespace PhoneStoreBackend.Controllers
 
         [HttpPut("{id}")]
         [Authorize(Roles = "ADMIN")]
-        public async Task<IActionResult> UpdateCategory(int id, [FromBody] Category category)
+        public async Task<IActionResult> UpdateCategory(int id, [FromBody] CategoryRequest category)
         {
             try
             {
-                var updatedCategory = await _categoryRepository.UpdateAsync(id, category);
+                var createCategory = new Category
+                {
+                    Name = category.Name,
+                    Description = category.Description,
+                    ImageUrl = category.ImageUrl,
+                };
+                var updatedCategory = await _categoryRepository.UpdateAsync(id, createCategory);
                 if (updatedCategory == null)
                 {
                     var errorResponse = Response<object>.CreateErrorResponse("Không tìm thấy danh mục để cập nhật");

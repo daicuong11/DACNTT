@@ -65,7 +65,6 @@ builder.Services.AddScoped<ICartItemRepository, CartItemService>();
 builder.Services.AddScoped<IDiscountRepository, DiscountService>();
 builder.Services.AddScoped<ICouponRepository, CouponService>();
 builder.Services.AddScoped<IAddressRepository, AddressService>();
-builder.Services.AddScoped<IShippingAddressRepository, ShippingAddressService>();
 builder.Services.AddScoped<IPaymentRepository, PaymentService>();
 builder.Services.AddScoped<IProductImageRepository, ProductImageService>();
 builder.Services.AddScoped<IProductSpecificationRepository, ProductSpecificationService>();

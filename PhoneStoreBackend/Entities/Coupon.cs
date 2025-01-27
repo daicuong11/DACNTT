@@ -1,11 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using PhoneStoreBackend.Entities;
 
 public class Coupon
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int CouponId { get; set; }
+
+    [Required(ErrorMessage = "Cần phải có id người tạo coupon")]
+    public int Id { get; set; }
+    public User User { get; set; }
 
     [Required]
     [StringLength(50)]
@@ -32,4 +37,7 @@ public class Coupon
     public DateTime EndDate { get; set; }
 
     public bool IsActive { get; set; } = true; // Có khả dụng không
+
+    public ICollection<Order> Orders { get; set; }
+
 }

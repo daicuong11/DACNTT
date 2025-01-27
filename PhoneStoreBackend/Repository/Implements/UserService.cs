@@ -76,7 +76,7 @@ namespace PhoneStoreBackend.Repository.Implements
                 throw new Exception("User not found.");
             }
 
-            user.NumberPhone = newPhoneNumber;
+            user.PhoneNumber = newPhoneNumber;
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
             return true;

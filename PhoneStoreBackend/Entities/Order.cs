@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using PhoneStoreBackend.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PhoneStoreBackend.Entities
@@ -13,23 +14,34 @@ namespace PhoneStoreBackend.Entities
         [ForeignKey("UserId")]
         public User User { get; set; }
 
+        public Payment Payment { get; set; }
+
+        public int CouponId { get; set; }
+        [ForeignKey("CouponId")]
+        public Coupon Coupon { get; set; }
+
+        public Customer Customer { get; set; }
+
         [Required]
         public DateTime OrderDate { get; set; } = DateTime.Now;
 
         [Required]
         [Column(TypeName = "nvarchar(20)")]
-        public string Status { get; set; } = "Pending"; // Pending, Processing, Completed, Cancelled
+        [EnumDataType(typeof(OrderStatusEnum))]
+        public string Status { get; set; } = OrderStatusEnum.PENDING.ToString(); // Pending, Shipping, Completed, Cancelled
 
         [Required]
         [Column(TypeName = "decimal(18, 2)")]
         public decimal TotalAmount { get; set; }
 
-        [Required]
-        public string PaymentMethod { get; set; } // VnPay, MoMo, COD
-
         public string ShippingAddress { get; set; }
+
+        public string? note { get; set; } = "";
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
+
+        public ICollection<OrderDetail> OrderDetails { get; set; }
+        public ICollection<Customer> Customers { get; set; }
     }
 }

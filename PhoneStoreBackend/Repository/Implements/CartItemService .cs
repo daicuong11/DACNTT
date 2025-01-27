@@ -23,7 +23,7 @@ namespace PhoneStoreBackend.Repository.Implements
         {
             var cartItems = await _context.CartItems
                                           .Include(ci => ci.Cart)
-                                          .Include(ci => ci.Product)
+                                          .Include(ci => ci.ProductVariant)
                                           .ToListAsync();
             return cartItems.Select(ci => _mapper.Map<CartItemDTO>(ci)).ToList();
         }
@@ -33,7 +33,7 @@ namespace PhoneStoreBackend.Repository.Implements
         {
             var cartItem = await _context.CartItems
                                          .Include(ci => ci.Cart)
-                                         .Include(ci => ci.Product)
+                                         .Include(ci => ci.ProductVariant)
                                          .FirstOrDefaultAsync(ci => ci.CartItemId == cartItemId);
             if (cartItem == null)
             {
@@ -48,7 +48,7 @@ namespace PhoneStoreBackend.Repository.Implements
         {
             var cartItems = await _context.CartItems
                                           .Include(ci => ci.Cart)
-                                          .Include(ci => ci.Product)
+                                          .Include(ci => ci.ProductVariant)
                                           .Where(ci => ci.CartId == cartId)
                                           .ToListAsync();
             return cartItems.Select(ci => _mapper.Map<CartItemDTO>(ci)).ToList();

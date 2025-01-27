@@ -13,8 +13,8 @@ namespace PhoneStoreBackend.Entities
         [ForeignKey("WishlistId")]
         public Wishlist Wishlist { get; set; }
 
-        public int ProductId { get; set; }
-        [ForeignKey("ProductId")]
-        public Product Product { get; set; }
+        public int ProductVariantId { get; set; }
+        [ForeignKey("ProductVariantId")]
+        public ProductVariant ProductVariant { get; set; }
     }
 }

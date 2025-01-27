@@ -8,16 +8,15 @@ import formatPrice from '../../utils/formatPrice'
 import classNames from 'classnames'
 import { FixedBottomLayout } from '../../layouts'
 import { useAppDispatch, useAppSelector } from '../../hooks'
-import { CartItemPayloadType } from '../../types/cart_item.type'
 import { removeCartItem, setNewCartItems } from '../../features/order/order.slice'
+import { CartItemPayloadType } from '@/types/cart_item.type'
 
 interface CartPageProps {}
 
 const initialCartItemExample: CartItemPayloadType[] = exampleProductVariant.slice(0, 5).map((item) => ({
   productVariantID: item.productId,
   productVariant: item,
-  quantity: 1,
-  price: item.price
+  quantity: 1
 }))
 
 const CartPage: FC<CartPageProps> = () => {
@@ -85,11 +84,11 @@ const CartPage: FC<CartPageProps> = () => {
 
   const totalOrderAmount = useMemo(() => {
     return listSelected.reduce((total, productVariantID) => {
-      const product = cartItems.find((item) => item.productVariantID === productVariantID)
-      if (!product) {
+      const cartItemFind = cartItems.find((item) => item.productVariantID === productVariantID)
+      if (!cartItemFind) {
         return total
       }
-      return total + product.price * product.quantity
+      return total + cartItemFind.productVariant.price * cartItemFind.quantity
     }, 0)
   }, [listSelected, handleOnchangeQuantity])
 

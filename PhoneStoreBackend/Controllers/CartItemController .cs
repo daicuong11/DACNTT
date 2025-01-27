@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PhoneStoreBackend.Api.Request;
 using PhoneStoreBackend.Api.Response;
 using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
@@ -77,11 +78,17 @@ namespace PhoneStoreBackend.Controllers
         
         [HttpPost]
         [Authorize]  
-        public async Task<IActionResult> AddCartItem([FromBody] CartItem cartItem)
+        public async Task<IActionResult> AddCartItem([FromBody] CartItemRequest cartItem)
         {
             try
             {
-                var newCartItem = await _cartItemRepository.AddCartItemAsync(cartItem);
+                var createCartItem = new CartItem
+                {
+                    CartId = cartItem.CartId,
+                    ProductVariantId = cartItem.ProductVariantId,
+                    Quantity = cartItem.Quantity,
+                };
+                var newCartItem = await _cartItemRepository.AddCartItemAsync(createCartItem);
                 var response = Response<CartItemDTO>.CreateSuccessResponse(newCartItem, "Mặt hàng đã được thêm vào giỏ hàng");
                 return CreatedAtAction(nameof(GetCartItemById), new { cartItemId = newCartItem.CartItemId }, response);
             }
@@ -94,11 +101,17 @@ namespace PhoneStoreBackend.Controllers
 
         [HttpPut("{cartItemId}")]
         [Authorize]  
-        public async Task<IActionResult> UpdateCartItem(int cartItemId, [FromBody] CartItem cartItem)
+        public async Task<IActionResult> UpdateCartItem(int cartItemId, [FromBody] CartItemRequest cartItem)
         {
             try
             {
-                var result = await _cartItemRepository.UpdateCartItemAsync(cartItemId, cartItem);
+                var createCartItem = new CartItem
+                {
+                    CartId = cartItem.CartId,
+                    ProductVariantId = cartItem.ProductVariantId,
+                    Quantity = cartItem.Quantity,
+                };
+                var result = await _cartItemRepository.UpdateCartItemAsync(cartItemId, createCartItem);
                 if (result)
                 {
                     var response = Response<object>.CreateSuccessResponse(null, "Mặt hàng đã được cập nhật");

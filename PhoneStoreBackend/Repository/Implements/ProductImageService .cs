@@ -37,9 +37,9 @@ namespace PhoneStoreBackend.Repository.Implements
         }
 
         // Lấy hình ảnh sản phẩm theo ProductId
-        public async Task<ICollection<ProductImageDTO>> GetProductImagesByProductIdAsync(int productId)
+        public async Task<ICollection<ProductImageDTO>> GetProductImagesByProductIdAsync(int productVariantId)
         {
-            var productImages = await _context.ProductImages.Where(pi => pi.ProductId == productId).ToListAsync();
+            var productImages = await _context.ProductImages.Where(pi => pi.ProductVariantId == productVariantId).ToListAsync();
             return productImages.Select(pi => _mapper.Map<ProductImageDTO>(pi)).ToList();
         }
 

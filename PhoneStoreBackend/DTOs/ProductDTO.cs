@@ -1,4 +1,6 @@
 ﻿using PhoneStoreBackend.Entities;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace PhoneStoreBackend.DTOs
 {
@@ -6,21 +8,16 @@ namespace PhoneStoreBackend.DTOs
     {
         public int ProductId { get; set; }
 
+        public string slug { get; set; }
+
         public string Name { get; set; }
 
         public string Description { get; set; }
 
-        public decimal Price { get; set; }
+        public int CategoryId { get; set; }
+        public Category Category { get; set; }
 
-        public int Stock { get; set; }
-
-        public string? ImageUrl { get; set; }
-
-        public CategoryDTO? Category { get; set; } 
-
-        public BrandDTO? Brand { get; set; } 
-
-        public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        public int BrandId { get; set; }
+        public Brand Brand { get; set; }
     }
 }

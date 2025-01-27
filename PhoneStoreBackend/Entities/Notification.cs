@@ -9,9 +9,12 @@ namespace PhoneStoreBackend.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int NotificationId { get; set; }
 
-        public int UserId { get; set; }
-        [ForeignKey("UserId")]
+        public int Id { get; set; }
         public User User { get; set; }
+
+        [Required]
+        public int SenderId {  get; set; }
+        public User Sender { get; set; }
 
         [Required]
         [StringLength(200)]

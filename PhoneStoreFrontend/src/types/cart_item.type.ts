@@ -6,12 +6,10 @@ export interface CartItemType {
   productVariantID: number
   productVariant: ProductVariantType
   quantity: number
-  price: number
 }
 
 export interface CartItemPayloadType {
   productVariantID: number
   productVariant: ProductVariantType
   quantity: number
-  price: number
 }

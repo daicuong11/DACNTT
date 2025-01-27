@@ -55,7 +55,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
         </div>
         <div className='w-full h-[1px] bg-slate-200'></div>
         <div className='grid w-full grid-cols-10 gap-6'>
-          <div className='col-span-6 sticky top-[80px] h-max'>
+          <div className='col-span-6 sticky top-[108px] h-max'>
             <CarouselProductImages />
             <div className='flex flex-col mt-6 gap-y-6'>
               <ContainerPanel title='Thông tin sản phẩm'>

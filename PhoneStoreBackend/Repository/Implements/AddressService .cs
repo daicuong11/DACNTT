@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using PhoneStoreBackend.Api.Request;
 using PhoneStoreBackend.DbContexts;
 using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
@@ -42,7 +43,9 @@ namespace PhoneStoreBackend.Repository.Implements
 
         // Thêm địa chỉ mới
         public async Task<AddressDTO> AddAddressAsync(Address address)
+
         {
+            
             var newAddress = await _context.Addresses.AddAsync(address);
             await _context.SaveChangesAsync();
             return _mapper.Map<AddressDTO>(newAddress.Entity);
@@ -58,12 +61,11 @@ namespace PhoneStoreBackend.Repository.Implements
             }
 
             existingAddress.Street = address.Street;
-            existingAddress.City = address.City;
-            existingAddress.State = address.State;
-            existingAddress.PostalCode = address.PostalCode;
-            existingAddress.Country = address.Country;
+            existingAddress.Province = address.Province;
+            existingAddress.Ward = address.Ward;
+            existingAddress.Street = address.Street;
+            existingAddress.District = address.District;
             existingAddress.IsDefault = address.IsDefault;
-            existingAddress.AddressType = address.AddressType;
 
             _context.Addresses.Update(existingAddress);
             await _context.SaveChangesAsync();

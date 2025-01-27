@@ -37,9 +37,9 @@ namespace PhoneStoreBackend.Repository.Implements
         }
 
         // Lấy các đánh giá của sản phẩm theo ProductId
-        public async Task<ICollection<ReviewDTO>> GetReviewsByProductIdAsync(int productId)
+        public async Task<ICollection<ReviewDTO>> GetReviewsByProductIdAsync(int productVariantId)
         {
-            var reviews = await _context.Reviews.Where(r => r.ProductId == productId).ToListAsync();
+            var reviews = await _context.Reviews.Where(r => r.ProductVariantId == productVariantId).ToListAsync();
             return reviews.Select(r => _mapper.Map<ReviewDTO>(r)).ToList();
         }
 

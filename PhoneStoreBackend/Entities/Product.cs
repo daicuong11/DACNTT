@@ -10,19 +10,16 @@ namespace PhoneStoreBackend.Entities
         public int ProductId { get; set; }
 
         [Required]
-        [StringLength(200)]
+        [StringLength(500)]
+        public string Slug { get; set; }
+
+        [Required]
+        [StringLength(500)]
         public string Name { get; set; }
 
         [Required]
         [Column(TypeName = "text")]
         public string Description { get; set; }
-
-        [Required]
-        [Column(TypeName = "decimal(18, 2)")]
-        public decimal Price { get; set; }
-
-        [Required]
-        public int Stock { get; set; }
 
         public int CategoryId { get; set; }
         [ForeignKey("CategoryId")]
@@ -32,9 +29,7 @@ namespace PhoneStoreBackend.Entities
         [ForeignKey("BrandId")]
         public Brand Brand { get; set; }
 
-        public string ImageUrl { get; set; }
+        public ICollection<ProductVariant> ProductVariants { get; set; }
 
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
-        public DateTime UpdatedAt { get; set; } = DateTime.Now;
     }
 }

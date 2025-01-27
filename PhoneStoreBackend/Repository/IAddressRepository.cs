@@ -1,4 +1,5 @@
-﻿using PhoneStoreBackend.DTOs;
+﻿using PhoneStoreBackend.Api.Request;
+using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
 
 namespace PhoneStoreBackend.Repository

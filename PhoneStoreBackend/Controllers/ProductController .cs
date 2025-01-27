@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PhoneStoreBackend.Api.Request;
 using PhoneStoreBackend.Api.Response;
 using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
@@ -19,7 +20,6 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> GetAllProducts()
         {
             try
@@ -60,11 +60,19 @@ namespace PhoneStoreBackend.Controllers
 
         [HttpPost]
         [Authorize(Roles = "ADMIN")]
-        public async Task<IActionResult> AddProduct([FromBody] Product product)
+        public async Task<IActionResult> AddProduct([FromBody] ProductRequest product)
         {
             try
             {
-                var createdProduct = await _productRepository.AddProductAsync(product);
+                var createProduct = new Product
+                {
+                    Slug = product.Slug,
+                    Name = product.Name,
+                    Description = product.Description,
+                    CategoryId = product.CategoryId,
+                    BrandId = product.BrandId,
+                };
+                var createdProduct = await _productRepository.AddProductAsync(createProduct);
                 var response = Response<ProductDTO>.CreateSuccessResponse(createdProduct, "Sản phẩm đã được thêm thành công");
                 return CreatedAtAction(nameof(GetProductById), new { id = createdProduct.ProductId }, response);
             }
@@ -77,11 +85,18 @@ namespace PhoneStoreBackend.Controllers
 
         [HttpPut("{id}")]
         [Authorize(Roles = "ADMIN")]
-        public async Task<IActionResult> UpdateProduct(int id, [FromBody] Product updatedProduct)
+        public async Task<IActionResult> UpdateProduct(int id, [FromBody] ProductRequest product)
         {
             try
             {
-
+                var updatedProduct = new Product
+                {
+                    Slug = product.Slug,
+                    Name = product.Name,
+                    Description = product.Description,
+                    CategoryId = product.CategoryId,
+                    BrandId = product.BrandId,
+                };
                 var isUpdated = await _productRepository.UpdateProductAsync(id, updatedProduct);
                 if (!isUpdated)
                 {

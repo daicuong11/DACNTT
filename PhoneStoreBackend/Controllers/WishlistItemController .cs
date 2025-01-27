@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PhoneStoreBackend.Api.Request;
 using PhoneStoreBackend.Api.Response;
 using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
@@ -77,11 +78,16 @@ namespace PhoneStoreBackend.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> AddWishlistItem([FromBody] WishlistItem wishlistItem)
+        public async Task<IActionResult> AddWishlistItem([FromBody] WishlistItemRequest wishlistItem)
         {
             try
             {
-                var createdWishlistItem = await _wishlistItemRepository.AddWishlistItemAsync(wishlistItem);
+                var newWLItem = new WishlistItem
+                {
+                    WishlistId = wishlistItem.WishlistId,
+                    ProductVariantId = wishlistItem.ProductVariantId,
+                };
+                var createdWishlistItem = await _wishlistItemRepository.AddWishlistItemAsync(newWLItem);
                 var response = Response<WishlistItemDTO>.CreateSuccessResponse(createdWishlistItem, "Mục đã được thêm vào danh sách yêu thích thành công");
                 return CreatedAtAction(nameof(GetWishlistItemById), new { id = createdWishlistItem.WishlistItemId }, response);
             }

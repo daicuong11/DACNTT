@@ -9,11 +9,13 @@ namespace PhoneStoreBackend.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ImageId { get; set; }
 
-        public int ProductId { get; set; }
-        [ForeignKey("ProductId")]
-        public Product Product { get; set; }
+        public int ProductVariantId { get; set; }
+        [ForeignKey("ProductVariantId")]
+        public ProductVariant ProductVariant { get; set; }
 
         [Required]
         public string ImageUrl { get; set; }
+
+        public bool IsImage { get; set; } = false;
     }
 }

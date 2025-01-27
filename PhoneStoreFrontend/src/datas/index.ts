@@ -35,7 +35,6 @@ export const listItems: ProductType[] = Array.from({ length: 20 }, (_, index) =>
     name: productName,
     slug: slugName,
     description: `This is the description for ${productName}`,
-    imageUrl: `https://via.placeholder.com/300x300?text=${slugName}`,
     categoryId: 1,
     category: {
       categoryId: 1,
@@ -50,9 +49,7 @@ export const listItems: ProductType[] = Array.from({ length: 20 }, (_, index) =>
       name: 'Apple',
       description: 'Apple description',
       imageUrl: 'https://via.placeholder.com/300x300?text=apple'
-    },
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString()
+    }
   }
 })
 
@@ -61,6 +58,8 @@ export const exampleProductVariant: ProductVariantType[] = [
     productVariantId: index + 1,
     productId: (index % 20) + 1,
     product: listItems[index % 20],
+    discountId: null,
+    discount: null,
     color: ['Black', 'White', 'Gold', 'Silver'][index % 4],
     storage: ['256GB', '512GB', '1TB'][index % 3],
     price: 29000000 + (index % 3) * 3000000,
@@ -71,9 +70,9 @@ export const exampleProductVariant: ProductVariantType[] = [
 export const exampleReview: ReviewType[] = [
   {
     reviewId: 1,
-    productId: 1,
+    productVariantId: 1,
     userId: 1,
-    userCreatedInfo: {
+    user: {
       id: 1,
       name: 'Nguyễn Văn A',
       email: 'dfasf@gmai.com',
@@ -88,9 +87,9 @@ export const exampleReview: ReviewType[] = [
   },
   {
     reviewId: 2,
-    productId: 1,
+    productVariantId: 1,
     userId: 2,
-    userCreatedInfo: {
+    user: {
       id: 2,
       name: 'Nguyễn Văn B',
       email: 'fsdafa',

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PhoneStoreBackend.Api.Request;
 using PhoneStoreBackend.Api.Response;
 using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
@@ -59,11 +60,17 @@ namespace PhoneStoreBackend.Controllers
 
         [HttpPost]
         [Authorize(Roles = "ADMIN")] 
-        public async Task<IActionResult> AddBrand([FromBody] Brand brand)
+        public async Task<IActionResult> AddBrand([FromBody] BrandRequest brand)
         {
             try
             {
-                var newBrand = await _brandRepository.AddBrandAsync(brand);
+                var createBrand = new Brand
+                {
+                    Name = brand.Name,
+                    Description = brand.Description,
+                    ImageUrl = brand.ImageUrl,
+                };
+                var newBrand = await _brandRepository.AddBrandAsync(createBrand);
                 var response = Response<BrandDTO>.CreateSuccessResponse(newBrand, "Thương hiệu đã được tạo thành công");
                 return CreatedAtAction(nameof(GetBrandById), new { brandId = newBrand.BrandId }, response);
             }
@@ -76,11 +83,17 @@ namespace PhoneStoreBackend.Controllers
 
         [HttpPut("{brandId}")]
         [Authorize(Roles = "ADMIN")]  
-        public async Task<IActionResult> UpdateBrand(int brandId, [FromBody] Brand brand)
+        public async Task<IActionResult> UpdateBrand(int brandId, [FromBody] BrandRequest brand)
         {
             try
             {
-                var result = await _brandRepository.UpdateBrandAsync(brandId, brand);
+                var updateBrand = new Brand
+                {
+                    Name = brand.Name,
+                    Description = brand.Description,
+                    ImageUrl = brand.ImageUrl,
+                };
+                var result = await _brandRepository.UpdateBrandAsync(brandId, updateBrand);
                 if (result)
                 {
                     var response = Response<object>.CreateSuccessResponse(null, "Thương hiệu đã được cập nhật");

@@ -21,10 +21,10 @@ const Item: FC<ItemProps> = ({ cartItem, className }) => {
           <div className='flex items-end justify-between w-full font-roboto gap-x-2'>
             <div className='flex items-end gap-x-2'>
               <span className='text-base font-semibold leading-none sm:text-lg text-primary'>
-                {formatPrice(cartItem.price)}
+                {formatPrice(cartItem.productVariant.price)}
               </span>
               <span className='font-medium text-[#707070] text-xs sm:text-sm leading-none line-through'>
-                {formatPrice(cartItem.price)}
+                {formatPrice(cartItem.productVariant.price * 1.2)}
               </span>
             </div>
             <div className='flex gap-x-2 '>

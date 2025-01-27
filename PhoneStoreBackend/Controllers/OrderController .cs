@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PhoneStoreBackend.Api.Request;
 using PhoneStoreBackend.Api.Response;
 using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
+using PhoneStoreBackend.Enums;
 using PhoneStoreBackend.Repository;
 
 namespace PhoneStoreBackend.Controllers
@@ -77,19 +79,24 @@ namespace PhoneStoreBackend.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> AddOrder([FromBody] OrderDTO orderDto)
+        public async Task<IActionResult> AddOrder([FromBody] OrderRequest order)
         {
             try
             {
-                var order = new Order
+                var newOrder = new Order
                 {
-                    UserId = orderDto.UserId,
-                    OrderDate = orderDto.OrderDate,
-                    TotalAmount = orderDto.TotalAmount,
-                    Status = orderDto.Status
+                    UserId = order.UserId,
+                    CouponId = order.CouponId,
+                    OrderDate = DateTime.Now,
+                    TotalAmount = order.TotalAmount,
+                    Status = OrderStatusEnum.PENDING.ToString(),
+                    ShippingAddress = order.ShippingAddress,
+                    note = order.Note,
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = DateTime.Now,
                 };
 
-                var createdOrder = await _orderRepository.AddOrderAsync(order);
+                var createdOrder = await _orderRepository.AddOrderAsync(newOrder);
                 var response = Response<OrderDTO>.CreateSuccessResponse(createdOrder, "Đơn hàng đã được thêm thành công");
                 return CreatedAtAction(nameof(GetOrderById), new { id = createdOrder.OrderId }, response);
             }
@@ -102,19 +109,24 @@ namespace PhoneStoreBackend.Controllers
 
         [HttpPut("{id}")]
         [Authorize(Roles = "ADMIN")]
-        public async Task<IActionResult> UpdateOrder(int id, [FromBody] OrderDTO orderDto)
+        public async Task<IActionResult> UpdateOrder(int id, [FromBody] OrderRequest order)
         {
             try
             {
-                var order = new Order
+                var newOrder = new Order
                 {
-                    UserId = orderDto.UserId,
-                    OrderDate = orderDto.OrderDate,
-                    TotalAmount = orderDto.TotalAmount,
-                    Status = orderDto.Status
+                    UserId = order.UserId,
+                    CouponId = order.CouponId,
+                    OrderDate = DateTime.Now,
+                    TotalAmount = order.TotalAmount,
+                    Status = order.Status,
+                    ShippingAddress = order.ShippingAddress,
+                    note = order.Note,
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = DateTime.Now,
                 };
 
-                var isUpdated = await _orderRepository.UpdateOrderAsync(id, order);
+                var isUpdated = await _orderRepository.UpdateOrderAsync(id, newOrder);
                 if (!isUpdated)
                 {
                     var notFoundResponse = Response<object>.CreateErrorResponse("Không tìm thấy đơn hàng để cập nhật.");

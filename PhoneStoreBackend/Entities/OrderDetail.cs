@@ -13,9 +13,13 @@ namespace PhoneStoreBackend.Entities
         [ForeignKey("OrderId")]
         public Order Order { get; set; }
 
-        public int ProductId { get; set; }
-        [ForeignKey("ProductId")]
-        public Product Product { get; set; }
+        public int ProductVariantId { get; set; }
+        [ForeignKey("ProductVariantId")]
+        public ProductVariant ProductVariant { get; set; }
+
+        public decimal Price { get; set; }
+
+        public decimal Discount { get; set; }
 
         [Required]
         public int Quantity { get; set; }

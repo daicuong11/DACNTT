@@ -62,7 +62,6 @@ namespace PhoneStoreBackend.Repository.Implements
 
             existingOrder.Status = order.Status;
             existingOrder.TotalAmount = order.TotalAmount;
-            existingOrder.PaymentMethod = order.PaymentMethod;
             existingOrder.ShippingAddress = order.ShippingAddress;
             existingOrder.UpdatedAt = DateTime.Now;
 

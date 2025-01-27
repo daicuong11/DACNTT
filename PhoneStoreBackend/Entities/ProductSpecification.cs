@@ -9,16 +9,29 @@ namespace PhoneStoreBackend.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int SpecificationId { get; set; }
 
-        public int ProductId { get; set; }
-        [ForeignKey("ProductId")]
-        public Product Product { get; set; }
+        [Required]
+        public int ProductVariantId { get; set; }
+        [ForeignKey("ProductVariantId")]
+        public ProductVariant ProductVariant { get; set; }
+
+        [Required]
+
+        public int ProductSpecificationGroupId { get; set; }
+        [ForeignKey("SpecificationGroupId")]
+        public ProductSpecificationGroup ProductSpecificationGroup { get; set; }
 
         [Required]
         [StringLength(100)]
-        public string Key { get; set; } // Ví dụ: "CPU", "RAM"
+        public string Key { get; set; } 
 
         [Required]
         [StringLength(500)]
-        public string Value { get; set; } // Ví dụ: "Snapdragon 888", "8GB"
+        public string Value { get; set; }
+
+        [Required]
+        public int DisplayOrder {  get; set; }
+
+        [Required]
+        public bool IsSpecial { get; set; }
     }
 }

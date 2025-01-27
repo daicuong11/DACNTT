@@ -54,10 +54,8 @@ namespace PhoneStoreBackend.Repository.Implements
 
             product.Name = updatedProduct.Name;
             product.Description = updatedProduct.Description;
-            product.Price = updatedProduct.Price;
-            product.Stock = updatedProduct.Stock;
-            product.ImageUrl = updatedProduct.ImageUrl;
             product.CategoryId = updatedProduct.CategoryId;
+            product.BrandId = updatedProduct.BrandId;
 
             _context.Products.Update(product);
             await _context.SaveChangesAsync();

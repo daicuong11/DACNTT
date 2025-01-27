@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PhoneStoreBackend.Api.Request;
 using PhoneStoreBackend.Api.Response;
 using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
@@ -77,17 +78,18 @@ namespace PhoneStoreBackend.Controllers
 
         [HttpPost]
         [Authorize(Roles = "ADMIN")]
-        public async Task<IActionResult> AddProductImage([FromBody] ProductImageDTO imageDto)
+        public async Task<IActionResult> AddProductImage([FromBody] ProductImageRequest productImage)
         {
             try
             {
-                var productImage = new ProductImage
+                var createProductImage = new ProductImage
                 {
-                    ProductId = imageDto.ProductId,
-                    ImageUrl = imageDto.ImageUrl
+                    ProductVariantId = productImage.ProductVariantId,
+                    ImageUrl = productImage.ImageUrl,
+                    IsImage = productImage.IsMainImage,
                 };
 
-                var createdImage = await _productImageRepository.AddProductImageAsync(productImage);
+                var createdImage = await _productImageRepository.AddProductImageAsync(createProductImage);
                 var response = Response<ProductImageDTO>.CreateSuccessResponse(createdImage, "Hình ảnh sản phẩm đã được thêm thành công");
                 return CreatedAtAction(nameof(GetProductImageById), new { id = createdImage.ImageId }, response);
             }
@@ -100,17 +102,18 @@ namespace PhoneStoreBackend.Controllers
 
         [HttpPut("{id}")]
         [Authorize(Roles = "ADMIN")]
-        public async Task<IActionResult> UpdateProductImage(int id, [FromBody] ProductImageDTO imageDto)
+        public async Task<IActionResult> UpdateProductImage(int id, [FromBody] ProductImageRequest productImage)
         {
             try
             {
-                var productImage = new ProductImage
+                var createProductImage = new ProductImage
                 {
-                    ProductId = imageDto.ProductId,
-                    ImageUrl = imageDto.ImageUrl
+                    ProductVariantId = productImage.ProductVariantId,
+                    ImageUrl = productImage.ImageUrl,
+                    IsImage = productImage.IsMainImage,
                 };
 
-                var isUpdated = await _productImageRepository.UpdateProductImageAsync(id, productImage);
+                var isUpdated = await _productImageRepository.UpdateProductImageAsync(id, createProductImage);
                 if (!isUpdated)
                 {
                     var notFoundResponse = Response<object>.CreateErrorResponse("Không tìm thấy hình ảnh sản phẩm để cập nhật.");

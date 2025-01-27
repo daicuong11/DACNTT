@@ -39,7 +39,7 @@ namespace PhoneStoreBackend.Repository.Implements
         // Lấy các Notification theo UserId
         public async Task<ICollection<NotificationDTO>> GetNotificationsByUserIdAsync(int userId)
         {
-            var notifications = await _context.Notifications.Where(n => n.UserId == userId).ToListAsync();
+            var notifications = await _context.Notifications.Where(n => n.Id == userId).ToListAsync();
             return notifications.Select(n => _mapper.Map<NotificationDTO>(n)).ToList();
         }
 

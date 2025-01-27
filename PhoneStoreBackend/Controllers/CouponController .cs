@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PhoneStoreBackend.Api.Request;
 using PhoneStoreBackend.Api.Response;
 using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Repository;
@@ -80,11 +81,24 @@ namespace PhoneStoreBackend.Controllers
 
         [HttpPost]
         [Authorize(Roles = "ADMIN")]
-        public async Task<IActionResult> AddCoupon([FromBody] Coupon coupon)
+        public async Task<IActionResult> AddCoupon([FromBody] CouponRequest coupon)
         {
             try
             {
-                var newCoupon = await _couponRepository.AddCouponAsync(coupon);
+                var createCoupon = new Coupon
+                {
+                    Code = coupon.Code,
+                    IsPercentage = coupon.IsPercentage,
+                    DiscountValue = coupon.DiscountValue,
+                    MinimumOrderAmount = coupon.MinimumOrderAmount,
+                    MaxUsageCount = coupon.MaxUsageCount,
+                    UsedCount = coupon.UsedCount,
+                    StartDate = coupon.StartDate,
+                    EndDate = coupon.EndDate,
+                    IsActive = coupon.IsActive,
+                    Id = coupon.userId,
+                };
+                var newCoupon = await _couponRepository.AddCouponAsync(createCoupon);
                 var response = Response<CouponDTO>.CreateSuccessResponse(newCoupon, "Mã giảm giá đã được tạo");
                 return CreatedAtAction(nameof(GetCouponById), new { id = newCoupon.CouponId }, response);
             }
@@ -97,17 +111,30 @@ namespace PhoneStoreBackend.Controllers
 
         [HttpPut("{id}")]
         [Authorize(Roles = "ADMIN")]
-        public async Task<IActionResult> UpdateCoupon(int id, [FromBody] Coupon coupon)
+        public async Task<IActionResult> UpdateCoupon(int id, [FromBody] CouponRequest coupon)
         {
             try
             {
-                var updatedCoupon = await _couponRepository.UpdateCouponAsync(id, coupon);
+                var createCoupon = new Coupon
+                {
+                    Code = coupon.Code,
+                    IsPercentage = coupon.IsPercentage,
+                    DiscountValue = coupon.DiscountValue,
+                    MinimumOrderAmount = coupon.MinimumOrderAmount,
+                    MaxUsageCount = coupon.MaxUsageCount,
+                    UsedCount = coupon.UsedCount,
+                    StartDate = coupon.StartDate,
+                    EndDate = coupon.EndDate,
+                    IsActive = coupon.IsActive,
+                    Id = coupon.userId,
+                };
+                var updatedCoupon = await _couponRepository.UpdateCouponAsync(id, createCoupon);
                 if (!updatedCoupon)
                 {
                     var errorResponse = Response<object>.CreateErrorResponse("Không tìm thấy mã giảm giá để cập nhật");
                     return NotFound(errorResponse);
                 }
-                var response = Response<Coupon>.CreateSuccessResponse(coupon, "Mã giảm giá đã được cập nhật");
+                var response = Response<Coupon>.CreateSuccessResponse(createCoupon, "Mã giảm giá đã được cập nhật");
                 return Ok(response);
             }
             catch (Exception ex)
