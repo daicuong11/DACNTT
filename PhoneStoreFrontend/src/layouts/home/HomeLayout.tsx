@@ -1,17 +1,15 @@
-import { FC } from 'react'
-import Header from './header'
+import { Outlet } from 'react-router-dom'
 import Footer from './footer'
+import Header from './header'
 
-interface HomeLayoutProps {
-  children: React.ReactNode
-}
-
-const HomeLayout: FC<HomeLayoutProps> = ({ children }) => {
+const HomeLayout: React.FC = () => {
   return (
     <div className=''>
       <Header />
       <div className='px-4'>
-        <div className='min-h-screen max-w-[1200px] mx-auto bg-white'>{children}</div>
+        <div className='min-h-screen max-w-[1200px] mx-auto bg-white'>
+          <Outlet />
+        </div>
       </div>
       <Footer />
     </div>
