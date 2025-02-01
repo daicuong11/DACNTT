@@ -4,6 +4,7 @@ using PhoneStoreBackend.Api.Request;
 using PhoneStoreBackend.Api.Response;
 using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
+using PhoneStoreBackend.Helpers;
 using PhoneStoreBackend.Repository;
 
 namespace PhoneStoreBackend.Controllers
@@ -59,11 +60,14 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "ADMIN")] 
+        [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> AddBrand([FromBody] BrandRequest brand)
         {
             try
             {
+                var responseError = ModelStateHelper.CheckModelState(ModelState);
+                if (responseError != null)
+                    return BadRequest(responseError);
                 var createBrand = new Brand
                 {
                     Name = brand.Name,
@@ -87,6 +91,10 @@ namespace PhoneStoreBackend.Controllers
         {
             try
             {
+                var responseError = ModelStateHelper.CheckModelState(ModelState);
+                if (responseError != null)
+                    return BadRequest(responseError);
+
                 var updateBrand = new Brand
                 {
                     Name = brand.Name,

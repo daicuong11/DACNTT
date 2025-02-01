@@ -36,7 +36,7 @@ namespace PhoneStoreBackend.Repository.Implements
 
             if (log == null)
             {
-                throw new Exception("Activity Log not found.");
+                throw new KeyNotFoundException("Activity Log not found.");
             }
 
             return _mapper.Map<ActivityLogDTO>(log);

@@ -31,7 +31,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var discount = await _context.Discounts.FirstOrDefaultAsync(d => d.DiscountId == discountId);
             if (discount == null)
             {
-                throw new Exception("Discount not found.");
+                throw new KeyNotFoundException("Discount not found.");
             }
             return _mapper.Map<DiscountDTO>(discount);
         }
@@ -42,7 +42,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var discount = await _context.Discounts.FirstOrDefaultAsync(d => d.Code == code);
             if (discount == null)
             {
-                throw new Exception("Discount not found.");
+                throw new KeyNotFoundException("Discount not found.");
             }
             return _mapper.Map<DiscountDTO>(discount);
         }
@@ -61,7 +61,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var existingDiscount = await _context.Discounts.FindAsync(discountId);
             if (existingDiscount == null)
             {
-                throw new Exception("Discount not found.");
+                throw new KeyNotFoundException("Discount not found.");
             }
 
             existingDiscount.Code = discount.Code;
@@ -82,7 +82,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var discount = await _context.Discounts.FindAsync(discountId);
             if (discount == null)
             {
-                throw new Exception("Discount not found.");
+                throw new KeyNotFoundException("Discount not found.");
             }
 
             _context.Discounts.Remove(discount);

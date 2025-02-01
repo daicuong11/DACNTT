@@ -31,7 +31,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var productSpecification = await _context.ProductSpecifications.FirstOrDefaultAsync(ps => ps.SpecificationId == specificationId);
             if (productSpecification == null)
             {
-                throw new Exception("Product specification not found.");
+                throw new KeyNotFoundException("Product specification not found.");
             }
             return _mapper.Map<ProductSpecificationDTO>(productSpecification);
         }
@@ -57,7 +57,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var existingProductSpecification = await _context.ProductSpecifications.FindAsync(specificationId);
             if (existingProductSpecification == null)
             {
-                throw new Exception("Product specification not found.");
+                throw new KeyNotFoundException("Product specification not found.");
             }
 
             existingProductSpecification.Key = productSpecification.Key;
@@ -75,7 +75,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var productSpecification = await _context.ProductSpecifications.FindAsync(specificationId);
             if (productSpecification == null)
             {
-                throw new Exception("Product specification not found.");
+                throw new KeyNotFoundException("Product specification not found.");
             }
 
             _context.ProductSpecifications.Remove(productSpecification);

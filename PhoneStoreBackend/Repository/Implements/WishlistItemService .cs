@@ -31,7 +31,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var wishlistItem = await _context.WishlistItems.FirstOrDefaultAsync(wi => wi.WishlistItemId == wishlistItemId);
             if (wishlistItem == null)
             {
-                throw new Exception("Wishlist item not found.");
+                throw new KeyNotFoundException("Wishlist item not found.");
             }
             return _mapper.Map<WishlistItemDTO>(wishlistItem);
         }
@@ -60,7 +60,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var wishlistItem = await _context.WishlistItems.FindAsync(wishlistItemId);
             if (wishlistItem == null)
             {
-                throw new Exception("Wishlist item not found.");
+                throw new KeyNotFoundException("Wishlist item not found.");
             }
 
             _context.WishlistItems.Remove(wishlistItem);

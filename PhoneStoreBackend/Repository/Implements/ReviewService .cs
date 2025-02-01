@@ -31,7 +31,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var review = await _context.Reviews.FirstOrDefaultAsync(r => r.ReviewId == reviewId);
             if (review == null)
             {
-                throw new Exception("Review not found.");
+                throw new KeyNotFoundException("Review not found.");
             }
             return _mapper.Map<ReviewDTO>(review);
         }
@@ -64,7 +64,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var existingReview = await _context.Reviews.FindAsync(reviewId);
             if (existingReview == null)
             {
-                throw new Exception("Review not found.");
+                throw new KeyNotFoundException("Review not found.");
             }
 
             existingReview.Rating = review.Rating;
@@ -82,7 +82,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var review = await _context.Reviews.FindAsync(reviewId);
             if (review == null)
             {
-                throw new Exception("Review not found.");
+                throw new KeyNotFoundException("Review not found.");
             }
 
             _context.Reviews.Remove(review);

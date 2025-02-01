@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PhoneStoreBackend.Api.Request;
 using PhoneStoreBackend.Api.Response;
 using PhoneStoreBackend.DTOs;
+using PhoneStoreBackend.Helpers;
 using PhoneStoreBackend.Repository;
 
 namespace PhoneStoreBackend.Controllers
@@ -85,6 +86,10 @@ namespace PhoneStoreBackend.Controllers
         {
             try
             {
+                var responseError = ModelStateHelper.CheckModelState(ModelState);
+                if (responseError != null)
+                    return BadRequest(responseError);
+
                 var createCoupon = new Coupon
                 {
                     Code = coupon.Code,
@@ -115,6 +120,10 @@ namespace PhoneStoreBackend.Controllers
         {
             try
             {
+                var responseError = ModelStateHelper.CheckModelState(ModelState);
+                if (responseError != null)
+                    return BadRequest(responseError);
+
                 var createCoupon = new Coupon
                 {
                     Code = coupon.Code,

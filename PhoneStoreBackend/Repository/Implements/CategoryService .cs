@@ -28,7 +28,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var category = await _context.Categories.FindAsync(id);
             if (category == null)
             {
-                throw new Exception("Category not found.");
+                throw new KeyNotFoundException("Category not found.");
             }
 
             return _mapper.Map<CategoryDTO>(category);
@@ -46,7 +46,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var existingCategory = await _context.Categories.FindAsync(id);
             if (existingCategory == null)
             {
-                throw new Exception("Category not found.");
+                throw new KeyNotFoundException("Category not found.");
             }
 
             existingCategory.Name = category.Name;
@@ -63,7 +63,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var category = await _context.Categories.FindAsync(id);
             if (category == null)
             {
-                throw new Exception("Category not found.");
+                throw new KeyNotFoundException("Category not found.");
             }
 
             _context.Categories.Remove(category);

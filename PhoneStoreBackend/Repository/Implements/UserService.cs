@@ -28,7 +28,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var user = await _context.Users.FindAsync(id);
             if (user == null)
             {
-                throw new Exception("User not found.");
+                throw new KeyNotFoundException("User not found.");
             }
             return _mapper.Map<UserDTO>(user);
         }
@@ -45,7 +45,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var user = await _context.Users.FindAsync(id);
             if (user == null)
             {
-                throw new Exception("User not found.");
+                throw new KeyNotFoundException("User not found.");
             }
 
             user.Name = newName;
@@ -59,7 +59,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var user = await _context.Users.FindAsync(id);
             if (user == null)
             {
-                throw new Exception("User not found.");
+                throw new KeyNotFoundException("User not found.");
             }
 
             user.Email = newEmail;
@@ -73,7 +73,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var user = await _context.Users.FindAsync(id);
             if (user == null)
             {
-                throw new Exception("User not found.");
+                throw new KeyNotFoundException("User not found.");
             }
 
             user.PhoneNumber = newPhoneNumber;
@@ -87,7 +87,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
             if (user == null)
             {
-                throw new Exception("User not found.");
+                throw new KeyNotFoundException("User not found.");
             }
             return _mapper.Map<UserDTO>(user);
         }
@@ -97,7 +97,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var user = await _context.Users.FindAsync(id);
             if (user == null)
             {
-                throw new Exception("User not found.");
+                throw new KeyNotFoundException("User not found.");
             }
 
             _context.Users.Remove(user);

@@ -32,7 +32,7 @@ namespace PhoneStoreBackend.Repository.Implements
                                        .FirstOrDefaultAsync(b => b.BrandId == brandId);
             if (brand == null)
             {
-                throw new Exception("Brand not found.");
+                throw new KeyNotFoundException("Brand not found.");
             }
 
             return _mapper.Map<BrandDTO>(brand);
@@ -52,7 +52,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var existingBrand = await _context.Brands.FindAsync(brandId);
             if (existingBrand == null)
             {
-                throw new Exception("Brand not found.");
+                throw new KeyNotFoundException("Brand not found.");
             }
 
             existingBrand.Name = brand.Name;
@@ -70,7 +70,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var brand = await _context.Brands.FindAsync(brandId);
             if (brand == null)
             {
-                throw new Exception("Brand not found.");
+                throw new KeyNotFoundException("Brand not found.");
             }
 
             _context.Brands.Remove(brand);

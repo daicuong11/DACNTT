@@ -4,6 +4,7 @@ using PhoneStoreBackend.Api.Request;
 using PhoneStoreBackend.Api.Response;
 using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
+using PhoneStoreBackend.Helpers;
 using PhoneStoreBackend.Repository;
 
 namespace PhoneStoreBackend.Controllers
@@ -82,6 +83,10 @@ namespace PhoneStoreBackend.Controllers
         {
             try
             {
+                var responseError = ModelStateHelper.CheckModelState(ModelState);
+                if (responseError != null)
+                    return BadRequest(responseError);
+
                 var createNotifi = new Notification
                 {
                     Id = notification.Id,
@@ -108,6 +113,10 @@ namespace PhoneStoreBackend.Controllers
         {
             try
             {
+                var responseError = ModelStateHelper.CheckModelState(ModelState);
+                if (responseError != null)
+                    return BadRequest(responseError);
+
                 var createNotifi = new Notification
                 {
                     Id = notification.Id,

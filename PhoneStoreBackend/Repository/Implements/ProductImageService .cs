@@ -31,7 +31,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var productImage = await _context.ProductImages.FirstOrDefaultAsync(pi => pi.ImageId == imageId);
             if (productImage == null)
             {
-                throw new Exception("Product image not found.");
+                throw new KeyNotFoundException("Product image not found.");
             }
             return _mapper.Map<ProductImageDTO>(productImage);
         }
@@ -57,7 +57,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var existingProductImage = await _context.ProductImages.FindAsync(imageId);
             if (existingProductImage == null)
             {
-                throw new Exception("Product image not found.");
+                throw new KeyNotFoundException("Product image not found.");
             }
 
             existingProductImage.ImageUrl = productImage.ImageUrl;
@@ -74,7 +74,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var productImage = await _context.ProductImages.FindAsync(imageId);
             if (productImage == null)
             {
-                throw new Exception("Product image not found.");
+                throw new KeyNotFoundException("Product image not found.");
             }
 
             _context.ProductImages.Remove(productImage);

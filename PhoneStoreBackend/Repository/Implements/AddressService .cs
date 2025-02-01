@@ -35,7 +35,7 @@ namespace PhoneStoreBackend.Repository.Implements
                                          .FirstOrDefaultAsync(a => a.AddressId == addressId);
             if (address == null)
             {
-                throw new Exception("Address not found.");
+                throw new KeyNotFoundException("Address not found.");
             }
 
             return _mapper.Map<AddressDTO>(address);
@@ -57,7 +57,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var existingAddress = await _context.Addresses.FindAsync(addressId);
             if (existingAddress == null)
             {
-                throw new Exception("Address not found.");
+                throw new KeyNotFoundException("Address not found.");
             }
 
             existingAddress.Street = address.Street;
@@ -79,7 +79,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var address = await _context.Addresses.FindAsync(addressId);
             if (address == null)
             {
-                throw new Exception("Address not found.");
+                throw new KeyNotFoundException("Address not found.");
             }
 
             _context.Addresses.Remove(address);

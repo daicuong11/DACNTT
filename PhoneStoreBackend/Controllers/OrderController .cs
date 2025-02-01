@@ -5,6 +5,7 @@ using PhoneStoreBackend.Api.Response;
 using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
 using PhoneStoreBackend.Enums;
+using PhoneStoreBackend.Helpers;
 using PhoneStoreBackend.Repository;
 
 namespace PhoneStoreBackend.Controllers
@@ -83,6 +84,10 @@ namespace PhoneStoreBackend.Controllers
         {
             try
             {
+                var responseError = ModelStateHelper.CheckModelState(ModelState);
+                if (responseError != null)
+                    return BadRequest(responseError);
+
                 var newOrder = new Order
                 {
                     UserId = order.UserId,
@@ -113,6 +118,10 @@ namespace PhoneStoreBackend.Controllers
         {
             try
             {
+                var responseError = ModelStateHelper.CheckModelState(ModelState);
+                if (responseError != null)
+                    return BadRequest(responseError);
+
                 var newOrder = new Order
                 {
                     UserId = order.UserId,
@@ -172,6 +181,10 @@ namespace PhoneStoreBackend.Controllers
         {
             try
             {
+                var responseError = ModelStateHelper.CheckModelState(ModelState);
+                if (responseError != null)
+                    return BadRequest(responseError);
+
                 var isUpdated = await _orderRepository.UpdateOrderStatusAsync(id, status);
                 if (!isUpdated)
                 {

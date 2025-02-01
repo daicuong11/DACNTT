@@ -31,7 +31,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var coupon = await _context.Coupons.FirstOrDefaultAsync(c => c.CouponId == couponId);
             if (coupon == null)
             {
-                throw new Exception("Coupon not found.");
+                throw new KeyNotFoundException("Coupon not found.");
             }
             return _mapper.Map<CouponDTO>(coupon);
         }
@@ -42,7 +42,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var coupon = await _context.Coupons.FirstOrDefaultAsync(c => c.Code == code);
             if (coupon == null)
             {
-                throw new Exception("Coupon not found.");
+                throw new KeyNotFoundException("Coupon not found.");
             }
             return _mapper.Map<CouponDTO>(coupon);
         }
@@ -61,7 +61,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var existingCoupon = await _context.Coupons.FindAsync(couponId);
             if (existingCoupon == null)
             {
-                throw new Exception("Coupon not found.");
+                throw new KeyNotFoundException("Coupon not found.");
             }
 
             existingCoupon.Code = coupon.Code;
@@ -85,7 +85,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var coupon = await _context.Coupons.FindAsync(couponId);
             if (coupon == null)
             {
-                throw new Exception("Coupon not found.");
+                throw new KeyNotFoundException("Coupon not found.");
             }
 
             _context.Coupons.Remove(coupon);

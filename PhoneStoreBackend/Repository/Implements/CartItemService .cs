@@ -37,7 +37,7 @@ namespace PhoneStoreBackend.Repository.Implements
                                          .FirstOrDefaultAsync(ci => ci.CartItemId == cartItemId);
             if (cartItem == null)
             {
-                throw new Exception("CartItem not found.");
+                throw new KeyNotFoundException("CartItem not found.");
             }
 
             return _mapper.Map<CartItemDTO>(cartItem);
@@ -68,7 +68,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var existingCartItem = await _context.CartItems.FindAsync(cartItemId);
             if (existingCartItem == null)
             {
-                throw new Exception("CartItem not found.");
+                throw new KeyNotFoundException("CartItem not found.");
             }
 
             existingCartItem.Quantity = cartItem.Quantity;
@@ -84,7 +84,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var cartItem = await _context.CartItems.FindAsync(cartItemId);
             if (cartItem == null)
             {
-                throw new Exception("CartItem not found.");
+                throw new KeyNotFoundException("CartItem not found.");
             }
 
             _context.CartItems.Remove(cartItem);

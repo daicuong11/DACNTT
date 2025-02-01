@@ -31,7 +31,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var order = await _context.Orders.FirstOrDefaultAsync(o => o.OrderId == orderId);
             if (order == null)
             {
-                throw new Exception("Order not found.");
+                throw new KeyNotFoundException("Order not found.");
             }
             return _mapper.Map<OrderDTO>(order);
         }
@@ -57,7 +57,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var existingOrder = await _context.Orders.FindAsync(orderId);
             if (existingOrder == null)
             {
-                throw new Exception("Order not found.");
+                throw new KeyNotFoundException("Order not found.");
             }
 
             existingOrder.Status = order.Status;
@@ -77,7 +77,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var order = await _context.Orders.FindAsync(orderId);
             if (order == null)
             {
-                throw new Exception("Order not found.");
+                throw new KeyNotFoundException("Order not found.");
             }
 
             _context.Orders.Remove(order);
@@ -92,7 +92,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var order = await _context.Orders.FindAsync(orderId);
             if (order == null)
             {
-                throw new Exception("Order not found.");
+                throw new KeyNotFoundException("Order not found.");
             }
 
             order.Status = status;

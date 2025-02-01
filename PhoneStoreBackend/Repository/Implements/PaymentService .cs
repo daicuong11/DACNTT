@@ -31,7 +31,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var payment = await _context.Payments.FirstOrDefaultAsync(p => p.PaymentId == paymentId);
             if (payment == null)
             {
-                throw new Exception("Payment not found.");
+                throw new KeyNotFoundException("Payment not found.");
             }
             return _mapper.Map<PaymentDTO>(payment);
         }
@@ -57,7 +57,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var existingPayment = await _context.Payments.FindAsync(paymentId);
             if (existingPayment == null)
             {
-                throw new Exception("Payment not found.");
+                throw new KeyNotFoundException("Payment not found.");
             }
 
             existingPayment.PaymentMethod = payment.PaymentMethod;
@@ -77,7 +77,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var payment = await _context.Payments.FindAsync(paymentId);
             if (payment == null)
             {
-                throw new Exception("Payment not found.");
+                throw new KeyNotFoundException("Payment not found.");
             }
 
             _context.Payments.Remove(payment);

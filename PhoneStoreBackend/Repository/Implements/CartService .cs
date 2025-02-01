@@ -32,7 +32,7 @@ namespace PhoneStoreBackend.Repository.Implements
                                       .FirstOrDefaultAsync(c => c.CartId == cartId);
             if (cart == null)
             {
-                throw new Exception("Cart not found.");
+                throw new KeyNotFoundException("Cart not found.");
             }
 
             return _mapper.Map<CartDTO>(cart);
@@ -52,7 +52,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var existingCart = await _context.Carts.FindAsync(cartId);
             if (existingCart == null)
             {
-                throw new Exception("Cart not found.");
+                throw new KeyNotFoundException("Cart not found.");
             }
 
             existingCart.UserId = cart.UserId;
@@ -68,7 +68,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var cart = await _context.Carts.FindAsync(cartId);
             if (cart == null)
             {
-                throw new Exception("Cart not found.");
+                throw new KeyNotFoundException("Cart not found.");
             }
 
             _context.Carts.Remove(cart);

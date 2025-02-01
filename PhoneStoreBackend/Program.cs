@@ -122,7 +122,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("authenticated", policy => policy.RequireAuthenticatedUser());
-    options.AddPolicy("admin", policy => policy.RequireRole(RoleEnum.ADMIN.ToString()));
+    options.AddPolicy("ADMIN", policy => policy.RequireRole(RoleEnum.ADMIN.ToString()));
 });
 
 // Logging configuration

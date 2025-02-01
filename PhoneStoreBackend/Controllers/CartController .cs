@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PhoneStoreBackend.Api.Request;
 using PhoneStoreBackend.Api.Response;
 using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
+using PhoneStoreBackend.Helpers;
 using PhoneStoreBackend.Repository;
 
 namespace PhoneStoreBackend.Controllers
@@ -59,11 +61,20 @@ namespace PhoneStoreBackend.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> AddCart([FromBody] Cart cart)
+        public async Task<IActionResult> AddCart([FromBody] CartRequest cart)
         {
             try
             {
-                var newCart = await _cartRepository.AddCartAsync(cart);
+                var responseError = ModelStateHelper.CheckModelState(ModelState);
+                if (responseError != null)
+                    return BadRequest(responseError);
+
+                var createCart = new Cart
+                {
+                    UserId = cart.UserId,
+                };
+
+                var newCart = await _cartRepository.AddCartAsync(createCart);
                 var response = Response<CartDTO>.CreateSuccessResponse(newCart, "Giỏ hàng đã được tạo");
                 return CreatedAtAction(nameof(GetCartById), new { cartId = newCart.CartId }, response);
             }
@@ -76,11 +87,20 @@ namespace PhoneStoreBackend.Controllers
 
         [HttpPut("{cartId}")]
         [Authorize]
-        public async Task<IActionResult> UpdateCart(int cartId, [FromBody] Cart cart)
+        public async Task<IActionResult> UpdateCart(int cartId, [FromBody] CartRequest cart)
         {
             try
             {
-                var result = await _cartRepository.UpdateCartAsync(cartId, cart);
+                var responseError = ModelStateHelper.CheckModelState(ModelState);
+                if (responseError != null)
+                    return BadRequest(responseError);
+
+                var createCart = new Cart
+                {
+                    UserId = cart.UserId,
+                };
+
+                var result = await _cartRepository.UpdateCartAsync(cartId, createCart);
                 if (result)
                 {
                     var response = Response<object>.CreateSuccessResponse(null, "Giỏ hàng đã được cập nhật");

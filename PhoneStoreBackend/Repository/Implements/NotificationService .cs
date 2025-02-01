@@ -31,7 +31,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var notification = await _context.Notifications.FirstOrDefaultAsync(n => n.NotificationId == notificationId);
             if (notification == null)
             {
-                throw new Exception("Notification not found.");
+                throw new KeyNotFoundException("Notification not found.");
             }
             return _mapper.Map<NotificationDTO>(notification);
         }
@@ -57,7 +57,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var existingNotification = await _context.Notifications.FindAsync(notificationId);
             if (existingNotification == null)
             {
-                throw new Exception("Notification not found.");
+                throw new KeyNotFoundException("Notification not found.");
             }
 
             existingNotification.Title = notification.Title;
@@ -76,7 +76,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var notification = await _context.Notifications.FindAsync(notificationId);
             if (notification == null)
             {
-                throw new Exception("Notification not found.");
+                throw new KeyNotFoundException("Notification not found.");
             }
 
             _context.Notifications.Remove(notification);
@@ -91,7 +91,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var notification = await _context.Notifications.FindAsync(notificationId);
             if (notification == null)
             {
-                throw new Exception("Notification not found.");
+                throw new KeyNotFoundException("Notification not found.");
             }
 
             notification.IsRead = true;
