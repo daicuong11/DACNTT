@@ -36,20 +36,19 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize]
         public async Task<IActionResult> GetProductById(int id)
         {
             try
             {
                 var product = await _productRepository.GetProductByIdAsync(id);
-                if (product == null)
-                {
-                    var notFoundResponse = Response<object>.CreateErrorResponse("Không tìm thấy sản phẩm.");
-                    return NotFound(notFoundResponse);
-                }
 
                 var response = Response<ProductDTO>.CreateSuccessResponse(product, "Thông tin sản phẩm");
                 return Ok(response);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                var notFoundResponse = Response<object>.CreateErrorResponse("Không tìm thấy sản phẩm với id= " + id);
+                return NotFound(notFoundResponse);
             }
             catch (Exception ex)
             {
@@ -66,7 +65,6 @@ namespace PhoneStoreBackend.Controllers
             {
                 var createProduct = new Product
                 {
-                    Slug = product.Slug,
                     Name = product.Name,
                     Description = product.Description,
                     CategoryId = product.CategoryId,
@@ -91,21 +89,20 @@ namespace PhoneStoreBackend.Controllers
             {
                 var updatedProduct = new Product
                 {
-                    Slug = product.Slug,
                     Name = product.Name,
                     Description = product.Description,
                     CategoryId = product.CategoryId,
                     BrandId = product.BrandId,
                 };
                 var isUpdated = await _productRepository.UpdateProductAsync(id, updatedProduct);
-                if (!isUpdated)
-                {
-                    var notFoundResponse = Response<object>.CreateErrorResponse("Không tìm thấy sản phẩm để cập nhật.");
-                    return NotFound(notFoundResponse);
-                }
 
                 var response = Response<object>.CreateSuccessResponse(null, "Sản phẩm đã được cập nhật thành công");
                 return Ok(response);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                var notFoundResponse = Response<object>.CreateErrorResponse("Không tìm thấy sản phẩm để cập nhật.");
+                return NotFound(notFoundResponse);
             }
             catch (Exception ex)
             {
@@ -121,14 +118,14 @@ namespace PhoneStoreBackend.Controllers
             try
             {
                 var isDeleted = await _productRepository.DeleteProductAsync(id);
-                if (!isDeleted)
-                {
-                    var notFoundResponse = Response<object>.CreateErrorResponse("Không tìm thấy sản phẩm để xóa.");
-                    return NotFound(notFoundResponse);
-                }
 
                 var response = Response<object>.CreateSuccessResponse(null, "Sản phẩm đã được xóa thành công");
                 return Ok(response);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                var notFoundResponse = Response<object>.CreateErrorResponse("Không tìm thấy sản phẩm để xóa.");
+                return NotFound(notFoundResponse);
             }
             catch (Exception ex)
             {
@@ -138,7 +135,6 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpGet("search")]
-        [Authorize]
         public async Task<IActionResult> SearchProducts([FromQuery] string keyword)
         {
             try

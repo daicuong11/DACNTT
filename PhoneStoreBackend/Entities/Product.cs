@@ -9,9 +9,6 @@ namespace PhoneStoreBackend.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ProductId { get; set; }
 
-        [Required]
-        [StringLength(500)]
-        public string Slug { get; set; }
 
         [Required]
         [StringLength(500)]

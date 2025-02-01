@@ -56,6 +56,7 @@ builder.Services.AddScoped<IEmailRepository, EmailService>();
 builder.Services.AddScoped<IAuthRepository, AuthService>();
 builder.Services.AddScoped<IUserRepository, UserService>();
 builder.Services.AddScoped<IProductRepository, ProductService>();
+builder.Services.AddScoped<IProductVariantRepository, ProductVariantService>();
 builder.Services.AddScoped<ICategoryRepository, CategoryService>();
 builder.Services.AddScoped<IBrandRepository, BrandService>();
 builder.Services.AddScoped<IOrderRepository, OrderService>();

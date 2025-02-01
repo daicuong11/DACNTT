@@ -20,17 +20,17 @@ namespace PhoneStoreBackend.Repository.Implements
         // Lấy danh sách tất cả sản phẩm
         public async Task<ICollection<ProductDTO>> GetAllAsync()
         {
-            var products = await _context.Products.Include(p => p.Category).ToListAsync();
+            var products = await _context.Products.Include(p => p.Category).Include(p => p.Brand).ToListAsync();
             return products.Select(p => _mapper.Map<ProductDTO>(p)).ToList();
         }
-
+        
         // Lấy sản phẩm theo ID
         public async Task<ProductDTO> GetProductByIdAsync(int id)
         {
             var product = await _context.Products.Include(p => p.Category).Include(p => p.Brand).FirstOrDefaultAsync(p => p.ProductId == id);
             if (product == null)
             {
-                throw new Exception("Product not found.");
+                throw new KeyNotFoundException($"Product with id {id} not found.");
             }
             return _mapper.Map<ProductDTO>(product);
         }
@@ -49,7 +49,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var product = await _context.Products.FindAsync(id);
             if (product == null)
             {
-                throw new Exception("Product not found.");
+                throw new KeyNotFoundException($"Product with id {id} not found.");
             }
 
             product.Name = updatedProduct.Name;
@@ -68,7 +68,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var product = await _context.Products.FindAsync(id);
             if (product == null)
             {
-                throw new Exception("Product not found.");
+                throw new KeyNotFoundException("not found.");
             }
 
             _context.Products.Remove(product);

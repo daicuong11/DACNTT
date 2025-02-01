@@ -42,14 +42,16 @@ const ReviewCartItemModal: FC<ReviewCartItemModalProps> = ({ isOpen, onClose }) 
                 </div>
                 <div className='flex items-end justify-between w-full'>
                   <div className='flex items-end gap-x-2'>
-                    <span className='text-lg font-medium leading-none text-primary'>{formatPrice(cartItem.price)}</span>
+                    <span className='text-lg font-medium leading-none text-primary'>
+                      {formatPrice(cartItem.productVariant.price)}
+                    </span>
                     <span className='font-medium text-[#707070] text-sm leading-none line-through'>
-                      {formatPrice(cartItem.price)}
+                      {formatPrice(cartItem.productVariant.price)}
                     </span>
                   </div>
                   <div className='flex gap-x-2 '>
                     <div className='font-medium leading-none text-slate-700'>Số lượng:</div>
-                    <span className='font-medium leading-none text-primary'>1</span>
+                    <span className='font-medium leading-none text-primary'>{cartItem.quantity}</span>
                   </div>
                 </div>
               </div>

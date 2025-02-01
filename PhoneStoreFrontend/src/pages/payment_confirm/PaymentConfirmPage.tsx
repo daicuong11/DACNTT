@@ -137,6 +137,7 @@ const PaymentConfirmPage = () => {
                     <Input
                       value={couponCodeInput}
                       onChange={(e) => setCouponCodeInput(e.target.value)}
+                      onPressEnter={handleSearchCoupon}
                       variant='borderless'
                       placeholder='Nhập mã giảm giá (chỉ áp dụng 1 lần)'
                       allowClear

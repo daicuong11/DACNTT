@@ -7,9 +7,6 @@ namespace PhoneStoreBackend.DTOs
     public class ProductDTO
     {
         public int ProductId { get; set; }
-
-        public string slug { get; set; }
-
         public string Name { get; set; }
 
         public string Description { get; set; }

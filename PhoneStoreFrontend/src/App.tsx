@@ -4,15 +4,16 @@ import { ToastContainer } from 'react-toastify'
 import Loader from './components/Loader.tsx'
 import MyRoutes from './routes'
 import ScrollToTop from './utils/ScrollToTop.tsx'
+import CartWatcher from './middlewares/CartWatcher.tsx'
 
 function App() {
-  const appName: string = import.meta.env.VITE_APP_NAME || 'BC DACNTT';
+  const appName: string = import.meta.env.VITE_APP_NAME || 'BC DACNTT'
 
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
-    setTimeout(() => setLoading(false), 1000);
-  }, []);
+    setTimeout(() => setLoading(false), 1000)
+  }, [])
 
   return loading ? (
     <Loader />
@@ -20,8 +21,9 @@ function App() {
     <>
       <BrowserRouter>
         <ScrollToTop />
+        <CartWatcher />
         <MyRoutes />
-        <ToastContainer position="top-center" autoClose={2400} closeOnClick />
+        <ToastContainer position='top-center' autoClose={2400} closeOnClick />
       </BrowserRouter>
     </>
   )
