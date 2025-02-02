@@ -2,11 +2,12 @@ import React, { useState, ReactNode } from 'react'
 import Sidebar from './components/Sidebar'
 import Header from './components/Header'
 
-import '../../assets/css/style.css'
+import '@/assets/css/style.css'
 import 'jsvectormap/dist/css/jsvectormap.css'
 import 'flatpickr/dist/flatpickr.min.css'
+import { Outlet } from 'react-router-dom'
 
-const AdminLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
+const AdminLayout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
@@ -25,7 +26,9 @@ const AdminLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
 
           {/* <!-- ===== Main Content Start ===== --> */}
           <main>
-            <div className='p-4 mx-auto max-w-screen-2xl md:p-6 2xl:p-10'>{children}</div>
+            <div className='p-4 mx-auto max-w-screen-2xl md:p-6 2xl:p-10'>
+              <Outlet/>
+            </div>
           </main>
           {/* <!-- ===== Main Content End ===== --> */}
         </div>

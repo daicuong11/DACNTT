@@ -1,9 +1,11 @@
-import { ProductType } from '@/types/product.type'
-import { Image, Table, Tag } from 'antd'
-import { useEffect, useState } from 'react'
+import { ProductType } from "@/types/product.type";
+import { Image, Table, Tag } from "antd";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import ToggleCard from "../components/ToggleCard";
 
 export default function ProductList() {
-  const [products, setProducts] = useState<ProductType[]>([])
+  const [products, setProducts] = useState<ProductType[]>([]);
 
   const generateProducts = (num: number): ProductType[] => {
     return Array.from({ length: num }, (_, index) => ({
@@ -19,95 +21,106 @@ export default function ProductList() {
         name: `Category ${Math.floor(Math.random() * 5) + 1}`,
         url: `category-${Math.floor(Math.random() * 5) + 1}`,
         description: `Description for category ${Math.floor(Math.random() * 5) + 1}`,
-        imageUrl: `https://picsum.photos/200?random=${Math.floor(Math.random() * 5) + 1}`
+        imageUrl: `https://picsum.photos/200?random=${Math.floor(Math.random() * 5) + 1}`,
       },
       brandId: Math.floor(Math.random() * 5) + 1,
       brand: {
         brandId: Math.floor(Math.random() * 5) + 1,
         name: `Brand ${Math.floor(Math.random() * 5) + 1}`,
         description: `Description for brand ${Math.floor(Math.random() * 5) + 1}`,
-        imageUrl: `https://picsum.photos/200?random=${Math.floor(Math.random() * 5) + 1}`
+        imageUrl: `https://picsum.photos/200?random=${Math.floor(Math.random() * 5) + 1}`,
       },
       createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    }))
-  }
+      updatedAt: new Date().toISOString(),
+    }));
+  };
 
   useEffect(() => {
     // Fetch product data from API
     const fetchProducts = async () => {
       try {
-        const response = await generateProducts(50) // Update with your API endpoint
+        const response = await generateProducts(50); // Update with your API endpoint
         // const data = await response.json();
-        setProducts(response)
+        setProducts(response);
       } catch (error) {
-        console.error('Error fetching products:', error)
+        console.error("Error fetching products:", error);
       }
-    }
+    };
 
-    fetchProducts()
-  }, [])
+    fetchProducts();
+  }, []);
 
   const columns = [
     {
-      title: 'Product ID',
-      dataIndex: 'productId',
-      key: 'productId'
+      title: "Product ID",
+      dataIndex: "productId",
+      key: "productId",
     },
     {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name'
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
     },
     {
-      title: 'Description',
-      dataIndex: 'description',
-      key: 'description',
-      ellipsis: true
+      title: "Price",
+      dataIndex: "price",
+      key: "price",
+      render: (price: number) => `${price.toFixed(0)} VNĐ`,
     },
     {
-      title: 'Price',
-      dataIndex: 'price',
-      key: 'price',
-      render: (price: number) => `${price.toFixed(0)} VNĐ`
-    },
-    {
-      title: 'Stock',
-      dataIndex: 'stock',
-      key: 'stock',
+      title: "Stock",
+      dataIndex: "stock",
+      key: "stock",
       render: (stock: number) => (
-        <Tag color={stock > 0 ? 'green' : 'red'}>{stock > 0 ? `${stock} Available` : 'Out of Stock'}</Tag>
-      )
+        <Tag color={stock > 0 ? "green" : "red"}>
+          {stock > 0 ? `${stock} Available` : "Out of Stock"}
+        </Tag>
+      ),
     },
     {
-      title: 'Category',
-      dataIndex: ['category', 'name'],
-      key: 'category'
+      title: "Category",
+      dataIndex: ["category", "name"],
+      key: "category",
     },
     {
-      title: 'Brand',
-      dataIndex: ['brand', 'name'],
-      key: 'brand'
+      title: "Brand",
+      dataIndex: ["brand", "name"],
+      key: "brand",
     },
     {
-      title: 'Image',
-      dataIndex: 'imageUrl',
-      key: 'imageUrl',
-      render: (imageUrl: string) => <Image width={50} src={imageUrl} alt='Product Image' />
+      title: "Image",
+      dataIndex: "imageUrl",
+      key: "imageUrl",
+      render: (imageUrl: string) => (
+        <Image width={50} src={imageUrl} alt="Product Image" />
+      ),
     },
     {
-      title: 'Created At',
-      dataIndex: 'createdAt',
-      key: 'createdAt',
-      render: (date: string) => new Date(date).toLocaleDateString()
+      title: "Created At",
+      dataIndex: "createdAt",
+      key: "createdAt",
+      render: (date: string) => new Date(date).toLocaleDateString(),
     },
     {
-      title: 'Updated At',
-      dataIndex: 'updatedAt',
-      key: 'updatedAt',
-      render: (date: string) => new Date(date).toLocaleDateString()
-    }
-  ]
+      title: "Updated At",
+      dataIndex: "updatedAt",
+      key: "updatedAt",
+      render: (date: string) => new Date(date).toLocaleDateString(),
+    },
+  ];
 
-  return <Table dataSource={products} columns={columns} rowKey='productId' bordered pagination={{ pageSize: 10 }} />
+  return (
+    <>
+      <ToggleCard title="Danh Sách Sản Phẩm" button={<Link to="/admin/products/add" className="btn btn-primary">Thêm Sản Phẩm</Link>}>
+        <Table
+          dataSource={products}
+          columns={columns}
+          rowKey="productId"
+          bordered
+          pagination={{ pageSize: 10 }}
+        />
+      </ToggleCard>
+    </>
+  );
 }
+

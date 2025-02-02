@@ -1,4 +1,7 @@
 import { CartLayout, HomeLayout } from "@/layouts";
+import AdminLayout from "@/layouts/admin/AdminLayout";
+import AddProduct from "@/pages/admin/products/AddProduct";
+import ProductList from "@/pages/admin/products/ProductList";
 import { CartPage } from "@/pages/cart";
 import { HomePage } from "@/pages/home";
 import { Login } from "@/pages/login";
@@ -88,6 +91,22 @@ const MyRoutes = () => {
         },
     ];
 
+    const routesForAdmin: RouteObject[] = [
+    {
+        path: "/admin",
+        element: <AdminLayout />,
+        children: [
+            {
+                path: 'products',
+                element: <ProductList/>,
+            },
+            {
+                path: 'products/add',
+                element: <AddProduct/>,
+            },
+        ]
+    }
+    ]
     const routesForNotFound: RouteObject[] = [
         {
             path: "*",
@@ -102,6 +121,7 @@ const MyRoutes = () => {
         ...(!user ? [] : routesForAuthenticatedOnly),
         ...routesForNotAuthenticatedOnly,
         ...routesForNotFound,
+        ...routesForAdmin,
     ]);
 
     return routing; // Trả về routes đã xử lý
