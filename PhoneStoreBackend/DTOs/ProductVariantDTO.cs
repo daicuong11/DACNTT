@@ -12,7 +12,7 @@ namespace PhoneStoreBackend.DTOs
         public Product Product { get; set; }
 
         public int? DiscountId { get; set; }
-        public Discount? Discount { get; set; }
+        public Discount Discount { get; set; }
         public string Slug { get; set; }
         public string Color { get; set; }
         public string Storage { get; set; }

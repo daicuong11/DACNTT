@@ -14,7 +14,7 @@ namespace PhoneStoreBackend.DTOs
         public Coupon Coupon { get; set; }
         public Customer Customer { get; set; }
 
-        public string? note { get; set; }
+        public string Note { get; set; } = string.Empty;
 
         public DateTime OrderDate { get; set; }
         public string Status { get; set; }

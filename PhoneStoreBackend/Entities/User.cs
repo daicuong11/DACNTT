@@ -12,20 +12,20 @@ namespace PhoneStoreBackend.Entities
 
         [Required]
         [StringLength(100, MinimumLength = 5)]
-        public string? Name { get; set; }
+        public string Name { get; set; }
 
         [Required]
         [EmailAddress]
         public string Email { get; set; }
 
         [StringLength(100, MinimumLength = 6)]
-        public string? Password { get; set; }
+        public string Password { get; set; }
 
-        public string? PhoneNumber { get; set; } 
+        public string PhoneNumber { get; set; } 
 
-        public string? Address { get; set; }
+        public string Address { get; set; }
 
-        public string? ProfilePicture { get; set; } 
+        public string ProfilePicture { get; set; } 
 
         [Column(TypeName = "nvarchar(20)")]
         [EnumDataType(typeof(RoleEnum))]

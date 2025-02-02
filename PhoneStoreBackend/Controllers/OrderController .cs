@@ -94,9 +94,9 @@ namespace PhoneStoreBackend.Controllers
                     CouponId = order.CouponId,
                     OrderDate = DateTime.Now,
                     TotalAmount = order.TotalAmount,
-                    Status = OrderStatusEnum.PENDING.ToString(),
+                    Status = OrderStatusEnum.Pending.ToString(),
                     ShippingAddress = order.ShippingAddress,
-                    note = order.Note,
+                    Note = order.Note,
                     CreatedAt = DateTime.Now,
                     UpdatedAt = DateTime.Now,
                 };
@@ -130,7 +130,7 @@ namespace PhoneStoreBackend.Controllers
                     TotalAmount = order.TotalAmount,
                     Status = order.Status,
                     ShippingAddress = order.ShippingAddress,
-                    note = order.Note,
+                    Note = order.Note,
                     CreatedAt = DateTime.Now,
                     UpdatedAt = DateTime.Now,
                 };

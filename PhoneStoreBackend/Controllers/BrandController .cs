@@ -6,6 +6,7 @@ using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
 using PhoneStoreBackend.Helpers;
 using PhoneStoreBackend.Repository;
+using PhoneStoreBackend.Repository.Implements;
 
 namespace PhoneStoreBackend.Controllers
 {
@@ -14,10 +15,12 @@ namespace PhoneStoreBackend.Controllers
     public class BrandController : ControllerBase
     {
         private readonly IBrandRepository _brandRepository;
+        private readonly CloudinaryService _cloudinaryService;
 
-        public BrandController(IBrandRepository brandRepository)
+        public BrandController(IBrandRepository brandRepository, CloudinaryService cloudinaryService)
         {
             _brandRepository = brandRepository;
+            _cloudinaryService = cloudinaryService;
         }
 
         [HttpGet]
@@ -68,12 +71,21 @@ namespace PhoneStoreBackend.Controllers
                 var responseError = ModelStateHelper.CheckModelState(ModelState);
                 if (responseError != null)
                     return BadRequest(responseError);
+
+                string imageUrl = null;
+
+                if (brand.Image != null)
+                {
+                    imageUrl = await _cloudinaryService.UploadImageAsync(brand.Image, "Brands");
+                }
+
                 var createBrand = new Brand
                 {
                     Name = brand.Name,
                     Description = brand.Description,
-                    ImageUrl = brand.ImageUrl,
+                    ImageUrl = imageUrl,
                 };
+
                 var newBrand = await _brandRepository.AddBrandAsync(createBrand);
                 var response = Response<BrandDTO>.CreateSuccessResponse(newBrand, "Thương hiệu đã được tạo thành công");
                 return CreatedAtAction(nameof(GetBrandById), new { brandId = newBrand.BrandId }, response);
@@ -95,13 +107,21 @@ namespace PhoneStoreBackend.Controllers
                 if (responseError != null)
                     return BadRequest(responseError);
 
-                var updateBrand = new Brand
+                string imageUrl = null;
+
+                if (brand.Image != null)
+                {
+                    imageUrl = await _cloudinaryService.UploadImageAsync(brand.Image, "Brands");
+                }
+
+                var createBrand = new Brand
                 {
                     Name = brand.Name,
                     Description = brand.Description,
-                    ImageUrl = brand.ImageUrl,
+                    ImageUrl = imageUrl,
                 };
-                var result = await _brandRepository.UpdateBrandAsync(brandId, updateBrand);
+
+                var result = await _brandRepository.UpdateBrandAsync(brandId, createBrand);
                 if (result)
                 {
                     var response = Response<object>.CreateSuccessResponse(null, "Thương hiệu đã được cập nhật");

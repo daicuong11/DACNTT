@@ -20,6 +20,7 @@ namespace PhoneStoreBackend.Entities
         [ForeignKey("CouponId")]
         public Coupon Coupon { get; set; }
 
+        public int CustomerId { get; set; }
         public Customer Customer { get; set; }
 
         [Required]
@@ -28,7 +29,7 @@ namespace PhoneStoreBackend.Entities
         [Required]
         [Column(TypeName = "nvarchar(20)")]
         [EnumDataType(typeof(OrderStatusEnum))]
-        public string Status { get; set; } = OrderStatusEnum.PENDING.ToString(); // Pending, Shipping, Completed, Cancelled
+        public string Status { get; set; } = OrderStatusEnum.Pending.ToString(); // Pending, Shipping, Completed, Cancelled
 
         [Required]
         [Column(TypeName = "decimal(18, 2)")]
@@ -36,7 +37,7 @@ namespace PhoneStoreBackend.Entities
 
         public string ShippingAddress { get; set; }
 
-        public string? note { get; set; } = "";
+        public string Note { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt { get; set; } = DateTime.Now;

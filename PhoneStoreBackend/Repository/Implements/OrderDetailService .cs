@@ -72,12 +72,7 @@ namespace PhoneStoreBackend.Repository.Implements
         // Xóa chi tiết đơn hàng
         public async Task<bool> DeleteOrderDetailAsync(int orderDetailId)
         {
-            var orderDetail = await _context.OrderDetails.FindAsync(orderDetailId);
-            if (orderDetail == null)
-            {
-                throw new KeyNotFoundException("OrderDetail not found.");
-            }
-
+            var orderDetail = await _context.OrderDetails.FindAsync(orderDetailId) ?? throw new KeyNotFoundException("OrderDetail not found.");
             _context.OrderDetails.Remove(orderDetail);
             await _context.SaveChangesAsync();
 

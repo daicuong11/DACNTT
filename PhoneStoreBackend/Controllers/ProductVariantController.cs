@@ -46,7 +46,7 @@ namespace PhoneStoreBackend.Controllers
                 var response = Response<ProductVariantDTO>.CreateSuccessResponse(findProductVariant, "Thông tin sản phẩm: ");
                 return Ok(response);
             }
-            catch (KeyNotFoundException ex)
+            catch (KeyNotFoundException)
             {
                 var notFoundResponse = Response<object>.CreateErrorResponse("Không tìm thấy sản phẩm với id= " + id);
                 return NotFound(notFoundResponse);
@@ -115,7 +115,7 @@ namespace PhoneStoreBackend.Controllers
                 var response = Response<object>.CreateSuccessResponse(null, "Chỉnh sửa thành công");
                 return Ok(response);
             }
-            catch (KeyNotFoundException ex)
+            catch (KeyNotFoundException)
             {
                 var notFoundResponse = Response<object>.CreateErrorResponse("Không tìm thấy sản phẩm với id= " + id);
                 return NotFound(notFoundResponse);
@@ -137,7 +137,7 @@ namespace PhoneStoreBackend.Controllers
                 var response = Response<object>.CreateSuccessResponse(null, "Xóa thành công");
                 return Ok(response);
             }
-            catch (KeyNotFoundException ex)
+            catch (KeyNotFoundException)
             {
                 var notFoundResponse = Response<object>.CreateErrorResponse("Không tìm thấy sản phẩm với id= " + id);
                 return NotFound(notFoundResponse);

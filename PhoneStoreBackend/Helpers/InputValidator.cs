@@ -4,7 +4,7 @@ namespace PhoneStoreBackend.Helpers
 {
     public static class InputValidator
     {
-        public static Response<object>? CheckInput<T>(T input, string name)
+        public static Response<object> CheckInput<T>(T input, string name)
         {
             if (input == null)
             {

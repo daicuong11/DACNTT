@@ -33,10 +33,11 @@ namespace PhoneStoreBackend.DbContexts
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Order>()
-                .HasOne(o => o.Customer)
-                .WithOne(c => c.Order)
-                .HasForeignKey<Customer>(c => c.OrderId);
+            modelBuilder.Entity<Customer>()
+                .HasOne(c => c.Order)
+                .WithOne(o => o.Customer)
+                .HasForeignKey<Order>(o => o.CustomerId)  
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Order>()
                 .HasOne(o => o.Payment)

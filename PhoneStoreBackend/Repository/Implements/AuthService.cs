@@ -99,10 +99,10 @@ namespace PhoneStoreBackend.Repository.Implements
                     ExpiresIn = tokenExpirationInMinutes * 60,
                     User = new
                     {
-                        Id = newUser.Id,
-                        Name = newUser.Name,
-                        Email = newUser.Email,
-                        Role = newUser.Role,
+                        newUser.Id,
+                        newUser.Name,
+                        newUser.Email,
+                        newUser.Role,
                     }
                 };
             }
@@ -112,72 +112,58 @@ namespace PhoneStoreBackend.Repository.Implements
                 throw new Exception($"Lỗi khi đăng ký tài khoản: {ex.Message}");
             }
         }
+
         public async Task<UserDTO> VerifyTokenAsync([FromHeader(Name = "Authorization")] string token)
         {
-            if (string.IsNullOrEmpty(token))
+            if (string.IsNullOrWhiteSpace(token))
                 throw new UnauthorizedAccessException("Token không được để trống.");
 
             try
             {
                 // Xác thực token và lấy các claims
-                var claims = _tokenService.VerifyToken(token);
-                if (claims == null)
-                    throw new UnauthorizedAccessException("Token không hợp lệ.");
+                var claims = _tokenService.VerifyToken(token)
+                    ?? throw new UnauthorizedAccessException("Token không hợp lệ.");
 
                 // Lấy userId từ claims
-                var userIdClaim = claims.FindFirst(ClaimTypes.NameIdentifier);
-                if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out var userId))
-                    throw new UnauthorizedAccessException("Token không chứa thông tin người dùng hợp lệ.");
+                var userId = int.TryParse(claims.FindFirst(ClaimTypes.NameIdentifier)?.Value, out var id) ? id
+                    : throw new UnauthorizedAccessException("Token không chứa thông tin người dùng hợp lệ.");
 
                 // Tìm người dùng trong cơ sở dữ liệu
                 var user = await _context.Users
-                    .AsNoTracking() // Không cần theo dõi trạng thái nếu chỉ đọc dữ liệu
-                    .FirstOrDefaultAsync(u => u.Id == userId);
-
-                if (user == null)
-                    throw new KeyNotFoundException("Người dùng không tồn tại.");
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(u => u.Id == userId)
+                    ?? throw new KeyNotFoundException("Người dùng không tồn tại.");
 
                 // Trả về DTO chứa thông tin người dùng
                 return _mapper.Map<UserDTO>(user);
             }
-            catch (UnauthorizedAccessException)
+            catch (Exception ex) when (ex is not UnauthorizedAccessException and not KeyNotFoundException)
             {
-                throw; // Giữ lại thông tin lỗi xác thực ban đầu
-            }
-            catch (KeyNotFoundException)
-            {
-                throw; // Giữ lại thông tin lỗi không tìm thấy người dùng
-            }
-            catch (Exception ex)
-            {
-                // Các lỗi khác
                 throw new Exception($"Lỗi không xác định: {ex.Message}", ex);
             }
         }
+
 
         public async Task<object> RefreshTokenAsync(string refreshToken)
         {
             try
             {
-                var principal = _tokenService.VerifyRefreshToken(refreshToken);
-                if (principal == null)
+                if (_tokenService.VerifyRefreshToken(refreshToken) is not { } principal)
                     throw new UnauthorizedAccessException("Refresh token không hợp lệ hoặc đã hết hạn.");
 
-                var userIdClaim = principal.FindFirst(ClaimTypes.NameIdentifier);
-                if (userIdClaim == null)
-                    throw new UnauthorizedAccessException("Token không chứa thông tin người dùng.");
+                var userIdClaim = principal.FindFirst(ClaimTypes.NameIdentifier)
+                    ?? throw new UnauthorizedAccessException("Token không chứa thông tin người dùng.");
 
-                var userId = int.Parse(userIdClaim.Value);
-                var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
-                if (user == null)
-                    throw new KeyNotFoundException("Người dùng không tồn tại. id= " + userId);
+                if (!int.TryParse(userIdClaim.Value, out var userId))
+                    throw new UnauthorizedAccessException("ID người dùng không hợp lệ trong token.");
 
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId)
+                    ?? throw new KeyNotFoundException($"Người dùng không tồn tại. ID= {userId}");
 
                 var tokenExpirationInMinutes = 15;
-
                 var userDTO = _mapper.Map<UserDTO>(user);
-
                 var newToken = _tokenService.GenerateToken(userDTO, tokenExpirationInMinutes);
+
                 return new
                 {
                     AccessToken = newToken,
@@ -186,15 +172,16 @@ namespace PhoneStoreBackend.Repository.Implements
             }
             catch (UnauthorizedAccessException ex)
             {
-                throw new Exception($"Không tìm thấy người dùng");
+                throw new Exception($"Lỗi xác thực: {ex.Message}");
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exception($"Lỗi hệ thống: {ex.Message}");
             }
         }
 
-        public async Task<string> ForgotPasswordAsync(string email)
+
+        public Task<string> ForgotPasswordAsync(string email)
         {
             throw new NotImplementedException();
             //var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
@@ -211,7 +198,7 @@ namespace PhoneStoreBackend.Repository.Implements
             //return "Vui lòng kiểm tra email để đặt lại mật khẩu.";
         }
 
-        public async Task<string> ResetPasswordAsync(string email, string newPassword, string token)
+        public Task<string> ResetPasswordAsync(string email, string newPassword, string token)
         {
             throw new NotImplementedException();
             //var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email && u.ResetPasswordToken == token);

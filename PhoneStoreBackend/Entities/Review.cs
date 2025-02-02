@@ -22,7 +22,7 @@ namespace PhoneStoreBackend.Entities
         public int Rating { get; set; } // Scale: 1 - 5
 
         [StringLength(1000)]
-        public string? Comment { get; set; }
+        public string Comment { get; set; } = "";
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
     }

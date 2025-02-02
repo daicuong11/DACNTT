@@ -120,15 +120,15 @@ namespace PhoneStoreBackend.Repository.Implements
             {
                 throw new Exception("Refresh token đã hết hạn.");
             }
-            catch (SecurityTokenValidationException ex)
+            catch (SecurityTokenValidationException)
             {
                 throw new Exception($"Refresh token không hợp lệ");
             }
-            catch (ArgumentException ex)
+            catch (ArgumentException )
             {
                 throw new Exception($"Token không hợp lệ");
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 throw new Exception($"Có lỗi xảy ra khi xác thực refresh token");
             }

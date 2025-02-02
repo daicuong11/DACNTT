@@ -6,6 +6,7 @@ using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
 using PhoneStoreBackend.Helpers;
 using PhoneStoreBackend.Repository;
+using PhoneStoreBackend.Repository.Implements;
 
 namespace PhoneStoreBackend.Controllers
 {
@@ -14,14 +15,15 @@ namespace PhoneStoreBackend.Controllers
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryRepository _categoryRepository;
+        private readonly CloudinaryService _cloudinaryService;
 
-        public CategoryController(ICategoryRepository categoryRepository)
+        public CategoryController(ICategoryRepository categoryRepository, CloudinaryService cloudinaryService)
         {
             _categoryRepository = categoryRepository;
+            _cloudinaryService = cloudinaryService;
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> GetAllCategories()
         {
             try
@@ -38,7 +40,6 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize]
         public async Task<IActionResult> GetCategoryById(int id)
         {
             try
@@ -60,8 +61,7 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "ADMIN")]
-        public async Task<IActionResult> AddCategory([FromBody] CategoryRequest category)
+        public async Task<IActionResult> AddCategory([FromForm] CategoryRequest category)
         {
             try
             {
@@ -69,11 +69,19 @@ namespace PhoneStoreBackend.Controllers
                 if (responseError != null)
                     return BadRequest(responseError);
 
+
+                string imageUrl = null;
+
+                if (category.Image != null)
+                {
+                    imageUrl = await _cloudinaryService.UploadImageAsync(category.Image, "Categories");
+                }
+
                 var createCategory = new Category
                 {
                     Name = category.Name,
                     Description = category.Description,
-                    ImageUrl = category.ImageUrl,
+                    ImageUrl = imageUrl,
                 };
                 var newCategory = await _categoryRepository.AddAsync(createCategory);
                 var response = Response<CategoryDTO>.CreateSuccessResponse(newCategory, "Danh mục đã được tạo");
@@ -87,8 +95,7 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "ADMIN")]
-        public async Task<IActionResult> UpdateCategory(int id, [FromBody] CategoryRequest category)
+        public async Task<IActionResult> UpdateCategory(int id, [FromForm] CategoryRequest category)
         {
             try
             {
@@ -96,12 +103,20 @@ namespace PhoneStoreBackend.Controllers
                 if (responseError != null)
                     return BadRequest(responseError);
 
+                string imageUrl = null;
+
+                if (category.Image != null)
+                {
+                    imageUrl = await _cloudinaryService.UploadImageAsync(category.Image, "Categories");
+                }
+
                 var createCategory = new Category
                 {
                     Name = category.Name,
                     Description = category.Description,
-                    ImageUrl = category.ImageUrl,
+                    ImageUrl = imageUrl,
                 };
+
                 var updatedCategory = await _categoryRepository.UpdateAsync(id, createCategory);
                 if (updatedCategory == null)
                 {

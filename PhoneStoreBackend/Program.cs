@@ -50,6 +50,23 @@ builder.Services.AddSwaggerGen(options => {
     });
 });
 
+// Register CloudinaryService
+// Đọc cấu hình Cloudinary từ appsettings.json
+var cloudinarySettings = builder.Configuration.GetSection("Cloudinary");
+
+// Kiểm tra giá trị cấu hình
+string cloudName = cloudinarySettings["CloudName"];
+string apiKey = cloudinarySettings["ApiKey"];
+string apiSecret = cloudinarySettings["ApiSecret"];
+
+if (string.IsNullOrWhiteSpace(cloudName) || string.IsNullOrWhiteSpace(apiKey) || string.IsNullOrWhiteSpace(apiSecret))
+{
+    throw new InvalidOperationException("Cloudinary configuration is missing in appsettings.json.");
+}
+
+// Đăng ký CloudinaryService với DI container
+builder.Services.AddSingleton(new CloudinaryService(cloudName, apiKey, apiSecret));
+
 // Repository and service registration
 builder.Services.AddScoped<ITokenRepository, TokenService>();
 builder.Services.AddScoped<IEmailRepository, EmailService>();

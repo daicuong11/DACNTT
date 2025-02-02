@@ -5,7 +5,7 @@ namespace PhoneStoreBackend.Helpers
 {
     public static class ModelStateHelper
     {
-        public static Response<Object>? CheckModelState(ModelStateDictionary modelState)
+        public static Response<Object> CheckModelState(ModelStateDictionary modelState)
         {
             if (modelState.IsValid) return null;
 

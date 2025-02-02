@@ -15,7 +15,7 @@ namespace PhoneStoreBackend.Entities
 
         public int? DiscountId { get; set; }
         [ForeignKey("DiscountId")]
-        public Discount? Discount { get; set; }
+        public Discount Discount { get; set; }
         [StringLength(100)]
 
         [Required]
@@ -23,6 +23,8 @@ namespace PhoneStoreBackend.Entities
 
         public string Color { get; set; }
         public string Storage {  get; set; }
+
+        [Column(TypeName = "decimal(18, 4)")]
         public decimal Price { get; set; }
         public int Stock {  get; set; }
 

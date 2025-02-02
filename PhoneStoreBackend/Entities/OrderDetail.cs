@@ -17,8 +17,10 @@ namespace PhoneStoreBackend.Entities
         [ForeignKey("ProductVariantId")]
         public ProductVariant ProductVariant { get; set; }
 
+        [Column(TypeName = "decimal(18, 4)")]
         public decimal Price { get; set; }
 
+        [Column(TypeName = "decimal(18, 4)")]
         public decimal Discount { get; set; }
 
         [Required]

@@ -9,6 +9,9 @@ namespace PhoneStoreBackend.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PaymentId { get; set; }
 
+        [Required]
+        public string TransactionId { get; set; }
+
         public int OrderId { get; set; }
         [ForeignKey("OrderId")]
         public Order Order { get; set; }

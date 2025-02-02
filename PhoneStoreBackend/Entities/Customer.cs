@@ -17,7 +17,6 @@ namespace PhoneStoreBackend.Entities
         [StringLength(20)]
         public string PhoneNumber { get; set; }
 
-        public int OrderId { get; set; }
         public Order Order { get; set; }
     }
 }

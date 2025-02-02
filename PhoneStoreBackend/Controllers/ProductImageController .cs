@@ -6,6 +6,8 @@ using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
 using PhoneStoreBackend.Helpers;
 using PhoneStoreBackend.Repository;
+using PhoneStoreBackend.Repository.Implements;
+using System.Drawing.Drawing2D;
 
 namespace PhoneStoreBackend.Controllers
 {
@@ -14,10 +16,12 @@ namespace PhoneStoreBackend.Controllers
     public class ProductImageController : ControllerBase
     {
         private readonly IProductImageRepository _productImageRepository;
+        private readonly CloudinaryService _cloudinaryService;
 
-        public ProductImageController(IProductImageRepository productImageRepository)
+        public ProductImageController(IProductImageRepository productImageRepository, CloudinaryService cloudinaryService)
         {
             _productImageRepository = productImageRepository;
+            _cloudinaryService = cloudinaryService;
         }
 
         [HttpGet]
@@ -87,10 +91,17 @@ namespace PhoneStoreBackend.Controllers
                 if (responseError != null)
                     return BadRequest(responseError);
 
+                string imageUrl = null;
+
+                if (productImage.Image != null)
+                {
+                    imageUrl = await _cloudinaryService.UploadImageAsync(productImage.Image, "Product Images");
+                }
+
                 var createProductImage = new ProductImage
                 {
                     ProductVariantId = productImage.ProductVariantId,
-                    ImageUrl = productImage.ImageUrl,
+                    ImageUrl = imageUrl,
                     IsImage = productImage.IsMainImage,
                 };
 
@@ -115,10 +126,17 @@ namespace PhoneStoreBackend.Controllers
                 if (responseError != null)
                     return BadRequest(responseError);
 
+                string imageUrl = null;
+
+                if (productImage.Image != null)
+                {
+                    imageUrl = await _cloudinaryService.UploadImageAsync(productImage.Image, "Product Images");
+                }
+
                 var createProductImage = new ProductImage
                 {
                     ProductVariantId = productImage.ProductVariantId,
-                    ImageUrl = productImage.ImageUrl,
+                    ImageUrl = imageUrl,
                     IsImage = productImage.IsMainImage,
                 };
 
