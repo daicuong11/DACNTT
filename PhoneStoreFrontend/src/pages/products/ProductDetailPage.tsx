@@ -1,6 +1,6 @@
 import { FC, useEffect } from 'react'
 import { exampleProductVariant, listItems } from '../../datas'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { ConfigProvider, Rate } from 'antd'
 import { getRating } from '../../utils/getRating'
 import { BookmarkCheck, CalendarClock, Check, Heart, PackageOpen, Plus, ShoppingCart, Smartphone } from 'lucide-react'
@@ -16,21 +16,21 @@ import ProductSpecifications from './components/ProductSpecifications'
 import ProductFeatures from './components/ProductFeatures'
 import ProductReviews from './components/ProductReviews'
 import ProductComments from './components/ProductComments'
+import useSetDocTitle from '@/hooks/useSetDocTitle'
 
 interface ProductDetailPageProps {}
 const ProductDetailPage: FC<ProductDetailPageProps> = () => {
   const { productSlug } = useParams<{ productSlug: string }>()
-  const product = listItems.find((item) => item.slug === productSlug)
+  const productVariant =
+    exampleProductVariant.find((item) => item.product.slug === productSlug) || exampleProductVariant[0]
 
-  useEffect(() => {
-    document.title = product?.name || 'Product Detail'
-  }, [productSlug])
+  useSetDocTitle(productVariant.product.name || 'Product Detail')
 
   return (
     <div className='flex flex-col my-4 gap-y-4'>
       <div className='flex flex-col gap-4'>
         <div className='flex items-center gap-2'>
-          <div className='text-xl font-semibold'>{product?.name}</div>
+          <div className='text-xl font-semibold'>{productVariant.product.name}</div>
           <ConfigProvider
             theme={{
               token: {
@@ -38,12 +38,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
               }
             }}
           >
-            <Rate
-              value={product ? getRating(product.productId) : 5}
-              allowHalf
-              disabled
-              className='text-base text-yellow-500'
-            />
+            <Rate value={5} allowHalf disabled className='text-base text-yellow-500' />
           </ConfigProvider>
           <div className='text-sm text-gray-500'>10 đánh giá</div>
           <button className='py-1 text-sm btn btn-outline'>
@@ -224,9 +219,9 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
 
         <div className='grid grid-cols-10 gap-x-2.5'>
           <div className='flex flex-col col-span-7 gap-y-4'>
-            <ProductFeatures product={product} />
-            <ProductReviews product={product} />
-            <ProductComments product={product} />
+            <ProductFeatures productVariant={productVariant} />
+            <ProductReviews productVariant={productVariant} />
+            <ProductComments productVariant={productVariant} />
           </div>
           <div className='col-span-3'>
             <ProductSpecifications />

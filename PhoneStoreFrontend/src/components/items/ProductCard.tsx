@@ -7,16 +7,17 @@ import { getProductRoute } from '../../utils/getProductRoute'
 import { getRating } from '../../utils/getRating'
 import formatPrice from '../../utils/formatPrice'
 import { ProductVariantType } from '../../types/product_variant.type'
+import { iphone1 } from '@/assets/images/iphone'
 
 interface ProductCardType extends HTMLAttributes<HTMLDivElement> {
-  product: ProductVariantType
+  productVariant: ProductVariantType
 }
 
 // const checkWishList = (productId: number): boolean => {
 //   return myFavorite.wishListItems.some((item) => item.productId === productId)
 // }
 
-const ProductCard: FC<ProductCardType> = ({ product, ...props }) => {
+const ProductCard: FC<ProductCardType> = ({ productVariant, ...props }) => {
   const navigate = useNavigate()
 
   // const [isFavorite, setIsFavorite] = useState(checkWishList(item.productId))
@@ -46,22 +47,20 @@ const ProductCard: FC<ProductCardType> = ({ product, ...props }) => {
   return (
     <div
       {...props}
-      onClick={() => handleProductClick(product)}
-      className='relative h-[392px] min-w-[224px] cursor-pointer rounded-xl bg-white p-[10px] flex flex-col shadow drop-shadow-lg shadow-slate-900/20 border border-gray-200'
+      onClick={() => handleProductClick(productVariant)}
+      className='relative h-[392px] min-w-[224px] cursor-pointer rounded-xl bg-white p-[10px] flex flex-col drop-shadow-md shadow shadow-gray-300 border border-gray-100'
     >
       <div className='flex-[5] flex items-center justify-center'>
-        <img
-          src='https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-tecno-spark-go-1.png'
-          alt={product.product.name}
-          className='w-[160px] h-[160px] object-center mt-3'
-        />
+        <img src={iphone1} alt={productVariant.product.name} className='w-[160px] h-[160px] object-contain mt-3' />
       </div>
       <div className='flex-[6] flex flex-col'>
         <div className='flex flex-col gap-3 mt-2'>
-          <h2 className='h-[60px] text-sm font-bold text-black/80 line-clamp-3'>{product.product.name}</h2>
+          <h2 className='h-[60px] text-sm font-bold text-black/80 line-clamp-3'>{productVariant.product.name}</h2>
           <div className='flex items-end gap-1 font-sans font-bold'>
-            <span className='leading-none text-primary'>{formatPrice(product.price)}</span>
-            <span className='text-sm leading-none line-through text-slate-600'>{formatPrice(product.price)}</span>
+            <span className='leading-none text-primary'>{formatPrice(productVariant.price)}</span>
+            <span className='text-sm leading-none line-through text-slate-600'>
+              {formatPrice(productVariant.price)}
+            </span>
           </div>
           <Flex gap='4px 0' wrap>
             <Tag color='green'>Free ship</Tag>
@@ -72,7 +71,7 @@ const ProductCard: FC<ProductCardType> = ({ product, ...props }) => {
         </div>
         <div className='flex flex-col justify-end flex-1 mt-2'>
           <div className='flex items-center justify-between'>
-            <div className={classNames({ invisible: getRating(product.productVariantId) === -1 })}>
+            <div className={classNames({ invisible: getRating(productVariant.productVariantId) === -1 })}>
               <ConfigProvider
                 theme={{
                   token: {
@@ -80,7 +79,7 @@ const ProductCard: FC<ProductCardType> = ({ product, ...props }) => {
                   }
                 }}
               >
-                <Rate value={getRating(product.productVariantId)} allowHalf disabled className='text-base' />
+                <Rate value={getRating(productVariant.productVariantId)} allowHalf disabled className='text-base' />
               </ConfigProvider>
             </div>
             <div onClick={(e) => e.stopPropagation()} className='flex items-center'>

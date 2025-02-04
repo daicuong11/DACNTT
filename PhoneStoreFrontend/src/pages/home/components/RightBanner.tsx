@@ -7,7 +7,7 @@ const RightBanner: FC = () => {
     <div className='grid h-full grid-rows-3 gap-y-4'>
       {listQCBanner.map((item, index) => (
         <Link to={''} key={index} className='w-full h-full'>
-          <img src={item.imageUrl} alt='' className='object-center w-full h-full rounded-xl' />
+          <img src={item.imageUrl} alt='' className='object-center w-full h-full shadow rounded-xl shadow-gray-300' />
         </Link>
       ))}
     </div>

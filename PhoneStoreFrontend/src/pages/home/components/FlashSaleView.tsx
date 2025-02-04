@@ -49,10 +49,13 @@ const FlashSaleView: React.FC<FlashSaleViewProps> = ({}) => {
           <span className='mr-2 border-2 border-white rounded-full'>
             <Flame size={34} strokeWidth={1.6} />
           </span>
-          <span className='text-[38px] font-extrabold leading-[40px] uppercase mr-4'>Flash Sale</span>
+          <span className='text-[38px] font-extrabold leading-[40px] uppercase mr-4'>
+            {/* Flash Sale */}
+            Deadline dacntt
+          </span>
           <CountdownTimer
-            startTime='2024-12-11T00:23:59'
-            endTime='2025-01-01T00:00:00'
+            startTime='2025-02-19T00:23:59'
+            endTime='2025-02-20T00:00:00'
             // onSaleStatusChange={handleSaleStatusChange}
           />
         </div>

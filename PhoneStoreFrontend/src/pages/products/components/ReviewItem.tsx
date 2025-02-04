@@ -4,9 +4,9 @@ import { FC } from 'react'
 
 interface ReviewRatingItemProps {
   rating: number
-  productId: number
+  productVarinatId: number
 }
-const ReviewRatingItem: FC<ReviewRatingItemProps> = ({ rating, productId }) => {
+const ReviewRatingItem: FC<ReviewRatingItemProps> = ({ rating }) => {
   const randomPercent = rating == 5 ? 100 : 0
   const countReview = rating == 5 ? 10 : 0
   return (
