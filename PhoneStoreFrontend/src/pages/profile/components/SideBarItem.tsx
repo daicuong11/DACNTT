@@ -11,7 +11,7 @@ const SideBarItem: FC<SideBarItemProps> = ({ isActive, sufixIcon, title, ...prop
     <div
       {...props}
       className={classNames(
-        'flex transition-all duration-100 items-center border rounded-lg justify-start box-border py-1.5 text-[15px] font-medium font-roboto gap-x-2 px-3 cursor-pointer',
+        'flex transition-all flex-shrink-0 duration-100 items-center border rounded-lg justify-start box-border py-1.5 text-[15px] font-medium font-roboto gap-x-2 px-3 cursor-pointer',
         {
           'border-primary bg-red-50 text-primary': isActive,
           'border-transparent hover:bg-slate-200': !isActive

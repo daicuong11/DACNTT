@@ -16,7 +16,7 @@ const Header = () => {
       <div className='max-w-[1200px] grid grid-cols-3 mx-auto gap-x-3 leading-[64px]'>
         <div className='flex items-center gap-x-3'>
           <Link to={'/'} className='py-2 rounded'>
-            <img className='object-cover w-40 h-[30px]' src={logo} alt='logo' />
+            <img className='object-cover w-40 h-[30px]' src={'/logo.png'} alt='logo' />
           </Link>
 
           <ButtonHeader
