@@ -11,7 +11,6 @@ using PhoneStoreBackend.Entities;
 using PhoneStoreBackend.Enums;
 using PhoneStoreBackend.Helpers;
 using PhoneStoreBackend.Repository;
-using PhoneStoreBackend.Repository.Implements;
 using System.Security.Claims;
 
 namespace PhoneStoreBackend.Controllers
@@ -73,7 +72,7 @@ namespace PhoneStoreBackend.Controllers
 
             if (!result.Succeeded)
             {
-                return Unauthorized(Response<object>.CreateErrorResponse("Google authentication failed" ));
+                return Unauthorized(Response<object>.CreateErrorResponse("Google authentication failed"));
             }
 
             var claims = result.Principal?.Identities.FirstOrDefault()?.Claims;
@@ -82,7 +81,7 @@ namespace PhoneStoreBackend.Controllers
 
             if (string.IsNullOrEmpty(email))
             {
-                return BadRequest(Response<object>.CreateErrorResponse("Email is required from Google." ));
+                return BadRequest(Response<object>.CreateErrorResponse("Email is required from Google."));
             }
 
             var user = await _userService.GetUserByEmailAsync(email);
@@ -103,7 +102,7 @@ namespace PhoneStoreBackend.Controllers
                 };
 
                 userDTO = await _userService.AddUserAsync(newUser);
-                
+
             }
             else
             {

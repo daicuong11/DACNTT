@@ -1,9 +1,16 @@
 export interface CategoryType {
   categoryId: number
   name: string
-  url: string
+  url?: string
   description?: string
   imageUrl: string
+}
+
+export type CategoryRequestType = {
+  id?: number
+  name: string
+  description?: string
+  image: FileList
 }
 
 export type ListSelectionOfOptionOfCategoryRenderType = {

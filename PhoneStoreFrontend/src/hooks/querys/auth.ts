@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { loginWithEmailAndPassword, verifyToken } from '../../apis/auth.api'
 import { toast } from 'react-toastify'
+import { loginWithEmailAndPassword, verifyToken } from '../../apis/auth.api'
 import { LoginRequestType } from '../../types/auth.type'
 
 export const useVerifyToken = () => {

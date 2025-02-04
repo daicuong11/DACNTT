@@ -3,6 +3,7 @@ import { Image, Table, Tag } from "antd";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ToggleCard from "../components/ToggleCard";
+import Card from "../components/Card";
 
 export default function ProductList() {
   const [products, setProducts] = useState<ProductType[]>([]);
@@ -111,7 +112,7 @@ export default function ProductList() {
 
   return (
     <>
-      <ToggleCard title="Danh Sách Sản Phẩm" button={<Link to="/admin/products/add" className="btn btn-primary">Thêm Sản Phẩm</Link>}>
+      <Card title="Danh Sách Sản Phẩm" button={<Link to="/admin/products/add" className="btn btn-primary">Thêm Sản Phẩm</Link>}>
         <Table
           dataSource={products}
           columns={columns}
@@ -119,7 +120,7 @@ export default function ProductList() {
           bordered
           pagination={{ pageSize: 10 }}
         />
-      </ToggleCard>
+      </Card>
     </>
   );
 }

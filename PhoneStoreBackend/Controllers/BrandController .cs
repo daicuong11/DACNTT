@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PhoneStoreBackend.Api.Request;
 using PhoneStoreBackend.Api.Response;
 using PhoneStoreBackend.DTOs;
@@ -24,7 +23,7 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "ADMIN")]
+        //[Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> GetAllBrands()
         {
             try
@@ -41,7 +40,7 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpGet("{brandId}")]
-        [Authorize] 
+        //[Authorize] 
         public async Task<IActionResult> GetBrandById(int brandId)
         {
             try
@@ -63,8 +62,8 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "ADMIN")]
-        public async Task<IActionResult> AddBrand([FromBody] BrandRequest brand)
+        //[Authorize(Roles = "ADMIN")]
+        public async Task<IActionResult> AddBrand([FromForm] BrandRequest brand)
         {
             try
             {
@@ -98,8 +97,8 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpPut("{brandId}")]
-        [Authorize(Roles = "ADMIN")]  
-        public async Task<IActionResult> UpdateBrand(int brandId, [FromBody] BrandRequest brand)
+        //[Authorize(Roles = "ADMIN")]  
+        public async Task<IActionResult> UpdateBrand(int brandId, [FromForm] BrandRequest brand)
         {
             try
             {
@@ -124,7 +123,8 @@ namespace PhoneStoreBackend.Controllers
                 var result = await _brandRepository.UpdateBrandAsync(brandId, createBrand);
                 if (result)
                 {
-                    var response = Response<object>.CreateSuccessResponse(null, "Thương hiệu đã được cập nhật");
+                    createBrand.BrandId = brandId;
+                    var response = Response<object>.CreateSuccessResponse(createBrand, "Thương hiệu đã được cập nhật");
                     return Ok(response);
                 }
                 else
@@ -141,7 +141,7 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpDelete("{brandId}")]
-        [Authorize(Roles = "ADMIN")] 
+        //[Authorize(Roles = "ADMIN")] 
         public async Task<IActionResult> DeleteBrand(int brandId)
         {
             try

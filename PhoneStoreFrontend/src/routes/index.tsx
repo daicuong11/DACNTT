@@ -1,5 +1,7 @@
 import { CartLayout, HomeLayout } from "@/layouts";
 import AdminLayout from "@/layouts/admin/AdminLayout";
+import BrandList from "@/pages/admin/brands/BrandList";
+import CategoryList from "@/pages/admin/categories/CategoryList";
 import AddProduct from "@/pages/admin/products/AddProduct";
 import ProductList from "@/pages/admin/products/ProductList";
 import { CartPage } from "@/pages/cart";
@@ -92,20 +94,47 @@ const MyRoutes = () => {
     ];
 
     const routesForAdmin: RouteObject[] = [
-    {
-        path: "/admin",
-        element: <AdminLayout />,
-        children: [
-            {
-                path: 'products',
-                element: <ProductList/>,
-            },
-            {
-                path: 'products/add',
-                element: <AddProduct/>,
-            },
-        ]
-    }
+        {
+            path: "/admin",
+            element: <AdminLayout />,
+            children: [
+                {
+                    path: 'products',
+                    children: [
+                        {
+                            path: '',
+                            element: <ProductList />,
+                        },
+                        {
+                            path: 'add',
+                            element: <AddProduct />,
+                        },
+                    ]
+                },
+                {
+                    path: 'brands',
+                    children: [
+                        {
+                            path: '',
+                            element: <BrandList />,
+                        },
+                        {
+                            path: 'add',
+                            element: <AddProduct />,
+                        },
+                    ]
+                },
+                {
+                    path: 'categories',
+                    children: [
+                        {
+                            path: '',
+                            element: <CategoryList />,
+                        },
+                    ]
+                }
+            ]
+        }
     ]
     const routesForNotFound: RouteObject[] = [
         {

@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PhoneStoreBackend.Api.Response;
@@ -21,7 +19,8 @@ builder.Services.AddControllers().ConfigureApiBehaviorOptions(options => { optio
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options => {
+builder.Services.AddSwaggerGen(options =>
+{
     options.SwaggerDoc("V1", new OpenApiInfo
     {
         Version = "V1",
@@ -177,14 +176,15 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(options => {
+    app.UseSwaggerUI(options =>
+    {
         options.SwaggerEndpoint("/swagger/V1/swagger.json", "PhoneStore WebAPI");
     });
 }
 app.UseExceptionHandler("/error");
 app.UseStatusCodePages("text/plain", "Status code: {0}");
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseCors("FrontendPolicy");
 
@@ -203,13 +203,13 @@ app.Use(async (context, next) =>
         {
             Success = false,
             Message = "Unauthorized",
-            Data = null 
+            Data = null
         };
 
         var jsonResponse = JsonSerializer.Serialize(response, new JsonSerializerOptions
         {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase, 
-            DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull 
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
         });
 
         await context.Response.WriteAsync(jsonResponse);

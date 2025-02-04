@@ -4,3 +4,9 @@ export interface BrandType {
   description?: string
   imageUrl: string
 }
+
+export type BrandRequestType = {
+  name: string
+  description?: string
+  image: FileList
+}

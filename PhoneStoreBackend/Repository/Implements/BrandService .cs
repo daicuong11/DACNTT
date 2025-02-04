@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using PhoneStoreBackend.DbContexts;
 using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
-using PhoneStoreBackend.Repository;
 
 namespace PhoneStoreBackend.Repository.Implements
 {
@@ -57,6 +56,7 @@ namespace PhoneStoreBackend.Repository.Implements
 
             existingBrand.Name = brand.Name;
             existingBrand.Description = brand.Description;
+            existingBrand.ImageUrl = brand.ImageUrl;
 
             _context.Brands.Update(existingBrand);
             await _context.SaveChangesAsync();
