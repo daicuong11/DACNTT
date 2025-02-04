@@ -3,7 +3,7 @@ import { exampleProductVariant } from '@/datas'
 import { useQueryString } from '@/hooks'
 import useSetDocTitle from '@/hooks/useSetDocTitle'
 import classNames from 'classnames'
-import { ChevronDown, Sparkles } from 'lucide-react'
+import { ArrowDownNarrowWide, ArrowDownWideNarrow, ChevronDown, Sparkles } from 'lucide-react'
 import React, { FC, useState } from 'react'
 import CarouselProduct from '../home/components/CarouselProduct'
 
@@ -23,13 +23,41 @@ const SearchResultPage: FC<SearchResultPageProps> = () => {
         <span className='font-semibold text-gray-700'>{queryString.q}</span>'
       </div>
       <div className='mt-3 text-lg font-semibold text-gray-800 font-roboto'>Sắp xếp theo</div>
-      <div className='flex my-4'>
+      <div className='flex gap-x-2.5 transition-all my-4'>
         <span
-          className={classNames('text-xs border py-1.5 cursor-pointer px-3 rounded-lg', {
-            ' border-primary text-primary bg-red-50': sortType == 'relative'
-          })}
+          onClick={() => setSortType('relative')}
+          className={classNames(
+            'text-xs bg-gray-100 border border-gray-100 py-1.5 cursor-pointer px-3 rounded-lg box-border',
+            {
+              ' border-primary text-primary bg-red-50': sortType == 'relative'
+            }
+          )}
         >
           Liên quan
+        </span>
+        <span
+          onClick={() => setSortType('price-desc')}
+          className={classNames(
+            'text-xs bg-gray-100 border flex items-center gap-x-1 border-gray-100 py-1.5 cursor-pointer px-3 rounded-lg box-border',
+            {
+              ' border-primary text-primary bg-red-50': sortType == 'price-desc'
+            }
+          )}
+        >
+          <ArrowDownWideNarrow size={18} strokeWidth={2} />
+          Giá cao
+        </span>
+        <span
+          onClick={() => setSortType('price-asc')}
+          className={classNames(
+            'text-xs bg-gray-100 border flex items-center gap-x-1 border-gray-100 py-1.5 cursor-pointer px-3 rounded-lg box-border',
+            {
+              ' border-primary text-primary bg-red-50': sortType == 'price-asc'
+            }
+          )}
+        >
+          <ArrowDownNarrowWide size={18} strokeWidth={2} />
+          Giá thấp
         </span>
       </div>
       <div className='grid gap-2.5 grid-cols-5'>
