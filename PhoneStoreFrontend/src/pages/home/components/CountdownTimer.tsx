@@ -58,15 +58,15 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ startTime, endTime, onS
   return (
     <div className='flex items-center gap-x-1'>
       {!saleActive && <span className='text-sm font-bold'>Diễn ra sau:</span>}
-      <span className='text-sm h-6 w-6 py-1.5 px-1.5 rounded btn bg-black font-bold'>
+      <span className='text-sm h-6 flex justify-center text-center py-1.5 px-1 rounded btn bg-black font-bold'>
         {String(hours).padStart(2, '0')}
       </span>
       <span className='font-bold'>:</span>
-      <span className='text-sm h-6 w-6 py-1.5 px-1.5 rounded btn bg-black font-bold'>
+      <span className='text-sm h-6 flex justify-center text-center py-1.5 px-1 rounded btn bg-black font-bold'>
         {String(minutes).padStart(2, '0')}
       </span>
       <span className='font-bold'>:</span>
-      <span className='text-sm h-6 w-6 py-1.5 px-1.5 rounded btn bg-black font-bold'>
+      <span className='text-sm h-6 flex justify-center text-center py-1.5 px-1 rounded btn bg-black font-bold'>
         {String(seconds).padStart(2, '0')}
       </span>
     </div>

@@ -1,21 +1,21 @@
 import React, { FC, useEffect, useState } from 'react'
 import { ContainerPanel, FilterButton } from '../../../components'
-import { ProductType } from '../../../types/product.type'
 import { ConfigProvider, Rate } from 'antd'
 import { getRating } from '../../../utils/getRating'
 import { StarFilled } from '@ant-design/icons'
 import ReviewComment from './ReviewComment'
 import { ChevronDown } from 'lucide-react'
 import ReviewRatingItem from './ReviewItem'
+import { ProductVariantType } from '@/types/product_variant.type'
 
 interface ProductReviewsProps {
-  product?: ProductType
+  productVariant: ProductVariantType
 }
 
 const initialFilter: string[] = []
 const initialFilterRating: string = ''
 
-const ProductReviews: FC<ProductReviewsProps> = ({ product }) => {
+const ProductReviews: FC<ProductReviewsProps> = ({ productVariant }) => {
   const [activeFilter, setActiveFilter] = useState<string[]>(initialFilter)
   const [activeFilterRating, setActiveFilterRating] = useState<string>(initialFilterRating)
 
@@ -39,7 +39,7 @@ const ProductReviews: FC<ProductReviewsProps> = ({ product }) => {
   }
 
   return (
-    <ContainerPanel title={'Đánh giá & nhận xét ' + product?.name}>
+    <ContainerPanel title={'Đánh giá & nhận xét ' + productVariant.product.name}>
       <div className='grid grid-cols-10 gap-4 py-4'>
         <div className='flex flex-col items-center justify-center col-span-4 gap-1 border-r border-gray-300'>
           <h1 className='text-2xl font-semibold text-black'>5.0/5</h1>
@@ -50,13 +50,13 @@ const ProductReviews: FC<ProductReviewsProps> = ({ product }) => {
               }
             }}
           >
-            <Rate value={product ? getRating(product.productId) : 5} allowHalf disabled className='text-base' />
+            <Rate value={5} allowHalf disabled className='text-base' />
           </ConfigProvider>
           <div className='text-xs font-semibold'>10 đánh giá</div>
         </div>
         <div className='flex flex-col col-span-6 px-6 gap-y-1.5'>
           {Array.from({ length: 5 }).map((_, index) => (
-            <ReviewRatingItem key={index} rating={5 - index} productId={product!.productId} />
+            <ReviewRatingItem key={index} rating={5 - index} productVarinatId={productVariant.productVariantId} />
           ))}
         </div>
       </div>
@@ -117,7 +117,7 @@ const ProductReviews: FC<ProductReviewsProps> = ({ product }) => {
         <ReviewComment />
       </div>
       <div className='my-2'>
-        <button className='items-center flex mx-auto text-[15px] w-min text-nowrap px-20 font-medium border border-gray-100 shadow-md btn btn-light drop-shadow-sm'>
+        <button className='items-center font-roboto mx-auto text-[15px] w-min text-nowrap px-20 font-medium border border-gray-200 shadow-md btn btn-light hover:border-primary hover:text-primary hover:!bg-red-50 drop-shadow-sm'>
           Xem thêm
           <span>
             <ChevronDown size={18} strokeWidth={2} />

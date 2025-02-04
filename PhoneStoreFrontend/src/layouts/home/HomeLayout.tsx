@@ -6,7 +6,7 @@ const HomeLayout: React.FC = () => {
   return (
     <div className=''>
       <Header />
-      <div className='px-4'>
+      <div className='px-2.5'>
         <div className='min-h-screen max-w-[1200px] mx-auto bg-white'>
           <Outlet />
         </div>

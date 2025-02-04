@@ -8,7 +8,7 @@
   }
 
   .btn.btn-light {
-    @apply text-gray-800 bg-white hover:!bg-gray-100;
+    @apply text-gray-800 bg-white hover:bg-gray-100;
   }
 
   .btn.btn-danger {

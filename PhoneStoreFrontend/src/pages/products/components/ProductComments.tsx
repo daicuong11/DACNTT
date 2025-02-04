@@ -5,6 +5,7 @@ import TextArea from 'antd/es/input/TextArea'
 import { robot_img } from '../../../assets/images'
 import { ChevronDown, SendHorizonal } from 'lucide-react'
 import CommentItem, { CommentType } from './CommentItem'
+import { ProductVariantType } from '@/types/product_variant.type'
 
 const commentsEx: CommentType[] = [
   {
@@ -66,10 +67,10 @@ const commentsEx: CommentType[] = [
 ]
 
 interface ProductCommentsProps {
-  product?: ProductType
+  productVariant: ProductVariantType
 }
 
-const ProductComments: FC<ProductCommentsProps> = ({ product }) => {
+const ProductComments: FC<ProductCommentsProps> = ({ productVariant }) => {
   return (
     <ContainerPanel className='' titleClassName='text-xl' title='Hỏi và đáp'>
       <div className='relative flex flex-1 w-full p-2 border border-gray-200 rounded-lg shadow-md pb-11'>
@@ -93,7 +94,7 @@ const ProductComments: FC<ProductCommentsProps> = ({ product }) => {
         ))}
       </div>
       <div className='my-2'>
-        <button className='items-center mx-auto text-[15px] w-min text-nowrap px-20 font-medium border border-gray-200 shadow-md btn btn-light drop-shadow-sm'>
+        <button className='items-center font-roboto mx-auto text-[15px] w-min text-nowrap px-20 font-medium border border-gray-200 shadow-md btn btn-light hover:border-primary hover:text-primary hover:!bg-red-50 drop-shadow-sm'>
           Xem thêm
           <span>
             <ChevronDown size={18} strokeWidth={2} />

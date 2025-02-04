@@ -3,23 +3,23 @@ import { useEffect, useState } from 'react'
 import { CategoryType } from '../types/category.type'
 import { ProductType } from '../types/product.type'
 import { listItems } from '../datas'
+import useQueryString from './useQueryString'
 
 const useBreadcrumbs = () => {
   const location = useLocation()
+  const queryString = useQueryString()
   const [product, setProduct] = useState<ProductType | null>(null)
   const [categories, setCategories] = useState<CategoryType[]>([])
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        // const response = await fetch('/api/categories');
-        // const data = await response.json();
         const data: CategoryType[] = [
           {
             categoryId: 1,
             name: 'Điện thoại',
             url: 'mobile',
-            description: 'Smartphones and tablets',
+            description: 'Smartphones',
             imageUrl: 'https://example.com/category1.jpg'
           },
           {
@@ -40,7 +40,7 @@ const useBreadcrumbs = () => {
             categoryId: 4,
             name: 'Phụ kiện',
             url: 'accessory',
-            description: 'Accessories for all devices',
+            description: 'Accessories',
             imageUrl: 'https://example.com/category4.jpg'
           }
         ]
@@ -72,6 +72,14 @@ const useBreadcrumbs = () => {
 
   const decodedPathname = decodeURIComponent(location.pathname)
   const pathnames = decodedPathname.split('/').filter((x) => x)
+
+  // Xử lý trường hợp `/catalogsearch/result/:q`
+  if (pathnames[0] === 'catalogsearch' && pathnames[1] === 'result') {
+    return [
+      { href: '/', title: 'Trang chủ' },
+      { href: location.pathname, title: `Kết quả tìm kiếm cho: '${decodeURIComponent(queryString.q)}'` }
+    ]
+  }
 
   const breadcrumbs = pathnames.map((_, index) => {
     const href = `/${pathnames.slice(0, index + 1).join('/')}`

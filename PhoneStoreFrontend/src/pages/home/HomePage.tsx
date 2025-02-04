@@ -12,7 +12,7 @@ const HomePage = () => {
     <div className='w-full py-4'>
       <div className='flex items-start justify-between gap-x-4'>
         <CategoryContainer />
-        <div className='flex flex-1 w-[calc(100%-(472px))] h-[352px] bg-white shadow rounded-bl-xl rounded-br-xl shadow-slate-900/20'>
+        <div className='flex flex-1 w-[calc(100%-(472px))] h-[352px] bg-white shadow rounded-b-xl shadow-black/25'>
           <CarouselBanner />
         </div>
         <div className='flex-shrink-0 bg-white w-[220px] h-[352px] text-xs'>

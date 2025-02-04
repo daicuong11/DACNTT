@@ -1,16 +1,18 @@
 import React, { FC } from 'react'
 import { ContainerPanel } from '../../../components'
 import { checkLengthProduct } from '../../../utils/checkLenghtProduct'
-import { ProductType } from '../../../types/product.type'
+import { ProductVariantType } from '@/types/product_variant.type'
 
 interface ProductFeaturesProps {
-  product?: ProductType
+  productVariant: ProductVariantType
 }
-const ProductFeatures: FC<ProductFeaturesProps> = ({ product }) => {
+const ProductFeatures: FC<ProductFeaturesProps> = ({ productVariant }) => {
   return (
     <ContainerPanel>
       <div className='p-3 mt-2 bg-gray-100 rounded-md'>
-        <div className='mb-3 text-lg font-semibold text-center text-primary'>{checkLengthProduct(product?.name)}</div>
+        <div className='mb-3 text-lg font-semibold text-center text-primary'>
+          {checkLengthProduct(productVariant.product.name)}
+        </div>
         <ul className='px-3 text-[14px] font-medium text-gray-600 list-disc list-outside'>
           <li className=''>
             Màn hình Super Retina XDR 6,9 inch lớn hơn có viền mỏng hơn, đem đến cảm giác tuyệt vời khi cầm trên tay.

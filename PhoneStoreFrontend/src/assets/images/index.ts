@@ -16,6 +16,7 @@ import QC3 from './udsv-right-laptop.png'
 import Not_Found from './not_found.png'
 import robot_img from './robot.png'
 import atm_card_img from './atm-card.png'
+import flame_img from './flame.png'
 
 export * from './payment_methods'
 
@@ -41,7 +42,8 @@ export {
   momo,
   vnpay,
   Not_Found,
-  atm_card_img
+  atm_card_img,
+  flame_img
 }
 
 export const socialNetworkImages = [

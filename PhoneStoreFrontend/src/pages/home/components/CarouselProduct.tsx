@@ -44,7 +44,7 @@ const CarouselProduct: FC<CarouselProductType> = ({ row = 1, autoPlay = true, da
       >
         {dataSource.map((item, index) => (
           <SwiperSlide key={index} className={classNames('h-full')}>
-            <ProductCard product={item} />
+            <ProductCard productVariant={item} />
           </SwiperSlide>
         ))}
       </Swiper>

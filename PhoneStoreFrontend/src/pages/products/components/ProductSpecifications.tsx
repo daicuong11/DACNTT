@@ -19,12 +19,14 @@ const ProductSpecifications = () => {
           </div>
         ))}
       </div>
-      <button className='items-end text-[15px] font-medium border border-gray-100 shadow-md btn btn-light drop-shadow-sm'>
-        Xem chi tiết{' '}
-        <span>
-          <ChevronDown size={18} strokeWidth={2} />
-        </span>
-      </button>
+      <div className='my-2'>
+        <button className='items-center font-roboto mx-auto text-[15px] w-full text-nowrap px-20 font-medium border border-gray-200 shadow-md btn btn-light hover:border-primary hover:text-primary hover:!bg-red-50 drop-shadow-sm'>
+          Xem thêm
+          <span>
+            <ChevronDown size={18} strokeWidth={2} />
+          </span>
+        </button>
+      </div>
     </ContainerPanel>
   )
 }
