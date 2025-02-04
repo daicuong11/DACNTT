@@ -1,9 +1,9 @@
 import { CircleUserRound, ShoppingBag, SquareMenu } from 'lucide-react'
-import { GiaoHangIcon, logo } from '../../../assets/images'
-import { ButtonHeader, Search } from './components'
+import { Link, useNavigate } from 'react-router-dom'
+import { GiaoHangIcon } from '../../../assets/images'
 import { CategoryModal } from '../../../components'
 import { useModal } from '../../../hooks'
-import { Link, useNavigate } from 'react-router-dom'
+import { ButtonHeader, Search } from './components'
 import Breadcrumbs from './components/Breadcrumbs'
 import { FC } from 'react'
 
@@ -21,7 +21,7 @@ const Header: FC<HeaderProps> = ({ showBreadcrumb = true }) => {
         <div className='max-w-[1200px] grid grid-cols-3 mx-auto gap-x-3 leading-[64px]'>
           <div className='flex items-center gap-x-3'>
             <Link to={'/'} className='py-2 rounded'>
-              <img className='object-cover w-40 h-[30px]' src={logo} alt='logo' />
+              <img className='object-cover w-30 h-[40px]' src={'/logo.png'} alt='logo' />
             </Link>
 
             <ButtonHeader

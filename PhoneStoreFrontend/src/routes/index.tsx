@@ -150,15 +150,39 @@ const MyRoutes = () => {
       children: [
         {
           path: 'products',
-          element: <ProductList />
+          children: [
+            {
+              path: '',
+              element: <ProductList />
+            },
+            {
+              path: 'add',
+              element: <AddProduct />
+            }
+          ]
         },
         {
-          path: 'products/add',
-          element: <AddProduct />
+          path: 'brands',
+          children: [
+            {
+              path: '',
+              element: <BrandList />
+            }
+          ]
+        },
+        {
+          path: 'categories',
+          children: [
+            {
+              path: '',
+              element: <CategoryList />
+            }
+          ]
         }
       ]
     }
   ]
+
   const routesForNotFound: RouteObject[] = [
     {
       path: '*',

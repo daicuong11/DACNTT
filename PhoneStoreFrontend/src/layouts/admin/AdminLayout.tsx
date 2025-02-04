@@ -11,7 +11,7 @@ const AdminLayout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
-    <div className='dark:bg-boxdark-2 dark:text-bodydark bg-boxlight text-light'>
+    <div className=''>
       {/* <!-- ===== Page Wrapper Start ===== --> */}
       <div className='flex h-screen overflow-hidden'>
         {/* <!-- ===== Sidebar Start ===== --> */}

@@ -8,7 +8,6 @@ using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
 using PhoneStoreBackend.Enums;
 using PhoneStoreBackend.Utils;
-using System.Data;
 using System.Security.Claims;
 
 namespace PhoneStoreBackend.Repository.Implements
@@ -16,7 +15,7 @@ namespace PhoneStoreBackend.Repository.Implements
     public class AuthService : IAuthRepository
     {
         private readonly AppDbContext _context;
-        private readonly ITokenRepository _tokenService; 
+        private readonly ITokenRepository _tokenService;
         private readonly IEmailRepository _emailService;
         private readonly IMapper _mapper;
         private readonly IUserRepository _userService;
@@ -49,7 +48,7 @@ namespace PhoneStoreBackend.Repository.Implements
             {
                 AccessToken = accessToken,
                 RefreshToken = refreshToken,
-                ExpiresIn = tokenExpirationInMinutes * 60, 
+                ExpiresIn = tokenExpirationInMinutes * 60,
                 User = new
                 {
                     Id = user.Id,
@@ -79,9 +78,9 @@ namespace PhoneStoreBackend.Repository.Implements
                     Name = GetGmailName.gmailToName(userInfo.Email),
                     Email = userInfo.Email,
                     Password = hashedPassword,
-                    Role = RoleEnum.ADMIN.ToString(),
+                    Role = RoleEnum.CUSTOMER.ToString(),
                     Active = true,
-                    IsGoogleAccount = false,
+                    IsGoogleAccount = false
                 };
 
                 var newUser = await _userService.AddUserAsync(user);

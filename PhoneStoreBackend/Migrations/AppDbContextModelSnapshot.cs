@@ -344,6 +344,9 @@ namespace PhoneStoreBackend.Migrations
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
@@ -362,9 +365,6 @@ namespace PhoneStoreBackend.Migrations
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
-
-                    b.Property<string>("note")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("OrderId");
 
@@ -437,6 +437,10 @@ namespace PhoneStoreBackend.Migrations
                     b.Property<string>("PaymentStatus")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("TransactionId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("PaymentId");
 

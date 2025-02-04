@@ -23,7 +23,7 @@ export default function ToggleCard({ children, title, button }: ToggleCardProps)
                 >
                     <div className="flex items-center text-black font-bold text-lg">
                         {isOpen ? <CaretDownFilled /> : <CaretRightFilled />}
-                        <span className="ml-2">{title}</span>
+                        <span className="ml-2 capitalize">{title}</span>
                     </div>
                     {button && (
                         <div onClick={(e) => e.stopPropagation()}>{button}</div>

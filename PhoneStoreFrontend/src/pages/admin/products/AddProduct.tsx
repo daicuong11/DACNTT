@@ -13,7 +13,7 @@ export default function AddProduct() {
                         </div>
                     </div>
                     <div className="p-4 text-gray-700">
-                        avc
+                        
                     </div>
                 </div>
             </div>
