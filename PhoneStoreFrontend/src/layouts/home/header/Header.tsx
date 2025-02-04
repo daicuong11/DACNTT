@@ -5,8 +5,12 @@ import { CategoryModal } from '../../../components'
 import { useModal } from '../../../hooks'
 import { Link, useNavigate } from 'react-router-dom'
 import Breadcrumbs from './components/Breadcrumbs'
+import { FC } from 'react'
 
-const Header = () => {
+interface HeaderProps {
+  showBreadcrumb?: boolean
+}
+const Header: FC<HeaderProps> = ({ showBreadcrumb = true }) => {
   const { isOpen, toggleModal, closeModal } = useModal()
 
   const navigate = useNavigate()
@@ -52,6 +56,7 @@ const Header = () => {
               </span>
             </ButtonHeader>
             <ButtonHeader
+              onClick={() => navigate('/profile')}
               direction='vertical'
               iconPosition='top'
               disPlayBackground
@@ -63,7 +68,7 @@ const Header = () => {
           </div>
         </div>
       </div>
-      <Breadcrumbs />
+      {showBreadcrumb && <Breadcrumbs />}
     </header>
   )
 }

@@ -17,6 +17,8 @@ import Not_Found from './not_found.png'
 import robot_img from './robot.png'
 import atm_card_img from './atm-card.png'
 import flame_img from './flame.png'
+import rigthbanner_dienthoai from './Rightbanner-mobile.jpg'
+import rigthbanner_laptop from './Rightbanner_Laptop.jpg'
 
 export * from './payment_methods'
 
@@ -45,6 +47,17 @@ export {
   atm_card_img,
   flame_img
 }
+
+export const rightBannerImages = [
+  {
+    title: 'Điện thoại',
+    image: rigthbanner_dienthoai
+  },
+  {
+    title: 'Laptop',
+    image: rigthbanner_laptop
+  }
+]
 
 export const socialNetworkImages = [
   {

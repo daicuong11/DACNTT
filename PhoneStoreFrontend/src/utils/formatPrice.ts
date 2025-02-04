@@ -3,7 +3,7 @@ const formatPrice = (price: number, isReplace = true): string => {
     style: 'currency',
     currency: 'VND'
   })
-  return isReplace ? newPrice.replace('₫', 'đ') : newPrice
+  return isReplace ? newPrice.replace(' ', '').replace('₫', 'đ') : newPrice
 }
 
 export default formatPrice

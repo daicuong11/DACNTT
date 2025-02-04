@@ -1,9 +1,10 @@
 import { CircleUserRound, ShoppingBag, SquareMenu } from 'lucide-react'
 import { GiaoHangIcon, logo } from '../../../assets/images'
-import { ButtonHeader, Search } from './components'
+import { ButtonHeader } from './components'
 import { CategoryModal } from '../../../components'
 import { useModal } from '../../../hooks'
 import { Link, useNavigate } from 'react-router-dom'
+import { Search } from '@/layouts/home/header/components'
 
 const Header = () => {
   const { isOpen, toggleModal, closeModal } = useModal()
@@ -50,6 +51,7 @@ const Header = () => {
             </span>
           </ButtonHeader>
           <ButtonHeader
+            onClick={() => navigate('/profile')}
             direction='vertical'
             iconPosition='top'
             disPlayBackground

@@ -17,7 +17,7 @@ const SearchResultPage: FC<SearchResultPageProps> = () => {
   useSetDocTitle(`Kết quả tìm kiếm cho: ${queryString.q}`)
 
   return (
-    <div className='py-4 mb-10 max-w-[1200px] mx-auto'>
+    <div className='py-4 mb-10'>
       <div className='text-sm font-medium text-center text-gray-600 font-roboto'>
         Tìm thấy <span className='font-semibold text-gray-700'>10</span> sản phẩm cho từ khóa '
         <span className='font-semibold text-gray-700'>{queryString.q}</span>'

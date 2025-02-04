@@ -1,0 +1,5 @@
+export { default as ProfilePage } from './ProfilePage'
+export { default as OrderHistoryPage } from './OrderHistoryPage'
+export { default as AddressInfoPage } from './AddressInfoPage'
+export { default as UserInfoPage } from './UserInfoPage'
+export { default as SupportPage } from './SupportPage'

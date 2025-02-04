@@ -1,14 +1,18 @@
 import { CartLayout, HomeLayout } from '@/layouts'
 import AdminLayout from '@/layouts/admin/AdminLayout'
+import { ProfileLayout } from '@/layouts/profile'
+import CategoryWatch from '@/middlewares/CategoryWatch'
 import AddProduct from '@/pages/admin/products/AddProduct'
 import ProductList from '@/pages/admin/products/ProductList'
 import { CartPage } from '@/pages/cart'
+import { CategoryPage } from '@/pages/category'
 import { HomePage } from '@/pages/home'
 import { Login } from '@/pages/login'
 import NotFoundPage from '@/pages/NotFoundPage'
 import { PaymentConfirmPage } from '@/pages/payment_confirm'
 import { PaymentInfoPage } from '@/pages/payment_info'
 import { ProductDetailPage } from '@/pages/products'
+import { AddressInfoPage, OrderHistoryPage, ProfilePage, SupportPage, UserInfoPage } from '@/pages/profile'
 import { SearchResultPage } from '@/pages/search'
 import { RouteObject, useRoutes } from 'react-router-dom'
 
@@ -26,12 +30,22 @@ const MyRoutes = () => {
           element: <HomePage />
         },
         {
-          path: '/catalogsearch/result',
+          path: 'catalogsearch/result',
           element: <SearchResultPage />
         },
         {
-          path: '/:category/:productSlug',
-          element: <ProductDetailPage />
+          path: ':category',
+          element: <CategoryWatch />,
+          children: [
+            {
+              path: '',
+              element: <CategoryPage />
+            },
+            {
+              path: ':productSlug',
+              element: <ProductDetailPage />
+            }
+          ]
         }
       ]
     },
@@ -52,6 +66,40 @@ const MyRoutes = () => {
           element: <PaymentConfirmPage />
         }
       ]
+    },
+    {
+      path: '/profile',
+      element: <ProfileLayout />,
+      children: [
+        {
+          path: '',
+          element: <ProfilePage />
+        },
+        {
+          path: 'order',
+          element: <OrderHistoryPage />
+        },
+        {
+          path: 'coupon',
+          element: <OrderHistoryPage />
+        },
+        {
+          path: 'user-info/address-info',
+          element: <AddressInfoPage />
+        },
+        {
+          path: 'user-info',
+          element: <UserInfoPage />
+        },
+        {
+          path: 'support',
+          element: <SupportPage />
+        }
+      ]
+    },
+    {
+      path: 'not-found',
+      element: <NotFoundPage />
     }
   ]
 
