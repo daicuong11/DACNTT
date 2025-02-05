@@ -3,6 +3,8 @@ import SideBarItem from './SideBarItem'
 import { Headset, LogOut, Shield } from 'lucide-react'
 import { MyDivider } from '@/components'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { useAppDispatch } from '@/hooks'
+import { clearAuth } from '@/features/auth/auth.slice'
 
 interface SideBarProfileProps {
   children?: ReactElement | ReactElement[]
@@ -11,6 +13,13 @@ interface SideBarProfileProps {
 const SideBarProfile: FC<SideBarProfileProps> = ({ children }) => {
   const naviagate = useNavigate()
   const pathName = useLocation().pathname
+
+  const dispatch = useAppDispatch()
+
+  const handleLogout = () => {
+    dispatch(clearAuth())
+    naviagate('/signin')
+  }
 
   return (
     <div className='w-[254px] bg-white rounded-md px-2 py-6 h-[calc(100vh-84px)] sticky top-[84px] flex flex-col gap-y-3 mt-4'>
@@ -30,7 +39,7 @@ const SideBarProfile: FC<SideBarProfileProps> = ({ children }) => {
         title={'Hỗ trợ'}
       />
       <SideBarItem
-        onClick={() => naviagate('/signin')}
+        onClick={handleLogout}
         isActive={false}
         sufixIcon={<LogOut size={24} strokeWidth={1.6} />}
         title={'Thoát tài khoản'}

@@ -1,21 +1,28 @@
-import { UserType } from './user.type'
+import { UserAuthType, UserType } from './user.type'
 
 // response
-export interface BaseResponse {
+export interface BaseResponse<T> {
   success: boolean
   message: string
-  Data: any
+  data: T
 }
 
 export interface AuthResponseType {
   accessToken: string
   refreshToken: string
-  ExpiresIn: number
-  user: Pick<UserType, 'id' | 'email' | 'name' | 'role'>
+  expiresIn: number
+  user: UserAuthType
 }
 
 // request
 export interface LoginRequestType {
+  phoneNumber: string
+  password: string
+}
+
+export interface RegisterRequestType {
+  name: string
+  phoneNumber: string
   email: string
   password: string
 }

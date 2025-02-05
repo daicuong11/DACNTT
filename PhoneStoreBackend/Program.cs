@@ -93,9 +93,12 @@ builder.Services.AddScoped<INotificationRepository, NotificationService>();
 
 
 // Database configuration
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+//builder.Services.AddDbContext<AppDbContext>(options =>
+//    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Database configuration của Cuong
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Connection1")));
 
 // JWT and Google OAuth2 configuration
 var jwtKey = builder.Configuration["Jwt:Key"];
@@ -184,7 +187,7 @@ if (app.Environment.IsDevelopment())
 app.UseExceptionHandler("/error");
 app.UseStatusCodePages("text/plain", "Status code: {0}");
 
-//app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 
 app.UseCors("FrontendPolicy");
 

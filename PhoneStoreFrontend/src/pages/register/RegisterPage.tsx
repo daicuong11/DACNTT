@@ -1,20 +1,20 @@
-import React, { useEffect } from 'react'
-import { useLoginWithEmailAndPassword } from '../../hooks/querys/auth'
-import { useAppDispatch, useAppSelector, useModal } from '../../hooks'
-import { setAuth } from '../../features/auth/auth.slice'
-import { Form, FormProps, Input, Spin } from 'antd'
+import React from 'react'
+import { Form, FormProps, Input } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft } from 'lucide-react'
-import { AppCheckBox, ConfirmPhoneNumberModal, MyDivider } from '@/components'
+import { AppCheckBox, ConfirmPhoneNumberModal } from '@/components'
 import { google_logo, robot_hello } from '@/assets/images'
 import useSetDocTitle from '@/hooks/useSetDocTitle'
+import { useModal } from '@/hooks'
+import { useRegisterAccount } from '@/hooks/querys/auth.query'
+import { RegisterRequestType } from '@/types/auth.type'
 
 type FieldType = {
-  fullName?: string
-  phoneNumber?: string
-  email?: string
-  password?: string
-  confirmPassword?: string
+  fullName: string
+  phoneNumber: string
+  email: string
+  password: string
+  confirmPassword: string
 }
 
 const RegisterPage: React.FC = () => {
@@ -25,35 +25,17 @@ const RegisterPage: React.FC = () => {
 
   const confirmPhoneNumberModalController = useModal()
 
-  // const currentUser = useAppSelector((state) => state.auth.currentUser)
-  // const { mutate, data, isPending, isSuccess } = useLoginWithEmailAndPassword()
-  // const dispatch = useAppDispatch()
-
-  // // Xử lý cập nhật auth khi mutation thành công
-  // useEffect(() => {
-  //   if (isSuccess && data) {
-  //     const auth = data.data
-  //     dispatch(setAuth(auth))
-  //     navigate('/') // Chuyển hướng sau khi login thành công
-  //   }
-  // }, [isSuccess, data, dispatch, navigate])
-
-  // const handleLogin = () => {
-  //   mutate({ email: 'Admin@gmail.com', password: '123456' })
-  // }
-
-  // if (isPending) {
-  //   return (
-  //     <div className='fixed inset-0 flex items-center justify-center'>
-  //       <Spin />
-  //     </div>
-  //   )
-  // }
+  const useRegister = useRegisterAccount()
 
   const handleRegister: FormProps<FieldType>['onFinish'] = (values) => {
-    console.log('Success:', values)
-    setPhoneNumber(values.phoneNumber || '')
-    confirmPhoneNumberModalController.openModal()
+    setPhoneNumber(values.phoneNumber)
+    const req: RegisterRequestType = {
+      name: values.fullName,
+      phoneNumber: values.phoneNumber,
+      email: values.email,
+      password: values.password
+    }
+    useRegister.mutate(req)
   }
 
   return (

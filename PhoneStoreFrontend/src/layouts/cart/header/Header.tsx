@@ -2,12 +2,15 @@ import { CircleUserRound, ShoppingBag, SquareMenu } from 'lucide-react'
 import { GiaoHangIcon, logo } from '../../../assets/images'
 import { ButtonHeader } from './components'
 import { CategoryModal } from '../../../components'
-import { useModal } from '../../../hooks'
+import { useAppSelector, useModal } from '../../../hooks'
 import { Link, useNavigate } from 'react-router-dom'
 import { Search } from '@/layouts/home/header/components'
+import getLastWordOrTwoWithLimit from '@/utils/getLastWordOrTwoWithLimit'
 
 const Header = () => {
   const { isOpen, toggleModal, closeModal } = useModal()
+
+  const currentUser = useAppSelector((state) => state.auth.token)?.user
 
   const navigate = useNavigate()
 
@@ -51,14 +54,14 @@ const Header = () => {
             </span>
           </ButtonHeader>
           <ButtonHeader
-            onClick={() => navigate('/profile')}
+            onClick={() => (currentUser ? navigate('/profile') : navigate('/signin'))}
             direction='vertical'
             iconPosition='top'
             disPlayBackground
             icon={<CircleUserRound strokeWidth={1.6} size={24} color='white' />}
             className='font-medium transition-all duration-300 ease-in-out hover:scale-95'
           >
-            Đại Cương
+            {currentUser ? getLastWordOrTwoWithLimit(currentUser.name) : 'Đăng nhập'}
           </ButtonHeader>
         </div>
       </div>

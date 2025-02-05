@@ -18,9 +18,8 @@ namespace PhoneStoreBackend.Entities
         [EmailAddress]
         public string Email { get; set; }
 
-        [StringLength(100, MinimumLength = 6)]
         public string Password { get; set; }
-
+        [Required]
         public string PhoneNumber { get; set; } 
 
         public string Address { get; set; }

@@ -4,6 +4,12 @@ namespace PhoneStoreBackend.Api.Request
 {
     public class RegisterRequest
     {
+        [Required(ErrorMessage = "Tên không được để trống.")]
+        public string name { get; set; }
+
+        [Required(ErrorMessage = "Số điện thoại không được để trống.")]
+        public string phoneNumber { get; set; }
+
         [Required(ErrorMessage = "Email không được để trống.")]
         [EmailAddress(ErrorMessage = "Email không đúng định dạng.")]
         public string Email { get; set; }

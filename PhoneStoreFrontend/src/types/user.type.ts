@@ -2,7 +2,7 @@ export interface UserType {
   id: number
   name: string
   email: string
-  numberPhone: string
+  phoneNumber: string
   address: string
   role: Role
   active: boolean
@@ -12,6 +12,6 @@ export interface UserType {
   updatedAt: string
 }
 
-export type UserAuthType = Pick<UserType, 'id' | 'email' | 'name' | 'role'>
+export type UserAuthType = Pick<UserType, 'id' | 'email' | 'name' | 'role' | 'phoneNumber' | 'profilePicture'>
 
 export type Role = 'ADMIN' | 'CUSTOMER' | 'STUDENT' | 'STAFF'

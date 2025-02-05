@@ -1,51 +1,29 @@
-import React, { useEffect } from 'react'
-import { useLoginWithEmailAndPassword } from '../../hooks/querys/auth'
-import { useAppDispatch, useAppSelector } from '../../hooks'
-import { setAuth } from '../../features/auth/auth.slice'
-import { Button, Form, FormProps, Input, Spin } from 'antd'
+import React from 'react'
+import { useLoginWithEmailAndPassword } from '../../hooks/querys/auth.query'
+import { Form, FormProps, Input } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft } from 'lucide-react'
-import { MyDivider } from '@/components'
 import { google_logo, robot_hello } from '@/assets/images'
-import { GoogleOutlined } from '@ant-design/icons'
 import useSetDocTitle from '@/hooks/useSetDocTitle'
+import { LoginRequestType } from '@/types/auth.type'
 
 type FieldType = {
-  phoneNumber?: string
-  password?: string
+  phoneNumber: string
+  password: string
 }
 
 const Login: React.FC = () => {
   useSetDocTitle('BC Mobile | Đăng nhập')
   const navigate = useNavigate()
 
-  // const currentUser = useAppSelector((state) => state.auth.currentUser)
-  // const { mutate, data, isPending, isSuccess } = useLoginWithEmailAndPassword()
-  // const dispatch = useAppDispatch()
-
-  // // Xử lý cập nhật auth khi mutation thành công
-  // useEffect(() => {
-  //   if (isSuccess && data) {
-  //     const auth = data.data
-  //     dispatch(setAuth(auth))
-  //     navigate('/') // Chuyển hướng sau khi login thành công
-  //   }
-  // }, [isSuccess, data, dispatch, navigate])
-
-  // const handleLogin = () => {
-  //   mutate({ email: 'Admin@gmail.com', password: '123456' })
-  // }
-
-  // if (isPending) {
-  //   return (
-  //     <div className='fixed inset-0 flex items-center justify-center'>
-  //       <Spin />
-  //     </div>
-  //   )
-  // }
+  const useLoginAccount = useLoginWithEmailAndPassword()
 
   const handleLogin: FormProps<FieldType>['onFinish'] = (values) => {
-    console.log('Success:', values)
+    const req: LoginRequestType = {
+      phoneNumber: values.phoneNumber,
+      password: values.password
+    }
+    useLoginAccount.mutate(req)
   }
 
   return (
