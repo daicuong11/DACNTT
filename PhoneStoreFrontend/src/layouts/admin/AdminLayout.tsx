@@ -25,8 +25,8 @@ const AdminLayout: React.FC = () => {
           {/* <!-- ===== Header End ===== --> */}
 
           {/* <!-- ===== Main Content Start ===== --> */}
-          <main>
-            <div className='p-4 mx-auto max-w-screen-2xl md:p-6 2xl:p-10'>
+          <main >
+            <div className='p-4 mx-auto max-w-screen-2xl md:p-6 2xl:p-10 bg-gray-200 min-h-screen'>
               <Outlet/>
             </div>
           </main>

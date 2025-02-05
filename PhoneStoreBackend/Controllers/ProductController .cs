@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PhoneStoreBackend.Api.Request;
 using PhoneStoreBackend.Api.Response;
 using PhoneStoreBackend.DTOs;
@@ -46,7 +45,7 @@ namespace PhoneStoreBackend.Controllers
                 var response = Response<ProductDTO>.CreateSuccessResponse(product, "Thông tin sản phẩm");
                 return Ok(response);
             }
-            catch (KeyNotFoundException )
+            catch (KeyNotFoundException)
             {
                 var notFoundResponse = Response<object>.CreateErrorResponse("Không tìm thấy sản phẩm với id= " + id);
                 return NotFound(notFoundResponse);
@@ -59,7 +58,7 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "ADMIN")]
+        //[Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> AddProduct([FromBody] ProductRequest product)
         {
             try
@@ -87,7 +86,7 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "ADMIN")]
+        //[Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> UpdateProduct(int id, [FromBody] ProductRequest product)
         {
             try
@@ -108,7 +107,7 @@ namespace PhoneStoreBackend.Controllers
                 var response = Response<object>.CreateSuccessResponse(null, "Sản phẩm đã được cập nhật thành công");
                 return Ok(response);
             }
-            catch (KeyNotFoundException )
+            catch (KeyNotFoundException)
             {
                 var notFoundResponse = Response<object>.CreateErrorResponse("Không tìm thấy sản phẩm để cập nhật.");
                 return NotFound(notFoundResponse);
@@ -121,7 +120,7 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "ADMIN")]
+        //[Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
             try
@@ -131,7 +130,7 @@ namespace PhoneStoreBackend.Controllers
                 var response = Response<object>.CreateSuccessResponse(null, "Sản phẩm đã được xóa thành công");
                 return Ok(response);
             }
-            catch (KeyNotFoundException )
+            catch (KeyNotFoundException)
             {
                 var notFoundResponse = Response<object>.CreateErrorResponse("Không tìm thấy sản phẩm để xóa.");
                 return NotFound(notFoundResponse);

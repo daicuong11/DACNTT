@@ -59,14 +59,14 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   return (
     <aside
       ref={sidebar}
-      className={`absolute z-50 text-white left-0 top-0 flex h-screen w-72.5 flex-col overflow-y-hidden bg-primary duration-300 ease-linear lg:static lg:translate-x-0 ${
+      className={`absolute z-50 left-0 top-0 flex h-screen w-72.5 flex-col overflow-y-hidden bg-white duration-300 ease-linear lg:static lg:translate-x-0 ${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
       }`}
     >
       {/* <!-- SIDEBAR HEADER --> */}
-      <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
+      <div className="flex items-center justify-between gap-2 px-6 py-4">
         <NavLink to="/">
-          <img className='ml-4 object-cover w-30 h-[40px]' src={'/public/logo.png'} alt="Logo" />
+        <img className='ml-4 object-cover w-40 h-[55px]' src={'/logo3.png'} alt="Logo" />
         </NavLink>
 
         <button
@@ -107,9 +107,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <NavLink
                   to="/admin/products"
-                  className={`capitalize group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-100/20 ${
+                  className={`capitalize group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${
                     pathname.includes('product') &&
-                    'bg-gray-100/20'
+                    'bg-gray-200'
                   }`}
                 >
                   <ProductOutlined />
@@ -123,9 +123,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <NavLink
                   to="/admin/brands"
-                  className={`capitalize group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-100/20 ${
+                  className={`capitalize group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${
                     pathname.includes('brand') &&
-                    'bg-gray-100/20'
+                    'bg-gray-200'
                   }`}
                 >
                  <AppleOutlined />
@@ -138,9 +138,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                <li>
                 <NavLink
                   to="/admin/categories"
-                  className={`capitalize group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-100/20 ${
+                  className={`capitalize group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${
                     pathname.includes('categories') &&
-                    'bg-gray-100/20'
+                    'bg-gray-200'
                   }`}
                 >
                  <UngroupOutlined />
@@ -153,8 +153,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <NavLink
                   to="/profile"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-100/20 ${
-                    pathname.includes('profile') && 'bg-gray-100/20'
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${
+                    pathname.includes('profile') && 'bg-gray-200'
                   }`}
                 >
                   <svg
@@ -190,10 +190,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     <React.Fragment>
                       <NavLink
                         to="#"
-                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-100/20 ${
+                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${
                           (pathname === '/forms' ||
                             pathname.includes('forms')) &&
-                          'bg-gray-100/20'
+                          'bg-gray-200'
                         }`}
                         onClick={(e) => {
                           e.preventDefault();
@@ -292,8 +292,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <NavLink
                   to="/tables"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-100/20 ${
-                    pathname.includes('tables') && 'bg-gray-100/20'
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${
+                    pathname.includes('tables') && 'bg-gray-200'
                   }`}
                 >
                   <svg
@@ -330,9 +330,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <NavLink
                   to="/settings"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-100/20 ${
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${
                     pathname.includes('settings') &&
-                    'bg-gray-100/20'
+                    'bg-gray-200'
                   }`}
                 >
                   <svg
@@ -382,8 +382,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <NavLink
                   to="/chart"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-100/20 ${
-                    pathname.includes('chart') && 'bg-gray-100/20'
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${
+                    pathname.includes('chart') && 'bg-gray-200'
                   }`}
                 >
                   <svg
@@ -429,9 +429,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     <React.Fragment>
                       <NavLink
                         to="#"
-                        className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium  duration-300 ease-in-out hover:bg-gray-100/20 ${
+                        className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${
                           (pathname === '/ui' || pathname.includes('ui')) &&
-                          'bg-gray-100/20'
+                          'bg-gray-200'
                         }`}
                         onClick={(e) => {
                           e.preventDefault();
@@ -541,9 +541,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     <React.Fragment>
                       <NavLink
                         to="#"
-                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-100/20 ${
+                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${
                           (pathname === '/auth' || pathname.includes('auth')) &&
-                          'bg-gray-100/20'
+                          'bg-gray-200'
                         }`}
                         onClick={(e) => {
                           e.preventDefault();
