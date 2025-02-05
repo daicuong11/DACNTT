@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react'
 import { useLoginWithEmailAndPassword } from '../../hooks/querys/auth'
-import { useAppDispatch, useAppSelector } from '../../hooks'
+import { useAppDispatch, useAppSelector, useModal } from '../../hooks'
 import { setAuth } from '../../features/auth/auth.slice'
 import { Form, FormProps, Input, Spin } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft } from 'lucide-react'
-import { AppCheckBox, MyDivider } from '@/components'
+import { AppCheckBox, ConfirmPhoneNumberModal, MyDivider } from '@/components'
 import { google_logo, robot_hello } from '@/assets/images'
 import useSetDocTitle from '@/hooks/useSetDocTitle'
 
@@ -20,6 +20,10 @@ type FieldType = {
 const RegisterPage: React.FC = () => {
   useSetDocTitle('BC Mobile | Đăng nhập')
   const navigate = useNavigate()
+
+  const [phoneNumber, setPhoneNumber] = React.useState('0333333333')
+
+  const confirmPhoneNumberModalController = useModal()
 
   // const currentUser = useAppSelector((state) => state.auth.currentUser)
   // const { mutate, data, isPending, isSuccess } = useLoginWithEmailAndPassword()
@@ -48,10 +52,17 @@ const RegisterPage: React.FC = () => {
 
   const handleRegister: FormProps<FieldType>['onFinish'] = (values) => {
     console.log('Success:', values)
+    setPhoneNumber(values.phoneNumber || '')
+    confirmPhoneNumberModalController.openModal()
   }
 
   return (
     <div className='w-full pt-5 pb-10'>
+      <ConfirmPhoneNumberModal
+        isOpen={confirmPhoneNumberModalController.isOpen}
+        phoneNumber={phoneNumber}
+        closeModal={confirmPhoneNumberModalController.closeModal}
+      />
       <div className='max-w-[700px] mx-auto min-h-screen'>
         <button onClick={() => navigate('/signin')} className='p-1 text-black/70 hover:text-black'>
           <ArrowLeft size={28} strokeWidth={1.6} />
