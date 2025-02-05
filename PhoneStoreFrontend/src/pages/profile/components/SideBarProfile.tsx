@@ -29,7 +29,12 @@ const SideBarProfile: FC<SideBarProfileProps> = ({ children }) => {
         sufixIcon={<Headset size={24} strokeWidth={1.6} />}
         title={'Hỗ trợ'}
       />
-      <SideBarItem isActive={false} sufixIcon={<LogOut size={24} strokeWidth={1.6} />} title={'Thoát tài khoản'} />
+      <SideBarItem
+        onClick={() => naviagate('/signin')}
+        isActive={false}
+        sufixIcon={<LogOut size={24} strokeWidth={1.6} />}
+        title={'Thoát tài khoản'}
+      />
     </div>
   )
 }

@@ -1,5 +1,6 @@
 import { CartLayout, HomeLayout } from '@/layouts'
 import AdminLayout from '@/layouts/admin/AdminLayout'
+import { AuthLayout } from '@/layouts/auth'
 import { ProfileLayout } from '@/layouts/profile'
 import CategoryWatch from '@/middlewares/CategoryWatch'
 import BrandList from '@/pages/admin/brands/BrandList'
@@ -15,6 +16,7 @@ import { PaymentConfirmPage } from '@/pages/payment_confirm'
 import { PaymentInfoPage } from '@/pages/payment_info'
 import { ProductDetailPage } from '@/pages/products'
 import { AddressInfoPage, OrderHistoryPage, ProfilePage, SupportPage, UserInfoPage } from '@/pages/profile'
+import { RegisterPage } from '@/pages/register'
 import { SearchResultPage } from '@/pages/search'
 import { RouteObject, useRoutes } from 'react-router-dom'
 
@@ -131,7 +133,7 @@ const MyRoutes = () => {
   const routesForNotAuthenticatedOnly: RouteObject[] = [
     {
       path: '/',
-      element: null,
+      element: <AuthLayout />,
       children: [
         {
           path: 'signin',
@@ -139,7 +141,7 @@ const MyRoutes = () => {
         },
         {
           path: 'register',
-          element: <Login />
+          element: <RegisterPage />
         }
       ]
     }

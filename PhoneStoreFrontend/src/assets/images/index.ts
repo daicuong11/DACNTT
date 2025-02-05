@@ -19,6 +19,8 @@ import atm_card_img from './atm-card.png'
 import flame_img from './flame.png'
 import rigthbanner_dienthoai from './Rightbanner-mobile.jpg'
 import rigthbanner_laptop from './Rightbanner_Laptop.jpg'
+import robot_hello from './robot_hello.png'
+import google_logo from './google_logo.png'
 
 export * from './payment_methods'
 
@@ -45,7 +47,9 @@ export {
   vnpay,
   Not_Found,
   atm_card_img,
-  flame_img
+  flame_img,
+  robot_hello,
+  google_logo
 }
 
 export const rightBannerImages = [

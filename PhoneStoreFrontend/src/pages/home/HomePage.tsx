@@ -7,7 +7,8 @@ import MobileSaleView from './components/MobileSaleView'
 import RightBanner from './components/RightBanner'
 
 const HomePage = () => {
-  useSetDocTitle('PhoneStore')
+  useSetDocTitle('BC Mobile')
+
   return (
     <div className='w-full py-4'>
       <div className='flex items-start justify-between gap-x-4'>
