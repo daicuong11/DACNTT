@@ -1,27 +1,29 @@
 import { rightBannerImages } from '@/assets/images'
 import { ProductCardSimple } from '@/components'
 import { exampleProductVariant } from '@/datas'
+import { useAppSelector } from '@/hooks'
 import { maskPhoneNumber } from '@/utils/maskPhoneNumber'
 import { EyeFilled, EyeInvisibleFilled, UserOutlined } from '@ant-design/icons'
 import { Avatar, Tag } from 'antd'
 import { ChevronDown, ClipboardList, MapPinHouse, Ticket, UserRound } from 'lucide-react'
 import React, { FC, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 
 interface ProfilePageProps {}
 
 const ProfilePage: FC<ProfilePageProps> = () => {
   const [isShowPhoneNumber, setIsShowPhoneNumber] = useState(false)
   const navigate = useNavigate()
+  const currentUser = useAppSelector((state) => state.auth.token)!.user
 
   return (
     <div className='py-4'>
       <div className='flex px-2 gap-x-2'>
         <Avatar size={72} icon={<UserOutlined />} />
         <div className='flex flex-col gap-y-0.5'>
-          <h1 className='text-[19px] font-semibold text-pink-600 uppercase leading-none'>Đạo Thanh Hưng</h1>
+          <h1 className='text-[19px] font-semibold text-pink-600 uppercase leading-none'>{currentUser.name}</h1>
           <div className='flex items-center text-sm font-medium text-gray-500 gap-x-2'>
-            {isShowPhoneNumber ? '0987654321' : maskPhoneNumber('0987654321')}
+            {isShowPhoneNumber ? currentUser.phoneNumber : maskPhoneNumber(currentUser.phoneNumber)}
             {isShowPhoneNumber ? (
               <EyeInvisibleFilled onClick={() => setIsShowPhoneNumber(false)} className='p-1 text-lg cursor-pointer' />
             ) : (

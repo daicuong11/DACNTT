@@ -4,6 +4,8 @@ import { AuthResponseType, BaseResponse, LoginRequestType, RegisterRequestType }
 import { useAppDispatch } from '..'
 import { setAuth } from '@/features/auth/auth.slice'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import { AxiosError } from 'axios'
 
 export const useLoginWithEmailAndPassword = () => {
   const dispatch = useAppDispatch()
@@ -18,8 +20,8 @@ export const useLoginWithEmailAndPassword = () => {
       navigate('/')
     },
 
-    onError: (error: unknown) => {
-      console.error('Login error:', error)
+    onError: (error: any) => {
+      toast.error(error.response.data.message || 'Đăng nhập thất bại!')
     }
   })
 
@@ -41,8 +43,8 @@ export const useRegisterAccount = () => {
       navigate('/')
     },
 
-    onError: (error: unknown) => {
-      console.error('Register error:', error)
+    onError: (error: any) => {
+      toast.error(error.response.data.message || 'Đăng ký thất bại!')
     }
   })
 

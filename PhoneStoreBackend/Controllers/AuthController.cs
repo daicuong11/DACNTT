@@ -49,7 +49,7 @@ namespace PhoneStoreBackend.Controllers
             }
             catch (Exception ex)
             {
-                var response = Response<object>.CreateErrorResponse("Có lỗi xãy ra: " + ex.Message);
+                var response = Response<object>.CreateErrorResponse(ex.Message);
                 return BadRequest(response);
             }
         }

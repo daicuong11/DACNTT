@@ -1,6 +1,6 @@
+import { useNavigate } from 'react-router-dom'
 import { AuthResponseType } from './../../types/auth.type'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-
 export interface AuthState {
   token: AuthResponseType | null
 }

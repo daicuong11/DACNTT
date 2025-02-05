@@ -6,6 +6,8 @@ import { ArrowLeft } from 'lucide-react'
 import { google_logo, robot_hello } from '@/assets/images'
 import useSetDocTitle from '@/hooks/useSetDocTitle'
 import { LoginRequestType } from '@/types/auth.type'
+import classNames from 'classnames'
+import { LoadingItem } from '@/components'
 
 type FieldType = {
   phoneNumber: string
@@ -51,7 +53,7 @@ const Login: React.FC = () => {
             name='phoneNumber'
             rules={[
               { required: true, message: 'Vui lòng điền số điện thoại!' },
-              { pattern: /^[0-9]{10}$/, message: 'Số điện thoại không hợp lệ!' }
+              { pattern: /^(\+84|0)[3|5|7|8|9]\d{8}$/, message: 'Số điện thoại không hợp lệ!' }
             ]}
           >
             <div className='flex flex-col gap-y-2.5 border-b transition-all focus-within:border-blue-600 group'>
@@ -76,8 +78,14 @@ const Login: React.FC = () => {
             <button className='text-sm text-gray-500 hover:underline hover:text-primary'>Quên mệt khẩu?</button>
           </div>
           <div className='flex flex-col items-center mt-3 gap-y-4'>
-            <button type='submit' className='w-full py-2 btn btn-danger'>
-              Đăng nhập
+            <button
+              disabled={useLoginAccount.isPending}
+              type='submit'
+              className={classNames('w-full py-2 btn btn-danger', {
+                'opacity-80 cursor-not-allowed': useLoginAccount.isPending
+              })}
+            >
+              {useLoginAccount.isPending ? <LoadingItem className='border-white' /> : 'Đăng nhập'}
             </button>
             <div className='text-sm text-gray-500'>
               Bạn chưa có tài khoản?{' '}

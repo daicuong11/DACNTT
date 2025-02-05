@@ -2,7 +2,7 @@ import React from 'react'
 import { Form, FormProps, Input } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft } from 'lucide-react'
-import { AppCheckBox, ConfirmPhoneNumberModal } from '@/components'
+import { AppCheckBox, ConfirmPhoneNumberModal, LoadingItem } from '@/components'
 import { google_logo, robot_hello } from '@/assets/images'
 import useSetDocTitle from '@/hooks/useSetDocTitle'
 import { useModal } from '@/hooks'
@@ -85,7 +85,7 @@ const RegisterPage: React.FC = () => {
             name='phoneNumber'
             rules={[
               { required: true, message: 'Vui lòng nhập số điện thoại' },
-              { pattern: /^[0-9]{10}$/, message: 'Số điện thoại không hợp lệ' }
+              { pattern: /^(\+84|0)[3|5|7|8|9]\d{8}$/, message: 'Số điện thoại không hợp lệ' }
             ]}
           >
             <div className='flex flex-col gap-y-2.5 border-b transition-all focus-within:border-blue-600 group'>
@@ -151,8 +151,8 @@ const RegisterPage: React.FC = () => {
             </AppCheckBox>
           </div>
           <div className='flex flex-col items-center mt-4 gap-y-4'>
-            <button type='submit' className='w-full py-2 btn btn-danger'>
-              Đăng ký
+            <button disabled={useRegister.isPending} type='submit' className='w-full py-2 btn btn-danger'>
+              {useRegister.isPending ? <LoadingItem className='border-white' /> : 'Đăng ký'}
             </button>
             <div className='text-sm text-gray-500'>
               Bạn đã có tài khoản?{' '}

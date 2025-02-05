@@ -1,3 +1,4 @@
+import { useAppSelector } from '@/hooks'
 import { CartLayout, HomeLayout } from '@/layouts'
 import AdminLayout from '@/layouts/admin/AdminLayout'
 import { AuthLayout } from '@/layouts/auth'
@@ -18,10 +19,10 @@ import { ProductDetailPage } from '@/pages/products'
 import { AddressInfoPage, OrderHistoryPage, ProfilePage, SupportPage, UserInfoPage } from '@/pages/profile'
 import { RegisterPage } from '@/pages/register'
 import { SearchResultPage } from '@/pages/search'
-import { RouteObject, useRoutes } from 'react-router-dom'
+import { Navigate, RouteObject, useRoutes } from 'react-router-dom'
 
 const MyRoutes = () => {
-  const user = true
+  const user = useAppSelector((state) => state.auth.token) ? true : false
 
   // Define public routes accessible to all users
   const routesForPublic: RouteObject[] = [
@@ -36,20 +37,6 @@ const MyRoutes = () => {
         {
           path: 'catalogsearch/result',
           element: <SearchResultPage />
-        },
-        {
-          path: ':category',
-          element: <CategoryWatch />,
-          children: [
-            {
-              path: '',
-              element: <CategoryPage />
-            },
-            {
-              path: ':productSlug',
-              element: <ProductDetailPage />
-            }
-          ]
         }
       ]
     },
@@ -68,6 +55,57 @@ const MyRoutes = () => {
         {
           path: 'payment',
           element: <PaymentConfirmPage />
+        }
+      ]
+    },
+
+    {
+      path: 'not-found',
+      element: <NotFoundPage />
+    }
+  ]
+
+  // Define routes that are public but need middleware
+  const routesPublicButNeedMiddleware: RouteObject[] = [
+    {
+      path: '/',
+      element: <HomeLayout />,
+      children: [
+        {
+          path: ':category',
+          element: <CategoryWatch />,
+          children: [
+            {
+              path: '',
+              element: <CategoryPage />
+            },
+            {
+              path: ':productSlug',
+              element: <ProductDetailPage />
+            }
+          ]
+        }
+      ]
+    }
+  ]
+
+  // Define routes accessible only to authenticated users
+  const routesForAuthenticatedOnly: RouteObject[] = [
+    {
+      path: '/',
+      element: null,
+      children: [
+        {
+          path: 'bien',
+          element: <div>User Home Page</div>
+        },
+        {
+          path: 'profile',
+          element: <div>User Profile</div>
+        },
+        {
+          path: 'logout',
+          element: <div>Logout</div>
         }
       ]
     },
@@ -100,32 +138,6 @@ const MyRoutes = () => {
           element: <SupportPage />
         }
       ]
-    },
-    {
-      path: 'not-found',
-      element: <NotFoundPage />
-    }
-  ]
-
-  // Define routes accessible only to authenticated users
-  const routesForAuthenticatedOnly: RouteObject[] = [
-    {
-      path: '/',
-      element: null,
-      children: [
-        {
-          path: 'bien',
-          element: <div>User Home Page</div>
-        },
-        {
-          path: 'profile',
-          element: <div>User Profile</div>
-        },
-        {
-          path: 'logout',
-          element: <div>Logout</div>
-        }
-      ]
     }
   ]
 
@@ -137,11 +149,11 @@ const MyRoutes = () => {
       children: [
         {
           path: 'signin',
-          element: <Login />
+          element: !user ? <Login /> : <Navigate to='/' />
         },
         {
           path: 'register',
-          element: <RegisterPage />
+          element: !user ? <RegisterPage /> : <Navigate to='/' />
         }
       ]
     }
@@ -194,13 +206,21 @@ const MyRoutes = () => {
     }
   ]
 
+  const routesLogout: RouteObject[] = [
+    {
+      path: '/profile',
+      element: <Navigate to='/signin' />
+    }
+  ]
+
   // Tạo danh sách route dựa trên trạng thái đăng nhập
   const routing = useRoutes([
     ...routesForPublic,
-    ...(!user ? [] : routesForAuthenticatedOnly),
+    ...(!user ? routesLogout : routesForAuthenticatedOnly),
     ...routesForNotAuthenticatedOnly,
-    ...routesForNotFound,
-    ...routesForAdmin
+    ...routesForAdmin,
+    ...routesPublicButNeedMiddleware,
+    ...routesForNotFound
   ])
 
   return routing // Trả về routes đã xử lý

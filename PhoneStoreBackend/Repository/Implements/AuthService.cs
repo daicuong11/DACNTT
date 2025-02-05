@@ -99,10 +99,11 @@ namespace PhoneStoreBackend.Repository.Implements
                     ExpiresIn = tokenExpirationInMinutes * 60,
                     User = new
                     {
-                        newUser.Id,
-                        newUser.Name,
-                        newUser.Email,
-                        newUser.Role,
+                        user.Id,
+                        user.Name,
+                        user.Email,
+                        user.PhoneNumber,
+                        user.ProfilePicture,
                     }
                 };
             }

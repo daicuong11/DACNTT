@@ -11,14 +11,13 @@ interface SideBarProfileProps {
 }
 
 const SideBarProfile: FC<SideBarProfileProps> = ({ children }) => {
-  const naviagate = useNavigate()
+  const navigate = useNavigate()
   const pathName = useLocation().pathname
 
   const dispatch = useAppDispatch()
 
   const handleLogout = () => {
     dispatch(clearAuth())
-    naviagate('/signin')
   }
 
   return (
@@ -26,14 +25,14 @@ const SideBarProfile: FC<SideBarProfileProps> = ({ children }) => {
       {children}
       <MyDivider className='opacity-60 !h-[0.5px]' />
       <SideBarItem
-        onClick={() => naviagate('/admin/products')}
+        onClick={() => navigate('/admin/products')}
         isActive={false}
         sufixIcon={<Shield size={24} strokeWidth={1.6} />}
         title={'Trang quản trị'}
       />
       <MyDivider className='opacity-60 !h-[0.5px]' />
       <SideBarItem
-        onClick={() => naviagate('support')}
+        onClick={() => navigate('support')}
         isActive={pathName === '/profile/support'}
         sufixIcon={<Headset size={24} strokeWidth={1.6} />}
         title={'Hỗ trợ'}
