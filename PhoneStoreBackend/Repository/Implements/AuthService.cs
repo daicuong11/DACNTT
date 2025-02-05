@@ -29,10 +29,10 @@ namespace PhoneStoreBackend.Repository.Implements
             _mapper = mapper;
         }
 
-        public async Task<LoginResponse> LoginAsync(string email, string password)
+        public async Task<LoginResponse> LoginAsync(string phoneNumber, string password)
         {
             var user = await _context.Users
-                .FirstOrDefaultAsync(u => u.Email.ToLower() == email.ToLower());
+            .FirstOrDefaultAsync(u => u.PhoneNumber == phoneNumber);
 
             if (user == null || !user.Active || !BCrypt.Net.BCrypt.Verify(password, user.Password))
                 throw new Exception("Thông tin đăng nhập không chính xác.");
@@ -51,39 +51,40 @@ namespace PhoneStoreBackend.Repository.Implements
                 ExpiresIn = tokenExpirationInMinutes * 60,
                 User = new
                 {
-                    Id = user.Id,
-                    Name = user.Name,
-                    Email = user.Email,
-                    Role = user.Role,
-                    ProfilePicture = user.ProfilePicture,
+                    user.Id,
+                    user.Name,
+                    user.Email,
+                    user.PhoneNumber,
+                    user.ProfilePicture,
                 }
             };
         }
 
-        public async Task<LoginResponse> RegisterAsync(RegisterRequest userInfo)
+        public async Task<LoginResponse> RegisterAsync(User user)
         {
             using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
-                var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Email.ToLower() == userInfo.Email.ToLower());
+                var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.PhoneNumber == user.PhoneNumber);
                 if (existingUser != null)
                 {
-                    throw new Exception("Email đã tồn tại. Vui lòng sử dụng email khác.");
+                    throw new Exception("Số điện thoại đã đăng ký rồi.");
                 }
 
-                var hashedPassword = BCrypt.Net.BCrypt.HashPassword(userInfo.Password);
+                string hashedPassword = BCrypt.Net.BCrypt.HashPassword(user.Password, BCrypt.Net.BCrypt.GenerateSalt(12));
 
-                var user = new User
+                var createUser = new User
                 {
-                    Name = GetGmailName.gmailToName(userInfo.Email),
-                    Email = userInfo.Email,
+                    Name = user.Name,
+                    PhoneNumber = user.PhoneNumber,
+                    Email = user.Email,
                     Password = hashedPassword,
                     Role = RoleEnum.CUSTOMER.ToString(),
                     Active = true,
                     IsGoogleAccount = false
                 };
 
-                var newUser = await _userService.AddUserAsync(user);
+                var newUser = await _userService.AddUserAsync(createUser);
 
                 var tokenExpirationInMinutes = 15;
                 var accessToken = _tokenService.GenerateToken(newUser, tokenExpirationInMinutes);

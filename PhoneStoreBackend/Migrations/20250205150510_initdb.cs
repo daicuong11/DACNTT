@@ -78,8 +78,8 @@ namespace PhoneStoreBackend.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ProfilePicture = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Role = table.Column<string>(type: "nvarchar(20)", nullable: true),
@@ -99,7 +99,6 @@ namespace PhoneStoreBackend.Migrations
                 {
                     ProductId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Slug = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     Name = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
@@ -275,11 +274,12 @@ namespace PhoneStoreBackend.Migrations
                 {
                     ProductVariantId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ProdcutId = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
                     DiscountId = table.Column<int>(type: "int", nullable: true),
-                    Color = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Slug = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Color = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Storage = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
                     Stock = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -291,43 +291,10 @@ namespace PhoneStoreBackend.Migrations
                         principalTable: "Discounts",
                         principalColumn: "DiscountId");
                     table.ForeignKey(
-                        name: "FK_ProductVariants_Products_ProdcutId",
-                        column: x => x.ProdcutId,
+                        name: "FK_ProductVariants_Products_ProductId",
+                        column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "ProductId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Orders",
-                columns: table => new
-                {
-                    OrderId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    CouponId = table.Column<int>(type: "int", nullable: false),
-                    OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(20)", nullable: false),
-                    TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    ShippingAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    note = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Orders", x => x.OrderId);
-                    table.ForeignKey(
-                        name: "FK_Orders_Coupons_CouponId",
-                        column: x => x.CouponId,
-                        principalTable: "Coupons",
-                        principalColumn: "CouponId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Orders_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -472,23 +439,51 @@ namespace PhoneStoreBackend.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    OrderId = table.Column<int>(type: "int", nullable: false),
-                    OrderId1 = table.Column<int>(type: "int", nullable: true)
+                    OrderId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Customer", x => x.CustomerId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    OrderId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    CouponId = table.Column<int>(type: "int", nullable: false),
+                    CustomerId = table.Column<int>(type: "int", nullable: false),
+                    OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(20)", nullable: false),
+                    TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    ShippingAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.OrderId);
                     table.ForeignKey(
-                        name: "FK_Customer_Orders_OrderId",
-                        column: x => x.OrderId,
-                        principalTable: "Orders",
-                        principalColumn: "OrderId",
+                        name: "FK_Orders_Coupons_CouponId",
+                        column: x => x.CouponId,
+                        principalTable: "Coupons",
+                        principalColumn: "CouponId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Customer_Orders_OrderId1",
-                        column: x => x.OrderId1,
-                        principalTable: "Orders",
-                        principalColumn: "OrderId");
+                        name: "FK_Orders_Customer_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customer",
+                        principalColumn: "CustomerId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Orders_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -499,8 +494,8 @@ namespace PhoneStoreBackend.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     OrderId = table.Column<int>(type: "int", nullable: false),
                     ProductVariantId = table.Column<int>(type: "int", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Discount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
+                    Discount = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     UnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
@@ -527,6 +522,7 @@ namespace PhoneStoreBackend.Migrations
                 {
                     PaymentId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    TransactionId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OrderId = table.Column<int>(type: "int", nullable: false),
                     PaymentMethod = table.Column<string>(type: "nvarchar(50)", nullable: false),
                     PaymentStatus = table.Column<string>(type: "nvarchar(50)", nullable: false),
@@ -577,13 +573,7 @@ namespace PhoneStoreBackend.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Customer_OrderId",
                 table: "Customer",
-                column: "OrderId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Customer_OrderId1",
-                table: "Customer",
-                column: "OrderId1");
+                column: "OrderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Notifications_Id",
@@ -609,6 +599,12 @@ namespace PhoneStoreBackend.Migrations
                 name: "IX_Orders_CouponId",
                 table: "Orders",
                 column: "CouponId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_CustomerId",
+                table: "Orders",
+                column: "CustomerId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_UserId",
@@ -657,9 +653,9 @@ namespace PhoneStoreBackend.Migrations
                 column: "DiscountId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductVariants_ProdcutId",
+                name: "IX_ProductVariants_ProductId",
                 table: "ProductVariants",
-                column: "ProdcutId");
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reviews_ProductVariantId",
@@ -685,10 +681,29 @@ namespace PhoneStoreBackend.Migrations
                 name: "IX_Wishlists_UserId",
                 table: "Wishlists",
                 column: "UserId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Customer_Orders_OrderId",
+                table: "Customer",
+                column: "OrderId",
+                principalTable: "Orders",
+                principalColumn: "OrderId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Coupons_Users_UserId",
+                table: "Coupons");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Orders_Users_UserId",
+                table: "Orders");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Customer_Orders_OrderId",
+                table: "Customer");
+
             migrationBuilder.DropTable(
                 name: "ActivityLogs");
 
@@ -697,9 +712,6 @@ namespace PhoneStoreBackend.Migrations
 
             migrationBuilder.DropTable(
                 name: "CartItems");
-
-            migrationBuilder.DropTable(
-                name: "Customer");
 
             migrationBuilder.DropTable(
                 name: "Notifications");
@@ -726,9 +738,6 @@ namespace PhoneStoreBackend.Migrations
                 name: "Carts");
 
             migrationBuilder.DropTable(
-                name: "Orders");
-
-            migrationBuilder.DropTable(
                 name: "ProductSpecificationGroups");
 
             migrationBuilder.DropTable(
@@ -738,13 +747,7 @@ namespace PhoneStoreBackend.Migrations
                 name: "Wishlists");
 
             migrationBuilder.DropTable(
-                name: "Coupons");
-
-            migrationBuilder.DropTable(
                 name: "Products");
-
-            migrationBuilder.DropTable(
-                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Brands");
@@ -754,6 +757,18 @@ namespace PhoneStoreBackend.Migrations
 
             migrationBuilder.DropTable(
                 name: "Discounts");
+
+            migrationBuilder.DropTable(
+                name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Orders");
+
+            migrationBuilder.DropTable(
+                name: "Coupons");
+
+            migrationBuilder.DropTable(
+                name: "Customer");
         }
     }
 }

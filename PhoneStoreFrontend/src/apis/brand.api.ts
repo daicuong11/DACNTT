@@ -1,5 +1,5 @@
 import { BrandType } from '@/types/brand.type'
-import http from '../utils/http'
+import http from '../configs/http'
 
 export const addBrand = async (formData: FormData) => {
   return http.post<BrandType>('brands', formData, {
@@ -12,5 +12,5 @@ export const getBrands = async () => {
 }
 
 export const updateBrand = async (brandId: number, formData: FormData) => {
-    return http.put<BrandType>(`brands/${brandId}`, formData)
+  return http.put<BrandType>(`brands/${brandId}`, formData)
 }

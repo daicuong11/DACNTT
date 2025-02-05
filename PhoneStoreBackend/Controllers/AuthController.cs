@@ -42,14 +42,14 @@ namespace PhoneStoreBackend.Controllers
                 if (responseError != null)
                     return BadRequest(responseError);
 
-                var loginResult = await _authService.LoginAsync(model.Email, model.Password);
+                var loginResult = await _authService.LoginAsync(model.PhoneNumber, model.Password);
                 var response = Response<LoginResponse>.CreateSuccessResponse(loginResult, "Login Successfully");
 
                 return Ok(response);
             }
             catch (Exception ex)
             {
-                var response = Response<object>.CreateErrorResponse(ex.Message);
+                var response = Response<object>.CreateErrorResponse("Có lỗi xãy ra: " + ex.Message);
                 return BadRequest(response);
             }
         }
@@ -134,7 +134,7 @@ namespace PhoneStoreBackend.Controllers
 
         // Đăng ký
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterRequest model)
+        public async Task<IActionResult> Register([FromBody] RegisterRequest registerReq)
         {
             try
             {
@@ -142,7 +142,15 @@ namespace PhoneStoreBackend.Controllers
                 if (responseError != null)
                     return BadRequest(responseError);
 
-                var result = await _authService.RegisterAsync(model);
+                var createUser = new User
+                {
+                    Name = registerReq.name,
+                    PhoneNumber = registerReq.phoneNumber,
+                    Email = registerReq.Email,
+                    Password = registerReq.Password,
+                };
+
+                var result = await _authService.RegisterAsync(createUser);
                 var response = Response<LoginResponse>.CreateSuccessResponse(result, "Register Successfully");
 
                 return Ok(response);
@@ -191,7 +199,7 @@ namespace PhoneStoreBackend.Controllers
             }
         }
 
-        [HttpPost("refresh-token")]
+        [HttpPost("refresh")]
         public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequest refreshToken)
         {
             try

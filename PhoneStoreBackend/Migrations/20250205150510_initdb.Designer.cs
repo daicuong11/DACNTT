@@ -12,8 +12,8 @@ using PhoneStoreBackend.DbContexts;
 namespace PhoneStoreBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250202102103_uddb_v02")]
-    partial class uddb_v02
+    [Migration("20250205150510_initdb")]
+    partial class initdb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -346,6 +346,9 @@ namespace PhoneStoreBackend.Migrations
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
@@ -364,9 +367,6 @@ namespace PhoneStoreBackend.Migrations
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
-
-                    b.Property<string>("note")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("OrderId");
 
@@ -439,6 +439,10 @@ namespace PhoneStoreBackend.Migrations
                     b.Property<string>("PaymentStatus")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("TransactionId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("PaymentId");
 
@@ -678,10 +682,10 @@ namespace PhoneStoreBackend.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Password")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProfilePicture")
