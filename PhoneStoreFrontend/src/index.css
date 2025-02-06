@@ -42,6 +42,34 @@
   .bg-gradient-to-r-from-primary {
     @apply bg-gradient-to-b from-[#F83E60] to-[#FE5048] bg-cover;
   }
+
+  .bg-gradient-gold {
+    @apply bg-gradient-to-br from-[#FE881C] via-[#FDCE1C] to-[#FE881C] bg-cover;
+  }
+
+  .bg-gradient-romantic {
+    @apply bg-gradient-to-br from-[#ED4C5E] via-[#FECDA5] to-[#ED4C5E] bg-cover;
+  }
+
+  .bg-gradient-magic {
+    @apply bg-gradient-to-br from-[#A690D1] via-[#FAC1EA] to-[#A690D1] bg-cover;
+  }
+
+  .bg-gradient-luxury {
+    @apply bg-gradient-to-br from-[#435D76] via-[#D4D4D5] to-[#435D76] bg-cover;
+  }
+
+  .bg-gradient-luxury {
+    @apply bg-gradient-to-br from-[#EBFDFD] via-[#52F1D5] to-[#EBFDFD] bg-cover;
+  }
+
+  .bg-gradient-luxury-1 {
+    @apply bg-gradient-to-br from-[#63E5DF] via-[#8A64EB] to-[#63E5DF] bg-cover;
+  }
+
+  .bg-gradient-luxury-2 {
+    @apply bg-gradient-to-br from-indigo-500 via-violet-500 to-teal-400;
+  }
 }
 
 @layer base {
