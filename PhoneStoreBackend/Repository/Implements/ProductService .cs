@@ -20,10 +20,23 @@ namespace PhoneStoreBackend.Repository.Implements
         // Lấy danh sách tất cả sản phẩm
         public async Task<ICollection<ProductDTO>> GetAllAsync()
         {
-            var products = await _context.Products.Include(p => p.Category).Include(p => p.Brand).ToListAsync();
-            return products.Select(p => _mapper.Map<ProductDTO>(p)).ToList();
+            return await _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.Brand)
+                .Select(p => new ProductDTO
+                {
+                    ProductId = p.ProductId,
+                    Name = p.Name,
+                    CategoryId = p.CategoryId,
+                    Category = new CategoryDTO { CategoryId = p.Category.CategoryId, Name = p.Category.Name, ImageUrl = p.Category.ImageUrl },
+                    BrandId = p.BrandId,
+                    Brand = new BrandDTO { BrandId = p.Brand.BrandId, Name = p.Brand.Name, ImageUrl = p.Brand.ImageUrl }
+                })
+                .ToListAsync();
         }
-        
+
+
+
         // Lấy sản phẩm theo ID
         public async Task<ProductDTO> GetProductByIdAsync(int id)
         {
@@ -86,5 +99,17 @@ namespace PhoneStoreBackend.Repository.Implements
 
             return products.Select(p => _mapper.Map<ProductDTO>(p)).ToList();
         }
+
+        // Get variant list
+        public async Task<ICollection<ProductVariantDTO>> GetProductVariantsAsync(int productId)
+        {
+            var variants = await _context.ProductVariants
+            .Where(v => v.ProductId == productId)
+            .ToListAsync();
+
+            return variants.Select(p => _mapper.Map<ProductVariantDTO>(p)).ToList();
+        }
+
+
     }
 }

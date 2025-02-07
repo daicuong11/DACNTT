@@ -10,6 +10,10 @@ export const getProducts = async () => {
   return axiosInstance.get<ProductType[]>('products')
 }
 
+export const getProductVariants = async (productId: number) => {
+  return axiosInstance.get<ProductType[]>(`products/${productId}/variants`)
+}
+
 export const updateProduct = async (productId: number, formData: FormData) => {
   return axiosInstance.put<ProductType>(`products/${productId}`, formData)
 }

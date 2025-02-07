@@ -1,8 +1,4 @@
-﻿using PhoneStoreBackend.Entities;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-
-namespace PhoneStoreBackend.DTOs
+﻿namespace PhoneStoreBackend.DTOs
 {
     public class ProductDTO
     {
@@ -12,9 +8,9 @@ namespace PhoneStoreBackend.DTOs
         public string Description { get; set; }
 
         public int CategoryId { get; set; }
-        public Category Category { get; set; }
+        public CategoryDTO Category { get; set; }
 
         public int BrandId { get; set; }
-        public Brand Brand { get; set; }
+        public BrandDTO Brand { get; set; }
     }
 }

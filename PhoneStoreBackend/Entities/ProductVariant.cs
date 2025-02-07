@@ -22,11 +22,15 @@ namespace PhoneStoreBackend.Entities
         public string Slug { get; set; }
 
         public string Color { get; set; }
-        public string Storage {  get; set; }
+        public string Storage { get; set; }
 
         [Column(TypeName = "decimal(18, 4)")]
         public decimal Price { get; set; }
-        public int Stock {  get; set; }
+
+        //[Column(TypeName = "decimal(18, 4)")]
+        //public decimal ImportPrice { get; set; }
+
+        public int Stock { get; set; }
 
         public ICollection<CartItem> CartItems { get; set; }
         public ICollection<ProductImage> ProductImages { get; set; }

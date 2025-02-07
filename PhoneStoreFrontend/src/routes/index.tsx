@@ -7,6 +7,7 @@ import CategoryWatch from '@/middlewares/CategoryWatch'
 import BrandList from '@/pages/admin/brands/BrandList'
 import CategoryList from '@/pages/admin/categories/CategoryList'
 import AddProduct from '@/pages/admin/products/AddProduct'
+import Details from '@/pages/admin/products/Details'
 import ProductList from '@/pages/admin/products/ProductList'
 import { CartPage } from '@/pages/cart'
 import { CategoryPage } from '@/pages/category'
@@ -95,24 +96,6 @@ const MyRoutes = () => {
   // Define routes accessible only to authenticated users
   const routesForAuthenticatedOnly: RouteObject[] = [
     {
-      path: '/',
-      element: null,
-      children: [
-        {
-          path: 'bien',
-          element: <div>User Home Page</div>
-        },
-        {
-          path: 'profile',
-          element: <div>User Profile</div>
-        },
-        {
-          path: 'logout',
-          element: <div>Logout</div>
-        }
-      ]
-    },
-    {
       path: '/profile',
       element: <ProfileLayout />,
       children: [
@@ -177,6 +160,10 @@ const MyRoutes = () => {
             {
               path: 'add',
               element: <AddProduct />
+            },
+            {
+              path: 'details/:productId',
+              element: <Details/>
             }
           ]
         },

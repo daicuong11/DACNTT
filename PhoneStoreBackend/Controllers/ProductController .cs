@@ -57,6 +57,22 @@ namespace PhoneStoreBackend.Controllers
             }
         }
 
+        [HttpGet("{productId}/variants")]
+        public async Task<IActionResult> GetProductVariants(int productId)
+        {
+            try
+            {
+                var variants = await _productRepository.GetProductVariantsAsync(productId);
+                var response = Response<ICollection<ProductVariantDTO>>.CreateSuccessResponse(variants, $"Danh sách biến thể của productId: {productId}");
+                return Ok(variants);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = Response<object>.CreateErrorResponse($"Đã xảy ra lỗi: {ex.Message}");
+                return BadRequest(errorResponse);
+            }
+        }
+
         [HttpPost]
         //[Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> AddProduct([FromBody] ProductRequest product)
