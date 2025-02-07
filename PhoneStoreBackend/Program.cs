@@ -7,6 +7,7 @@ using Microsoft.OpenApi.Models;
 using PhoneStoreBackend.Api.Response;
 using PhoneStoreBackend.DbContexts;
 using PhoneStoreBackend.Enums;
+using PhoneStoreBackend.Helpers;
 using PhoneStoreBackend.Repository;
 using PhoneStoreBackend.Repository.Implements;
 using System.Text;
@@ -96,9 +97,16 @@ builder.Services.AddScoped<INotificationRepository, NotificationService>();
 //builder.Services.AddDbContext<AppDbContext>(options =>
 //    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Database configuration của Cuong
+// Đọc connection string động
+var dbHelper = new DatabaseConnectionHelper(builder.Configuration);
+string connectionString = dbHelper.GetAvailableConnectionString();
+
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Connection1")));
+    options.UseSqlServer(connectionString));
+
+// Database configuration của Cuong
+//builder.Services.AddDbContext<AppDbContext>(options =>
+//    options.UseSqlServer(builder.Configuration.GetConnectionString("Connection1")));
 
 // JWT and Google OAuth2 configuration
 var jwtKey = builder.Configuration["Jwt:Key"];

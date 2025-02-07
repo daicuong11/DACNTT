@@ -1,13 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using PhoneStoreBackend.Api.Request;
 using PhoneStoreBackend.Api.Response;
 using PhoneStoreBackend.DbContexts;
 using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
 using PhoneStoreBackend.Enums;
-using PhoneStoreBackend.Utils;
 using System.Security.Claims;
 
 namespace PhoneStoreBackend.Repository.Implements
@@ -56,6 +54,7 @@ namespace PhoneStoreBackend.Repository.Implements
                     user.Email,
                     user.PhoneNumber,
                     user.ProfilePicture,
+                    user.Role
                 }
             };
         }
@@ -104,6 +103,7 @@ namespace PhoneStoreBackend.Repository.Implements
                         user.Email,
                         user.PhoneNumber,
                         user.ProfilePicture,
+                        user.Role
                     }
                 };
             }

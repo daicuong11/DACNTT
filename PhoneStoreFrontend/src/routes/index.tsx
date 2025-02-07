@@ -19,10 +19,13 @@ import { ProductDetailPage } from '@/pages/products'
 import { AddressInfoPage, OrderHistoryPage, ProfilePage, SupportPage, UserInfoPage } from '@/pages/profile'
 import { RegisterPage } from '@/pages/register'
 import { SearchResultPage } from '@/pages/search'
+import { RoleEnum } from '@/types/user.type'
 import { Navigate, RouteObject, useRoutes } from 'react-router-dom'
 
 const MyRoutes = () => {
   const user = useAppSelector((state) => state.auth.token) ? true : false
+  const currentUser = useAppSelector((state) => state.auth.token)?.user;
+  const isAdmin = currentUser?.role === RoleEnum.ADMIN;
 
   // Define public routes accessible to all users
   const routesForPublic: RouteObject[] = [
@@ -218,7 +221,7 @@ const MyRoutes = () => {
     ...routesForPublic,
     ...(!user ? routesLogout : routesForAuthenticatedOnly),
     ...routesForNotAuthenticatedOnly,
-    ...routesForAdmin,
+    ...(isAdmin ? routesForAdmin : []),
     ...routesPublicButNeedMiddleware,
     ...routesForNotFound
   ])

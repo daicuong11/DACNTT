@@ -1,6 +1,5 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using PhoneStoreBackend.DTOs;
-using PhoneStoreBackend.Entities;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -18,12 +17,12 @@ namespace PhoneStoreBackend.Repository.Implements
 
         public string GenerateToken(UserDTO user, int expirationInMinutes = 15)
         {
-            var claims = new[]
+            Claim[] claims = new[]
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.Name),
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, user.Role.ToString()),
+                new Claim("id", user.Id.ToString()),
+                new Claim("name", user.Name),
+                new Claim("email", user.Email),
+                new Claim("role", user.Role.ToString()),
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
@@ -77,7 +76,7 @@ namespace PhoneStoreBackend.Repository.Implements
                     ValidAudience = _configuration["Jwt:Audience"],
                     ValidateLifetime = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ClockSkew = TimeSpan.Zero 
+                    ClockSkew = TimeSpan.Zero
                 };
 
                 return tokenHandler.ValidateToken(token, validationParameters, out _);
@@ -111,7 +110,7 @@ namespace PhoneStoreBackend.Repository.Implements
                     ValidAudience = _configuration["JwtRefresh:Audience"],
                     ValidateLifetime = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ClockSkew = TimeSpan.Zero 
+                    ClockSkew = TimeSpan.Zero
                 };
 
                 return tokenHandler.ValidateToken(refreshToken, validationParameters, out _);
@@ -124,11 +123,11 @@ namespace PhoneStoreBackend.Repository.Implements
             {
                 throw new Exception($"Refresh token không hợp lệ");
             }
-            catch (ArgumentException )
+            catch (ArgumentException)
             {
                 throw new Exception($"Token không hợp lệ");
             }
-            catch (Exception )
+            catch (Exception)
             {
                 throw new Exception($"Có lỗi xảy ra khi xác thực refresh token");
             }

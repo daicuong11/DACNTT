@@ -59,6 +59,8 @@ const Login: React.FC = () => {
             <div className='flex flex-col gap-y-2.5 border-b transition-all focus-within:border-blue-600 group'>
               <div className='text-xs text-gray-500 uppercase group-focus-within:text-blue-600'>Số điện thoại</div>
               <Input
+                name='phoneNumber'
+                id='phoneNumber'
                 variant='borderless'
                 placeholder='Nhập số điện thoại'
                 allowClear
@@ -71,7 +73,7 @@ const Login: React.FC = () => {
           <Form.Item<FieldType> name='password' rules={[{ required: true, message: 'Vui lòng điền mật khẩu!' }]}>
             <div className='flex flex-col gap-y-2.5 border-b transition-all focus-within:border-blue-600 group'>
               <div className='text-xs text-gray-500 uppercase group-focus-within:text-blue-600'>Mật khẩu</div>
-              <Input.Password variant='borderless' placeholder='Nhập mật khẩu' allowClear className='text-base' />
+              <Input.Password id='password' name='password' variant='borderless' placeholder='Nhập mật khẩu' allowClear className='text-base' />
             </div>
           </Form.Item>
           <div className='flex justify-end mt-3'>

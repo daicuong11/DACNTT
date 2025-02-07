@@ -15,3 +15,10 @@ export interface UserType {
 export type UserAuthType = Pick<UserType, 'id' | 'email' | 'name' | 'role' | 'phoneNumber' | 'profilePicture'>
 
 export type Role = 'ADMIN' | 'CUSTOMER' | 'STUDENT' | 'STAFF'
+
+export enum RoleEnum {
+  ADMIN = 'ADMIN',
+  CUSTOMER = 'CUSTOMER',
+  STUDENT = 'STUDENT',
+  STAFF = 'STAFF',
+}
