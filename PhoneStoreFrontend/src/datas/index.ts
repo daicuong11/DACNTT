@@ -33,7 +33,6 @@ export const listItems: ProductType[] = Array.from({ length: 20 }, (_, index) =>
   return {
     productId: index + 1,
     name: productName,
-    slug: slugName,
     description: `This is the description for ${productName}`,
     categoryId: 1,
     category: {
@@ -60,6 +59,7 @@ export const exampleProductVariant: ProductVariantType[] = [
     product: listItems[index % 20],
     discountId: null,
     discount: null,
+    slug: slug(listItems[index % 20].name, { lower: true }),
     color: ['Black', 'White', 'Gold', 'Silver'][index % 4],
     storage: ['256GB', '512GB', '1TB'][index % 3],
     price: 29000000 + (index % 3) * 3000000,

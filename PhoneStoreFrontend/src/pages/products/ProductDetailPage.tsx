@@ -21,8 +21,7 @@ import useSetDocTitle from '@/hooks/useSetDocTitle'
 interface ProductDetailPageProps {}
 const ProductDetailPage: FC<ProductDetailPageProps> = () => {
   const { productSlug } = useParams<{ productSlug: string }>()
-  const productVariant =
-    exampleProductVariant.find((item) => item.product.slug === productSlug) || exampleProductVariant[0]
+  const productVariant = exampleProductVariant.find((item) => item.slug === productSlug) || exampleProductVariant[0]
 
   useSetDocTitle(productVariant.product.name || 'Product Detail')
 

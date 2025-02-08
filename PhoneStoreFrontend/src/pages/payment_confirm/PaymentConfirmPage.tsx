@@ -271,7 +271,7 @@ const PaymentConfirmPage = () => {
             <div className='font-semibold'>Tổng tiền tạm tính:</div>
             <span className='text-base font-bold font-roboto text-primary'>{formatPrice(orderSlice.totalAmount)}</span>
           </div>
-          <button className='rounded-md btn btn-danger'>Tiếp tục</button>
+          <button className='rounded-md btn btn-danger'>Thanh toán</button>
           <button
             onClick={reviewCartItemModalController.openModal}
             className='text-sm text-blue-600 rounded-md shadow-none btn hover:underline'

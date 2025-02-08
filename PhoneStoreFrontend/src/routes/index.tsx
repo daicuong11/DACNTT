@@ -24,9 +24,13 @@ import { RoleEnum } from '@/types/user.type'
 import { Navigate, RouteObject, useRoutes } from 'react-router-dom'
 
 const MyRoutes = () => {
-  const user = useAppSelector((state) => state.auth.token) ? true : false
-  const currentUser = useAppSelector((state) => state.auth.token)?.user;
-  const isAdmin = currentUser?.role === RoleEnum.ADMIN;
+  // const user = useAppSelector((state) => state.auth.token) ? true : false
+  // const currentUser = useAppSelector((state) => state.auth.token)?.user
+  // const isAdmin = currentUser?.role === RoleEnum.ADMIN
+
+  const user = true
+  const currentUser = true
+  const isAdmin = true
 
   // Define public routes accessible to all users
   const routesForPublic: RouteObject[] = [
@@ -163,7 +167,7 @@ const MyRoutes = () => {
             },
             {
               path: 'details/:productId',
-              element: <Details/>
+              element: <Details />
             }
           ]
         },

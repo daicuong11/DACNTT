@@ -11,7 +11,6 @@ const CategoryWatch: FC<CategoryWatchProps> = () => {
   const { category } = useParams()
 
   if (!validCategories.includes(category!) && category !== 'signin') {
-    toast.error('Category not found ' + category)
     return <Navigate to='/not-found' replace />
   }
 

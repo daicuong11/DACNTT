@@ -1,5 +1,6 @@
 export interface SpecificationGroupType {
   specificationGroupId: number
-  GroupName: string
+  groupName: string
   displayOrder: number
+  categoryId: number
 }
