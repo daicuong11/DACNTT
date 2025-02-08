@@ -12,8 +12,8 @@ using PhoneStoreBackend.DbContexts;
 namespace PhoneStoreBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250205150510_initdb")]
-    partial class initdb
+    [Migration("20250208204415_initDB")]
+    partial class initDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -268,11 +268,6 @@ namespace PhoneStoreBackend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DiscountId"), 1L, 1);
 
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
@@ -470,9 +465,6 @@ namespace PhoneStoreBackend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("DiscountId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(500)
@@ -483,8 +475,6 @@ namespace PhoneStoreBackend.Migrations
                     b.HasIndex("BrandId");
 
                     b.HasIndex("CategoryId");
-
-                    b.HasIndex("DiscountId");
 
                     b.ToTable("Products");
                 });
@@ -564,10 +554,11 @@ namespace PhoneStoreBackend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductSpecificationGroupId"), 1L, 1);
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("int");
 
                     b.Property<string>("GroupName")
                         .IsRequired()
@@ -575,6 +566,8 @@ namespace PhoneStoreBackend.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.HasKey("ProductSpecificationGroupId");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("ProductSpecificationGroups");
                 });
@@ -593,6 +586,9 @@ namespace PhoneStoreBackend.Migrations
                     b.Property<int?>("DiscountId")
                         .HasColumnType("int");
 
+                    b.Property<decimal>("ImportPrice")
+                        .HasColumnType("decimal(18,4)");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,4)");
 
@@ -609,6 +605,11 @@ namespace PhoneStoreBackend.Migrations
 
                     b.Property<string>("Storage")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("VariantName")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.HasKey("ProductVariantId");
 
@@ -901,10 +902,6 @@ namespace PhoneStoreBackend.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("PhoneStoreBackend.Entities.Discount", null)
-                        .WithMany("Products")
-                        .HasForeignKey("DiscountId");
-
                     b.Navigation("Brand");
 
                     b.Navigation("Category");
@@ -938,10 +935,21 @@ namespace PhoneStoreBackend.Migrations
                     b.Navigation("ProductVariant");
                 });
 
+            modelBuilder.Entity("PhoneStoreBackend.Entities.ProductSpecificationGroup", b =>
+                {
+                    b.HasOne("PhoneStoreBackend.Entities.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
             modelBuilder.Entity("PhoneStoreBackend.Entities.ProductVariant", b =>
                 {
                     b.HasOne("PhoneStoreBackend.Entities.Discount", "Discount")
-                        .WithMany()
+                        .WithMany("Products")
                         .HasForeignKey("DiscountId");
 
                     b.HasOne("PhoneStoreBackend.Entities.Product", "Product")

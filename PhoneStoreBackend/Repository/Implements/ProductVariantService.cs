@@ -23,6 +23,11 @@ namespace PhoneStoreBackend.Repository.Implements
             return _mapper.Map<ProductVariantDTO>(newProductVariant.Entity);
         }
 
+        public async Task<bool> AnySlugExistsAsync(string slug)
+        {
+            return await _context.ProductVariants.AnyAsync(pv => pv.Slug == slug);
+        }
+
         public async Task<bool> DeleteProductVariantAsync(int id)
         {
             var findProductVariant = await _context.ProductVariants.FindAsync(id);

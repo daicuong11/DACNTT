@@ -2,14 +2,9 @@
 
 namespace PhoneStoreBackend.Api.Request
 {
-    public class ProductVariantRequest
+    public class AddProductVariantRequest
     {
-        [Required(ErrorMessage = "Mã sản phẩm là bắt buộc.")]
-        public int ProductId { get; set; }
-
-        public int? DiscountId { get; set; }
-
-        [Required(ErrorMessage = "VariantName là bắt buộc")]
+        [Required(ErrorMessage = "Name là bắt buộc")]
         public string VariantName { get; set; }
 
         [Required(ErrorMessage = "Slug là bắt buộc")]
@@ -35,6 +30,8 @@ namespace PhoneStoreBackend.Api.Request
         [Range(0, int.MaxValue, ErrorMessage = "Số lượng tồn kho không được âm.")]
         public int Stock { get; set; }
 
-        public List<SpecificationRequest>? Specifications { get; set; }
+        public List<AddSpecificationRequest> Specifications { get; set; }
+
+        public List<AddProductImageRequest> ProductImages { get; set; }
     }
 }

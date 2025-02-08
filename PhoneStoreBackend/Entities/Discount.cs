@@ -10,10 +10,6 @@ namespace PhoneStoreBackend.Entities
         public int DiscountId { get; set; }
 
         [Required]
-        [StringLength(50)]
-        public string Code { get; set; } // Discount code
-
-        [Required]
         [Column(TypeName = "decimal(18, 2)")]
         [Range(0, 100)]
         public decimal Percentage { get; set; } // Discount percentage
@@ -23,6 +19,6 @@ namespace PhoneStoreBackend.Entities
 
         public bool IsActive { get; set; } = true;
 
-        public ICollection<Product> Products { get; set; }
+        public ICollection<ProductVariant> Products { get; set; }
     }
 }

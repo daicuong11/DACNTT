@@ -59,30 +59,8 @@ namespace PhoneStoreBackend.Controllers
             }
         }
 
-        [HttpGet("code/{code}")]
-        [Authorize]
-        public async Task<IActionResult> GetDiscountByCode(string code)
-        {
-            try
-            {
-                var discount = await _discountRepository.GetDiscountByCodeAsync(code);
-                if (discount == null)
-                {
-                    var errorResponse = Response<object>.CreateErrorResponse("Không tìm thấy giảm giá");
-                    return NotFound(errorResponse);
-                }
-                var response = Response<DiscountDTO>.CreateSuccessResponse(discount, "Thông tin giảm giá");
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                var errorResponse = Response<object>.CreateErrorResponse($"Đã xảy ra lỗi: {ex.Message}");
-                return BadRequest(errorResponse);
-            }
-        }
-
         [HttpPost]
-        [Authorize(Roles = "ADMIN")]
+        //[Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> AddDiscount([FromBody] DiscountRequest discount)
         {
             try
@@ -93,10 +71,7 @@ namespace PhoneStoreBackend.Controllers
 
                 var createDiscount = new Discount
                 {
-                    Code = discount.Code,
                     Percentage = discount.Percentage,
-                    StartDate = DateTime.Now,
-                    EndDate = DateTime.Now,
                     IsActive = discount.IsActive,
                 };
                 var newDiscount = await _discountRepository.AddDiscountAsync(createDiscount);
@@ -122,10 +97,7 @@ namespace PhoneStoreBackend.Controllers
 
                 var createDiscount = new Discount
                 {
-                    Code = discount.Code,
                     Percentage = discount.Percentage,
-                    StartDate = DateTime.Now,
-                    EndDate = DateTime.Now,
                     IsActive = discount.IsActive,
                 };
                 var updatedDiscount = await _discountRepository.UpdateDiscountAsync(id, createDiscount);
@@ -169,29 +141,5 @@ namespace PhoneStoreBackend.Controllers
             }
         }
 
-        [HttpPost("validate")]
-        [Authorize]
-        public async Task<IActionResult> ValidateDiscount([FromQuery] string code)
-        {
-            try
-            {
-                var isValid = await _discountRepository.ValidateDiscountAsync(code);
-                if (isValid)
-                {
-                    var response = Response<object>.CreateSuccessResponse(null, "Mã giảm giá hợp lệ");
-                    return Ok(response);
-                }
-                else
-                {
-                    var errorResponse = Response<object>.CreateErrorResponse("Mã giảm giá không hợp lệ");
-                    return BadRequest(errorResponse);
-                }
-            }
-            catch (Exception ex)
-            {
-                var errorResponse = Response<object>.CreateErrorResponse($"Đã xảy ra lỗi: {ex.Message}");
-                return BadRequest(errorResponse);
-            }
-        }
     }
 }

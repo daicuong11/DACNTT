@@ -5,7 +5,7 @@ namespace PhoneStoreBackend.DbContexts
 {
     public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions options) : base(options) { }
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         public DbSet<User> Users { get; set; }
         public DbSet<Product> Products { get; set; }
@@ -36,7 +36,7 @@ namespace PhoneStoreBackend.DbContexts
             modelBuilder.Entity<Customer>()
                 .HasOne(c => c.Order)
                 .WithOne(o => o.Customer)
-                .HasForeignKey<Order>(o => o.CustomerId)  
+                .HasForeignKey<Order>(o => o.CustomerId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Order>()
@@ -46,16 +46,16 @@ namespace PhoneStoreBackend.DbContexts
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Notification>()
-                .HasOne(n => n.Sender) 
-                .WithMany(u => u.SentNotifications) 
-                .HasForeignKey(n => n.SenderId) 
+                .HasOne(n => n.Sender)
+                .WithMany(u => u.SentNotifications)
+                .HasForeignKey(n => n.SenderId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Notification>()
-                .HasOne(n => n.User) 
-                .WithMany(u => u.Notifications) 
-                .HasForeignKey(n => n.Id) 
-                .OnDelete(DeleteBehavior.Cascade); 
+                .HasOne(n => n.User)
+                .WithMany(u => u.Notifications)
+                .HasForeignKey(n => n.Id)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -7,7 +7,6 @@ using Microsoft.OpenApi.Models;
 using PhoneStoreBackend.Api.Response;
 using PhoneStoreBackend.DbContexts;
 using PhoneStoreBackend.Enums;
-using PhoneStoreBackend.Helpers;
 using PhoneStoreBackend.Repository;
 using PhoneStoreBackend.Repository.Implements;
 using System.Text;
@@ -86,6 +85,7 @@ builder.Services.AddScoped<IAddressRepository, AddressService>();
 builder.Services.AddScoped<IPaymentRepository, PaymentService>();
 builder.Services.AddScoped<IProductImageRepository, ProductImageService>();
 builder.Services.AddScoped<IProductSpecificationRepository, ProductSpecificationService>();
+builder.Services.AddScoped<IProductSpecificationGroupRepository, ProductSpecificationGroupService>();
 builder.Services.AddScoped<IReviewRepository, ReviewService>();
 builder.Services.AddScoped<IWishlistRepository, WishlistService>();
 builder.Services.AddScoped<IWishlistItemRepository, WishlistItemService>();
@@ -97,16 +97,9 @@ builder.Services.AddScoped<INotificationRepository, NotificationService>();
 //builder.Services.AddDbContext<AppDbContext>(options =>
 //    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Đọc connection string động
-var dbHelper = new DatabaseConnectionHelper(builder.Configuration);
-string connectionString = dbHelper.GetAvailableConnectionString();
-
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(connectionString));
-
 // Database configuration của Cuong
-//builder.Services.AddDbContext<AppDbContext>(options =>
-//    options.UseSqlServer(builder.Configuration.GetConnectionString("Connection1")));
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Connection2")));
 
 // JWT and Google OAuth2 configuration
 var jwtKey = builder.Configuration["Jwt:Key"];

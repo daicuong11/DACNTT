@@ -45,5 +45,14 @@ namespace PhoneStoreBackend.Repository.Implements
             }
         }
 
+        public async Task<ListResourcesResult> ListResourcesAsync(ListResourcesParams listResourcesParams)
+        {
+            return await _cloudinary.ListResourcesAsync(listResourcesParams);
+        }
+
+        public async Task<ImageUploadResult> UploadAsync(ImageUploadParams uploadParams)
+        {
+            return await _cloudinary.UploadAsync(uploadParams);
+        }
     }
 }

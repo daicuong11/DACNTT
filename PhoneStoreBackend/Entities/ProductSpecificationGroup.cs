@@ -13,9 +13,11 @@ namespace PhoneStoreBackend.Entities
         [StringLength(200)]
         public string GroupName { get; set; }
 
-        [Required]
-        [StringLength(200)]
-        public string Description { get; set; }
+        public int DisplayOrder { get; set; }
+        public int CategoryId { get; set; }
+
+        [ForeignKey("CategoryId")]
+        public Category Category { get; set; }
 
         public ICollection<ProductSpecification> ProductSpecifications { get; set; }
     }

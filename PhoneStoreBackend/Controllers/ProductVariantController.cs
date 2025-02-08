@@ -22,7 +22,8 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllProductVariant() {
+        public async Task<IActionResult> GetAllProductVariant()
+        {
             try
             {
                 var productVariants = await productVariantRepository.GetAllAsync();
@@ -71,6 +72,7 @@ namespace PhoneStoreBackend.Controllers
 
                 var createProductVariant = new ProductVariant
                 {
+                    VariantName = productVariantReq.VariantName,
                     ProductId = productVariantReq.ProductId,
                     DiscountId = productVariantReq.DiscountId,
                     Slug = productVariantReq.Slug,
@@ -103,6 +105,7 @@ namespace PhoneStoreBackend.Controllers
 
                 var createProductVariant = new ProductVariant
                 {
+                    VariantName = productVariantReq.VariantName,
                     ProductId = productVariantReq.ProductId,
                     DiscountId = productVariantReq.DiscountId,
                     Slug = productVariantReq.Slug,
@@ -111,7 +114,7 @@ namespace PhoneStoreBackend.Controllers
                     Storage = productVariantReq.Storage,
                     Price = productVariantReq.Price,
                 };
-                await productVariantRepository.UpdateProductVariantAsync(id,createProductVariant);
+                await productVariantRepository.UpdateProductVariantAsync(id, createProductVariant);
                 var response = Response<object>.CreateSuccessResponse(null, "Chỉnh sửa thành công");
                 return Ok(response);
             }

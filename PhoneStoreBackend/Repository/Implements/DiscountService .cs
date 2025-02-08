@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using PhoneStoreBackend.DbContexts;
 using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
-using PhoneStoreBackend.Repository;
 
 namespace PhoneStoreBackend.Repository.Implements
 {
@@ -36,17 +35,6 @@ namespace PhoneStoreBackend.Repository.Implements
             return _mapper.Map<DiscountDTO>(discount);
         }
 
-        // Lấy Discount theo mã
-        public async Task<DiscountDTO> GetDiscountByCodeAsync(string code)
-        {
-            var discount = await _context.Discounts.FirstOrDefaultAsync(d => d.Code == code);
-            if (discount == null)
-            {
-                throw new KeyNotFoundException("Discount not found.");
-            }
-            return _mapper.Map<DiscountDTO>(discount);
-        }
-
         // Thêm Discount mới
         public async Task<DiscountDTO> AddDiscountAsync(Discount discount)
         {
@@ -64,10 +52,7 @@ namespace PhoneStoreBackend.Repository.Implements
                 throw new KeyNotFoundException("Discount not found.");
             }
 
-            existingDiscount.Code = discount.Code;
             existingDiscount.Percentage = discount.Percentage;
-            existingDiscount.StartDate = discount.StartDate;
-            existingDiscount.EndDate = discount.EndDate;
             existingDiscount.IsActive = discount.IsActive;
 
             _context.Discounts.Update(existingDiscount);
@@ -88,17 +73,6 @@ namespace PhoneStoreBackend.Repository.Implements
             _context.Discounts.Remove(discount);
             await _context.SaveChangesAsync();
 
-            return true;
-        }
-
-        // Kiểm tra tính hợp lệ của Discount
-        public async Task<bool> ValidateDiscountAsync(string code)
-        {
-            var discount = await _context.Discounts.FirstOrDefaultAsync(d => d.Code == code);
-            if (discount == null || !discount.IsActive || discount.EndDate < DateTime.Now || discount.StartDate > DateTime.Now)
-            {
-                return false;
-            }
             return true;
         }
     }
