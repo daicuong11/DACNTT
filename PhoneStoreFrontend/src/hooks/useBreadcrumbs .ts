@@ -1,14 +1,14 @@
 import { useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { CategoryType } from '../types/category.type'
-import { ProductType } from '../types/product.type'
-import { listItems } from '../datas'
+import { exampleProductVariant, listItems } from '../datas'
 import useQueryString from './useQueryString'
+import { ProductVariantType } from '@/types/product_variant.type'
 
 const useBreadcrumbs = () => {
   const location = useLocation()
   const queryString = useQueryString()
-  const [product, setProduct] = useState<ProductType | null>(null)
+  const [product, setProduct] = useState<ProductVariantType | null>(null)
   const [categories, setCategories] = useState<CategoryType[]>([])
 
   useEffect(() => {
@@ -60,7 +60,7 @@ const useBreadcrumbs = () => {
 
       if (pathnames.length === 2) {
         const productSlug = pathnames[1]
-        const matchedProduct = listItems.find((item) => item.slug === productSlug)
+        const matchedProduct = exampleProductVariant.find((item) => item.slug === productSlug)
         setProduct(matchedProduct || null)
       } else {
         setProduct(null)
@@ -88,7 +88,7 @@ const useBreadcrumbs = () => {
     const matchedCategory = categories.find((category) => category.url === slug)
 
     const isProductSlug = index === 1 && product
-    const title = isProductSlug ? product.name : matchedCategory ? matchedCategory.name : slug
+    const title = isProductSlug ? product.product.name : matchedCategory ? matchedCategory.name : slug
 
     return { href, title }
   })

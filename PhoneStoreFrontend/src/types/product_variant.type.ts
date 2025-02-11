@@ -8,8 +8,23 @@ export interface ProductVariantType {
   discount: DiscountType | null
   product: ProductType
   slug: string
+  variantName: string
   color: string
   storage: string
+  importPrice: number
+  price: number
+  stock: number
+}
+
+export interface ProductVariantRequestType {
+  productVariantId?: number
+  productId: number
+  discountId: number | null
+  slug: string
+  variantName: string
+  color: string
+  storage: string
+  importPrice: number
   price: number
   stock: number
 }

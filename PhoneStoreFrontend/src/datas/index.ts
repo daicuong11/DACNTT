@@ -60,8 +60,10 @@ export const exampleProductVariant: ProductVariantType[] = [
     discountId: null,
     discount: null,
     slug: slug(listItems[index % 20].name, { lower: true }),
+    variantName: ['64GB', '128GB', '256GB', '512GB'][index % 4],
     color: ['Black', 'White', 'Gold', 'Silver'][index % 4],
     storage: ['256GB', '512GB', '1TB'][index % 3],
+    importPrice: 25000000 + (index % 3) * 2000000,
     price: 29000000 + (index % 3) * 3000000,
     stock: 10 - (index % 5)
   }))

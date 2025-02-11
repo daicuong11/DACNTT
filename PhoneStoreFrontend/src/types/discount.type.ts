@@ -1,8 +1,10 @@
 export interface DiscountType {
   discountId: number
-  code: string
   percentage: number
-  startDate: string
-  endDate: string
+  isActive: boolean
+}
+
+export interface DiscountRequestType {
+  percentage: number
   isActive: boolean
 }

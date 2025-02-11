@@ -4,3 +4,9 @@ export interface ProductImageType {
   imageUrl: string
   isMainImage: boolean
 }
+
+export interface ProductImageRequestType {
+  productVariantId: number
+  imageUrl: string
+  isMainImage: boolean
+}
