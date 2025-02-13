@@ -3,7 +3,8 @@ import { useParams } from 'react-router-dom'
 import Card from '../components/Card'
 import { ProductVariantType } from '@/types/product_variant.type'
 import Table, { ColumnsType } from 'antd/es/table'
-import { useGetProductVariants } from '@/hooks/querys/product'
+import { useGetProductVariants } from '@/hooks/querys/product.query'
+import { ShowReturnBackLayout } from '@/layouts'
 
 export default function Details() {
   const { productId } = useParams<{ productId: string }>()
@@ -36,7 +37,7 @@ export default function Details() {
   ]
 
   return (
-    <>
+    <ShowReturnBackLayout hrefBack='/admin/products'>
       <Card title='Danh sách biến thể'>
         <Table
           dataSource={data?.data || []}
@@ -46,6 +47,6 @@ export default function Details() {
           pagination={{ pageSize: 10 }}
         />
       </Card>
-    </>
+    </ShowReturnBackLayout>
   )
 }

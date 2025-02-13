@@ -60,23 +60,6 @@ namespace PhoneStoreBackend.Controllers
             }
         }
 
-        [HttpGet("product/{productId}")]
-        [Authorize]
-        public async Task<IActionResult> GetProductSpecificationsByProductId(int productId)
-        {
-            try
-            {
-                var specifications = await _productSpecificationRepository.GetProductSpecificationsByProductIdAsync(productId);
-                var response = Response<ICollection<ProductSpecificationDTO>>.CreateSuccessResponse(specifications, "Danh sách thông số kỹ thuật theo sản phẩm");
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                var errorResponse = Response<object>.CreateErrorResponse($"Đã xảy ra lỗi: {ex.Message}");
-                return BadRequest(errorResponse);
-            }
-        }
-
         [HttpPost]
         [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> AddProductSpecification([FromBody] SpecificationRequest specificationReq)
@@ -89,8 +72,8 @@ namespace PhoneStoreBackend.Controllers
 
                 var specification = new ProductSpecification
                 {
-                    ProductVariantId = specificationReq.ProductVariantId,
                     ProductSpecificationGroupId = specificationReq.SpecificationGroupId,
+                    ProductVariantId = specificationReq.ProductVariantId,
                     Key = specificationReq.Key,
                     Value = specificationReq.Value,
                     DisplayOrder = specificationReq.DisplayOrder,
@@ -120,8 +103,8 @@ namespace PhoneStoreBackend.Controllers
 
                 var specification = new ProductSpecification
                 {
-                    ProductVariantId = specificationReq.ProductVariantId,
                     ProductSpecificationGroupId = specificationReq.SpecificationGroupId,
+                    ProductVariantId = specificationReq.ProductVariantId,
                     Key = specificationReq.Key,
                     Value = specificationReq.Value,
                     DisplayOrder = specificationReq.DisplayOrder,

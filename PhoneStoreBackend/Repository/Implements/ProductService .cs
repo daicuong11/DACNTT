@@ -20,19 +20,10 @@ namespace PhoneStoreBackend.Repository.Implements
         // Lấy danh sách tất cả sản phẩm
         public async Task<ICollection<ProductDTO>> GetAllAsync()
         {
-            return await _context.Products
+            var list = await _context.Products
                 .Include(p => p.Category)
-                .Include(p => p.Brand)
-                .Select(p => new ProductDTO
-                {
-                    ProductId = p.ProductId,
-                    Name = p.Name,
-                    CategoryId = p.CategoryId,
-                    Category = new CategoryDTO { CategoryId = p.Category.CategoryId, Name = p.Category.Name, ImageUrl = p.Category.ImageUrl },
-                    BrandId = p.BrandId,
-                    Brand = new BrandDTO { BrandId = p.Brand.BrandId, Name = p.Brand.Name, ImageUrl = p.Brand.ImageUrl }
-                })
-                .ToListAsync();
+                .Include(p => p.Brand).ToListAsync();
+            return _mapper.Map<List<ProductDTO>>(list);
         }
 
 

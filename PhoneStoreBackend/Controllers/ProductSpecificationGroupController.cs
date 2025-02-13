@@ -73,11 +73,39 @@ namespace PhoneStoreBackend.Controllers
                     GroupName = model.GroupName,
                     DisplayOrder = model.DisplayOrder,
                     CategoryId = model.CategoryId,
+
                 };
 
                 var createdSpecGroup = await _productSpecGroupRepository.AddProductSpecificationGroupAsync(specGroup);
                 var response = Response<ProductSpecificationGroupDTO>.CreateSuccessResponse(createdSpecGroup, "Nhóm thông số kỹ thuật đã được thêm thành công");
                 return CreatedAtAction(nameof(GetProductSpecGroupById), new { id = createdSpecGroup.ProductSpecificationGroupId }, response);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = Response<object>.CreateErrorResponse($"Đã xảy ra lỗi: {ex.Message}");
+                return BadRequest(errorResponse);
+            }
+        }
+
+        [HttpPost("add-list/{id}")]
+        public async Task<IActionResult> AddListSpecGroupOfCategory(int id, List<ProductSpecificationGroupRequest> specGroups)
+        {
+            try
+            {
+                var responseError = ModelStateHelper.CheckModelState(ModelState);
+                if (responseError != null)
+                    return BadRequest(responseError);
+
+                List<ProductSpecificationGroup> newSpecGroups = specGroups.Select(sg => new ProductSpecificationGroup { 
+                    GroupName = sg.GroupName,
+                    DisplayOrder = sg.DisplayOrder,
+                    CategoryId = id,
+                }).ToList();
+
+                var createSpecGroups = await _productSpecGroupRepository.AddListSpecOfACategoryAsync(newSpecGroups);
+
+                var response = Response<List<ProductSpecificationGroupDTO>>.CreateSuccessResponse(createSpecGroups, "Nhóm thông số kỹ thuật đã được thêm thành công");
+                return Ok(response);
             }
             catch (Exception ex)
             {

@@ -36,12 +36,6 @@ namespace PhoneStoreBackend.Repository.Implements
             return _mapper.Map<ProductSpecificationDTO>(productSpecification);
         }
 
-        // Lấy các thông số kỹ thuật của sản phẩm theo ProductId
-        public async Task<ICollection<ProductSpecificationDTO>> GetProductSpecificationsByProductIdAsync(int productVariantId)
-        {
-            var productSpecifications = await _context.ProductSpecifications.Where(ps => ps.ProductVariantId == productVariantId).ToListAsync();
-            return productSpecifications.Select(ps => _mapper.Map<ProductSpecificationDTO>(ps)).ToList();
-        }
 
         // Thêm thông số kỹ thuật cho sản phẩm
         public async Task<ProductSpecificationDTO> AddProductSpecificationAsync(ProductSpecification productSpecification)

@@ -35,6 +35,5 @@ namespace PhoneStoreBackend.Api.Request
         [Range(0, int.MaxValue, ErrorMessage = "Số lượng tồn kho không được âm.")]
         public int Stock { get; set; }
 
-        public List<SpecificationRequest>? Specifications { get; set; }
     }
 }

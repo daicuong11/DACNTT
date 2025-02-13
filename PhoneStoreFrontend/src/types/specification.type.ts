@@ -1,7 +1,7 @@
 export interface SpecificationType {
   specificationId: number
   productVariantId: number
-  specificationGroupId: number
+  productSpecificationGroupId: number
   key: string
   value: string
   displayOrder: number
@@ -10,7 +10,7 @@ export interface SpecificationType {
 
 export interface SpecificationRequestType {
   productVariantId: number
-  specificationGroupId: number
+  productSpecificationGroupId: number
   key: string
   value: string
   displayOrder: number

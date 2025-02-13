@@ -8,6 +8,7 @@ namespace PhoneStoreBackend.Repository
         Task<List<ProductSpecificationGroupDTO>> GetAllProductSpecificationGroupsAsync();
         Task<ProductSpecificationGroupDTO> GetProductSpecificationGroupByIdAsync(int id);
         Task<ProductSpecificationGroupDTO> AddProductSpecificationGroupAsync(ProductSpecificationGroup specGroup);
+        Task<List<ProductSpecificationGroupDTO>> AddListSpecOfACategoryAsync(List<ProductSpecificationGroup> listSpec);
 
     }
 }

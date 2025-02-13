@@ -4,12 +4,12 @@ import { DiscountRequestType } from '@/types/discount.type'
 import { ProductRequestType } from '@/types/product.type'
 import { ProductImageRequestType } from '@/types/product_imge.type'
 import { ProductVariantRequestType } from '@/types/product_variant.type'
-import { SpecificationType } from '@/types/specification.type'
+import { SpecificationGroupType } from '@/types/specification_group.type'
 
 export interface ListProductVariantRequestType {
   productVariant: ProductVariantRequestType
   listImage: ProductImageRequestType[]
-  specification: SpecificationType[]
+  specificationGroups: SpecificationGroupType[]
 }
 
 export interface createProductState {
@@ -19,7 +19,7 @@ export interface createProductState {
   variant: ProductVariantRequestType | null
   mainImage: UploadFile | null
   images: UploadFile[]
-  specifications: SpecificationType[]
+  specificationGroups: SpecificationGroupType[]
 }
 
 const initialState: createProductState = {
@@ -29,7 +29,7 @@ const initialState: createProductState = {
   variant: null,
   mainImage: null,
   images: [],
-  specifications: []
+  specificationGroups: []
 }
 
 const createProductSlice = createSlice({
@@ -56,7 +56,7 @@ const createProductSlice = createSlice({
         state.listProductVariant.push({
           productVariant: action.payload,
           listImage: [],
-          specification: []
+          specificationGroups: []
         })
       }
     },
@@ -87,13 +87,13 @@ const createProductSlice = createSlice({
 
     updateProductVariantSpecifications(
       state,
-      action: PayloadAction<{ productVariantId: number; specifications?: SpecificationType[] }>
+      action: PayloadAction<{ productVariantId: number; SpecificationGroup?: SpecificationGroupType[] }>
     ) {
       const index = state.listProductVariant.findIndex(
         (variant) => variant.productVariant.productVariantId === action.payload.productVariantId
       )
-      if (index !== -1 && action.payload.specifications) {
-        state.listProductVariant[index].specification = action.payload.specifications
+      if (index !== -1 && action.payload.SpecificationGroup) {
+        state.listProductVariant[index].specificationGroups = action.payload.SpecificationGroup
       }
     },
 
@@ -136,19 +136,19 @@ const createProductSlice = createSlice({
         status: 'done',
         url: image.imageUrl
       }))
-      state.specifications = action.payload.specification
+      state.specificationGroups = action.payload.specificationGroups
     },
 
     clearImages(state) {
       state.images = []
     },
 
-    setSpecifications(state, action: PayloadAction<SpecificationType[]>) {
-      state.specifications = action.payload
+    setSpecifications(state, action: PayloadAction<SpecificationGroupType[]>) {
+      state.specificationGroups = action.payload
     },
 
     clearSpecifications(state) {
-      state.specifications = []
+      state.specificationGroups = []
     },
 
     clearProduct(state) {
@@ -157,7 +157,7 @@ const createProductSlice = createSlice({
       state.listProductVariant = []
       state.variant = null
       state.images = []
-      state.specifications = []
+      state.specificationGroups = []
     },
 
     clearProductVariant(state) {
@@ -179,7 +179,7 @@ const createProductSlice = createSlice({
       state.variant = null
       state.mainImage = null
       state.images = []
-      state.specifications = []
+      state.specificationGroups = []
     }
   }
 })

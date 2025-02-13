@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PhoneStoreBackend.DbContexts;
 using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
+using System.Text.Json;
 
 namespace PhoneStoreBackend.Repository.Implements
 {
@@ -19,13 +20,17 @@ namespace PhoneStoreBackend.Repository.Implements
 
         public async Task<ICollection<CategoryDTO>> GetAllAsync()
         {
-            var categories = await _context.Categories.ToListAsync();
-            return categories.Select(c => _mapper.Map<CategoryDTO>(c)).ToList();
+            var categories = await _context.Categories.Include(c => c.ProductSpecificationGroups).ToListAsync();
+            
+            return _mapper.Map<ICollection<CategoryDTO>>(categories);
         }
 
         public async Task<CategoryDTO> GetByIdAsync(int id)
         {
-            var category = await _context.Categories.FindAsync(id);
+            var category = await _context.Categories
+                .Include(c => c.ProductSpecificationGroups)
+                .FirstOrDefaultAsync(c => c.CategoryId == id);
+
             if (category == null)
             {
                 throw new KeyNotFoundException("Category not found.");
@@ -33,6 +38,7 @@ namespace PhoneStoreBackend.Repository.Implements
 
             return _mapper.Map<CategoryDTO>(category);
         }
+
 
         public async Task<CategoryDTO> AddAsync(Category category)
         {

@@ -29,9 +29,6 @@ namespace PhoneStoreBackend.Api.Request
         [Required(ErrorMessage = "Số lượng tồn kho là bắt buộc.")]
         [Range(0, int.MaxValue, ErrorMessage = "Số lượng tồn kho không được âm.")]
         public int Stock { get; set; }
-
-        public List<AddSpecificationRequest> Specifications { get; set; }
-
-        public List<AddProductImageRequest> ProductImages { get; set; }
+        public int? DiscountId { get; set; }
     }
 }

@@ -21,7 +21,6 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> GetAllDiscounts()
         {
             try
@@ -38,7 +37,6 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize]
         public async Task<IActionResult> GetDiscountById(int id)
         {
             try

@@ -98,8 +98,20 @@ builder.Services.AddScoped<INotificationRepository, NotificationService>();
 //    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Database configuration của Cuong
+//builder.Services.AddDbContext<AppDbContext>(options =>
+//    options.UseSqlServer(builder.Configuration.GetConnectionString("Connection2")));
+
+// Đọc connection string động
+//var dbHelper = new DatabaseConnectionHelper(builder.Configuration);
+//string connectionString = dbHelper.GetAvailableConnectionString();
+
+//builder.Services.AddDbContext<AppDbContext>(options =>
+//    options.UseSqlServer(connectionString));
+
+//Database configuration của Cuong
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Connection2")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Connection1")));
+
 
 // JWT and Google OAuth2 configuration
 var jwtKey = builder.Configuration["Jwt:Key"];

@@ -1,6 +1,8 @@
+import { SpecificationType } from './specification.type'
+
 export interface SpecificationGroupType {
-  specificationGroupId: number
+  productSpecificationGroupId: number
   groupName: string
   displayOrder: number
-  categoryId: number
+  specifications: SpecificationType[]
 }

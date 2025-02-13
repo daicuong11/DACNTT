@@ -2,11 +2,11 @@ export interface ProductImageType {
   productImageId: number
   productVariantId: number
   imageUrl: string
-  isMainImage: boolean
+  isMain: boolean
 }
 
 export interface ProductImageRequestType {
   productVariantId: number
   imageUrl: string
-  isMainImage: boolean
+  isMain: boolean
 }

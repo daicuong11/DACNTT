@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector, useDebounce } from '@/hooks'
 import { CircleAlert } from 'lucide-react'
 import { DiscountType } from '@/types/discount.type'
 import { setVariant } from '@/features/admin/create_product.slice'
+import { useGetAllDiscounts } from '@/hooks/querys/discount.query'
 
 const initialProductVariantInput: ProductVariantRequestType = {
   productVariantId: Date.now(),
@@ -24,20 +25,12 @@ const initialProductVariantInput: ProductVariantRequestType = {
 }
 
 const AddVariant = () => {
+  // start query
+  const { data: discounts, error: discountError, isLoading: isDiscountLoading } = useGetAllDiscounts()
+  // end query
   const [colorItems, setColorItems] = React.useState<string[]>(['Đỏ', 'Xanh', 'Vàng', 'Trắng', 'Đen'])
   const [storageItems, setStorageItems] = React.useState<string[]>(['64 GB', '128 GB', '256 GB', '512 GB'])
-  const [discountItems, setDiscountItems] = React.useState<DiscountType[]>([
-    {
-      discountId: 0,
-      percentage: 0,
-      isActive: true
-    },
-    {
-      discountId: 1,
-      percentage: 5,
-      isActive: true
-    }
-  ])
+
   const [newDiscount, setNewDiscount] = useState<number>(0)
   const [newStorage, setNewStorage] = useState<string>('')
   const [newColor, setNewColor] = useState<string>('')
@@ -110,16 +103,16 @@ const AddVariant = () => {
 
   const addDiscountItem = (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
     e.preventDefault()
-    if (discountItems.find((item) => item.percentage === newDiscount)) {
+    if (discounts?.find((item) => item.percentage === newDiscount)) {
       toast.error('Giảm giá đã tồn tại')
       return
     }
-    const createDiscount: DiscountType = {
-      discountId: discountItems.length,
-      percentage: newDiscount,
-      isActive: true
-    }
-    setDiscountItems([...discountItems, createDiscount])
+    // const createDiscount: DiscountType = {
+    //   discountId: discountItems.length,
+    //   percentage: newDiscount,
+    //   isActive: true
+    // }
+    // setDiscountItems([...discountItems, createDiscount])
     setNewDiscount(0)
     setTimeout(() => {
       inputDiscountRef.current?.focus()
@@ -131,8 +124,12 @@ const AddVariant = () => {
       <div className='uppercase'>
         Phiên bản sản phẩm <span className='normal-case'>(Tạo ít nhất 1 phiên bản)</span>
       </div>
+
       <div className='p-5 space-y-6 bg-white border border-gray-300 rounded-lg'>
-        <div className='font-semibold'>Thông tin mẫu</div>
+        <div className='flex items-center justify-between'>
+          <div className='font-semibold'>Thông tin phiên bản</div>
+          <button className='text-xs border border-gray-100 btn btn-light'>Clear</button>
+        </div>
         <div className='flex flex-col gap-y-2.5 border-b transition-all focus-within:border-blue-600 group'>
           <div className='text-xs text-gray-500 uppercase group-focus-within:text-blue-600'>Tên phiên bản</div>
           <Input
@@ -269,7 +266,7 @@ const AddVariant = () => {
               onChange={(value) => setProductVariantInput({ ...productVariantInput, discountId: value as number })}
               placeholder={'Chọn giảm giá'}
               variant='borderless'
-              options={discountItems.map((item) => ({ value: item.discountId, label: item.percentage + '%' }))}
+              options={discounts?.map((item) => ({ value: item.discountId, label: item.percentage + '%' }))}
               className='text-base'
               dropdownRender={(menu) => (
                 <>

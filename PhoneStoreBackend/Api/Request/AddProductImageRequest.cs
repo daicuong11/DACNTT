@@ -8,6 +8,6 @@ namespace PhoneStoreBackend.Api.Request
         public string ImageUrl { get; set; }
 
         [Required(ErrorMessage = "Trường chính của hình ảnh là bắt buộc.")]
-        public bool IsMainImage { get; set; }
+        public bool Ismain { get; set; } = false;
     }
 }

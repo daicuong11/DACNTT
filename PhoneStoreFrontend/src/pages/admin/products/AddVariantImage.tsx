@@ -61,8 +61,18 @@ const AddVariantImage = () => {
 
   return (
     <div className='p-5 space-y-6 bg-white border border-gray-300 rounded-lg'>
-      <div className='font-semibold'>Hình ảnh</div>
-
+      <div className='flex items-center justify-between'>
+        <div className='font-semibold'>Hình ảnh</div>
+        {/* <button
+          onClick={() => {
+            dispatch(clearMainImage())
+            dispatch(setImages([]))
+          }}
+          className='text-xs border border-gray-100 btn btn-light'
+        >
+          Clear
+        </button> */}
+      </div>
       <div className='flex flex-col gap-y-3'>
         <div className='text-xs text-gray-500 uppercase group-focus-within:text-blue-600'>Ảnh chính</div>
         <Upload

@@ -10,15 +10,14 @@ namespace PhoneStoreBackend.Entities
         public int SpecificationId { get; set; }
 
         [Required]
-        public int ProductVariantId { get; set; }
-        [ForeignKey("ProductVariantId")]
-        public ProductVariant ProductVariant { get; set; }
-
-        [Required]
-
         public int ProductSpecificationGroupId { get; set; }
         [ForeignKey("SpecificationGroupId")]
         public ProductSpecificationGroup ProductSpecificationGroup { get; set; }
+
+        [Required]
+        public int ProductVariantId { get; set; }
+        [ForeignKey("ProductVariantId")]
+        public ProductVariant ProductVariant { get; set; }
 
         [Required]
         [StringLength(100)]

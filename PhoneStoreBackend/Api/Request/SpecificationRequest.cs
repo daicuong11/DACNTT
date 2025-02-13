@@ -5,11 +5,12 @@ namespace PhoneStoreBackend.Api.Request
 {
     public class SpecificationRequest
     {
-        [Required(ErrorMessage = "Mã biến thể sản phẩm là bắt buộc.")]
-        public int ProductVariantId { get; set; }
 
         [Required(ErrorMessage = "Mã nhóm đặc tả là bắt buộc.")]
         public int SpecificationGroupId { get; set; }
+
+        [Required(ErrorMessage = "Mã phiên bản sản phẩm tả là bắt buộc.")]
+        public int ProductVariantId { get; set; }
 
         [Required(ErrorMessage = "Khóa đặc tả là bắt buộc.")]
         [StringLength(100, ErrorMessage = "Khóa đặc tả không được vượt quá 100 ký tự.")]

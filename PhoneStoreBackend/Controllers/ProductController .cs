@@ -125,10 +125,9 @@ namespace PhoneStoreBackend.Controllers
         [HttpPost("add-with-variants")]
         public async Task<IActionResult> QuickAddProduct([FromBody] AddProductRequest model)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            var responseError = ModelStateHelper.CheckModelState(ModelState);
+            if (responseError != null)
+                return BadRequest(responseError);
 
             using var transaction = await _dbContext.Database.BeginTransactionAsync(); // Mở transaction
             try
@@ -142,57 +141,76 @@ namespace PhoneStoreBackend.Controllers
                 };
                 ProductDTO productDTO = await _productRepository.AddProductAsync(newProduct);
 
-                foreach (AddProductVariantRequest variant in model.ProductVariants)
+                foreach (ListVariantRequest variantItem in model.listVariant)
                 {
+                    if (variantItem.Variant == null)
+                    {
+                        throw new Exception("Thông tin phiên bản sản phẩm không được để trống");
+                    }
+
+                    ProductVariantRequest variantReq = variantItem.Variant;
+                    List<AddProductImageRequest> listProductImageReq = variantItem.ProductImages;
+                    List<AddSpecificationRequest> listSpecificationReq = variantItem.Specifications;
+
                     // Kiểm tra slug đã tồn tại chưa
-                    bool isSlugExists = await _productVariantRepository.AnySlugExistsAsync(variant.Slug);
+                    bool isSlugExists = await _productVariantRepository.AnySlugExistsAsync(variantReq.Slug);
                     if (isSlugExists)
                     {
-                        return BadRequest($"Slug '{variant.Slug}' đã tồn tại.");
+                        variantReq.Slug = variantReq.Slug + productDTO.ProductId;
+                        bool doubleCheckIsSlugExists = await _productVariantRepository.AnySlugExistsAsync(variantReq.Slug);
+                        if (doubleCheckIsSlugExists)
+                        {
+                            return BadRequest($"Slug '{variantReq.Slug}' đã tồn tại.");
+                        }
                     }
 
                     ProductVariant newVariant = new ProductVariant
                     {
-
-                        VariantName = variant.VariantName,
+                        VariantName = variantReq.VariantName,
                         ProductId = productDTO.ProductId,
-                        Slug = variant.Slug,
-                        Color = variant.Color,
-                        Storage = variant.Storage,
-                        Price = variant.Price,
-                        ImportPrice = variant.ImportPrice,
-                        Stock = variant.Stock,
-                        DiscountId = model.DiscountId,
+                        Slug = variantReq.Slug,
+                        Color = variantReq.Color,
+                        Storage = variantReq.Storage,
+                        Price = variantReq.Price,
+                        ImportPrice = variantReq.ImportPrice,
+                        Stock = variantReq.Stock,
                     };
+
+                    if(variantReq.DiscountId >= 0)
+                    {
+                        newVariant.DiscountId = variantReq.DiscountId;
+                    }
 
                     ProductVariantDTO productVariantDTO = await _productVariantRepository.AddProductVariantAsync(newVariant);
 
-                    foreach (AddSpecificationRequest specification in variant.Specifications)
+                    // Add specs to db
+                    foreach (AddSpecificationRequest specification in listSpecificationReq)
                     {
                         ProductSpecification productSpecification = new ProductSpecification
                         {
                             ProductSpecificationGroupId = specification.SpecificationGroupId,
+                            ProductVariantId = productVariantDTO.ProductVariantId,
                             Key = specification.Key,
                             Value = specification.Value,
                             DisplayOrder = specification.DisplayOrder,
                             IsSpecial = specification.IsSpecial,
-                            ProductVariantId = productVariantDTO.ProductId,
                         };
                         await _productSpecificationRepository.AddProductSpecificationAsync(productSpecification);
                     }
 
-                    foreach (var productImage in variant.ProductImages)
+                    foreach (AddProductImageRequest productImage in listProductImageReq)
                     {
                         await _productImageRepository.AddProductImageAsync(new ProductImage
                         {
                             ProductVariantId = productVariantDTO.ProductVariantId,
                             ImageUrl = productImage.ImageUrl,
+                            Ismain = productImage.Ismain,
                         });
                     }
                 }
 
                 await transaction.CommitAsync(); // Xác nhận lưu vào database
-                var response = Response<ProductDTO>.CreateSuccessResponse(null, "Sản phẩm và các biến thể đã được thêm thành công!");
+                var response = Response<ProductDTO>.CreateSuccessResponse(productDTO, "Sản phẩm và các biến thể đã được thêm thành công!");
                 return Ok(response);
             }
             catch (Exception ex)

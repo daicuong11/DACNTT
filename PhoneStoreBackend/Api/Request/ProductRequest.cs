@@ -8,7 +8,6 @@ namespace PhoneStoreBackend.Api.Request
         [StringLength(200, ErrorMessage = "Tên sản phẩm không được vượt quá 200 ký tự.")]
         public string Name { get; set; }
 
-        [StringLength(1000, ErrorMessage = "Mô tả sản phẩm không được vượt quá 1000 ký tự.")]
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Mã thương hiệu là bắt buộc.")]

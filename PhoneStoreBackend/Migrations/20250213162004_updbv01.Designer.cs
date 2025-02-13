@@ -12,8 +12,8 @@ using PhoneStoreBackend.DbContexts;
 namespace PhoneStoreBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250208204415_initDB")]
-    partial class initDB
+    [Migration("20250213162004_updbv01")]
+    partial class updbv01
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -491,7 +491,7 @@ namespace PhoneStoreBackend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsImage")
+                    b.Property<bool>("Ismain")
                         .HasColumnType("bit");
 
                     b.Property<int>("ProductVariantId")
@@ -938,7 +938,7 @@ namespace PhoneStoreBackend.Migrations
             modelBuilder.Entity("PhoneStoreBackend.Entities.ProductSpecificationGroup", b =>
                 {
                     b.HasOne("PhoneStoreBackend.Entities.Category", "Category")
-                        .WithMany()
+                        .WithMany("ProductSpecificationGroups")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1029,6 +1029,8 @@ namespace PhoneStoreBackend.Migrations
 
             modelBuilder.Entity("PhoneStoreBackend.Entities.Category", b =>
                 {
+                    b.Navigation("ProductSpecificationGroups");
+
                     b.Navigation("Products");
                 });
 

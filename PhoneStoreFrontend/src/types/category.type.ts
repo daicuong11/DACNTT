@@ -1,9 +1,11 @@
+import { SpecificationGroupType } from './specification_group.type'
+
 export interface CategoryType {
   categoryId: number
   name: string
-  url?: string
   description?: string
   imageUrl: string
+  productSpecificationGroups: SpecificationGroupType[]
 }
 
 export type CategoryRequestType = {

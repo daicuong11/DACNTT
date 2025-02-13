@@ -10,7 +10,7 @@ namespace PhoneStoreBackend.Api.Request
 
         [Range(0, int.MaxValue, ErrorMessage = "Thứ tự hiển thị không hợp lệ.")]
         public int DisplayOrder { get; set; }
-        [Required(ErrorMessage = "Danh mục là bắt buộc.")]
+        [Required(ErrorMessage = "Mã danh mục là bắt buộc.")]
         public int CategoryId { get; set; }
     }
 }

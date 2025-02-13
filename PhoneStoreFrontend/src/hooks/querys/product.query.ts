@@ -1,12 +1,11 @@
-import { addCategory, getCategories, updateCategory } from '@/apis/category.api'
-import { addProduct, getProducts, getProductVariants, updateProduct } from '@/apis/product.api'
+import { addProduct, addProductWithVariants, getProducts, getProductVariants, updateProduct } from '@/apis/product.api'
 import { ProductRequestType } from '@/types/product.type'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 
 export const useGetProducts = () => {
   return useQuery({
-    queryKey: ['products'],
+    queryKey: ['getAllProducts'],
     queryFn: getProducts
   })
 }
@@ -15,9 +14,9 @@ export const useGetProductVariants = (productId: number | undefined) => {
   return useQuery({
     queryKey: ['productVariants', productId], // Cache riêng theo productId
     queryFn: () => getProductVariants(productId!), // Dùng ! để đảm bảo không null (có thể check trước)
-    enabled: !!productId, // Chỉ chạy nếu productId tồn tại
-  });
-};
+    enabled: !!productId // Chỉ chạy nếu productId tồn tại
+  })
+}
 
 export const useAddProduct = () => {
   const queryClient = useQueryClient()
@@ -62,6 +61,15 @@ export const useUpdateProduct = () => {
       toast.error(`Update failed: ${errorMessage}`)
       console.error('Update error:', error)
     }
+  })
+
+  return mutation
+}
+
+export const useAddProductWithVariants = () => {
+  const mutation = useMutation({
+    mutationKey: ['addProductWithVariants'],
+    mutationFn: addProductWithVariants
   })
 
   return mutation

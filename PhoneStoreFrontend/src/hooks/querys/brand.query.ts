@@ -1,4 +1,4 @@
-import { addBrand, getBrands, updateBrand } from '@/apis/brand.api'
+import { addBrand, getAllBrands, getBrands, updateBrand } from '@/apis/brand.api'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 
@@ -55,4 +55,14 @@ export const useUpdateBrand = () => {
   })
 
   return mutation
+}
+
+// cuong create
+
+export const useGetAllBrands = () => {
+  const query = useQuery({
+    queryKey: ['getAllBrands'],
+    queryFn: getAllBrands
+  })
+  return query
 }

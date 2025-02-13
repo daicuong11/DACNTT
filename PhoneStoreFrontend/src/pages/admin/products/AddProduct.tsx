@@ -6,8 +6,9 @@ import { useAppDispatch, useAppSelector, useDebounce, useModal } from '@/hooks'
 import CreateProductDescription from '@/components/modals/CreateProductDescription'
 import ProductCardPreview from '@/components/items/ProductCardPreview'
 import AddVariant from './AddVariant'
-import { ProductRequestType } from '@/types/product.type'
+import { AddProductWithVariantsRequestType, ProductRequestType } from '@/types/product.type'
 import {
+  clearAll,
   finishAVariant,
   ListProductVariantRequestType,
   openAVariant,
@@ -16,53 +17,6 @@ import {
 } from '@/features/admin/create_product.slice'
 import { ProductVariantRequestType } from '@/types/product_variant.type'
 import { ProductImageRequestType } from '@/types/product_imge.type'
-import { SpecificationType } from '@/types/specification.type'
-
-const exampleCategory = [
-  {
-    categoryId: 1,
-    name: 'Điện thoại'
-  },
-  {
-    categoryId: 2,
-    name: 'Laptop'
-  },
-  {
-    categoryId: 3,
-    name: 'Tivi'
-  },
-  {
-    categoryId: 4,
-    name: 'Đồng hồ'
-  }
-]
-
-const findCategoryBycategoryId = (id: number) => {
-  return exampleCategory.find((category) => category.categoryId === id) || null
-}
-
-const exampleBrand = [
-  {
-    brandId: 1,
-    name: 'Apple'
-  },
-  {
-    brandId: 2,
-    name: 'Samsung'
-  },
-  {
-    brandId: 3,
-    name: 'Xiaomi'
-  },
-  {
-    brandId: 4,
-    name: 'Huawei'
-  }
-]
-
-const findBrandById = (id: number) => {
-  return exampleBrand.find((brand) => brand.brandId === id) || null
-}
 
 const validateProduct = (product: ProductRequestType | null) => {
   if (!product) return false
@@ -71,19 +25,28 @@ const validateProduct = (product: ProductRequestType | null) => {
 
 import { toast } from 'react-toastify'
 import classNames from 'classnames'
+import { useGetAllCategories } from '@/hooks/querys/category.query'
+import { useGetAllBrands } from '@/hooks/querys/brand.query'
+import { LoadingItem, LoadingOpacity } from '@/components'
+import { SpecificationGroupType } from '@/types/specification_group.type'
+import slug from 'slug'
+import { useAddProductWithVariants } from '@/hooks/querys/product.query'
+import { SpecificationRequestType } from '@/types/specification.type'
+import { useNavigate } from 'react-router-dom'
+import { ShowReturnBackLayout } from '@/layouts'
 
 const validateProductVariant = ({
   product,
   variant,
   mainImage,
   images,
-  specifications
+  specificationGroups
 }: {
   product: ProductRequestType | null
   variant: ProductVariantRequestType | null
   mainImage: UploadFile | null
   images: UploadFile[]
-  specifications: SpecificationType[]
+  specificationGroups: SpecificationGroupType[]
 }) => {
   if (!product) {
     toast.error('Sản phẩm không hợp lệ!')
@@ -113,7 +76,7 @@ const validateProductVariant = ({
     toast.error('Sản phẩm phải có ít nhất một ảnh phụ!')
     return false
   }
-  if (specifications.length === 0) {
+  if (specificationGroups.length === 0) {
     toast.error('Sản phẩm phải có ít nhất một thông số kỹ thuật!')
     return false
   }
@@ -149,7 +112,7 @@ const convertUploadFileToProductImage = (uploadFile: UploadFile, isMain: boolean
   return {
     productVariantId: -1,
     imageUrl: uploadFile.url || '',
-    isMainImage: isMain
+    isMain: isMain
   }
 }
 
@@ -168,6 +131,12 @@ const initialProductInput: ProductRequestType = {
 }
 
 const AddProduct = () => {
+  // query var
+  const { data: categoriesResponse, error: categoriesError, isLoading: isCategoriesLoading } = useGetAllCategories()
+  const { data: brandsResponse, error: brandsError, isLoading: isBrandsLoading } = useGetAllBrands()
+  const { mutate: fetchAddProduct, isPending: isAddProductPending } = useAddProductWithVariants()
+  // component var
+  const navigate = useNavigate()
   const useModalCreateDescription = useModal()
   const createProductSlice = useAppSelector((state) => state.createProduct)
   const [productInput, setProductInput] = useState<ProductRequestType>(
@@ -214,7 +183,7 @@ const AddProduct = () => {
       variant: createProductSlice.variant,
       mainImage: createProductSlice.mainImage,
       images: createProductSlice.images,
-      specifications: createProductSlice.specifications
+      specificationGroups: createProductSlice.specificationGroups
     })
 
     if (checkInfo) {
@@ -224,7 +193,7 @@ const AddProduct = () => {
           convertUploadFileToProductImage(createProductSlice.mainImage!, true),
           ...convertUploadFilesToProductImages(createProductSlice.images)
         ],
-        specification: createProductSlice.specifications
+        specificationGroups: createProductSlice.specificationGroups
       }
       if (variantSelected) {
         //update variant of list
@@ -250,137 +219,227 @@ const AddProduct = () => {
     }
   }
 
-  return (
-    <Card
-      title='Thêm Sản Phẩm'
-      button={
-        <button
-          disabled
-          className='disabled:cursor-not-allowed btn btn-primary disabled:opacity-60 disabled:hover:bg-primary disabled:pointer-events-none'
-        >
-          Lưu lại
-        </button>
-      }
-    >
-      <div className='flex flex-col transition-all gap-y-6'>
-        <div className='space-y-3'>
-          <div className='uppercase'>Thông tin sản phẩm</div>
-          <div className='p-5 space-y-6 bg-white border border-gray-300 rounded-lg'>
-            <div className='flex flex-col gap-y-2.5 border-b transition-all focus-within:border-blue-600 group'>
-              <div className='text-xs text-gray-500 uppercase group-focus-within:text-blue-600'>Tên sản phẩm</div>
-              <Input
-                value={productInput.name}
-                onChange={(e) => setProductInput({ ...productInput, name: e.target.value })}
-                type='email'
-                variant='borderless'
-                placeholder='Nhập tên sản phẩm'
-                allowClear
-                className='text-base'
-              />
+  if (categoriesError || brandsError) {
+    return (
+      <ShowReturnBackLayout hrefBack='/admin/products'>
+        <Card title='Thêm Sản Phẩm'>
+          <div className='flex items-center justify-center min-h-screen'>
+            <div className='p-5 text-red-500'>
+              {categoriesError ? 'Tải danh mục thất bại' : 'Tải thương hiệu thất bại'}
             </div>
-            <div className='flex flex-col sm:grid sm:grid-cols-2 gap-x-3 gap-y-5'>
-              <div className='flex flex-col gap-y-2.5 border-b transition-all focus-within:border-blue-600 group'>
-                <div className='text-xs text-gray-500 uppercase group-focus-within:text-blue-600'>Danh mục</div>
-                <Select
-                  showSearch
-                  value={findCategoryBycategoryId(productInput.categoryId)?.categoryId}
-                  onChange={(value) => setProductInput({ ...productInput, categoryId: value as number })}
-                  placeholder={'Chọn danh mục'}
-                  variant='borderless'
-                  options={exampleCategory.map((category) => ({ value: category.categoryId, label: category.name }))}
-                  className='text-base'
-                />
-              </div>
-              <div className='flex flex-col gap-y-2.5 border-b transition-all focus-within:border-blue-600 group'>
-                <div className='text-xs text-gray-500 uppercase group-focus-within:text-blue-600'>Thương hiệu</div>
-                <Select
-                  showSearch
-                  value={findBrandById(productInput.brandId)?.brandId}
-                  onChange={(value) => setProductInput({ ...productInput, brandId: value as number })}
-                  placeholder={'Chọn thương hiệu'}
-                  variant='borderless'
-                  options={exampleBrand.map((brand) => ({ value: brand.brandId, label: brand.name }))}
-                  className='text-base'
-                />
-              </div>
-            </div>
+          </div>
+        </Card>
+      </ShowReturnBackLayout>
+    )
+  }
 
-            <div className='flex flex-col gap-y-2.5 transition-all group'>
-              <div className='text-xs text-gray-500 uppercase group-focus-within:text-blue-600'>Mô tả sản phẩm</div>
-              <div className='flex items-center gap-x-5'>
-                <div
-                  dangerouslySetInnerHTML={{ __html: productInput.description || 'Chưa có mô tả' }}
-                  className='line-clamp-1 w-52'
-                ></div>
-                <CreateProductDescription
-                  value={productInput.description}
-                  onChange={(value) => setProductInput({ ...productInput, description: value })}
-                  isOpen={useModalCreateDescription.isOpen}
-                  closeModal={useModalCreateDescription.closeModal}
+  const handleCreateListVariant = () => {
+    if (lstProductVariant.length === 0) {
+      toast.error('Sản phẩm phải có ít nhất một phiên bản!')
+    } else {
+      const newListProductVariant = lstProductVariant.map((variant) => ({
+        variant: {
+          ...variant.productVariant,
+          slug: slug(
+            createProductSlice.product?.name +
+              ' ' +
+              variant.productVariant.color +
+              ' ' +
+              variant.productVariant.variantName
+          )
+        },
+        specifications: variant.specificationGroups
+          .map((specificationGroup) =>
+            specificationGroup.specifications
+              .map((spec) => {
+                if (spec.value.trim() !== '') {
+                  return {
+                    productVariantId: spec.productVariantId,
+                    productSpecificationGroupId: spec.productSpecificationGroupId,
+                    key: spec.key,
+                    value: spec.value.trim(),
+                    displayOrder: spec.displayOrder,
+                    isSpecial: spec.isSpecial
+                  }
+                }
+              })
+              .filter(Boolean)
+              .flat()
+          )
+          .filter(Boolean)
+          .flat() as SpecificationRequestType[],
+        productImages: variant.listImage
+      }))
+
+      const req: AddProductWithVariantsRequestType = {
+        product: createProductSlice.product!,
+        listVariant: newListProductVariant
+      }
+      fetchAddProduct(req, {
+        onSuccess: () => {
+          toast.success('Thêm sản phẩm thành công!')
+          dispatch(clearAll())
+          navigate('/admin/products')
+        },
+        onError: (error) => {
+          toast.error('Thêm sản phẩm thất bại!. Lỗi: ' + error)
+        }
+      })
+    }
+  }
+
+  return (
+    <ShowReturnBackLayout hrefBack='/admin/products'>
+      {isCategoriesLoading || (isBrandsLoading && <LoadingOpacity title='Đang tải dữ liệu...' />)}
+      <Card
+        title='Thêm Sản Phẩm'
+        button={
+          <button
+            disabled={createProductSlice.listProductVariant.length === 0 || isAddProductPending}
+            onClick={handleCreateListVariant}
+            className='disabled:cursor-not-allowed btn btn-primary disabled:opacity-60 disabled:hover:bg-primary disabled:pointer-events-none'
+          >
+            {isAddProductPending ? (
+              <span className='flex gap-x-2'>
+                Đang thêm sản phẩm <LoadingItem className='border-white' />
+              </span>
+            ) : (
+              'Tạo ngay'
+            )}
+          </button>
+        }
+      >
+        <div className='flex flex-col transition-all gap-y-6'>
+          {isAddProductPending && <LoadingOpacity title={'Đang thêm sản phẩm'} />}
+          <div className='space-y-3'>
+            <div className='flex items-center justify-between'>
+              <div className='uppercase'>Thông tin sản phẩm</div>
+              <button onClick={() => dispatch(clearAll())} className='text-xs border border-gray-100 btn btn-light'>
+                Clear
+              </button>
+            </div>
+            <div className='p-5 space-y-6 bg-white border border-gray-300 rounded-lg'>
+              <div className='flex flex-col gap-y-2.5 border-b transition-all focus-within:border-blue-600 group'>
+                <div className='text-xs text-gray-500 uppercase group-focus-within:text-blue-600'>Tên sản phẩm</div>
+                <Input
+                  value={productInput.name}
+                  onChange={(e) => setProductInput({ ...productInput, name: e.target.value })}
+                  type='email'
+                  variant='borderless'
+                  placeholder='Nhập tên sản phẩm'
+                  allowClear
+                  className='text-base'
                 />
-                <button
-                  onClick={() => useModalCreateDescription.openModal()}
-                  className='text-sm border border-gray-100 btn btn-light w-44'
-                >
-                  <Pencil size={16} strokeWidth={1.6} />
-                  {productInput.description ? 'Chỉnh sửa' : 'Thêm mô tả'}
-                </button>
+              </div>
+              <div className='flex flex-col sm:grid sm:grid-cols-2 gap-x-3 gap-y-5'>
+                <div className='flex flex-col gap-y-2.5 border-b transition-all focus-within:border-blue-600 group'>
+                  <div className='text-xs text-gray-500 uppercase group-focus-within:text-blue-600'>Danh mục</div>
+                  <Select
+                    disabled={createProductSlice.listProductVariant.length > 0}
+                    showSearch
+                    value={productInput.categoryId >= 0 ? productInput.categoryId : undefined}
+                    onChange={(value) => setProductInput({ ...productInput, categoryId: value as number })}
+                    placeholder={'Chọn danh mục'}
+                    variant='borderless'
+                    options={categoriesResponse?.data.map((category) => ({
+                      value: category.categoryId,
+                      label: category.name
+                    }))}
+                    className='text-base'
+                  />
+                </div>
+                <div className='flex flex-col gap-y-2.5 border-b transition-all focus-within:border-blue-600 group'>
+                  <div className='text-xs text-gray-500 uppercase group-focus-within:text-blue-600'>Thương hiệu</div>
+                  <Select
+                    disabled={createProductSlice.listProductVariant.length > 0}
+                    showSearch
+                    value={productInput.brandId >= 0 ? productInput.brandId : undefined}
+                    onChange={(value) => setProductInput({ ...productInput, brandId: value as number })}
+                    placeholder={'Chọn thương hiệu'}
+                    variant='borderless'
+                    options={brandsResponse?.data.map((brand) => ({ value: brand.brandId, label: brand.name }))}
+                    className='text-base'
+                  />
+                </div>
+              </div>
+
+              <div ref={variantRef} className='flex flex-col gap-y-2.5 transition-all group'>
+                <div className='text-xs text-gray-500 uppercase group-focus-within:text-blue-600'>Mô tả sản phẩm</div>
+                <div className='flex items-center gap-x-5'>
+                  <div
+                    dangerouslySetInnerHTML={{ __html: productInput.description || 'Chưa có mô tả' }}
+                    className='line-clamp-1 w-52'
+                  ></div>
+                  <CreateProductDescription
+                    value={productInput.description}
+                    onChange={(value) => setProductInput({ ...productInput, description: value })}
+                    isOpen={useModalCreateDescription.isOpen}
+                    closeModal={useModalCreateDescription.closeModal}
+                  />
+                  <button
+                    onClick={() => useModalCreateDescription.openModal()}
+                    className='text-sm border border-gray-100 btn btn-light w-44'
+                  >
+                    <Pencil size={16} strokeWidth={1.6} />
+                    {productInput.description ? 'Chỉnh sửa' : 'Thêm mô tả'}
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div
-          ref={variantRef}
-          className={classNames('space-y-3 ', {
-            hidden: !validateProduct(productInput) || createProductSlice.listProductVariant.length === 0,
-            block: createProductSlice.listProductVariant.length > 0
-          })}
-        >
-          <div className='uppercase'>Danh sách phiên bản sản phẩm</div>
-          <div className='p-5 space-y-6 bg-white border border-gray-300 rounded-lg'>
-            <div className='flex flex-wrap gap-3'>
-              {createProductSlice.listProductVariant.map((variant, index) => (
-                <ProductCardPreview
-                  onClick={() => handleSelectedVariant(variant)}
-                  key={index}
-                  productVariant={variant.productVariant}
-                  className={classNames({
-                    '!border-primary !border': variantSelected === variant
-                  })}
-                />
-              ))}
-              <div
-                onClick={handleOpenNewVariantForm}
-                className='h-[220px] border-dashed min-w-[220px] w-[224px] hover:border-primary transition-all cursor-pointer rounded-xl bg-white p-[10px] flex flex-col border border-gray-500'
-              >
-                <div className='flex-[5] flex items-center justify-center'>
-                  <span className='w-[80px] h-[80px] mt-3'>
-                    <BadgePlus size={80} />
-                  </span>
-                </div>
-                <div className='flex-[6] flex flex-col'>
-                  <div className='flex flex-col items-center justify-center gap-3 mt-2'>
-                    <h2 className='text-sm font-bold text-black/80'>Thêm một mẫu mới</h2>
-                    <div className='text-xs text-center text-gray-500'>
-                      Mẫu mới sử dụng một số thông tin của mẫu đầu tiên
+          <div
+            className={classNames('space-y-3 ', {
+              hidden: !validateProduct(productInput) || createProductSlice.listProductVariant.length === 0,
+              block: createProductSlice.listProductVariant.length > 0
+            })}
+          >
+            <div className='uppercase'>Danh sách phiên bản sản phẩm</div>
+            <div className='p-5 space-y-6 bg-white border border-gray-300 rounded-lg'>
+              <div className='flex flex-wrap gap-3'>
+                {createProductSlice.listProductVariant.map((variant, index) => (
+                  <ProductCardPreview
+                    mainImageUrl={variant.listImage[0].imageUrl}
+                    onClick={() => handleSelectedVariant(variant)}
+                    key={index}
+                    productVariant={variant.productVariant}
+                    className={classNames({
+                      '!border-primary !border': variantSelected === variant
+                    })}
+                  />
+                ))}
+                <div
+                  onClick={handleOpenNewVariantForm}
+                  className='h-[220px] border-dashed min-w-[220px] w-[224px] hover:border-primary transition-all cursor-pointer rounded-xl bg-white p-[10px] flex flex-col border border-gray-500'
+                >
+                  <div className='flex-[5] flex items-center justify-center'>
+                    <span className='w-[80px] h-[80px] mt-3'>
+                      <BadgePlus size={80} />
+                    </span>
+                  </div>
+                  <div className='flex-[6] flex flex-col'>
+                    <div className='flex flex-col items-center justify-center gap-3 mt-2'>
+                      <h2 className='text-sm font-bold text-black/80'>Thêm một mẫu mới</h2>
+                      <div className='text-xs text-center text-gray-500'>
+                        Mẫu mới sử dụng một số thông tin của mẫu đầu tiên
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+
+          {validateProduct(productInput) && <AddVariant />}
+
+          {validateProduct(productInput) && (
+            <button onClick={handleAddVariant} className='w-1/3 mx-auto btn btn-danger'>
+              {variantSelected ? 'Cập nhật phiên bản' : 'Thêm phiên bản'}
+            </button>
+          )}
         </div>
-
-        {validateProduct(productInput) && <AddVariant />}
-
-        {validateProduct(productInput) && (
-          <button onClick={handleAddVariant} className='w-1/3 mx-auto btn btn-danger'>
-            {variantSelected ? 'Cập nhật phiên bản' : 'Thêm phiên bản'}
-          </button>
-        )}
-      </div>
-    </Card>
+      </Card>
+    </ShowReturnBackLayout>
   )
 }
 

@@ -1,4 +1,4 @@
-import { addCategory, getCategories, updateCategory } from '@/apis/category.api'
+import { addCategory, getAllCategories, getCategories, getCategoryById, updateCategory } from '@/apis/category.api'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 
@@ -55,4 +55,24 @@ export const useUpdateCategory = () => {
   })
 
   return mutation
+}
+
+// cuong create
+export const useGetAllCategories = () => {
+  const query = useQuery({
+    queryKey: ['getAllCategories'],
+    queryFn: getAllCategories
+  })
+  return query
+}
+
+export const useGetCategoryById = (categoryId: number) => {
+  const query = useQuery({
+    queryKey: ['getCategoryById', categoryId],
+    queryFn: () => getCategoryById(categoryId),
+    enabled: categoryId >= 0,
+    staleTime: 1000 * 60 * 60 * 24,
+    refetchOnWindowFocus: false
+  })
+  return query
 }

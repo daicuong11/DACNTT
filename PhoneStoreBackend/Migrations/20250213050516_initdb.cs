@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PhoneStoreBackend.Migrations
 {
-    public partial class initDB : Migration
+    public partial class initdb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -354,9 +354,9 @@ namespace PhoneStoreBackend.Migrations
                 {
                     SpecificationId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ProductVariantId = table.Column<int>(type: "int", nullable: false),
                     ProductSpecificationGroupId = table.Column<int>(type: "int", nullable: false),
                     SpecificationGroupId = table.Column<int>(type: "int", nullable: true),
+                    ProductVariantId = table.Column<int>(type: "int", nullable: false),
                     Key = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Value = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     DisplayOrder = table.Column<int>(type: "int", nullable: false),
