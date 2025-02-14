@@ -7,9 +7,9 @@ import AddSpecification from './AddSpecification'
 import { ProductVariantRequestType } from '@/types/product_variant.type'
 import { useAppDispatch, useAppSelector, useDebounce } from '@/hooks'
 import { CircleAlert } from 'lucide-react'
-import { DiscountType } from '@/types/discount.type'
+import { DiscountRequestType } from '@/types/discount.type'
 import { setVariant } from '@/features/admin/create_product.slice'
-import { useGetAllDiscounts } from '@/hooks/querys/discount.query'
+import { useCreateDiscount, useGetAllDiscounts } from '@/hooks/querys/discount.query'
 
 const initialProductVariantInput: ProductVariantRequestType = {
   productVariantId: Date.now(),
@@ -27,6 +27,7 @@ const initialProductVariantInput: ProductVariantRequestType = {
 const AddVariant = () => {
   // start query
   const { data: discounts, error: discountError, isLoading: isDiscountLoading } = useGetAllDiscounts()
+  const discountMutate = useCreateDiscount()
   // end query
   const [colorItems, setColorItems] = React.useState<string[]>(['Đỏ', 'Xanh', 'Vàng', 'Trắng', 'Đen'])
   const [storageItems, setStorageItems] = React.useState<string[]>(['64 GB', '128 GB', '256 GB', '512 GB'])
@@ -107,12 +108,21 @@ const AddVariant = () => {
       toast.error('Giảm giá đã tồn tại')
       return
     }
-    // const createDiscount: DiscountType = {
-    //   discountId: discountItems.length,
-    //   percentage: newDiscount,
-    //   isActive: true
-    // }
-    // setDiscountItems([...discountItems, createDiscount])
+    const createDiscount: DiscountRequestType = {
+      percentage: newDiscount,
+      isActive: true
+    }
+    discountMutate.mutate(createDiscount, {
+      onSuccess: () => {
+        setNewDiscount(0)
+        setTimeout(() => {
+          inputDiscountRef.current?.focus()
+        }, 0)
+      },
+      onError: () => {
+        toast.error('Tạo giảm giá thất bại')
+      }
+    })
     setNewDiscount(0)
     setTimeout(() => {
       inputDiscountRef.current?.focus()

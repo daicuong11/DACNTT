@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { UploadFile } from 'antd'
 import { DiscountRequestType } from '@/types/discount.type'
 import { ProductRequestType } from '@/types/product.type'
-import { ProductImageRequestType } from '@/types/product_imge.type'
+import { ProductImageRequestType } from '@/types/product_image.type'
 import { ProductVariantRequestType } from '@/types/product_variant.type'
 import { SpecificationGroupType } from '@/types/specification_group.type'
 
@@ -13,7 +13,6 @@ export interface ListProductVariantRequestType {
 }
 
 export interface createProductState {
-  listDiscount: DiscountRequestType[]
   product: ProductRequestType | null
   listProductVariant: ListProductVariantRequestType[]
   variant: ProductVariantRequestType | null
@@ -23,7 +22,6 @@ export interface createProductState {
 }
 
 const initialState: createProductState = {
-  listDiscount: [],
   product: null,
   listProductVariant: [],
   variant: null,
@@ -36,10 +34,6 @@ const createProductSlice = createSlice({
   name: 'createProduct',
   initialState,
   reducers: {
-    setDiscount(state, action: PayloadAction<DiscountRequestType[]>) {
-      state.listDiscount = action.payload
-    },
-
     setProduct(state, action: PayloadAction<ProductRequestType | null>) {
       state.product = action.payload
     },
@@ -138,7 +132,28 @@ const createProductSlice = createSlice({
       }))
       state.specificationGroups = action.payload.specificationGroups
     },
-
+    openNewVariantForm(state) {
+      state.variant = {
+        productVariantId: Date.now(),
+        slug: '',
+        productId: -1,
+        discountId: -1,
+        variantName: '',
+        color: '',
+        storage: '',
+        importPrice: 0,
+        price: 0,
+        stock: 1
+      }
+      state.mainImage = null
+      state.images = state.listProductVariant[0].listImage.slice(1).map((image, index) => ({
+        uid: image.imageUrl,
+        name: 'Ảnh phụ ' + index,
+        status: 'done',
+        url: image.imageUrl
+      }))
+      state.specificationGroups = state.listProductVariant[0].specificationGroups || []
+    },
     clearImages(state) {
       state.images = []
     },
@@ -152,7 +167,6 @@ const createProductSlice = createSlice({
     },
 
     clearProduct(state) {
-      state.listDiscount = []
       state.product = null
       state.listProductVariant = []
       state.variant = null
@@ -163,11 +177,6 @@ const createProductSlice = createSlice({
     clearProductVariant(state) {
       state.listProductVariant = []
     },
-
-    clearDiscount(state) {
-      state.listDiscount = []
-    },
-
     finishAVariant(state) {
       state.variant = null
       state.mainImage = null
@@ -186,7 +195,7 @@ const createProductSlice = createSlice({
 
 export const {
   openAVariant,
-  setDiscount,
+  openNewVariantForm,
   setProduct,
   setListProductVariant,
   addAProductVariant,
@@ -197,7 +206,6 @@ export const {
   setVariant,
   finishAVariant,
   clearAll,
-  clearDiscount,
   clearProduct,
   clearProductVariant,
   clearVariant,

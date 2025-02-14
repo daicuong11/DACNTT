@@ -8,65 +8,61 @@ import { getRating } from '../../utils/getRating'
 import formatPrice from '../../utils/formatPrice'
 import { ProductVariantType } from '../../types/product_variant.type'
 import { iphone1 } from '@/assets/images/iphone'
+import { getMainImage } from '@/utils/getMainImage'
+import { getProductFullName } from '@/utils/getProductFullName'
 
 interface ProductCardType extends HTMLAttributes<HTMLDivElement> {
   productVariant: ProductVariantType
 }
 
-// const checkWishList = (productId: number): boolean => {
-//   return myFavorite.wishListItems.some((item) => item.productId === productId)
-// }
-
 const ProductCard: FC<ProductCardType> = ({ productVariant, ...props }) => {
   const navigate = useNavigate()
 
-  // const [isFavorite, setIsFavorite] = useState(checkWishList(item.productId))
-
-  // const handleSetWishList = (productId: number) => {
-  //   const isExist = checkWishList(productId)
-  //   if (isExist) {
-  //     myFavorite.wishListItems = myFavorite.wishListItems.filter((item) => item.productId !== productId)
-  //     setIsFavorite(false)
-
-  //     toast.success('Đã xóa khỏi yêu thích')
-  //   } else {
-  //     myFavorite.wishListItems.push({
-  //       wishListItemId: myFavorite.wishListItems.length + 1,
-  //       wishListId: myFavorite.wishListId,
-  //       productId
-  //     })
-  //     setIsFavorite(true)
-  //     toast.success('Đã thêm vào yêu thích')
-  //   }
-  // }
-
   const handleProductClick = (product: ProductVariantType) => {
     navigate(getProductRoute(product))
+  }
+
+  if (productVariant.productImages) {
+    var mainImage = getMainImage(productVariant.productImages)?.imageUrl
   }
 
   return (
     <div
       {...props}
       onClick={() => handleProductClick(productVariant)}
-      className='relative h-[392px] min-w-[224px] cursor-pointer rounded-xl bg-white p-[10px] flex flex-col drop-shadow-md shadow shadow-gray-300 border border-gray-100'
+      className='relative h-[392px] md:min-w-[224px] cursor-pointer rounded-xl bg-white p-[10px] flex flex-col drop-shadow-md shadow shadow-gray-300 border border-gray-100'
     >
       <div className='flex-[5] flex items-center justify-center'>
-        <img src={iphone1} alt={productVariant.product.name} className='w-[160px] h-[160px] object-contain mt-3' />
+        <img
+          src={mainImage || iphone1}
+          alt={productVariant.product.name}
+          className='w-[160px] h-[160px] object-contain mt-3'
+        />
       </div>
       <div className='flex-[6] flex flex-col'>
         <div className='flex flex-col gap-3 mt-2'>
-          <h2 className='h-[60px] text-sm font-bold text-black/80 line-clamp-3'>{productVariant.product.name}</h2>
-          <div className='flex items-end gap-1 font-sans font-bold'>
+          <h2 className='h-[60px] text-xs sm:text-sm font-bold text-black/80 line-clamp-3'>
+            {getProductFullName(productVariant)}
+          </h2>
+          <div className='flex items-end gap-1 font-sans font-bold text-sm md:text-base'>
             <span className='leading-none text-primary'>{formatPrice(productVariant.price)}</span>
             <span className='text-sm leading-none line-through text-slate-600'>
               {formatPrice(productVariant.price)}
             </span>
           </div>
           <Flex gap='4px 0' wrap>
-            <Tag color='green'>Free ship</Tag>
-            <Tag color='cyan'>Trả góp 0%</Tag>
-            <Tag color='volcano'>Đang bán chạy</Tag>
-            <Tag color='purple'>Rẻ vô địch</Tag>
+            <Tag className='text-[10px] md:text-[12px]' color='green'>
+              Free ship
+            </Tag>
+            <Tag className='text-[10px] md:text-[12px]' color='cyan'>
+              Trả góp 0%
+            </Tag>
+            <Tag className='text-[10px] md:text-[12px]' color='volcano'>
+              Đang bán chạy
+            </Tag>
+            <Tag className='text-[10px] md:text-[12px]' color='purple'>
+              Rẻ vô địch
+            </Tag>
           </Flex>
         </div>
         <div className='flex flex-col justify-end flex-1 mt-2'>

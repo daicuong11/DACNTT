@@ -12,11 +12,12 @@ import {
   finishAVariant,
   ListProductVariantRequestType,
   openAVariant,
+  openNewVariantForm,
   setListProductVariant,
   setProduct
 } from '@/features/admin/create_product.slice'
 import { ProductVariantRequestType } from '@/types/product_variant.type'
-import { ProductImageRequestType } from '@/types/product_imge.type'
+import { ProductImageRequestType } from '@/types/product_image.type'
 
 const validateProduct = (product: ProductRequestType | null) => {
   if (!product) return false
@@ -146,7 +147,7 @@ const AddProduct = () => {
     createProductSlice.listProductVariant
   )
 
-  const [variantSelected, setVariantSelected] = useState<ListProductVariantRequestType | null>(null)
+  const [variantSelected, setVariantSelected] = useState<number | null>(null)
 
   const debouncedQuery = useDebounce<ProductRequestType>(productInput, 1000)
   const dispatch = useAppDispatch()
@@ -168,13 +169,13 @@ const AddProduct = () => {
   }, [debouncedQuery, dispatch])
 
   const handleSelectedVariant = (variant: ListProductVariantRequestType) => {
-    setVariantSelected(variant)
+    setVariantSelected(variant.productVariant.productVariantId!)
     dispatch(openAVariant(variant))
   }
 
   const handleOpenNewVariantForm = () => {
     setVariantSelected(null)
-    dispatch(finishAVariant())
+    dispatch(openNewVariantForm())
   }
 
   const handleAddVariant = () => {
@@ -197,21 +198,25 @@ const AddProduct = () => {
       }
       if (variantSelected) {
         //update variant of list
-        console.log('update variant with id:', variantSelected.productVariant.productVariantId)
+        console.log('update variant with id:', variantSelected)
         const newLstProductVariant = lstProductVariant.map((variant) => {
-          if (variant.productVariant.productVariantId === variantSelected.productVariant.productVariantId) {
+          if (variant.productVariant.productVariantId === variantSelected) {
             return newVariant
           }
           return variant
         })
         setLstProductVariant(newLstProductVariant)
         toast('Cập nhật mẫu sản phẩm thành công!')
-      } else {
+      } else if (
+        !lstProductVariant.some((v) => v.productVariant.productVariantId === newVariant.productVariant.productVariantId)
+      ) {
         setLstProductVariant((pre) => {
           return [...pre, newVariant]
         })
         dispatch(finishAVariant())
         toast('Thêm mẫu sản phẩm thành công!')
+      } else {
+        toast.error('Mẫu sản phẩm đã tồn tại!')
       }
       if (variantRef.current) {
         variantRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' })
@@ -399,12 +404,21 @@ const AddProduct = () => {
               <div className='flex flex-wrap gap-3'>
                 {createProductSlice.listProductVariant.map((variant, index) => (
                   <ProductCardPreview
+                    onDeleted={() => {
+                      if (variant.productVariant.productVariantId) {
+                        setLstProductVariant((pre) =>
+                          pre.filter(
+                            (v) => v.productVariant.productVariantId !== variant.productVariant.productVariantId
+                          )
+                        )
+                      }
+                    }}
                     mainImageUrl={variant.listImage[0].imageUrl}
                     onClick={() => handleSelectedVariant(variant)}
                     key={index}
                     productVariant={variant.productVariant}
                     className={classNames({
-                      '!border-primary !border': variantSelected === variant
+                      '!border-primary !border': variantSelected === variant.productVariant.productVariantId
                     })}
                   />
                 ))}

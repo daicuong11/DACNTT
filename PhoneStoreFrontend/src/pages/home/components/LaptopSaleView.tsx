@@ -1,9 +1,12 @@
 import { FC } from 'react'
 import CarouselProduct from './CarouselProduct'
-import { exampleProductVariant } from '../../../datas'
+import { useGetVariantOfLaptop } from '@/hooks/querys/product_variant.query'
+import { LoadingItem } from '@/components'
 
 interface LaptopSaleViewProps {}
 const LaptopSaleView: FC<LaptopSaleViewProps> = () => {
+  const { data: productVariants, isLoading } = useGetVariantOfLaptop()
+
   return (
     <div className='w-full'>
       <div className='flex items-center justify-between mb-2'>
@@ -18,7 +21,7 @@ const LaptopSaleView: FC<LaptopSaleViewProps> = () => {
           <button className='btn btn-light !text-slate-600 border border-gray-100 !text-xs'>MSI</button>
         </div>
       </div>
-      <CarouselProduct row={2} autoPlay={false} dataSource={exampleProductVariant} />
+      {isLoading ? <LoadingItem /> : <CarouselProduct dataSource={productVariants!} />}
     </div>
   )
 }

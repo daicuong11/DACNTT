@@ -30,7 +30,7 @@ const columns: ColumnsType<ProductType> = [
     title: 'Actions',
     key: 'actions',
     render: (_, record) => (
-      <Link to={`/admin/products/details/${record.productId}`} className='btn btn-danger'>
+      <Link to={`/admin/products/details/${record.productId}`} className='btn btn-option text-xs'>
         Xem biến thể
       </Link>
     )

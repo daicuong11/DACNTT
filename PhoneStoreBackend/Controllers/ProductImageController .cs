@@ -25,7 +25,7 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "ADMIN")]
+        //[Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> GetAllProductImages()
         {
             try
@@ -42,7 +42,7 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> GetProductImageById(int id)
         {
             try

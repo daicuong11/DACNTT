@@ -1,5 +1,7 @@
 import { DiscountType } from './discount.type'
 import { ProductType } from './product.type'
+import { ProductImageType } from './product_image.type'
+import { SpecificationType } from './specification.type'
 
 export interface ProductVariantType {
   productVariantId: number
@@ -14,6 +16,9 @@ export interface ProductVariantType {
   importPrice: number
   price: number
   stock: number
+
+  productImages: ProductImageType[]
+  productSpecifications: SpecificationType[]
 }
 
 export interface ProductVariantRequestType {

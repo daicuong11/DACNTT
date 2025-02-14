@@ -156,7 +156,7 @@ namespace PhoneStoreBackend.Controllers
                     bool isSlugExists = await _productVariantRepository.AnySlugExistsAsync(variantReq.Slug);
                     if (isSlugExists)
                     {
-                        variantReq.Slug = variantReq.Slug + productDTO.ProductId;
+                        variantReq.Slug = variantReq.Slug + ' ' + Guid.NewGuid().ToString();
                         bool doubleCheckIsSlugExists = await _productVariantRepository.AnySlugExistsAsync(variantReq.Slug);
                         if (doubleCheckIsSlugExists)
                         {

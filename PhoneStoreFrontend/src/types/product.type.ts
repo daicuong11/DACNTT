@@ -1,7 +1,7 @@
 import { BrandType } from './brand.type'
 import { CategoryType } from './category.type'
-import { ProductImageRequestType } from './product_imge.type'
-import { ProductVariantRequestType } from './product_variant.type'
+import { ProductImageRequestType } from './product_image.type'
+import { ProductVariantRequestType, ProductVariantType } from './product_variant.type'
 import { SpecificationRequestType } from './specification.type'
 
 export interface ProductType {

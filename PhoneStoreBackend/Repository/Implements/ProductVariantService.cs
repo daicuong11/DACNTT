@@ -51,13 +51,90 @@ namespace PhoneStoreBackend.Repository.Implements
 
         public async Task<ProductVariantDTO> GetProductVariantById(int id)
         {
-            var findProductVariant = await _context.ProductVariants.Include(p => p.Product).Include(p => p.Discount).FirstOrDefaultAsync(p => p.ProductVariantId == id);
+            var findProductVariant = await _context.ProductVariants
+                .Include(pv => pv.Product) 
+                    .ThenInclude(p => p.Brand) 
+                .Include(pv => pv.Product)
+                    .ThenInclude(p => p.Category) 
+                .Include(pv => pv.Discount)
+                .Include(v => v.ProductImages)
+                .Include(v => v.ProductSpecifications)
+                .FirstOrDefaultAsync(p => p.ProductVariantId == id);
+
             if (findProductVariant == null)
             {
                 throw new KeyNotFoundException($"ProductVariant with id {id} not found.");
             }
             return _mapper.Map<ProductVariantDTO>(findProductVariant);
         }
+
+
+        public async Task<ICollection<ProductVariantDTO>> GetProductVariantByProductId(int id)
+        {
+            var listProductVariants = await _context.ProductVariants
+                .Include(pv => pv.Product)
+                    .ThenInclude(p => p.Brand)
+                .Include(pv => pv.Product)
+                    .ThenInclude(p => p.Category)
+                .Include(pv => pv.Discount)
+                .Include(v => v.ProductImages)
+                .Include(v => v.ProductSpecifications)
+                .Where(v => v.ProductId == id)
+                .ToListAsync();
+            return _mapper.Map<ICollection<ProductVariantDTO>>(listProductVariants);
+        }
+
+        public async Task<ICollection<ProductVariantDTO>> GetAllProductVariantOfLaptop()
+        {
+            var categoryMobile = await _context.Categories
+                .FirstOrDefaultAsync(c => c.Name.ToLower() == "latop".ToLower());
+
+
+            if (categoryMobile == null)
+            {
+                return new List<ProductVariantDTO>();
+            }
+
+            var listProductVariants = await _context.ProductVariants
+                .Include(pv => pv.Product)
+                    .ThenInclude(p => p.Brand)
+                .Include(pv => pv.Product)
+                    .ThenInclude(p => p.Category)
+                .Include(pv => pv.Discount)
+                .Include(v => v.ProductImages)
+                .Include(v => v.ProductSpecifications)
+                .Where(v => v.Product.Category.Name == categoryMobile.Name.Trim()) 
+                .ToListAsync();
+
+            return _mapper.Map<ICollection<ProductVariantDTO>>(listProductVariants);
+        }
+
+
+        public async Task<ICollection<ProductVariantDTO>> GetAllProductVariantOfMobile()
+        {
+            var categoryMobile = await _context.Categories
+                .FirstOrDefaultAsync(c => c.Name.ToLower() == "điện thoại".ToLower());
+
+
+            if (categoryMobile == null)
+            {
+                return new List<ProductVariantDTO>();
+            }
+
+            var listProductVariants = await _context.ProductVariants
+                .Include(pv => pv.Product)
+                    .ThenInclude(p => p.Brand)
+                .Include(pv => pv.Product)
+                    .ThenInclude(p => p.Category)
+                .Include(pv => pv.Discount)
+                .Include(v => v.ProductImages)
+                .Include(v => v.ProductSpecifications)
+                .Where(v => v.Product.CategoryId == categoryMobile.CategoryId) 
+                .ToListAsync();
+
+            return _mapper.Map<ICollection<ProductVariantDTO>>(listProductVariants);
+        }
+
 
         public async Task<bool> UpdateProductVariantAsync(int id, ProductVariant productVariant)
         {

@@ -1,12 +1,12 @@
 import classNames from 'classnames'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { FC, useRef, useState } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react'
 import ProductCard from '../../../components/items/ProductCard'
-import { ProductType } from '../../../types/product.type'
 
 import { Autoplay, Grid } from 'swiper/modules'
 import { ProductVariantType } from '../../../types/product_variant.type'
+import { useElementWidth } from '@/hooks'
 
 interface CarouselProductType {
   row?: 1 | 2
@@ -16,9 +16,23 @@ interface CarouselProductType {
 const CarouselProduct: FC<CarouselProductType> = ({ row = 1, autoPlay = true, dataSource }) => {
   const swiperRef = useRef<SwiperRef>(null)
   const [currentSlide, setCurrentSlide] = useState<number>(0)
+  const [slidesPerView, setSlidesPerView] = useState<number>(5)
+  const [containerRef, width] = useElementWidth()
+
+  useEffect(() => {
+    if (width > 1170) {
+      setSlidesPerView(5)
+    } else if (width > 932) {
+      setSlidesPerView(4)
+    } else if (width > 712) {
+      setSlidesPerView(3)
+    } else {
+      setSlidesPerView(2)
+    }
+  }, [width])
 
   return (
-    <div className='relative w-full group'>
+    <div ref={containerRef} className='relative w-full group'>
       <Swiper
         ref={swiperRef}
         initialSlide={0}
@@ -30,7 +44,7 @@ const CarouselProduct: FC<CarouselProductType> = ({ row = 1, autoPlay = true, da
         grid={{
           rows: row
         }}
-        slidesPerView={5}
+        slidesPerView={slidesPerView}
         slidesPerGroup={1}
         spaceBetween={10}
         freeMode={true}
@@ -48,7 +62,6 @@ const CarouselProduct: FC<CarouselProductType> = ({ row = 1, autoPlay = true, da
           </SwiperSlide>
         ))}
       </Swiper>
-
       {currentSlide != 0 && (
         <button
           onClick={() => {

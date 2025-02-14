@@ -3,9 +3,10 @@ import { Flame } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 
 import CarouselProduct from './CarouselProduct'
-import { SkeletonFlashSaleView } from '../../../components'
+import { LoadingItem, SkeletonFlashSaleView } from '../../../components'
 import CountdownTimer from './CountdownTimer'
 import { exampleProductVariant } from '../../../datas'
+import { useGetAllProductVariants } from '@/hooks/querys/product_variant.query'
 
 interface FlashSaleViewProps {}
 
@@ -26,6 +27,8 @@ const initListCategorySale = [
 
 const FlashSaleView: React.FC<FlashSaleViewProps> = ({}) => {
   const [categoryActive, setCategoryActive] = useState<number>(initListCategorySale[0].categoryId)
+  const { data: productVariants, isLoading } = useGetAllProductVariants()
+
   // const [isLoading, setIsLoading] = useState(true)
 
   // useEffect(() => {
@@ -76,7 +79,7 @@ const FlashSaleView: React.FC<FlashSaleViewProps> = ({}) => {
         </div>
       </div>
 
-      <CarouselProduct dataSource={exampleProductVariant} />
+      {isLoading ? <LoadingItem /> : <CarouselProduct dataSource={productVariants!} />}
     </div>
   )
 }

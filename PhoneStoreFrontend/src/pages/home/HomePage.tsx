@@ -29,7 +29,7 @@ const HomePage = () => {
         <FlashSaleView />
         <MobileSaleView />
         <LaptopSaleView />
-        {[
+        {/* {[
           'bg-gradient-luxury-2',
           'bg-gradient-gold',
           'bg-gradient-romantic',
@@ -47,7 +47,7 @@ const HomePage = () => {
 
             <CarouselProduct autoPlay={false} dataSource={exampleProductVariant} />
           </div>
-        ))}
+        ))} */}
       </div>
     </div>
   )

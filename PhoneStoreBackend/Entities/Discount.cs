@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace PhoneStoreBackend.Entities
 {
@@ -18,7 +19,7 @@ namespace PhoneStoreBackend.Entities
         public DateTime EndDate { get; set; }
 
         public bool IsActive { get; set; } = true;
-
+        [JsonIgnore]
         public ICollection<ProductVariant> Products { get; set; }
     }
 }

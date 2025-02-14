@@ -37,6 +37,38 @@ namespace PhoneStoreBackend.Controllers
             }
         }
 
+        [HttpGet("mobile")]
+        public async Task<IActionResult> GetAllProductVariantOfMobile()
+        {
+            try
+            {
+                var productVariants = await productVariantRepository.GetAllProductVariantOfMobile();
+                var response = Response<ICollection<ProductVariantDTO>>.CreateSuccessResponse(productVariants, "Danh sách sản phẩm: ");
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = Response<object>.CreateErrorResponse($"Đã xảy ra lỗi: {ex.Message}");
+                return BadRequest(errorResponse);
+            }
+        }
+
+        [HttpGet("laptop")]
+        public async Task<IActionResult> GetAllProductVariantOfLaptop()
+        {
+            try
+            {
+                var productVariants = await productVariantRepository.GetAllProductVariantOfLaptop();
+                var response = Response<ICollection<ProductVariantDTO>>.CreateSuccessResponse(productVariants, "Danh sách sản phẩm: ");
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = Response<object>.CreateErrorResponse($"Đã xảy ra lỗi: {ex.Message}");
+                return BadRequest(errorResponse);
+            }
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -51,6 +83,22 @@ namespace PhoneStoreBackend.Controllers
             {
                 var notFoundResponse = Response<object>.CreateErrorResponse("Không tìm thấy sản phẩm với id= " + id);
                 return NotFound(notFoundResponse);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = Response<object>.CreateErrorResponse($"Đã xảy ra lỗi: {ex.Message}");
+                return BadRequest(errorResponse);
+            }
+        }
+
+        [HttpGet("product/{id}")]
+        public async Task<IActionResult> GetProductVariantsByProductId(int id)
+        {
+            try
+            {
+                var listVariantsDTO = await productVariantRepository.GetProductVariantByProductId(id);
+                var response = Response<ICollection<ProductVariantDTO>>.CreateSuccessResponse(listVariantsDTO, "Danh sách phiên bản của sản phẩm id: " + id);
+                return Ok(response);
             }
             catch (Exception ex)
             {

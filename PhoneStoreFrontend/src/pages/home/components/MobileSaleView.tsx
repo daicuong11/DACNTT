@@ -1,9 +1,13 @@
 import { FC } from 'react'
 import CarouselProduct from './CarouselProduct'
 import { exampleProductVariant, listItems } from '../../../datas'
+import { useGetVariantOfMobile } from '@/hooks/querys/product_variant.query'
+import { LoadingItem } from '@/components'
 
 interface MobileSaleView {}
 const MobileSaleView: FC<MobileSaleView> = () => {
+  const { data: productVariants, isLoading } = useGetVariantOfMobile()
+
   return (
     <div className='w-full'>
       <div className='flex items-center justify-between mb-2'>
@@ -23,7 +27,7 @@ const MobileSaleView: FC<MobileSaleView> = () => {
           <button className='btn btn-light  border border-gray-100 !text-slate-600 !text-xs'>Google</button>
         </div>
       </div>
-      <CarouselProduct row={2} autoPlay={false} dataSource={exampleProductVariant} />
+      {isLoading ? <LoadingItem /> : <CarouselProduct dataSource={productVariants!} />}
     </div>
   )
 }

@@ -1,4 +1,11 @@
-import { addProduct, addProductWithVariants, getProducts, getProductVariants, updateProduct } from '@/apis/product.api'
+import {
+  addProduct,
+  addProductWithVariants,
+  getProductById,
+  getProducts,
+  getProductVariants,
+  updateProduct
+} from '@/apis/product.api'
 import { ProductRequestType } from '@/types/product.type'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
@@ -73,4 +80,12 @@ export const useAddProductWithVariants = () => {
   })
 
   return mutation
+}
+
+export const useGetProductById = (productId: number) => {
+  return useQuery({
+    queryKey: ['getProductById', productId],
+    queryFn: () => getProductById(productId),
+    enabled: !!productId // Chỉ chạy nếu productId tồn tại
+  })
 }

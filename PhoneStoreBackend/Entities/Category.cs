@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace PhoneStoreBackend.Entities
 {
@@ -17,6 +18,7 @@ namespace PhoneStoreBackend.Entities
 
         public string ImageUrl { get; set; }
 
+        [JsonIgnore]
         public ICollection<Product> Products { get; set; }
         
         public ICollection<ProductSpecificationGroup> ProductSpecificationGroups { get; set; }

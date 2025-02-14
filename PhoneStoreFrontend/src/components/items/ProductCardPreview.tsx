@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import formatPrice from '../../utils/formatPrice'
 import { ProductVariantRequestType, ProductVariantType } from '../../types/product_variant.type'
 import { iphone1 } from '@/assets/images/iphone'
-import { Edit } from 'lucide-react'
+import { Delete, Edit, Trash2 } from 'lucide-react'
 import { useAppSelector } from '@/hooks'
 import { Tag } from 'antd'
 
@@ -11,10 +11,24 @@ interface ProductCardPreviewType extends HTMLAttributes<HTMLDivElement> {
   productVariant: ProductVariantRequestType
   className?: string
   mainImageUrl: string
+  onDeleted: (variantId?: number) => void
 }
 
-const ProductCardPreview: FC<ProductCardPreviewType> = ({ productVariant, className, mainImageUrl, ...props }) => {
+const ProductCardPreview: FC<ProductCardPreviewType> = ({
+  productVariant,
+  className,
+  mainImageUrl,
+  onDeleted,
+  ...props
+}) => {
   const { product } = useAppSelector((state) => state.createProduct)
+
+  const handleDeleteVariant = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault()
+    if (onDeleted) {
+      onDeleted(productVariant.productVariantId)
+    }
+  }
 
   return (
     <div
@@ -24,9 +38,9 @@ const ProductCardPreview: FC<ProductCardPreviewType> = ({ productVariant, classN
         className
       )}
     >
-      <span className='absolute hidden top-2 right-2 group-hover:block'>
-        <Edit size={20} />
-      </span>
+      <button onClick={handleDeleteVariant} className='absolute hidden top-2 right-2 group-hover:block'>
+        <Trash2 size={20} strokeWidth={1.6} />
+      </button>
       <div className='flex-[5] flex items-center justify-center'>
         <img
           src={mainImageUrl}
