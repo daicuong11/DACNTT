@@ -196,12 +196,21 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
       displayOrder: 5,
       specifications: [
         {
+          specificationId: 100,
+          productVariantId: -1,
+          productSpecificationGroupId: 5,
+          key: 'Dung lượng RAM',
+          value: '',
+          displayOrder: 0,
+          isSpecial: true
+        },
+        {
           specificationId: 17,
           productVariantId: -1,
           productSpecificationGroupId: 5,
           key: 'Bộ nhớ trong',
           value: '',
-          displayOrder: 0,
+          displayOrder: 1,
           isSpecial: true
         }
       ]

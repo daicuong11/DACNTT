@@ -6,6 +6,8 @@ import { iphone1 } from '@/assets/images/iphone'
 import { Delete, Edit, Trash2 } from 'lucide-react'
 import { useAppSelector } from '@/hooks'
 import { Tag } from 'antd'
+import getPriceAfterDiscount from '@/utils/getPriceAfterDiscount'
+import { useGetAllDiscounts } from '@/hooks/querys/discount.query'
 
 interface ProductCardPreviewType extends HTMLAttributes<HTMLDivElement> {
   productVariant: ProductVariantRequestType
@@ -22,13 +24,14 @@ const ProductCardPreview: FC<ProductCardPreviewType> = ({
   ...props
 }) => {
   const { product } = useAppSelector((state) => state.createProduct)
-
+  const { data: discounts } = useGetAllDiscounts()
   const handleDeleteVariant = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault()
     if (onDeleted) {
       onDeleted(productVariant.productVariantId)
     }
   }
+  const discountPercentage = discounts?.find((d) => d.discountId === productVariant.discountId)?.percentage || 0
 
   return (
     <div
@@ -38,6 +41,10 @@ const ProductCardPreview: FC<ProductCardPreviewType> = ({
         className
       )}
     >
+      <div className='absolute top-0 flex items-center justify-center w-20 py-1.5 rounded-r-full -left-1 bg-primary'>
+        <p className='text-xs font-bold text-white'>Giảm {discountPercentage}%</p>
+        <div className='absolute left-0 flex items-center justify-center w-1 h-1 rounded-b-full -bottom-1 bg-[#c2181a]'></div>
+      </div>
       <button onClick={handleDeleteVariant} className='absolute hidden top-2 right-2 group-hover:block'>
         <Trash2 size={20} strokeWidth={1.6} />
       </button>
@@ -60,7 +67,9 @@ const ProductCardPreview: FC<ProductCardPreviewType> = ({
             </div>
 
             <div className='flex justify-between gap-1 font-sans font-bold'>
-              <span className='leading-none text-primary'>{formatPrice(productVariant.price)}</span>
+              <span className='leading-none text-primary'>
+                {formatPrice(getPriceAfterDiscount(productVariant.price, discountPercentage))}
+              </span>
               <span className='text-xs font-normal text-slate-600'>{productVariant.color}</span>
             </div>
           </div>

@@ -1,11 +1,15 @@
-import { Links, useNavigate } from 'react-router-dom'
+import { Links, useNavigate, useParams } from 'react-router-dom'
 import { useBreadcrumbs } from '../../../../hooks'
 import { Breadcrumb } from 'antd'
 import { HomeFilled, RightOutlined } from '@ant-design/icons'
 import classNames from 'classnames'
+import { useGetVariantBySlug } from '@/hooks/querys/product_variant.query'
 
 const Breadcrumbs = () => {
-  const breadcrumbs = useBreadcrumbs()
+  const { productSlug } = useParams<{ productSlug: string }>()
+  const { data: product } = useGetVariantBySlug(productSlug || '')
+
+  const breadcrumbs = useBreadcrumbs(product ? product?.product.name + ' ' + product?.variantName : productSlug)
   const navigate = useNavigate()
 
   return (

@@ -3,15 +3,19 @@ import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react'
 
 import 'swiper/swiper-bundle.css'
 import classNames from 'classnames'
-import { useEffect, useRef, useState } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
 import { CarouselRef } from 'antd/es/carousel'
-import listIphoneImage from '../../../assets/images/iphone'
 import { ChevronLeft, ChevronRight, Star } from 'lucide-react'
 import getPreviewNumber from '../../../utils/getPreviewNumber'
 import { useElementWidth } from '../../../hooks'
 import { FavoriteButton } from '../../../components'
+import { ProductImageType } from '@/types/product_image.type'
 
-const CarouselProductImages = () => {
+interface CarouselProductImagesProps {
+  dataSources: ProductImageType[]
+}
+
+const CarouselProductImages: FC<CarouselProductImagesProps> = ({ dataSources }) => {
   const [currentSlide, setCurrentSlide] = useState<number>(0)
   const carouselRef = useRef<CarouselRef>(null)
   const swiperRef = useRef<SwiperRef>(null)
@@ -55,7 +59,7 @@ const CarouselProductImages = () => {
                       preview={{ maskClassName: '!hidden' }}
                       width={'100%'}
                       className='object-contain cursor-pointer rounded-xl'
-                      src={listIphoneImage[0].img}
+                      src={dataSources[0].imageUrl}
                     />
                   </div>
                 </div>
@@ -94,14 +98,14 @@ const CarouselProductImages = () => {
                 </div>
               </div>
             </div>
-            {listIphoneImage.map((item, index) => (
+            {dataSources.slice(1).map((item, index) => (
               <div className='w-full h-[400px] pb-[1px] rounded-xl' key={index}>
                 <Image
                   preview={{ maskClassName: '!hidden' }}
                   width={'100%'}
                   height={'100%'}
                   className='object-contain cursor-pointer rounded-xl'
-                  src={item.img}
+                  src={item.imageUrl}
                 />
               </div>
             ))}
@@ -121,7 +125,7 @@ const CarouselProductImages = () => {
             <ChevronLeft size={32} strokeWidth={1.6} />
           </button>
         )}
-        {currentSlide != listIphoneImage.length && (
+        {currentSlide != dataSources.length && (
           <button
             onClick={() => {
               carouselRef.current?.next()
@@ -142,7 +146,7 @@ const CarouselProductImages = () => {
           ref={swiperRef}
           initialSlide={0}
           draggable
-          slidesPerView={getPreviewNumber(containerWidth) || listIphoneImage.length + 1}
+          slidesPerView={getPreviewNumber(containerWidth) || dataSources.length + 1}
           spaceBetween={10}
           freeMode={true}
           className='h-full mySwiper'
@@ -163,7 +167,7 @@ const CarouselProductImages = () => {
               </span>
             </div>
           </SwiperSlide>
-          {listIphoneImage.map((item, index) => (
+          {dataSources.slice(1).map((item, index) => (
             <SwiperSlide
               key={index + 1}
               className={classNames('!w-[50px] !h-[50px] rounded-lg cursor-pointer', {
@@ -172,7 +176,7 @@ const CarouselProductImages = () => {
               })}
               onClick={() => handleSwiperClick(index + 1)}
             >
-              <img className='object-contain w-auto h-full rounded-lg' src={item.img} alt={item.name} />
+              <img className='object-contain w-auto h-full rounded-lg' src={item.imageUrl} alt={item.imageUrl} />
             </SwiperSlide>
           ))}
         </Swiper>

@@ -21,6 +21,11 @@ class ProductVariantAPI {
     const res = await axiosInstance.get('product_variants/laptop')
     return res.data
   }
+
+  async getVariantBySlug(slug: string): Promise<ProductVariantType> {
+    const res = await axiosInstance.get(`product_variants/slug/${slug}`)
+    return res.data
+  }
 }
 
 const productVariantAPI = new ProductVariantAPI()

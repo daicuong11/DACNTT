@@ -1,6 +1,7 @@
 import {
   addProduct,
   addProductWithVariants,
+  get15ProductSimilar,
   getAllProductOfLaptop,
   getAllProductOfMobile,
   getProductById,
@@ -103,5 +104,13 @@ export const useGetAllProductOfLaptop = () => {
   return useQuery({
     queryKey: ['getAllProductOfLaptop'],
     queryFn: getAllProductOfLaptop
+  })
+}
+
+export const useGet15ProductSimilar = (id: number) => {
+  return useQuery({
+    queryKey: ['get15ProductSimilar', id],
+    queryFn: () => get15ProductSimilar(id),
+    enabled: !!id
   })
 }

@@ -29,3 +29,11 @@ export const useGetVariantOfLaptop = () => {
     queryFn: () => productVariantAPI.getVariantOfLaptop()
   })
 }
+
+export const useGetVariantBySlug = (slug: string) => {
+  return useQuery({
+    queryKey: ['getVariantBySlug', slug],
+    queryFn: () => productVariantAPI.getVariantBySlug(slug),
+    enabled: !!slug
+  })
+}

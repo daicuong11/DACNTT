@@ -30,6 +30,7 @@ const ProductFeatures: FC<ProductFeaturesProps> = ({ productVariant }) => {
           </li>
         </ul>
       </div>
+      <div dangerouslySetInnerHTML={{ __html: productVariant.product.description }} className=''></div>
     </ContainerPanel>
   )
 }

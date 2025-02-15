@@ -248,9 +248,11 @@ const AddProduct = () => {
           slug: slug(
             createProductSlice.product?.name +
               ' ' +
-              variant.productVariant.color +
+              variant.productVariant.storage +
               ' ' +
-              variant.productVariant.variantName
+              variant.productVariant.variantName +
+              ' ' +
+              variant.productVariant.color
           )
         },
         specifications: variant.specificationGroups

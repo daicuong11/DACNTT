@@ -1,94 +1,20 @@
 import { useLocation } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import { CategoryType } from '../types/category.type'
-import { exampleProductVariant, listItems } from '../datas'
-import useQueryString from './useQueryString'
-import { ProductVariantType } from '@/types/product_variant.type'
 
-const useBreadcrumbs = () => {
+// Map tĩnh cho category
+const categoryMap: Record<string, string> = {
+  mobile: 'Điện thoại',
+  laptop: 'Laptop'
+}
+
+const useBreadcrumbs = (slugTitle?: string) => {
   const location = useLocation()
-  const queryString = useQueryString()
-  const [product, setProduct] = useState<ProductVariantType | null>(null)
-  const [categories, setCategories] = useState<CategoryType[]>([])
+  const pathnames = location.pathname.split('/').filter((x) => x)
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const data: CategoryType[] = [
-          {
-            categoryId: 1,
-            name: 'Điện thoại',
-            url: 'mobile',
-            description: 'Smartphones',
-            imageUrl: 'https://example.com/category1.jpg'
-          },
-          {
-            categoryId: 2,
-            name: 'Laptop',
-            url: 'laptop',
-            description: 'Powerful laptops',
-            imageUrl: 'https://example.com/category2.jpg'
-          },
-          {
-            categoryId: 3,
-            name: 'Máy ảnh',
-            url: 'camera',
-            description: 'High-quality cameras',
-            imageUrl: 'https://example.com/category3.jpg'
-          },
-          {
-            categoryId: 4,
-            name: 'Phụ kiện',
-            url: 'accessory',
-            description: 'Accessories',
-            imageUrl: 'https://example.com/category4.jpg'
-          }
-        ]
-        setCategories(data)
-      } catch (error) {
-        console.error('Lỗi khi tải danh sách category:', error)
-      }
-    }
-
-    fetchCategories()
-  }, [])
-
-  useEffect(() => {
-    const fetchProduct = () => {
-      const decodedPathname = decodeURIComponent(location.pathname)
-      const pathnames = decodedPathname.split('/').filter((x) => x)
-
-      if (pathnames.length === 2) {
-        const productSlug = pathnames[1]
-        const matchedProduct = exampleProductVariant.find((item) => item.slug === productSlug)
-        setProduct(matchedProduct || null)
-      } else {
-        setProduct(null)
-      }
-    }
-
-    fetchProduct()
-  }, [location.pathname])
-
-  const decodedPathname = decodeURIComponent(location.pathname)
-  const pathnames = decodedPathname.split('/').filter((x) => x)
-
-  // Xử lý trường hợp `/catalogsearch/result/:q`
-  if (pathnames[0] === 'catalogsearch' && pathnames[1] === 'result') {
-    return [
-      { href: '/', title: 'Trang chủ' },
-      { href: location.pathname, title: `Kết quả tìm kiếm cho: '${decodeURIComponent(queryString.q)}'` }
-    ]
-  }
-
-  const breadcrumbs = pathnames.map((_, index) => {
+  const breadcrumbs = pathnames.map((segment, index) => {
     const href = `/${pathnames.slice(0, index + 1).join('/')}`
-    const slug = pathnames[index]
 
-    const matchedCategory = categories.find((category) => category.url === slug)
-
-    const isProductSlug = index === 1 && product
-    const title = isProductSlug ? product.product.name : matchedCategory ? matchedCategory.name : slug
+    // Nếu là category, dùng map để lấy tên đẹp hơn
+    const title = categoryMap[segment] || slugTitle || segment
 
     return { href, title }
   })

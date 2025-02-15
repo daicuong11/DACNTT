@@ -3,5 +3,5 @@ import { ProductVariantType } from '@/types/product_variant.type'
 
 export const getProductFullName = (product: ProductType) => {
   const variant = product.productVariants[0] as ProductVariantType
-  return product.name + ' ' + variant.storage + ' ' + variant.variantName
+  return product.name + ' ' + variant.variantName
 }

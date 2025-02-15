@@ -7,6 +7,8 @@ import { LoadingOpacity } from '@/components'
 import { useGetVariantByProductId } from '@/hooks/querys/product_variant.query'
 import { Image, Popconfirm } from 'antd'
 import { CircleArrowDown, Edit } from 'lucide-react'
+import getPriceAfterDiscount from '@/utils/getPriceAfterDiscount'
+import formatPrice from '@/utils/formatPrice'
 
 export default function Details() {
   const { productId } = useParams<{ productId: string }>()
@@ -65,7 +67,7 @@ export default function Details() {
       title: 'Giá bán (Đã giảm)',
       key: 'price',
       render: (_, record) => {
-        return <span>{record.price - (record.discount ? (record.price * record.discount.percentage) / 100 : 0)}</span>
+        return <span>{formatPrice(getPriceAfterDiscount(record.price, record.discount?.percentage || 0))}</span>
       }
     },
     {
@@ -74,7 +76,7 @@ export default function Details() {
       render: (_, record) => {
         return (
           <div className='flex flex-col gap-y-2'>
-            <button className='btn btn-warning text-xs rounded-md'>
+            <button className='text-xs rounded-md btn btn-warning'>
               <Edit size={16} strokeWidth={1.6} />
               Chỉnh sửa
             </button>
@@ -88,7 +90,7 @@ export default function Details() {
               cancelText='Hủy'
               placement='left'
             >
-              <button className='btn btn-danger text-xs rounded-md'>
+              <button className='text-xs rounded-md btn btn-danger'>
                 <CircleArrowDown size={16} strokeWidth={1.6} />
                 Ngưng bán
               </button>

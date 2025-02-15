@@ -1,35 +1,55 @@
-import { FC, useEffect } from 'react'
-import { exampleProductVariant, listItems } from '../../datas'
+import { FC, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ConfigProvider, Rate } from 'antd'
-import { getRating } from '../../utils/getRating'
-import { BookmarkCheck, CalendarClock, Check, Heart, PackageOpen, Plus, ShoppingCart, Smartphone } from 'lucide-react'
+import { BookmarkCheck, CalendarClock, Check, PackageOpen, Plus, ShoppingCart, Smartphone } from 'lucide-react'
 import CarouselProductImages from './components/CarouselProductImages'
-import { iphone16_hong } from '../../assets/images/iphone'
 import PriceButton from './components/PriceButton'
 import ColorPriceButton from './components/ColorPriceButton'
 import formatPrice from '../../utils/formatPrice'
 import { GiftFilled } from '@ant-design/icons'
-import { ContainerPanel } from '../../components'
-import CarouselProduct from '../home/components/CarouselProduct'
+import { ContainerPanel, LoadingOpacity } from '../../components'
 import ProductSpecifications from './components/ProductSpecifications'
 import ProductFeatures from './components/ProductFeatures'
 import ProductReviews from './components/ProductReviews'
 import ProductComments from './components/ProductComments'
 import useSetDocTitle from '@/hooks/useSetDocTitle'
+import { useGetVariantByProductId, useGetVariantBySlug } from '@/hooks/querys/product_variant.query'
+import getPriceAfterDiscount from '@/utils/getPriceAfterDiscount'
+import { getProductRoute } from '@/utils/getProductRoute'
+import { getMainImage } from '@/utils/getMainImage'
+import ListSimilarProducts from './components/ListSimilarProducts'
 
 interface ProductDetailPageProps {}
 const ProductDetailPage: FC<ProductDetailPageProps> = () => {
+  const navigate = useNavigate()
   const { productSlug } = useParams<{ productSlug: string }>()
-  const productVariant = exampleProductVariant.find((item) => item.slug === productSlug) || exampleProductVariant[0]
+  const { data: productVariant, isLoading, error } = useGetVariantBySlug(productSlug || '')
+  const {
+    data: listVariants,
+    isLoading: isLoadingVariants,
+    error: variantError
+  } = useGetVariantByProductId(productVariant?.productId || 0)
 
-  useSetDocTitle(productVariant.product.name || 'Product Detail')
+  useSetDocTitle(productVariant?.product.name || 'Product Detail')
+
+  const [selectedStorage, setSelectedStorage] = useState<string>(productVariant?.storage || '')
+
+  useEffect(() => {
+    if (listVariants && productVariant) {
+      setSelectedStorage(productVariant.storage)
+    }
+  }, [listVariants, productVariant])
+
+  if (error) return <div>Error: {error.message}</div>
 
   return (
     <div className='flex flex-col my-4 gap-y-4'>
+      {isLoading && <LoadingOpacity />}
       <div className='flex flex-col gap-4'>
         <div className='flex items-center gap-2'>
-          <div className='text-xl font-semibold'>{productVariant.product.name}</div>
+          <div className='text-xl font-semibold'>
+            {productVariant?.product.name + ' ' + productVariant?.variantName}
+          </div>
           <ConfigProvider
             theme={{
               token: {
@@ -50,7 +70,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
         <div className='w-full h-[1px] bg-slate-200'></div>
         <div className='grid w-full grid-cols-10 gap-6'>
           <div className='col-span-6 sticky top-[108px] h-max'>
-            <CarouselProductImages />
+            {productVariant && <CarouselProductImages dataSources={productVariant.productImages} />}
             <div className='flex flex-col mt-6 gap-y-6'>
               <ContainerPanel title='Thông tin sản phẩm'>
                 <ContainerPanel.Item
@@ -76,24 +96,68 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
             </div>
           </div>
           <div className='flex flex-col col-span-4 sticky top-[80px] h-max gap-y-3'>
-            <div className='flex gap-2'>
-              <PriceButton isActive={true} title='128GB' price={21990000} />
-              <PriceButton isActive={false} title='256GB' price={21990000} />
-              <PriceButton isActive={false} title='1TB' price={21990000} />
+            <div className='grid grid-cols-3 gap-2.5'>
+              {productVariant && isLoadingVariants && (
+                <PriceButton
+                  title={productVariant.storage}
+                  price={getPriceAfterDiscount(productVariant.price, productVariant.discount?.percentage || 0)}
+                />
+              )}
+              {listVariants &&
+                listVariants
+                  .filter((variant, index, self) => index === self.findIndex((v) => v.storage === variant.storage))
+                  .map((variant) => (
+                    <PriceButton
+                      onClick={() => navigate(getProductRoute(variant))}
+                      isActive={variant.storage === selectedStorage}
+                      key={variant.productVariantId}
+                      title={variant.storage}
+                      price={getPriceAfterDiscount(variant.price, variant.discount?.percentage || 0)}
+                    />
+                  ))}
             </div>
             <div className='mt-2 text-sm font-bold text-black/70'>Chọn màu để xem giá</div>
-            <div className='flex gap-2.5 flex-wrap'>
-              <ColorPriceButton isActive={false} disabled title='Hồng' price={21990000} img={iphone16_hong} />
-              <ColorPriceButton isActive={true} title='Đen' price={21990000} img={iphone16_hong} />
-              <ColorPriceButton isActive={false} title='Trắng' price={21990000} img={iphone16_hong} />
-              <ColorPriceButton isActive={false} disabled title='Xanh' price={21990000} img={iphone16_hong} />
-              <ColorPriceButton isActive={false} title='Vàng' price={21990000} img={iphone16_hong} />
+            <div className='grid gap-2.5 grid-cols-3'>
+              {productVariant && isLoadingVariants && (
+                <ColorPriceButton
+                  onClick={() => navigate(getProductRoute(productVariant))}
+                  key={productVariant.productVariantId}
+                  isActive={true}
+                  disabled={false}
+                  title={productVariant.color}
+                  price={getPriceAfterDiscount(productVariant.price, productVariant.discount?.percentage || 0)}
+                  img={getMainImage(productVariant.productImages)?.imageUrl || ''}
+                />
+              )}
+              {listVariants &&
+                productVariant &&
+                listVariants
+                  .filter((v) => v.storage === productVariant?.storage)
+                  .map((variant) => (
+                    <ColorPriceButton
+                      onClick={() => navigate(getProductRoute(variant))}
+                      key={variant.productVariantId}
+                      isActive={variant.productVariantId === productVariant?.productVariantId}
+                      disabled={false}
+                      title={variant.color}
+                      price={getPriceAfterDiscount(variant.price, variant.discount?.percentage || 0)}
+                      img={getMainImage(variant.productImages)?.imageUrl || ''}
+                    />
+                  ))}
             </div>
             <div className='flex flex-col gap-2.5 mt-2'>
               <div className='flex items-center justify-center px-2 py-0.5 border rounded-lg border-primary'>
                 <div className='flex flex-col items-center'>
-                  <span className='text-xl font-bold text-primary'>{formatPrice(21990000)}</span>
-                  <span className='text-sm font-semibold text-gray-800 line-through'>{formatPrice(23990000)}</span>
+                  <span className='text-xl font-bold text-primary'>
+                    {formatPrice(
+                      productVariant
+                        ? getPriceAfterDiscount(productVariant.price, productVariant.discount?.percentage || 0)
+                        : 0
+                    )}
+                  </span>
+                  <span className='text-sm font-semibold text-gray-800 line-through'>
+                    {formatPrice(productVariant ? productVariant.price : 0)}
+                  </span>
                 </div>
               </div>
               <div className='flex flex-col mt-2 border rounded-xl border-primary/10'>
@@ -211,17 +275,16 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
         <div className='w-full h-[1px] bg-slate-200'></div>
       </div>
       <div className='flex flex-col gap-y-4'>
-        <div className='text-xl font-bold leading-none uppercase text-black/70'>Sản phẩm tương tự</div>
-        {/* <CarouselProduct autoPlay={false} dataSource={exampleProductVariant} /> */}
-
-        <div className='w-full h-[1px] bg-slate-200'></div>
+        {productVariant && <ListSimilarProducts productVariant={productVariant} />}
 
         <div className='grid grid-cols-10 gap-x-2.5'>
-          <div className='flex flex-col col-span-7 gap-y-4'>
-            <ProductFeatures productVariant={productVariant} />
-            <ProductReviews productVariant={productVariant} />
-            <ProductComments productVariant={productVariant} />
-          </div>
+          {productVariant && (
+            <div className='flex flex-col col-span-7 gap-y-4'>
+              <ProductFeatures productVariant={productVariant} />
+              <ProductReviews productVariant={productVariant} />
+              <ProductComments productVariant={productVariant} />
+            </div>
+          )}
           <div className='col-span-3'>
             <ProductSpecifications />
           </div>

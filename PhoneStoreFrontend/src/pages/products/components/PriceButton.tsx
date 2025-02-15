@@ -16,14 +16,11 @@ const PriceButton: FC<PriceButtonProps> = ({ title, price, isActive = false, dis
     <button
       disabled={disabled}
       onClick={disabled ? undefined : onClick}
-      className={classNames(
-        'flex gap-x-1 py-1.5 px-3 relative bg-white min-w-[146px] justify-center items-center rounded-lg',
-        {
-          'border border-primary bg-red-100 bg-opacity-10': isActive,
-          'border border-slate-400 text-black hover:bg-slate-50': !isActive,
-          'cursor-not-allowed opacity-55 hover:bg-white': disabled
-        }
-      )}
+      className={classNames('flex gap-x-1 py-1.5 px-3 relative bg-white justify-center items-center rounded-lg', {
+        'border border-primary bg-red-100 bg-opacity-10': isActive,
+        'border border-slate-400 text-black hover:bg-slate-50': !isActive,
+        'cursor-not-allowed opacity-55 hover:bg-white': disabled
+      })}
     >
       <div className='flex flex-col items-center gap-0.5'>
         <div className='text-xs font-bold text-black/70'>{title}</div>

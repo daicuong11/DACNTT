@@ -178,7 +178,19 @@ const createProductSlice = createSlice({
       state.listProductVariant = []
     },
     finishAVariant(state) {
-      state.variant = null
+      const newState: ProductVariantRequestType = {
+        productVariantId: Date.now(),
+        slug: '',
+        productId: -1,
+        discountId: -1,
+        variantName: state.variant?.variantName || '',
+        color: state.variant?.color || '',
+        storage: state.variant?.storage || '',
+        importPrice: state.variant?.importPrice || 0,
+        price: state.variant?.price || 0,
+        stock: state.variant?.stock || 1
+      }
+      state.variant = newState
       state.mainImage = null
     },
 

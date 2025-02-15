@@ -8,7 +8,7 @@ const API_BASE_URL: string = import.meta.env.VITE_API_BASE_URL || ''
 const axiosInstance = axios.create({
   baseURL: API_BASE_URL,
   headers: { 'Content-Type': 'application/json' },
-  timeout: 10000
+  timeout: 20000
 })
 
 // Helper functions to get tokens from Redux store

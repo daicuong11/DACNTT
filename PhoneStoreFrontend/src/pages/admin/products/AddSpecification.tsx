@@ -37,17 +37,21 @@ const AddSpecification = () => {
   const { product, specificationGroups } = useAppSelector((state) => state.createProduct)
   const dispatch = useAppDispatch()
 
-  const { data: category, isLoading, error, refetch } = useGetCategoryById(product?.categoryId || -1)
+  const { data: category, isLoading, error } = useGetCategoryById(product?.categoryId || -1)
 
-  const [inputs, setInputs] = useState<SpecificationGroupType[]>([])
+  const [inputs, setInputs] = useState<SpecificationGroupType[]>(specificationGroups)
 
-  const debouncedQuery = useDebounce(inputs, 600)
+  const debouncedQuery = useDebounce(inputs, 400)
 
   useEffect(() => {
     const fetchCategory = async () => {
       if (category) {
-        const newInputs = getInputs(category)
-        setInputs(newInputs)
+        if (specificationGroups.length === 0) {
+          const newInputs = getInputs(category)
+          setInputs(newInputs)
+        } else {
+          setInputs(specificationGroups)
+        }
       }
     }
     fetchCategory()

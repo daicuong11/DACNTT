@@ -38,6 +38,11 @@ export const getAllProductOfLaptop = async (): Promise<ProductType[]> => {
   return res.data
 }
 
+export const get15ProductSimilar = async (id: number): Promise<ProductType[]> => {
+  const res = await axiosInstance.get(`products/${id}/similar`)
+  return res.data
+}
+
 // method put
 export const updateProduct = async (productId: number, formData: FormData) => {
   return axiosInstance.put<ProductType>(`products/${productId}`, formData)

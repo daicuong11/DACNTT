@@ -16,7 +16,7 @@ const ColorPriceButton: FC<ColorPriceButtonProps> = ({ title, price, img, isActi
     <button
       disabled={disabled}
       onClick={disabled ? undefined : onClick}
-      className={classNames('flex gap-x-1 relative py-1.5 px-1.5 min-w-[146px] justify-start items-center rounded-lg', {
+      className={classNames('flex gap-x-1 relative py-1.5 px-1.5 justify-start items-center rounded-lg', {
         'border border-primary bg-red-100 bg-opacity-10': isActive,
         'border border-slate-400 text-black bg-white hover:bg-slate-50': !isActive,
         'cursor-not-allowed opacity-55 hover:bg-white': disabled

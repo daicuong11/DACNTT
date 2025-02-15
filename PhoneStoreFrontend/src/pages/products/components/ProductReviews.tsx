@@ -1,7 +1,6 @@
 import React, { FC, useEffect, useState } from 'react'
 import { ContainerPanel, FilterButton } from '../../../components'
 import { ConfigProvider, Rate } from 'antd'
-import { getRating } from '../../../utils/getRating'
 import { StarFilled } from '@ant-design/icons'
 import ReviewComment from './ReviewComment'
 import { ChevronDown } from 'lucide-react'
@@ -56,7 +55,7 @@ const ProductReviews: FC<ProductReviewsProps> = ({ productVariant }) => {
         </div>
         <div className='flex flex-col col-span-6 px-6 gap-y-1.5'>
           {Array.from({ length: 5 }).map((_, index) => (
-            <ReviewRatingItem key={index} rating={5 - index} productVarinatId={productVariant.productVariantId} />
+            <ReviewRatingItem key={index} rating={5 - index} productVariantId={productVariant.productVariantId} />
           ))}
         </div>
       </div>
