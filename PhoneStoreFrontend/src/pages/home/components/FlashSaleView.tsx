@@ -7,6 +7,7 @@ import { LoadingItem, SkeletonFlashSaleView } from '../../../components'
 import CountdownTimer from './CountdownTimer'
 import { exampleProductVariant } from '../../../datas'
 import { useGetAllProductVariants } from '@/hooks/querys/product_variant.query'
+import { useGetProducts } from '@/hooks/querys/product.query'
 
 interface FlashSaleViewProps {}
 
@@ -27,7 +28,7 @@ const initListCategorySale = [
 
 const FlashSaleView: React.FC<FlashSaleViewProps> = ({}) => {
   const [categoryActive, setCategoryActive] = useState<number>(initListCategorySale[0].categoryId)
-  const { data: productVariants, isLoading } = useGetAllProductVariants()
+  const { data: products, isLoading } = useGetProducts()
 
   // const [isLoading, setIsLoading] = useState(true)
 
@@ -79,7 +80,7 @@ const FlashSaleView: React.FC<FlashSaleViewProps> = ({}) => {
         </div>
       </div>
 
-      {isLoading ? <LoadingItem /> : <CarouselProduct dataSource={productVariants!} />}
+      {isLoading ? <LoadingItem /> : <CarouselProduct dataSource={products!} />}
     </div>
   )
 }

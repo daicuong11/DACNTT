@@ -56,6 +56,38 @@ namespace PhoneStoreBackend.Controllers
             }
         }
 
+        [HttpGet("mobile")]
+        public async Task<IActionResult> GetAllProductOfMobile()
+        {
+            try
+            {
+                var productVariants = await _productRepository.GetAllProductOfMobile();
+                var response = Response<ICollection<ProductDTO>>.CreateSuccessResponse(productVariants, "Danh sách sản phẩm: ");
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = Response<object>.CreateErrorResponse($"Đã xảy ra lỗi: {ex.Message}");
+                return BadRequest(errorResponse);
+            }
+        }
+
+        [HttpGet("laptop")]
+        public async Task<IActionResult> GetAllProductOfLaptop()
+        {
+            try
+            {
+                var productVariants = await _productRepository.GetAllProductOfLaptop();
+                var response = Response<ICollection<ProductDTO>>.CreateSuccessResponse(productVariants, "Danh sách sản phẩm: ");
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = Response<object>.CreateErrorResponse($"Đã xảy ra lỗi: {ex.Message}");
+                return BadRequest(errorResponse);
+            }
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProductById(int id)
         {

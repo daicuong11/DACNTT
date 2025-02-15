@@ -26,7 +26,6 @@ namespace PhoneStoreBackend.Entities
         public int BrandId { get; set; }
         [ForeignKey("BrandId")]
         public Brand Brand { get; set; }
-        [JsonIgnore]
         public ICollection<ProductVariant> ProductVariants { get; set; }
 
     }

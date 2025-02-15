@@ -22,11 +22,69 @@ namespace PhoneStoreBackend.Repository.Implements
         {
             var list = await _context.Products
                 .Include(p => p.Category)
-                .Include(p => p.Brand).ToListAsync();
+                .Include(p => p.Brand)
+                .Include(p => p.ProductVariants)
+                    .ThenInclude(pv => pv.Discount)
+                .Include(p => p.ProductVariants)
+                    .ThenInclude(pv => pv.ProductImages)
+                .Include(p => p.ProductVariants)
+                    .ThenInclude(pv => pv.ProductSpecifications)
+                .ToListAsync();
             return _mapper.Map<List<ProductDTO>>(list);
         }
 
+        public async Task<ICollection<ProductDTO>> GetAllProductOfLaptop()
+        {
+            var categoryLaptop = await _context.Categories
+                .FirstOrDefaultAsync(c => c.Name.ToLower() == "laptop");
 
+            if (categoryLaptop == null)
+            {
+                return new List<ProductDTO>();
+            }
+
+            var listProductVariants = await _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.Brand)
+                .Include(p => p.ProductVariants)
+                    .ThenInclude(pv => pv.Discount)
+                .Include(p => p.ProductVariants)
+                    .ThenInclude(pv => pv.ProductImages)  
+                .Include(p => p.ProductVariants)
+                    .ThenInclude(pv => pv.ProductSpecifications)  
+                .Where(p => p.CategoryId == categoryLaptop.CategoryId)
+                .ToListAsync();
+
+            return _mapper.Map<ICollection<ProductDTO>>(listProductVariants);
+        }
+
+
+
+        public async Task<ICollection<ProductDTO>> GetAllProductOfMobile()
+        {
+            var categoryMobile = await _context.Categories
+                .FirstOrDefaultAsync(c => c.Name.ToLower() == "điện thoại".ToLower());
+
+
+            if (categoryMobile == null)
+            {
+                return new List<ProductDTO>();
+            }
+
+            var listProductVariants = await _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.Brand)
+                .Include(p => p.ProductVariants)
+                    .ThenInclude(pv => pv.Discount)
+                .Include(p => p.ProductVariants)
+                    .ThenInclude(pv => pv.ProductImages)
+                .Include(p => p.ProductVariants)
+                    .ThenInclude(pv => pv.ProductSpecifications)
+                .Where(v => v.CategoryId == categoryMobile.CategoryId)
+                .ToListAsync();
+
+            return _mapper.Map<ICollection<ProductDTO>>(listProductVariants);
+        }
 
         // Lấy sản phẩm theo ID
         public async Task<ProductDTO> GetProductByIdAsync(int id)

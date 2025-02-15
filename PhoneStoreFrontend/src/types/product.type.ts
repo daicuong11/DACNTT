@@ -12,6 +12,7 @@ export interface ProductType {
   category: CategoryType
   brandId: number
   brand: BrandType
+  productVariants: ProductVariantType[]
 }
 
 export interface ProductRequestType {

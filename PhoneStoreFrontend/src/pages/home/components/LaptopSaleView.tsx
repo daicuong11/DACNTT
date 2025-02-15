@@ -1,11 +1,11 @@
 import { FC } from 'react'
 import CarouselProduct from './CarouselProduct'
-import { useGetVariantOfLaptop } from '@/hooks/querys/product_variant.query'
 import { LoadingItem } from '@/components'
+import { useGetAllProductOfLaptop } from '@/hooks/querys/product.query'
 
 interface LaptopSaleViewProps {}
 const LaptopSaleView: FC<LaptopSaleViewProps> = () => {
-  const { data: productVariants, isLoading } = useGetVariantOfLaptop()
+  const { data: products, isLoading } = useGetAllProductOfLaptop()
 
   return (
     <div className='w-full'>
@@ -21,7 +21,7 @@ const LaptopSaleView: FC<LaptopSaleViewProps> = () => {
           <button className='btn btn-light !text-slate-600 border border-gray-100 !text-xs'>MSI</button>
         </div>
       </div>
-      {isLoading ? <LoadingItem /> : <CarouselProduct dataSource={productVariants!} />}
+      {isLoading ? <LoadingItem /> : <CarouselProduct dataSource={products!} />}
     </div>
   )
 }

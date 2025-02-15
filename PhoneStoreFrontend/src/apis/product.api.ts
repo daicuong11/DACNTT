@@ -28,6 +28,16 @@ export const addProductWithVariants = async (
   return await axiosInstance.post('products/add-with-variants', addProductWithVariantsReq)
 }
 
+export const getAllProductOfMobile = async (): Promise<ProductType[]> => {
+  const res = await axiosInstance.get('products/mobile')
+  return res.data
+}
+
+export const getAllProductOfLaptop = async (): Promise<ProductType[]> => {
+  const res = await axiosInstance.get('products/laptop')
+  return res.data
+}
+
 // method put
 export const updateProduct = async (productId: number, formData: FormData) => {
   return axiosInstance.put<ProductType>(`products/${productId}`, formData)

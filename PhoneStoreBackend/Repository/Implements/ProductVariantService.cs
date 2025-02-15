@@ -44,7 +44,12 @@ namespace PhoneStoreBackend.Repository.Implements
         {
             var productVariants = await _context.ProductVariants
                 .Include(pv => pv.Product)
+                    .ThenInclude(p => p.Brand)
+                .Include(pv => pv.Product)
+                    .ThenInclude(p => p.Category)
                 .Include(pv => pv.Discount)
+                .Include(v => v.ProductImages)
+                .Include(v => v.ProductSpecifications)
                 .ToListAsync();
             return _mapper.Map<List<ProductVariantDTO>>(productVariants);
         }
@@ -87,7 +92,7 @@ namespace PhoneStoreBackend.Repository.Implements
         public async Task<ICollection<ProductVariantDTO>> GetAllProductVariantOfLaptop()
         {
             var categoryMobile = await _context.Categories
-                .FirstOrDefaultAsync(c => c.Name.ToLower() == "latop".ToLower());
+                .FirstOrDefaultAsync(c => c.Name.ToLower() == "laptop".ToLower());
 
 
             if (categoryMobile == null)

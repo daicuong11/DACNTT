@@ -7,44 +7,41 @@ import { getProductRoute } from '../../utils/getProductRoute'
 import { getRating } from '../../utils/getRating'
 import formatPrice from '../../utils/formatPrice'
 import { ProductVariantType } from '../../types/product_variant.type'
-import { iphone1 } from '@/assets/images/iphone'
 import { getMainImage } from '@/utils/getMainImage'
 import { getProductFullName } from '@/utils/getProductFullName'
+import { ProductType } from '@/types/product.type'
 
 interface ProductCardType extends HTMLAttributes<HTMLDivElement> {
-  productVariant: ProductVariantType
+  product: ProductType
 }
 
-const ProductCard: FC<ProductCardType> = ({ productVariant, ...props }) => {
+const ProductCard: FC<ProductCardType> = ({ product, ...props }) => {
   const navigate = useNavigate()
+  const productVariant = product.productVariants[0]
 
-  const handleProductClick = (product: ProductVariantType) => {
+  const handleProductClick = (product: ProductType) => {
     navigate(getProductRoute(product))
-  }
-
-  if (productVariant.productImages) {
-    var mainImage = getMainImage(productVariant.productImages)?.imageUrl
   }
 
   return (
     <div
       {...props}
-      onClick={() => handleProductClick(productVariant)}
+      onClick={() => handleProductClick(product)}
       className='relative h-[392px] md:min-w-[224px] cursor-pointer rounded-xl bg-white p-[10px] flex flex-col drop-shadow-md shadow shadow-gray-300 border border-gray-100'
     >
       <div className='flex-[5] flex items-center justify-center'>
         <img
-          src={mainImage || iphone1}
-          alt={productVariant.product.name}
+          src={getMainImage(productVariant.productImages)!.imageUrl}
+          alt={getProductFullName(product)}
           className='w-[160px] h-[160px] object-contain mt-3'
         />
       </div>
       <div className='flex-[6] flex flex-col'>
         <div className='flex flex-col gap-3 mt-2'>
           <h2 className='h-[60px] text-xs sm:text-sm font-bold text-black/80 line-clamp-3'>
-            {getProductFullName(productVariant)}
+            {getProductFullName(product)}
           </h2>
-          <div className='flex items-end gap-1 font-sans font-bold text-sm md:text-base'>
+          <div className='flex items-end gap-1 font-sans text-sm font-bold md:text-base'>
             <span className='leading-none text-primary'>{formatPrice(productVariant.price)}</span>
             <span className='text-sm leading-none line-through text-slate-600'>
               {formatPrice(productVariant.price)}

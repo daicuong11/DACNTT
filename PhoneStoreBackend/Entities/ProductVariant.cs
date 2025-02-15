@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace PhoneStoreBackend.Entities
 {
@@ -11,6 +12,7 @@ namespace PhoneStoreBackend.Entities
 
         public int ProductId { get; set; }
         [ForeignKey("ProductId")]
+        [JsonIgnore]
         public Product Product { get; set; }
 
         public int? DiscountId { get; set; }
@@ -36,9 +38,11 @@ namespace PhoneStoreBackend.Entities
 
         public int Stock { get; set; }
 
+        [JsonIgnore]
         public ICollection<CartItem> CartItems { get; set; }
         public ICollection<ProductImage> ProductImages { get; set; }
         public ICollection<Review> Reviews { get; set; }
+        [JsonIgnore]
         public ICollection<WishlistItem> WishlistItems { get; set; }
         public ICollection<ProductSpecification> ProductSpecifications { get; set; }
     }

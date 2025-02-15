@@ -1,12 +1,11 @@
 import { FC } from 'react'
 import CarouselProduct from './CarouselProduct'
-import { exampleProductVariant, listItems } from '../../../datas'
-import { useGetVariantOfMobile } from '@/hooks/querys/product_variant.query'
 import { LoadingItem } from '@/components'
+import { useGetAllProductOfMobile } from '@/hooks/querys/product.query'
 
 interface MobileSaleView {}
 const MobileSaleView: FC<MobileSaleView> = () => {
-  const { data: productVariants, isLoading } = useGetVariantOfMobile()
+  const { data: products, isLoading } = useGetAllProductOfMobile()
 
   return (
     <div className='w-full'>
@@ -27,7 +26,7 @@ const MobileSaleView: FC<MobileSaleView> = () => {
           <button className='btn btn-light  border border-gray-100 !text-slate-600 !text-xs'>Google</button>
         </div>
       </div>
-      {isLoading ? <LoadingItem /> : <CarouselProduct dataSource={productVariants!} />}
+      {isLoading ? <LoadingItem /> : <CarouselProduct dataSource={products!} />}
     </div>
   )
 }

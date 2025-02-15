@@ -1,6 +1,8 @@
 import {
   addProduct,
   addProductWithVariants,
+  getAllProductOfLaptop,
+  getAllProductOfMobile,
   getProductById,
   getProducts,
   getProductVariants,
@@ -87,5 +89,19 @@ export const useGetProductById = (productId: number) => {
     queryKey: ['getProductById', productId],
     queryFn: () => getProductById(productId),
     enabled: !!productId // Chỉ chạy nếu productId tồn tại
+  })
+}
+
+export const useGetAllProductOfMobile = () => {
+  return useQuery({
+    queryKey: ['getAllProductOfMobile'],
+    queryFn: getAllProductOfMobile
+  })
+}
+
+export const useGetAllProductOfLaptop = () => {
+  return useQuery({
+    queryKey: ['getAllProductOfLaptop'],
+    queryFn: getAllProductOfLaptop
   })
 }

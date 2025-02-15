@@ -212,7 +212,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
       </div>
       <div className='flex flex-col gap-y-4'>
         <div className='text-xl font-bold leading-none uppercase text-black/70'>Sản phẩm tương tự</div>
-        <CarouselProduct autoPlay={false} dataSource={exampleProductVariant} />
+        {/* <CarouselProduct autoPlay={false} dataSource={exampleProductVariant} /> */}
 
         <div className='w-full h-[1px] bg-slate-200'></div>
 

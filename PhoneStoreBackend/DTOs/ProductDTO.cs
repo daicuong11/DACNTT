@@ -1,4 +1,6 @@
-﻿namespace PhoneStoreBackend.DTOs
+﻿using PhoneStoreBackend.Entities;
+
+namespace PhoneStoreBackend.DTOs
 {
     public class ProductDTO
     {
@@ -12,5 +14,7 @@
 
         public int BrandId { get; set; }
         public BrandDTO Brand { get; set; }
+
+        public ICollection<ProductVariant> ProductVariants { get; set; }
     }
 }

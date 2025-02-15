@@ -5,13 +5,13 @@ import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react'
 import ProductCard from '../../../components/items/ProductCard'
 
 import { Autoplay, Grid } from 'swiper/modules'
-import { ProductVariantType } from '../../../types/product_variant.type'
 import { useElementWidth } from '@/hooks'
+import { ProductType } from '@/types/product.type'
 
 interface CarouselProductType {
   row?: 1 | 2
   autoPlay?: boolean
-  dataSource: ProductVariantType[]
+  dataSource: ProductType[]
 }
 const CarouselProduct: FC<CarouselProductType> = ({ row = 1, autoPlay = true, dataSource }) => {
   const swiperRef = useRef<SwiperRef>(null)
@@ -58,7 +58,7 @@ const CarouselProduct: FC<CarouselProductType> = ({ row = 1, autoPlay = true, da
       >
         {dataSource.map((item, index) => (
           <SwiperSlide key={index} className={classNames('h-full')}>
-            <ProductCard productVariant={item} />
+            <ProductCard product={item} />
           </SwiperSlide>
         ))}
       </Swiper>
