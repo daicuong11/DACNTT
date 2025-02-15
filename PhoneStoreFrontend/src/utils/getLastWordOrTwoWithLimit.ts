@@ -4,15 +4,15 @@ function getLastWordOrTwoWithLimit(fullName: string): string {
     return nameParts[0]
   }
 
-  const lastTwoWords = nameParts.slice(-2)
+  const lastThreeWords = nameParts.slice(-3)
 
-  const totalLength = lastTwoWords.join(' ').length
+  const totalLength = lastThreeWords.join(' ').length
 
-  if (totalLength > 10) {
-    return lastTwoWords[1]
+  if (totalLength > 15) {
+    return lastThreeWords[lastThreeWords.length - 1]
   }
 
-  return lastTwoWords.join(' ')
+  return lastThreeWords.join(' ')
 }
 
 export default getLastWordOrTwoWithLimit

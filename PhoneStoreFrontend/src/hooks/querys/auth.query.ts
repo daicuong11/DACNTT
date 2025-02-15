@@ -1,11 +1,10 @@
 import { useMutation } from '@tanstack/react-query'
-import { loginWithEmailAndPassword, registerAccount } from '../../apis/auth.api'
 import { AuthResponseType, BaseResponse, LoginRequestType, RegisterRequestType } from '../../types/auth.type'
 import { useAppDispatch } from '..'
-import { setAuth } from '@/features/auth/auth.slice'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { AxiosError } from 'axios'
+import authApi from '@/apis/auth.api'
+import { setTokens } from '@/features/auth/auth.slice'
 
 export const useLoginWithEmailAndPassword = () => {
   const dispatch = useAppDispatch()
@@ -13,10 +12,10 @@ export const useLoginWithEmailAndPassword = () => {
 
   const mutation = useMutation({
     mutationKey: ['login'],
-    mutationFn: (loginRequest: LoginRequestType) => loginWithEmailAndPassword(loginRequest),
+    mutationFn: (loginRequest: LoginRequestType) => authApi.loginWithEmailAndPassword(loginRequest),
 
     onSuccess: (data) => {
-      dispatch(setAuth(data.data))
+      dispatch(setTokens(data.data))
       navigate('/')
     },
 
@@ -35,11 +34,11 @@ export const useRegisterAccount = () => {
   const mutation = useMutation({
     mutationKey: ['register'],
     mutationFn: (registerRequest: RegisterRequestType) => {
-      return registerAccount(registerRequest)
+      return authApi.registerAccount(registerRequest)
     },
 
     onSuccess: (data: BaseResponse<AuthResponseType>) => {
-      dispatch(setAuth(data.data))
+      dispatch(setTokens(data.data))
       navigate('/')
     },
 

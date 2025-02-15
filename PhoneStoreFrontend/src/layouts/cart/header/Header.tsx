@@ -10,9 +10,13 @@ import getLastWordOrTwoWithLimit from '@/utils/getLastWordOrTwoWithLimit'
 const Header = () => {
   const { isOpen, toggleModal, closeModal } = useModal()
 
-  const currentUser = useAppSelector((state) => state.auth.token)?.user
+  const currentUser = useAppSelector((state) => state.auth.user)
 
   const navigate = useNavigate()
+
+  const handleProfileClick = () => {
+    navigate(currentUser ? '/profile' : '/signin')
+  }
 
   return (
     <div className='h-[64px] z-[999] w-full bg-primary shadow-md px-2.5'>
@@ -54,7 +58,7 @@ const Header = () => {
             </span>
           </ButtonHeader>
           <ButtonHeader
-            onClick={() => (currentUser ? navigate('/profile') : navigate('/signin'))}
+            onClick={handleProfileClick}
             direction='vertical'
             iconPosition='top'
             disPlayBackground

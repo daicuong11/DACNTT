@@ -12,7 +12,7 @@ namespace PhoneStoreBackend.Repository
 
         Task<UserDTO> VerifyTokenAsync(string token);
 
-        Task<object> RefreshTokenAsync(string refreshToken);
+        Task<LoginResponse> RefreshTokenAsync(string refreshToken);
 
         Task<string> ForgotPasswordAsync(string email);
 

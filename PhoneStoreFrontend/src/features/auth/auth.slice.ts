@@ -1,28 +1,38 @@
-import { AuthResponseType } from './../../types/auth.type'
+// features/authSlice.ts
+import { UserType } from '@/types/user.type'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-export interface AuthState {
-  token: AuthResponseType | null
+
+interface AuthState {
+  accessToken: string | null
+  refreshToken: string | null
+  user: UserType | null
 }
 
 const initialState: AuthState = {
-  token: null
+  accessToken: null,
+  refreshToken: null,
+  user: null
 }
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setAuth: (state, action: PayloadAction<AuthResponseType>) => {
-      state.token = action.payload
+    setTokens: (state, action: PayloadAction<{ accessToken: string; refreshToken: string }>) => {
+      state.accessToken = action.payload.accessToken
+      state.refreshToken = action.payload.refreshToken
+    },
+    setUser: (state, action: PayloadAction<UserType>) => {
+      state.user = action.payload
     },
     clearAuth: (state) => {
-      state.token = null
+      state.accessToken = null
+      state.refreshToken = null
+      state.user = null
     }
   }
 })
 
-export const { setAuth, clearAuth } = authSlice.actions
-
-export const selectAuth = (state: { auth: AuthState }) => state.auth.token
+export const { setTokens, setUser, clearAuth } = authSlice.actions
 
 export default authSlice.reducer

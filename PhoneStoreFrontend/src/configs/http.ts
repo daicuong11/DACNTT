@@ -1,8 +1,7 @@
-import { setAuth } from '@/features/auth/auth.slice'
-import { store } from '@/store'
-import { AuthResponseType, BaseResponse } from '@/types/auth.type'
+// utils/axiosInstance.ts
 import axios from 'axios'
-
+import { store } from '../store'
+import { clearAuth, setTokens } from '@/features/auth/auth.slice'
 const API_BASE_URL: string = import.meta.env.VITE_API_BASE_URL || ''
 
 // Create Axios instance
@@ -12,41 +11,64 @@ const axiosInstance = axios.create({
   timeout: 10000
 })
 
-export const getToken = (): AuthResponseType | null => {
+// Helper functions to get tokens from Redux store
+export const getAccessToken = (): string | null => {
   const state = store.getState()
-  return state.auth.token || null
+  return state.auth.accessToken || null
 }
 
-// Function to set token to Redux store
-export const setToken = (token: AuthResponseType) => {
-  store.dispatch(setAuth(token))
+export const getRefreshToken = (): string | null => {
+  const state = store.getState()
+  return state.auth.refreshToken || null
 }
+
+// Function to set tokens to Redux store
+export const setToken = (token: { accessToken: string; refreshToken: string }) => {
+  store.dispatch(setTokens(token))
+}
+
+// Variables to handle refresh token race condition
+let isRefreshing = false
+let refreshSubscribers: ((token: string) => void)[] = []
 
 // Function to refresh token
 const refreshToken = async () => {
-  const tokenData = getToken()
-  if (!tokenData?.refreshToken) return null
+  if (isRefreshing) {
+    return new Promise<string>((resolve) => {
+      refreshSubscribers.push((token) => resolve(token))
+    })
+  }
+
+  isRefreshing = true
+  const refreshTokenData = getRefreshToken()
+  if (!refreshTokenData) return null
 
   try {
-    const response = await axios.post(`${API_BASE_URL}/auth/refresh`, {
-      refreshToken: tokenData.refreshToken
+    const response = await axiosInstance.post('/auth/refresh', {
+      refreshToken: refreshTokenData
     })
     const newToken = response.data
     setToken(newToken)
+    isRefreshing = false
+    refreshSubscribers.forEach((cb) => cb(newToken.accessToken))
+    refreshSubscribers = []
     return newToken.accessToken
   } catch (error) {
     console.error('Refresh token failed:', error)
     localStorage.removeItem('token')
+    store.dispatch(clearAuth())
+    isRefreshing = false
+    refreshSubscribers = []
     return null
   }
 }
 
 // Request interceptor to attach token
 axiosInstance.interceptors.request.use(
-  async (config) => {
-    const tokenData = getToken()
-    if (tokenData?.accessToken) {
-      config.headers.Authorization = `Bearer ${tokenData.accessToken}`
+  (config) => {
+    const tokenData = getAccessToken()
+    if (tokenData) {
+      config.headers.Authorization = `Bearer ${tokenData}`
     }
     return config
   },

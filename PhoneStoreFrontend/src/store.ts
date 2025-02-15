@@ -4,6 +4,7 @@ import storage from 'redux-persist/lib/storage'
 import authReducer from './features/auth/auth.slice'
 import orderReducer from './features/order/order.slice'
 import createProductReducer from './features/admin/create_product.slice'
+import { fetchUserMiddleware } from './middlewares/fetchUserMiddleware'
 const rootReducer = combineReducers({
   auth: authReducer,
   order: orderReducer,
@@ -26,7 +27,7 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false
-    }),
+    }).concat(fetchUserMiddleware),
   devTools: process.env.NODE_ENV !== 'production'
 })
 

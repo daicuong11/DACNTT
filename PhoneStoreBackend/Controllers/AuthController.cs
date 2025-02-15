@@ -118,14 +118,6 @@ namespace PhoneStoreBackend.Controllers
             {
                 AccessToken = accessToken,
                 RefreshToken = refreshToken,
-                ExpiresIn = tokenExpirationInMinutes * 60,
-                User = new
-                {
-                    Id = userDTO.Id,
-                    Name = userDTO.Name,
-                    Email = userDTO.Email,
-                    Role = userDTO.Role,
-                }
             };
             var response = Response<LoginResponse>.CreateSuccessResponse(loginResult, "Login Google Account Successfully");
 
@@ -189,7 +181,7 @@ namespace PhoneStoreBackend.Controllers
                     return BadRequest(responseErr);
                 }
 
-                var response = Response<object>.CreateSuccessResponse(new { user }, "Verify Token Successfully");
+                var response = Response<UserDTO>.CreateSuccessResponse(user, "Verify Token Successfully");
                 return Ok(response);
             }
             catch (Exception ex)
@@ -212,7 +204,7 @@ namespace PhoneStoreBackend.Controllers
                     refreshToken.RefreshToken = refreshToken.RefreshToken.Substring(7);
 
                 var newToken = await _authService.RefreshTokenAsync(refreshToken.RefreshToken);
-                var response = Response<object>.CreateSuccessResponse(new { AccessToken = newToken }, "Refresh Token Successfully");
+                var response = Response<LoginResponse>.CreateSuccessResponse(newToken, "Refresh Token Successfully");
 
                 return Ok(response);
             }

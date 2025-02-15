@@ -14,9 +14,13 @@ interface HeaderProps {
 const Header: FC<HeaderProps> = ({ showBreadcrumb = true }) => {
   const { isOpen, toggleModal, closeModal } = useModal()
 
-  const currentUser = useAppSelector((state) => state.auth.token)?.user
+  const currentUser = useAppSelector((state) => state.auth.user)
 
   const navigate = useNavigate()
+
+  const handleProfileClick = () => {
+    navigate(currentUser ? '/profile' : '/signin')
+  }
 
   return (
     <header className='sticky top-0 z-[999] w-full bg-white'>
@@ -59,7 +63,7 @@ const Header: FC<HeaderProps> = ({ showBreadcrumb = true }) => {
               </span>
             </ButtonHeader>
             <ButtonHeader
-              onClick={() => (currentUser ? navigate('/profile') : navigate('/signin'))}
+              onClick={handleProfileClick}
               direction='vertical'
               iconPosition='top'
               disPlayBackground

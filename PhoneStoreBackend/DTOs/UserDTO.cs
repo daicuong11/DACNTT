@@ -13,6 +13,7 @@ namespace PhoneStoreBackend.DTOs
         public bool Active { get; set; }
         public string ProfilePicture { get; set; }
         public bool IsGoogleAccount { get; set; }
+
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }

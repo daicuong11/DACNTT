@@ -6,7 +6,7 @@ using PhoneStoreBackend.DbContexts;
 using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
 using PhoneStoreBackend.Enums;
-using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace PhoneStoreBackend.Repository.Implements
 {
@@ -41,21 +41,16 @@ namespace PhoneStoreBackend.Repository.Implements
 
             var accessToken = _tokenService.GenerateToken(userDTO, tokenExpirationInMinutes);
             var refreshToken = _tokenService.GenerateRefreshToken(userDTO);
+            user.RefreshToken = refreshToken;
+            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
 
             return new LoginResponse
             {
                 AccessToken = accessToken,
                 RefreshToken = refreshToken,
-                ExpiresIn = tokenExpirationInMinutes * 60,
-                User = new
-                {
-                    user.Id,
-                    user.Name,
-                    user.Email,
-                    user.PhoneNumber,
-                    user.ProfilePicture,
-                    user.Role
-                }
             };
         }
 
@@ -89,28 +84,24 @@ namespace PhoneStoreBackend.Repository.Implements
                 var accessToken = _tokenService.GenerateToken(newUser, tokenExpirationInMinutes);
                 var refreshToken = _tokenService.GenerateRefreshToken(newUser);
 
+                user.RefreshToken = refreshToken;
+                user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+
+                _context.Users.Update(user);
+                await _context.SaveChangesAsync();
+
                 await transaction.CommitAsync();
 
                 return new LoginResponse
                 {
                     AccessToken = accessToken,
                     RefreshToken = refreshToken,
-                    ExpiresIn = tokenExpirationInMinutes * 60,
-                    User = new
-                    {
-                        user.Id,
-                        user.Name,
-                        user.Email,
-                        user.PhoneNumber,
-                        user.ProfilePicture,
-                        user.Role
-                    }
                 };
             }
             catch (Exception ex)
             {
                 await transaction.RollbackAsync();
-                throw new Exception($"Lỗi khi đăng ký tài khoản: {ex.Message}");
+                throw new Exception(ex.Message);
             }
         }
 
@@ -121,19 +112,39 @@ namespace PhoneStoreBackend.Repository.Implements
 
             try
             {
+                // Loại bỏ "Bearer " nếu có
+                token = token.Replace("Bearer ", "", StringComparison.OrdinalIgnoreCase);
+
                 // Xác thực token và lấy các claims
-                var claims = _tokenService.VerifyToken(token)
-                    ?? throw new UnauthorizedAccessException("Token không hợp lệ.");
+                var claimsPrincipal = _tokenService.VerifyToken(token);
+                if (claimsPrincipal == null)
+                {
+                    throw new UnauthorizedAccessException("Token không hợp lệ hoặc đã hết hạn.");
+                }
 
                 // Lấy userId từ claims
-                var userId = int.TryParse(claims.FindFirst(ClaimTypes.NameIdentifier)?.Value, out var id) ? id
-                    : throw new UnauthorizedAccessException("Token không chứa thông tin người dùng hợp lệ.");
+                var userIdClaim = claimsPrincipal.FindFirst("userId")?.Value;
+                if (string.IsNullOrEmpty(userIdClaim))
+                {
+                    throw new UnauthorizedAccessException("Không tìm thấy ID trong token.");
+                }
+
+                Console.WriteLine($"id: {userIdClaim}");
+
+                if (!int.TryParse(userIdClaim, out int userId))
+                {
+                    throw new UnauthorizedAccessException($"ID trong token không hợp lệ: {userIdClaim}");
+                }
 
                 // Tìm người dùng trong cơ sở dữ liệu
                 var user = await _context.Users
                     .AsNoTracking()
-                    .FirstOrDefaultAsync(u => u.Id == userId)
-                    ?? throw new KeyNotFoundException("Người dùng không tồn tại.");
+                    .FirstOrDefaultAsync(u => u.Id == userId);
+
+                if (user == null)
+                {
+                    throw new KeyNotFoundException("Người dùng không tồn tại.");
+                }
 
                 // Trả về DTO chứa thông tin người dùng
                 return _mapper.Map<UserDTO>(user);
@@ -145,40 +156,35 @@ namespace PhoneStoreBackend.Repository.Implements
         }
 
 
-        public async Task<object> RefreshTokenAsync(string refreshToken)
+
+
+        public async Task<LoginResponse> RefreshTokenAsync(string refreshToken)
         {
-            try
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.RefreshToken == refreshToken);
+
+            if (user == null || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
             {
-                if (_tokenService.VerifyRefreshToken(refreshToken) is not { } principal)
-                    throw new UnauthorizedAccessException("Refresh token không hợp lệ hoặc đã hết hạn.");
-
-                var userIdClaim = principal.FindFirst(ClaimTypes.NameIdentifier)
-                    ?? throw new UnauthorizedAccessException("Token không chứa thông tin người dùng.");
-
-                if (!int.TryParse(userIdClaim.Value, out var userId))
-                    throw new UnauthorizedAccessException("ID người dùng không hợp lệ trong token.");
-
-                var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId)
-                    ?? throw new KeyNotFoundException($"Người dùng không tồn tại. ID= {userId}");
-
-                var tokenExpirationInMinutes = 15;
-                var userDTO = _mapper.Map<UserDTO>(user);
-                var newToken = _tokenService.GenerateToken(userDTO, tokenExpirationInMinutes);
-
-                return new
-                {
-                    AccessToken = newToken,
-                    ExpiresIn = tokenExpirationInMinutes * 60,
-                };
+                throw new UnauthorizedAccessException("Invalid or expired refresh token.");
             }
-            catch (UnauthorizedAccessException ex)
+
+            var userDTO  = _mapper.Map<UserDTO>(user);
+
+            // Tạo token mới
+            string newAccessToken = _tokenService.GenerateToken(userDTO);
+            string newRefreshToken = _tokenService.GenerateRefreshToken(userDTO);
+
+            // Cập nhật refresh token mới vào DB
+            user.RefreshToken = newRefreshToken;
+            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+
+            return new LoginResponse
             {
-                throw new Exception($"Lỗi xác thực: {ex.Message}");
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Lỗi hệ thống: {ex.Message}");
-            }
+                AccessToken = newAccessToken,
+                RefreshToken = newRefreshToken
+            };
         }
 
 

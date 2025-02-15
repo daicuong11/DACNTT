@@ -7,17 +7,20 @@ import { EyeFilled, EyeInvisibleFilled, UserOutlined } from '@ant-design/icons'
 import { Avatar, Tag } from 'antd'
 import { ChevronDown, ClipboardList, MapPinHouse, Ticket, UserRound } from 'lucide-react'
 import { FC, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import {jwtDecode} from "jwt-decode";
-import { RoleEnum, UserAuthType } from '@/types/user.type'
+import { Navigate, useNavigate } from 'react-router-dom'
+import { RoleEnum } from '@/types/user.type'
 
-interface ProfilePageProps { }
+interface ProfilePageProps {}
 
 const ProfilePage: FC<ProfilePageProps> = () => {
   const [isShowPhoneNumber, setIsShowPhoneNumber] = useState(false)
   const navigate = useNavigate()
-  const currentUser = useAppSelector((state) => state.auth.token)!.user
-  
+  const currentUser = useAppSelector((state) => state.auth.user)
+
+  if (!currentUser) {
+    return <Navigate to='/signin' />
+  }
+
   return (
     <div className='py-4'>
       <div className='flex px-2 gap-x-2'>
@@ -33,7 +36,11 @@ const ProfilePage: FC<ProfilePageProps> = () => {
             )}
           </div>
           <span>
-            {currentUser.role === RoleEnum.ADMIN ? <Tag color='red'>Quản trị viên</Tag> : (<Tag color='blue'>Khách hàng</Tag>)}
+            {currentUser?.role === RoleEnum.ADMIN ? (
+              <Tag color='red'>Quản trị viên</Tag>
+            ) : (
+              <Tag color='blue'>Khách hàng</Tag>
+            )}
           </span>
         </div>
       </div>

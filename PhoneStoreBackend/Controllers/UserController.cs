@@ -20,7 +20,7 @@ namespace PhoneStoreBackend.Controllers
 
         // Lấy tất cả người dùng
         [HttpGet]
-        [Authorize]  // Chỉ cho phép Admin truy cập
+        //[Authorize]  // Chỉ cho phép Admin truy cập
         public async Task<IActionResult> GetAllUsers()
         {
             try
@@ -38,7 +38,7 @@ namespace PhoneStoreBackend.Controllers
 
         // Lấy người dùng theo ID
         [HttpGet("{id}")]
-        [Authorize]  // Yêu cầu người dùng đăng nhập
+        //[Authorize]  // Yêu cầu người dùng đăng nhập
         public async Task<IActionResult> GetUserById(int id)
         {
             try

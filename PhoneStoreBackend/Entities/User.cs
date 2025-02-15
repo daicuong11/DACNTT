@@ -34,6 +34,9 @@ namespace PhoneStoreBackend.Entities
 
         public bool IsGoogleAccount { get; set; } = false;
 
+        public string? RefreshToken { get; set; } 
+        public DateTime? RefreshTokenExpiryTime { get; set; } 
+
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
 

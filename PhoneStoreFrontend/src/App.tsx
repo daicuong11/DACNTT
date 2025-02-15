@@ -7,12 +7,11 @@ import ScrollToTop from './utils/ScrollToTop.tsx'
 import CartWatcher from './middlewares/CartWatcher.tsx'
 
 function App() {
-  const appName: string = import.meta.env.VITE_APP_NAME || 'BC DACNTT'
-
   const [loading, setLoading] = useState<boolean>(true)
 
   useEffect(() => {
-    setTimeout(() => setLoading(false), 1000)
+    // setTimeout(() => setLoading(false), 1000)
+    setLoading(false)
   }, [])
 
   return loading ? (

@@ -24,13 +24,11 @@ import { RoleEnum } from '@/types/user.type'
 import { Navigate, RouteObject, useRoutes } from 'react-router-dom'
 
 const MyRoutes = () => {
-  // const user = useAppSelector((state) => state.auth.token) ? true : false
-  // const currentUser = useAppSelector((state) => state.auth.token)?.user
-  // const isAdmin = currentUser?.role === RoleEnum.ADMIN
+  const auth = useAppSelector((state) => state.auth)
 
-  const user = true
-  const currentUser = true
-  const isAdmin = true
+  const isAuthenticated = !!auth.user
+  const currentUser = auth.user
+  const isAdmin = currentUser?.role === RoleEnum.ADMIN
 
   // Define public routes accessible to all users
   const routesForPublic: RouteObject[] = [
@@ -139,11 +137,11 @@ const MyRoutes = () => {
       children: [
         {
           path: 'signin',
-          element: !user ? <Login /> : <Navigate to='/' />
+          element: !isAuthenticated ? <Login /> : <Navigate to='/' />
         },
         {
           path: 'register',
-          element: !user ? <RegisterPage /> : <Navigate to='/' />
+          element: !isAuthenticated ? <RegisterPage /> : <Navigate to='/' />
         }
       ]
     }
@@ -210,7 +208,7 @@ const MyRoutes = () => {
   // Tạo danh sách route dựa trên trạng thái đăng nhập
   const routing = useRoutes([
     ...routesForPublic,
-    ...(!user ? routesLogout : routesForAuthenticatedOnly),
+    ...(!isAuthenticated ? routesLogout : routesForAuthenticatedOnly),
     ...routesForNotAuthenticatedOnly,
     ...(isAdmin ? routesForAdmin : []),
     ...routesPublicButNeedMiddleware,

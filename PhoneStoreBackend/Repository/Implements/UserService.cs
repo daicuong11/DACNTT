@@ -20,7 +20,7 @@ namespace PhoneStoreBackend.Repository.Implements
         public async Task<ICollection<UserDTO>> GetAllAsync()
         {
             var users = await _context.Users.ToListAsync();
-            return users.Select(u => _mapper.Map<UserDTO>(u)).ToList();
+            return _mapper.Map<ICollection<UserDTO>>(users);
         }
 
         public async Task<UserDTO> GetUserByIdAsync(int id)

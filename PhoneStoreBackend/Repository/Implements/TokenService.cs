@@ -1,5 +1,6 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using PhoneStoreBackend.DTOs;
+using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -17,13 +18,11 @@ namespace PhoneStoreBackend.Repository.Implements
 
         public string GenerateToken(UserDTO user, int expirationInMinutes = 15)
         {
-            Claim[] claims = new[]
-            {
-                new Claim("id", user.Id.ToString()),
-                new Claim("name", user.Name),
-                new Claim("email", user.Email),
-                new Claim("role", user.Role.ToString()),
-            };
+            var claims = new List<Claim>
+        {
+            new Claim("userId", user.Id.ToString()),
+            new Claim(ClaimTypes.Role, user.Role)
+        };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -32,19 +31,19 @@ namespace PhoneStoreBackend.Repository.Implements
                 issuer: _configuration["Jwt:Issuer"],
                 audience: _configuration["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(expirationInMinutes),
+                expires: DateTime.UtcNow.AddMinutes(expirationInMinutes),
                 signingCredentials: creds
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
         public string GenerateRefreshToken(UserDTO user)
         {
             var claims = new[]
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.Name),
-                new Claim(ClaimTypes.Email, user.Email),
+                new Claim("userId", user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtRefresh:Key"]));
@@ -54,46 +53,52 @@ namespace PhoneStoreBackend.Repository.Implements
                 issuer: _configuration["JwtRefresh:Issuer"],
                 audience: _configuration["JwtRefresh:Audience"],
                 claims: claims,
-                expires: DateTime.UtcNow.AddDays(7),
+                expires: DateTime.UtcNow.AddDays(7), 
                 signingCredentials: creds
             );
 
             return new JwtSecurityTokenHandler().WriteToken(refreshToken);
         }
 
+
         public ClaimsPrincipal VerifyToken(string token)
         {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]);
+
+            var validationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = _configuration["Jwt:Issuer"],
+                ValidAudience = _configuration["Jwt:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ClockSkew = TimeSpan.Zero
+            };
+
             try
             {
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]);
+                var principal = tokenHandler.ValidateToken(token, validationParameters, out SecurityToken validatedToken);
 
-                var validationParameters = new TokenValidationParameters
+                // In toàn bộ claims để debug
+                foreach (var claim in principal.Claims)
                 {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidIssuer = _configuration["Jwt:Issuer"],
-                    ValidAudience = _configuration["Jwt:Audience"],
-                    ValidateLifetime = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ClockSkew = TimeSpan.Zero
-                };
+                    Console.WriteLine($"Claim: {claim.Type} = {claim.Value}");
+                }
 
-                return tokenHandler.ValidateToken(token, validationParameters, out _);
-            }
-            catch (SecurityTokenExpiredException)
-            {
-                throw new Exception("Token đã hết hạn.");
-            }
-            catch (SecurityTokenException ex)
-            {
-                throw new Exception($"Token không hợp lệ: {ex.Message}");
+                return principal;
             }
             catch (Exception ex)
             {
-                throw new Exception($"Có lỗi xảy ra khi xác thực token: {ex.Message}");
+                Console.WriteLine($"VerifyToken lỗi: {ex.Message}");
+                return null;
             }
         }
+
+
+
 
         public ClaimsPrincipal VerifyRefreshToken(string refreshToken)
         {

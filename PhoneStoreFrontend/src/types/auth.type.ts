@@ -10,8 +10,6 @@ export interface BaseResponse<T> {
 export interface AuthResponseType {
   accessToken: string
   refreshToken: string
-  expiresIn: number
-  user: UserAuthType
 }
 
 // request
