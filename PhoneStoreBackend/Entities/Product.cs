@@ -16,8 +16,9 @@ namespace PhoneStoreBackend.Entities
         public string Name { get; set; }
 
         [Required]
-        [Column(TypeName = "text")]
+        [Column(TypeName = "nvarchar(max)")]
         public string Description { get; set; }
+
 
         public int CategoryId { get; set; }
         [ForeignKey("CategoryId")]

@@ -12,8 +12,8 @@ using PhoneStoreBackend.DbContexts;
 namespace PhoneStoreBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250213162004_updbv01")]
-    partial class updbv01
+    [Migration("20250216201500_initdb")]
+    partial class initdb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -463,7 +463,7 @@ namespace PhoneStoreBackend.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -491,7 +491,7 @@ namespace PhoneStoreBackend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Ismain")
+                    b.Property<bool>("IsMain")
                         .HasColumnType("bit");
 
                     b.Property<int>("ProductVariantId")
@@ -529,9 +529,6 @@ namespace PhoneStoreBackend.Migrations
                     b.Property<int>("ProductVariantId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SpecificationGroupId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Value")
                         .IsRequired()
                         .HasMaxLength(500)
@@ -539,9 +536,9 @@ namespace PhoneStoreBackend.Migrations
 
                     b.HasKey("SpecificationId");
 
-                    b.HasIndex("ProductVariantId");
+                    b.HasIndex("ProductSpecificationGroupId");
 
-                    b.HasIndex("SpecificationGroupId");
+                    b.HasIndex("ProductVariantId");
 
                     b.ToTable("ProductSpecifications");
                 });
@@ -691,6 +688,12 @@ namespace PhoneStoreBackend.Migrations
 
                     b.Property<string>("ProfilePicture")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("RefreshTokenExpiryTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Role")
                         .HasColumnType("nvarchar(20)");
@@ -920,15 +923,17 @@ namespace PhoneStoreBackend.Migrations
 
             modelBuilder.Entity("PhoneStoreBackend.Entities.ProductSpecification", b =>
                 {
+                    b.HasOne("PhoneStoreBackend.Entities.ProductSpecificationGroup", "ProductSpecificationGroup")
+                        .WithMany("ProductSpecifications")
+                        .HasForeignKey("ProductSpecificationGroupId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("PhoneStoreBackend.Entities.ProductVariant", "ProductVariant")
                         .WithMany("ProductSpecifications")
                         .HasForeignKey("ProductVariantId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
-
-                    b.HasOne("PhoneStoreBackend.Entities.ProductSpecificationGroup", "ProductSpecificationGroup")
-                        .WithMany("ProductSpecifications")
-                        .HasForeignKey("SpecificationGroupId");
 
                     b.Navigation("ProductSpecificationGroup");
 

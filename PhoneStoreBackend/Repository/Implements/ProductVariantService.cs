@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using PhoneStoreBackend.Api.Response;
 using PhoneStoreBackend.DbContexts;
 using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
@@ -73,20 +74,45 @@ namespace PhoneStoreBackend.Repository.Implements
             return _mapper.Map<ProductVariantDTO>(findProductVariant);
         }
 
-
-        public async Task<ICollection<ProductVariantDTO>> GetProductVariantByProductId(int id)
+        public async Task<ProductVariantDTO> GetProductVariantBySlug(string slug)
         {
-            var listProductVariants = await _context.ProductVariants
-                .Include(pv => pv.Product)
-                    .ThenInclude(p => p.Brand)
+            var findProductVariant = await _context.ProductVariants
                 .Include(pv => pv.Product)
                     .ThenInclude(p => p.Category)
                 .Include(pv => pv.Discount)
                 .Include(v => v.ProductImages)
-                .Include(v => v.ProductSpecifications)
+                .FirstOrDefaultAsync(p => p.Slug == slug);
+
+            if (findProductVariant == null)
+            {
+                throw new KeyNotFoundException($"ProductVariant with slug: '{slug}' not found.");
+            }
+            return _mapper.Map<ProductVariantDTO>(findProductVariant);
+        }
+
+
+        public async Task<ICollection<ProductVariantResponse>> GetProductVariantByProductId(int id)
+        {
+            var listProductVariants = await _context.ProductVariants
+                .Include(pv => pv.Discount)
+                .Include(v => v.ProductImages)
                 .Where(v => v.ProductId == id)
+                .Select(v => new ProductVariantResponse
+                {
+                    VariantId = v.ProductVariantId,
+                    Slug = v.Slug,
+                    VariantName = v.VariantName,
+                    DiscountPercentage = v.Discount != null ? v.Discount.Percentage : 0,
+                    Price = v.Price,
+                    Color = v.Color,
+                    ImageUrl = v.ProductImages
+                            .OrderByDescending(img => img.IsMain) 
+                            .Select(img => img.ImageUrl)
+                            .FirstOrDefault() ?? "default-image-url.jpg",
+                    Storage = v.Storage
+                })
                 .ToListAsync();
-            return _mapper.Map<ICollection<ProductVariantDTO>>(listProductVariants);
+            return listProductVariants;
         }
 
         public async Task<ICollection<ProductVariantDTO>> GetAllProductVariantOfLaptop()

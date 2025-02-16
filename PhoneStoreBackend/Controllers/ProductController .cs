@@ -46,7 +46,7 @@ namespace PhoneStoreBackend.Controllers
             try
             {
                 var products = await _productRepository.GetAllAsync();
-                var response = Response<ICollection<ProductDTO>>.CreateSuccessResponse(products, "Danh sách tất cả sản phẩm");
+                var response = Response<ICollection<ProductResponse>>.CreateSuccessResponse(products, "Danh sách tất cả sản phẩm");
                 return Ok(response);
             }
             catch (Exception ex)
@@ -62,7 +62,7 @@ namespace PhoneStoreBackend.Controllers
             try
             {
                 var productVariants = await _productRepository.GetAllProductOfMobile();
-                var response = Response<ICollection<ProductDTO>>.CreateSuccessResponse(productVariants, "Danh sách sản phẩm: ");
+                var response = Response<ICollection<ProductResponse>>.CreateSuccessResponse(productVariants, "Danh sách sản phẩm: ");
                 return Ok(response);
             }
             catch (Exception ex)
@@ -78,7 +78,7 @@ namespace PhoneStoreBackend.Controllers
             try
             {
                 var productVariants = await _productRepository.GetAllProductOfLaptop();
-                var response = Response<ICollection<ProductDTO>>.CreateSuccessResponse(productVariants, "Danh sách sản phẩm: ");
+                var response = Response<ICollection<ProductResponse>>.CreateSuccessResponse(productVariants, "Danh sách sản phẩm: ");
                 return Ok(response);
             }
             catch (Exception ex)
@@ -96,6 +96,28 @@ namespace PhoneStoreBackend.Controllers
                 var product = await _productRepository.GetProductByIdAsync(id);
 
                 var response = Response<ProductDTO>.CreateSuccessResponse(product, "Thông tin sản phẩm");
+                return Ok(response);
+            }
+            catch (KeyNotFoundException)
+            {
+                var notFoundResponse = Response<object>.CreateErrorResponse("Không tìm thấy sản phẩm với id= " + id);
+                return NotFound(notFoundResponse);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = Response<object>.CreateErrorResponse($"Đã xảy ra lỗi: {ex.Message}");
+                return BadRequest(errorResponse);
+            }
+        }
+
+        [HttpGet("{id}/similar")]
+        public async Task<IActionResult> GetSimilarProducts(int id)
+        {
+            try
+            {
+                var product = await _productRepository.GetSimilarProductsAsync(id);
+
+                var response = Response<ICollection<ProductResponse>>.CreateSuccessResponse(product, "Thông tin sản phẩm");
                 return Ok(response);
             }
             catch (KeyNotFoundException)
@@ -220,7 +242,7 @@ namespace PhoneStoreBackend.Controllers
                     {
                         ProductSpecification productSpecification = new ProductSpecification
                         {
-                            ProductSpecificationGroupId = specification.SpecificationGroupId,
+                            ProductSpecificationGroupId = specification.ProductSpecificationGroupId,
                             ProductVariantId = productVariantDTO.ProductVariantId,
                             Key = specification.Key,
                             Value = specification.Value,
@@ -236,7 +258,7 @@ namespace PhoneStoreBackend.Controllers
                         {
                             ProductVariantId = productVariantDTO.ProductVariantId,
                             ImageUrl = productImage.ImageUrl,
-                            Ismain = productImage.Ismain,
+                            IsMain = productImage.IsMain,
                         });
                     }
                 }
@@ -248,7 +270,8 @@ namespace PhoneStoreBackend.Controllers
             catch (Exception ex)
             {
                 await transaction.RollbackAsync(); // Hủy tất cả nếu có lỗi
-                return StatusCode(500, new { message = "Lỗi khi thêm sản phẩm", error = ex.Message });
+                var errorResponse = Response<object>.CreateErrorResponse($"Đã xảy ra lỗi: {ex.Message}");
+                return BadRequest(errorResponse);
             }
         }
 

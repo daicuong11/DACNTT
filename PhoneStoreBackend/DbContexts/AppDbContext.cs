@@ -56,6 +56,19 @@ namespace PhoneStoreBackend.DbContexts
                 .WithMany(u => u.Notifications)
                 .HasForeignKey(n => n.Id)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ProductSpecification>()
+                .HasOne(ps => ps.ProductVariant)
+                .WithMany(pv => pv.ProductSpecifications)
+                .HasForeignKey(ps => ps.ProductVariantId)
+                .OnDelete(DeleteBehavior.NoAction); 
+
+            modelBuilder.Entity<ProductSpecification>()
+                .HasOne(ps => ps.ProductSpecificationGroup)
+                .WithMany(psg => psg.ProductSpecifications)
+                .HasForeignKey(ps => ps.ProductSpecificationGroupId)
+                .OnDelete(DeleteBehavior.NoAction);
+
         }
     }
 }

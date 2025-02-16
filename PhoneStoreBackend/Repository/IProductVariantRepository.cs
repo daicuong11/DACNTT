@@ -1,4 +1,5 @@
-﻿using PhoneStoreBackend.DTOs;
+﻿using PhoneStoreBackend.Api.Response;
+using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
 
 namespace PhoneStoreBackend.Repository
@@ -7,7 +8,8 @@ namespace PhoneStoreBackend.Repository
     {
         Task<ICollection<ProductVariantDTO>> GetAllAsync();
         Task<ProductVariantDTO> GetProductVariantById(int id);
-        Task<ICollection<ProductVariantDTO>> GetProductVariantByProductId(int id);
+        Task<ProductVariantDTO> GetProductVariantBySlug(string slug);
+        Task<ICollection<ProductVariantResponse>> GetProductVariantByProductId(int id);
         Task<ICollection<ProductVariantDTO>> GetAllProductVariantOfMobile();
         Task<ICollection<ProductVariantDTO>> GetAllProductVariantOfLaptop();
         Task<ProductVariantDTO> AddProductVariantAsync(ProductVariant productVariant);

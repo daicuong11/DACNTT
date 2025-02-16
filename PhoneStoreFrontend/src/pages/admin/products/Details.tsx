@@ -9,19 +9,20 @@ import { Image, Popconfirm } from 'antd'
 import { CircleArrowDown, Edit } from 'lucide-react'
 import getPriceAfterDiscount from '@/utils/getPriceAfterDiscount'
 import formatPrice from '@/utils/formatPrice'
+import { VariantResponse } from '@/types/product.type'
 
 export default function Details() {
   const { productId } = useParams<{ productId: string }>()
 
-  const handleStopSell = (variantId: number) => {
-    console.log(variantId)
+  const handleStopSell = (slug: string) => {
+    console.log(slug)
   }
 
   const { data, isLoading, error } = useGetVariantByProductId(Number(productId))
 
   if (isLoading) return <LoadingOpacity />
 
-  const columns: ColumnsType<ProductVariantType> = [
+  const columns: ColumnsType<VariantResponse> = [
     {
       title: 'ID',
       dataIndex: 'productVariantId',
@@ -31,14 +32,14 @@ export default function Details() {
       title: 'Ảnh',
       key: 'mainImage',
       render: (_, record) => {
-        return <Image src={record.productImages[0].imageUrl} alt={record.product.name} style={{ width: 50 }} />
+        return <Image src={record.imageUrl} alt={record.variantName} style={{ width: 50 }} />
       }
     },
     {
       title: 'Tên phiên bản',
       key: 'name',
       render: (_, record) => {
-        return <span>{record.product.name + ' ' + record.variantName}</span>
+        return <span>{record.variantName}</span>
       }
     },
     {
@@ -60,14 +61,14 @@ export default function Details() {
       title: 'Giảm giá',
       key: 'discount',
       render: (_, record) => {
-        return <span>{record.discount ? record.discount.percentage + '%' : 'Không giảm'}</span>
+        return <span>{record.discountPercentage > 0 ? record.discountPercentage + '%' : 'Không giảm'}</span>
       }
     },
     {
       title: 'Giá bán (Đã giảm)',
       key: 'price',
       render: (_, record) => {
-        return <span>{formatPrice(getPriceAfterDiscount(record.price, record.discount?.percentage || 0))}</span>
+        return <span>{formatPrice(getPriceAfterDiscount(record.price, record.discountPercentage))}</span>
       }
     },
     {
@@ -83,8 +84,8 @@ export default function Details() {
 
             <Popconfirm
               title='Ngưng bán sản phẩm'
-              description={`Bạn có chắc chắn muốn ngưng bán sản phẩm ${record.product.name + ' ' + record.variantName}?`}
-              onConfirm={() => handleStopSell(record.productVariantId)}
+              description={`Bạn có chắc chắn muốn ngưng bán sản phẩm ${record.variantName}?`}
+              onConfirm={() => handleStopSell(record.slug)}
               okText='Ngưng bán'
               okButtonProps={{ className: 'text-white bg-blue-500', danger: true }}
               cancelText='Hủy'
@@ -106,7 +107,7 @@ export default function Details() {
       <Card title='Danh sách biến thể'>
         {error && <div>Lỗi</div>}
         {!error && data && (
-          <Table dataSource={data} columns={columns} rowKey='productVariantId' bordered pagination={{ pageSize: 10 }} />
+          <Table dataSource={data} columns={columns} rowKey='slug' bordered pagination={{ pageSize: 10 }} />
         )}
       </Card>
     </ShowReturnBackLayout>

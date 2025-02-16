@@ -9,14 +9,13 @@ namespace PhoneStoreBackend.Api.Request
 
         public int? DiscountId { get; set; }
 
-        [Required(ErrorMessage = "VariantName là bắt buộc")]
         public string VariantName { get; set; }
 
         [Required(ErrorMessage = "Slug là bắt buộc")]
         public string Slug { get; set; }
 
         [Required(ErrorMessage = "Màu sắc là bắt buộc.")]
-        [StringLength(50, ErrorMessage = "Màu sắc không được vượt quá 50 ký tự.")]
+        [StringLength(100, ErrorMessage = "Màu sắc không được vượt quá 50 ký tự.")]
         public string Color { get; set; }
 
         [Required(ErrorMessage = "Dung lượng bộ nhớ là bắt buộc.")]

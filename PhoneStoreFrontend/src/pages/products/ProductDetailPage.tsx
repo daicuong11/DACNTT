@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import { ConfigProvider, Rate } from 'antd'
 import { BookmarkCheck, CalendarClock, Check, PackageOpen, Plus, ShoppingCart, Smartphone } from 'lucide-react'
 import CarouselProductImages from './components/CarouselProductImages'
@@ -24,11 +24,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
   const navigate = useNavigate()
   const { productSlug } = useParams<{ productSlug: string }>()
   const { data: productVariant, isLoading, error } = useGetVariantBySlug(productSlug || '')
-  const {
-    data: listVariants,
-    isLoading: isLoadingVariants,
-    error: variantError
-  } = useGetVariantByProductId(productVariant?.productId || 0)
+  const { data: listVariants, isLoading: isLoadingVariants } = useGetVariantByProductId(productVariant?.productId || 0)
 
   useSetDocTitle(productVariant?.product.name || 'Product Detail')
 
@@ -40,7 +36,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
     }
   }, [listVariants, productVariant])
 
-  if (error) return <div>Error: {error.message}</div>
+  if (error) return <Navigate to={'/not-found'} />
 
   return (
     <div className='flex flex-col my-4 gap-y-4'>
@@ -108,11 +104,13 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
                   .filter((variant, index, self) => index === self.findIndex((v) => v.storage === variant.storage))
                   .map((variant) => (
                     <PriceButton
-                      onClick={() => navigate(getProductRoute(variant))}
+                      onClick={() =>
+                        navigate(getProductRoute(productVariant?.product.category.name || '', variant.slug))
+                      }
                       isActive={variant.storage === selectedStorage}
-                      key={variant.productVariantId}
+                      key={variant.slug}
                       title={variant.storage}
-                      price={getPriceAfterDiscount(variant.price, variant.discount?.percentage || 0)}
+                      price={getPriceAfterDiscount(variant.price, variant.discountPercentage)}
                     />
                   ))}
             </div>
@@ -120,8 +118,9 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
             <div className='grid gap-2.5 grid-cols-3'>
               {productVariant && isLoadingVariants && (
                 <ColorPriceButton
-                  onClick={() => navigate(getProductRoute(productVariant))}
-                  key={productVariant.productVariantId}
+                  onClick={() =>
+                    navigate(getProductRoute(productVariant.product.category.name || '', productVariant.slug))
+                  }
                   isActive={true}
                   disabled={false}
                   title={productVariant.color}
@@ -135,31 +134,33 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
                   .filter((v) => v.storage === productVariant?.storage)
                   .map((variant) => (
                     <ColorPriceButton
-                      onClick={() => navigate(getProductRoute(variant))}
-                      key={variant.productVariantId}
-                      isActive={variant.productVariantId === productVariant?.productVariantId}
+                      onClick={() =>
+                        navigate(getProductRoute(productVariant.product.category.name || '', variant.slug))
+                      }
+                      key={variant.slug}
+                      isActive={variant.slug === productVariant.slug}
                       disabled={false}
                       title={variant.color}
-                      price={getPriceAfterDiscount(variant.price, variant.discount?.percentage || 0)}
-                      img={getMainImage(variant.productImages)?.imageUrl || ''}
+                      price={getPriceAfterDiscount(variant.price, variant.discountPercentage)}
+                      img={variant.imageUrl}
                     />
                   ))}
             </div>
             <div className='flex flex-col gap-2.5 mt-2'>
-              <div className='flex items-center justify-center px-2 py-0.5 border rounded-lg border-primary'>
-                <div className='flex flex-col items-center'>
-                  <span className='text-xl font-bold text-primary'>
-                    {formatPrice(
-                      productVariant
-                        ? getPriceAfterDiscount(productVariant.price, productVariant.discount?.percentage || 0)
-                        : 0
-                    )}
-                  </span>
-                  <span className='text-sm font-semibold text-gray-800 line-through'>
-                    {formatPrice(productVariant ? productVariant.price : 0)}
-                  </span>
+              {productVariant && (
+                <div className='flex items-center justify-center px-2 py-0.5 border rounded-lg border-primary'>
+                  <div className='flex flex-col items-center'>
+                    <span className='text-xl font-bold text-primary'>
+                      {formatPrice(
+                        getPriceAfterDiscount(productVariant.price, productVariant.discount?.percentage || 0)
+                      )}
+                    </span>
+                    <span className='text-sm font-semibold text-gray-800 line-through'>
+                      {formatPrice(productVariant ? productVariant.price : 0)}
+                    </span>
+                  </div>
                 </div>
-              </div>
+              )}
               <div className='flex flex-col mt-2 border rounded-xl border-primary/10'>
                 <div className='flex gap-2 px-3 py-3 bg-primary/15 text-primary rounded-t-xl'>
                   <span>
@@ -286,7 +287,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
             </div>
           )}
           <div className='col-span-3'>
-            <ProductSpecifications />
+            {productVariant && <ProductSpecifications productVariantId={productVariant?.productVariantId} />}
           </div>
         </div>
       </div>

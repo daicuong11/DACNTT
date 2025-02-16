@@ -1,9 +1,14 @@
 import axiosInstance from '@/configs/http'
 import { BaseResponse } from '@/types/auth.type'
-import { AddProductWithVariantsRequestType, ProductRequestType, ProductType } from '@/types/product.type'
+import {
+  AddProductWithVariantsRequestType,
+  ProductRequestType,
+  ProductResponse,
+  ProductType
+} from '@/types/product.type'
 
 // method get
-export const getProducts = async (): Promise<ProductType[]> => {
+export const getAllProduct = async (): Promise<ProductResponse[]> => {
   const res = await axiosInstance.get('products')
   return res.data
 }
@@ -17,6 +22,21 @@ export const getProductById = async (productId: number): Promise<ProductType> =>
   return res.data
 }
 
+export const getAllProductOfMobile = async (): Promise<ProductResponse[]> => {
+  const res = await axiosInstance.get('products/mobile')
+  return res.data
+}
+
+export const getAllProductOfLaptop = async (): Promise<ProductResponse[]> => {
+  const res = await axiosInstance.get('products/laptop')
+  return res.data
+}
+
+export const get15ProductSimilar = async (id: number): Promise<ProductResponse[]> => {
+  const res = await axiosInstance.get(`products/${id}/similar`)
+  return res.data
+}
+
 // method post
 export const addProduct = async (formData: ProductRequestType) => {
   return axiosInstance.post<ProductType>('products', formData)
@@ -26,21 +46,6 @@ export const addProductWithVariants = async (
   addProductWithVariantsReq: AddProductWithVariantsRequestType
 ): Promise<BaseResponse<ProductType>> => {
   return await axiosInstance.post('products/add-with-variants', addProductWithVariantsReq)
-}
-
-export const getAllProductOfMobile = async (): Promise<ProductType[]> => {
-  const res = await axiosInstance.get('products/mobile')
-  return res.data
-}
-
-export const getAllProductOfLaptop = async (): Promise<ProductType[]> => {
-  const res = await axiosInstance.get('products/laptop')
-  return res.data
-}
-
-export const get15ProductSimilar = async (id: number): Promise<ProductType[]> => {
-  const res = await axiosInstance.get(`products/${id}/similar`)
-  return res.data
 }
 
 // method put

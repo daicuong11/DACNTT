@@ -7,7 +7,7 @@ namespace PhoneStoreBackend.Api.Request
     {
 
         [Required(ErrorMessage = "Mã nhóm đặc tả là bắt buộc.")]
-        public int SpecificationGroupId { get; set; }
+        public int ProductSpecificationGroupId { get; set; }
 
         [Required(ErrorMessage = "Mã phiên bản sản phẩm tả là bắt buộc.")]
         public int ProductVariantId { get; set; }

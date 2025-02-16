@@ -66,6 +66,5 @@ namespace PhoneStoreBackend.Repository.Implements
                 throw new Exception("Lỗi khi thêm danh sách nhóm thông số sản phẩm", ex);
             }
         }
-
     }
 }

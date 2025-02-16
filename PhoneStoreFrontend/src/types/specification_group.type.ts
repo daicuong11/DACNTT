@@ -4,5 +4,5 @@ export interface SpecificationGroupType {
   productSpecificationGroupId: number
   groupName: string
   displayOrder: number
-  specifications: SpecificationType[]
+  productSpecifications: SpecificationType[]
 }

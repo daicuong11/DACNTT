@@ -20,7 +20,6 @@ namespace PhoneStoreBackend.Entities
         [ForeignKey("CategoryId")]
         [JsonIgnore]
         public Category Category { get; set; }
-
         public ICollection<ProductSpecification> ProductSpecifications { get; set; }
     }
 }

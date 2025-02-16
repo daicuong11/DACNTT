@@ -461,7 +461,7 @@ namespace PhoneStoreBackend.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -489,7 +489,7 @@ namespace PhoneStoreBackend.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Ismain")
+                    b.Property<bool>("IsMain")
                         .HasColumnType("bit");
 
                     b.Property<int>("ProductVariantId")
@@ -527,9 +527,6 @@ namespace PhoneStoreBackend.Migrations
                     b.Property<int>("ProductVariantId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SpecificationGroupId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Value")
                         .IsRequired()
                         .HasMaxLength(500)
@@ -537,9 +534,9 @@ namespace PhoneStoreBackend.Migrations
 
                     b.HasKey("SpecificationId");
 
-                    b.HasIndex("ProductVariantId");
+                    b.HasIndex("ProductSpecificationGroupId");
 
-                    b.HasIndex("SpecificationGroupId");
+                    b.HasIndex("ProductVariantId");
 
                     b.ToTable("ProductSpecifications");
                 });
@@ -924,15 +921,17 @@ namespace PhoneStoreBackend.Migrations
 
             modelBuilder.Entity("PhoneStoreBackend.Entities.ProductSpecification", b =>
                 {
+                    b.HasOne("PhoneStoreBackend.Entities.ProductSpecificationGroup", "ProductSpecificationGroup")
+                        .WithMany("ProductSpecifications")
+                        .HasForeignKey("ProductSpecificationGroupId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("PhoneStoreBackend.Entities.ProductVariant", "ProductVariant")
                         .WithMany("ProductSpecifications")
                         .HasForeignKey("ProductVariantId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
-
-                    b.HasOne("PhoneStoreBackend.Entities.ProductSpecificationGroup", "ProductSpecificationGroup")
-                        .WithMany("ProductSpecifications")
-                        .HasForeignKey("SpecificationGroupId");
 
                     b.Navigation("ProductSpecificationGroup");
 

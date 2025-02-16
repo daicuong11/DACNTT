@@ -102,7 +102,7 @@ namespace PhoneStoreBackend.Controllers
                 {
                     ProductVariantId = productImage.ProductVariantId,
                     ImageUrl = imageUrl,
-                    Ismain = productImage.Ismain,
+                    IsMain = productImage.IsMain,
                 };
 
                 var createdImage = await _productImageRepository.AddProductImageAsync(createProductImage);
@@ -137,7 +137,7 @@ namespace PhoneStoreBackend.Controllers
                 {
                     ProductVariantId = productImage.ProductVariantId,
                     ImageUrl = imageUrl,
-                    Ismain = productImage.Ismain,
+                    IsMain = productImage.IsMain,
                 };
 
                 var isUpdated = await _productImageRepository.UpdateProductImageAsync(id, createProductImage);

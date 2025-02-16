@@ -9,6 +9,7 @@ namespace PhoneStoreBackend.DTOs
         public int ProductSpecificationGroupId { get; set; }
         public string Key { get; set; }
         public string Value { get; set; }
+        public int DisplayOrder { get; set; }
         public bool IsSpecial { get; set; }
     }
 }

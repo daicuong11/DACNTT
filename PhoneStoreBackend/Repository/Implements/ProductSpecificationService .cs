@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using PhoneStoreBackend.DbContexts;
 using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
@@ -22,7 +23,7 @@ namespace PhoneStoreBackend.Repository.Implements
         public async Task<ICollection<ProductSpecificationDTO>> GetAllProductSpecificationsAsync()
         {
             var productSpecifications = await _context.ProductSpecifications.ToListAsync();
-            return productSpecifications.Select(ps => _mapper.Map<ProductSpecificationDTO>(ps)).ToList();
+            return _mapper.Map<ICollection<ProductSpecificationDTO>>(productSpecifications);
         }
 
         // Lấy thông số kỹ thuật sản phẩm theo SpecificationId
@@ -77,5 +78,42 @@ namespace PhoneStoreBackend.Repository.Implements
 
             return true;
         }
+
+        public async Task<ICollection<ProductSpecificationGroupDTO>> GetProductSpecificationsByVariantIdAsync(int variantId)
+        {
+            var groups = await _context.ProductSpecificationGroups
+                .Where(g => g.ProductSpecifications.Any(ps => ps.ProductVariantId == variantId))
+                .Select(g => new ProductSpecificationGroupDTO
+                {
+                    ProductSpecificationGroupId = g.ProductSpecificationGroupId,
+                    GroupName = g.GroupName,
+                    DisplayOrder = g.DisplayOrder,
+                    ProductSpecifications = g.ProductSpecifications
+                        .Where(ps => ps.ProductVariantId == variantId) // Lọc chính xác product variant cần lấy
+                        .Select(ps => new ProductSpecificationDTO
+                        {
+                            ProductVariantId = ps.ProductVariantId,
+                            ProductSpecificationGroupId = ps.ProductSpecificationGroupId,
+                            SpecificationId = ps.SpecificationId,
+                            Key = ps.Key,
+                            Value = ps.Value,
+                            DisplayOrder = ps.DisplayOrder,
+                            IsSpecial = ps.IsSpecial,
+                        })
+                        .ToList()
+                })
+                .ToListAsync();
+
+            return groups;
+        }
+
+        public async Task<ICollection<ProductSpecificationDTO>> GetProductSpecificationsSpecialByVariantIdAsync(int variantId)
+        {
+            var productSpecifications = await _context.ProductSpecifications
+                .Where(s => s.ProductVariantId == variantId && s.IsSpecial)
+                .ToListAsync();
+            return _mapper.Map<ICollection<ProductSpecificationDTO>>(productSpecifications);
+        }
+
     }
 }

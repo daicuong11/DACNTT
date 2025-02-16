@@ -18,6 +18,6 @@ namespace PhoneStoreBackend.Entities
         [Required]
         public string ImageUrl { get; set; }
 
-        public bool Ismain { get; set; } = false;
+        public bool IsMain { get; set; } = false;
     }
 }

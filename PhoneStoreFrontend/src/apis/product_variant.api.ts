@@ -1,4 +1,5 @@
 import axiosInstance from '@/configs/http'
+import { VariantResponse } from '@/types/product.type'
 import { ProductVariantType } from '@/types/product_variant.type'
 
 class ProductVariantAPI {
@@ -7,7 +8,7 @@ class ProductVariantAPI {
     return res.data
   }
 
-  async getVariantByProductId(productId: number): Promise<ProductVariantType[]> {
+  async getVariantByProductId(productId: number): Promise<VariantResponse[]> {
     const res = await axiosInstance.get(`product_variants/product/${productId}`)
     return res.data
   }

@@ -70,6 +70,8 @@ namespace PhoneStoreBackend.Migrations
                     Role = table.Column<string>(type: "nvarchar(20)", nullable: true),
                     Active = table.Column<bool>(type: "bit", nullable: false),
                     IsGoogleAccount = table.Column<bool>(type: "bit", nullable: false),
+                    RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RefreshTokenExpiryTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -85,7 +87,7 @@ namespace PhoneStoreBackend.Migrations
                     ProductId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
                     BrandId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -335,7 +337,7 @@ namespace PhoneStoreBackend.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductVariantId = table.Column<int>(type: "int", nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsImage = table.Column<bool>(type: "bit", nullable: false)
+                    IsMain = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -355,7 +357,6 @@ namespace PhoneStoreBackend.Migrations
                     SpecificationId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductSpecificationGroupId = table.Column<int>(type: "int", nullable: false),
-                    SpecificationGroupId = table.Column<int>(type: "int", nullable: true),
                     ProductVariantId = table.Column<int>(type: "int", nullable: false),
                     Key = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Value = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
@@ -366,16 +367,15 @@ namespace PhoneStoreBackend.Migrations
                 {
                     table.PrimaryKey("PK_ProductSpecifications", x => x.SpecificationId);
                     table.ForeignKey(
-                        name: "FK_ProductSpecifications_ProductSpecificationGroups_SpecificationGroupId",
-                        column: x => x.SpecificationGroupId,
+                        name: "FK_ProductSpecifications_ProductSpecificationGroups_ProductSpecificationGroupId",
+                        column: x => x.ProductSpecificationGroupId,
                         principalTable: "ProductSpecificationGroups",
                         principalColumn: "ProductSpecificationGroupId");
                     table.ForeignKey(
                         name: "FK_ProductSpecifications_ProductVariants_ProductVariantId",
                         column: x => x.ProductVariantId,
                         principalTable: "ProductVariants",
-                        principalColumn: "ProductVariantId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ProductVariantId");
                 });
 
             migrationBuilder.CreateTable(
@@ -640,14 +640,14 @@ namespace PhoneStoreBackend.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ProductSpecifications_ProductSpecificationGroupId",
+                table: "ProductSpecifications",
+                column: "ProductSpecificationGroupId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ProductSpecifications_ProductVariantId",
                 table: "ProductSpecifications",
                 column: "ProductVariantId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProductSpecifications_SpecificationGroupId",
-                table: "ProductSpecifications",
-                column: "SpecificationGroupId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductVariants_DiscountId",

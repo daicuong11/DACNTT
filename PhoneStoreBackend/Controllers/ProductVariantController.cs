@@ -91,13 +91,35 @@ namespace PhoneStoreBackend.Controllers
             }
         }
 
+        [HttpGet("slug/{slug}")]
+        public async Task<IActionResult> GetBySlug(string slug)
+        {
+            try
+            {
+                var findProductVariant = await productVariantRepository.GetProductVariantBySlug(slug);
+
+                var response = Response<ProductVariantDTO>.CreateSuccessResponse(findProductVariant, "Thông tin sản phẩm: ");
+                return Ok(response);
+            }
+            catch (KeyNotFoundException)
+            {
+                var notFoundResponse = Response<object>.CreateErrorResponse("Không tìm thấy sản phẩm với slug= " + slug);
+                return NotFound(notFoundResponse);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = Response<object>.CreateErrorResponse($"Đã xảy ra lỗi: {ex.Message}");
+                return BadRequest(errorResponse);
+            }
+        }
+
         [HttpGet("product/{id}")]
         public async Task<IActionResult> GetProductVariantsByProductId(int id)
         {
             try
             {
                 var listVariantsDTO = await productVariantRepository.GetProductVariantByProductId(id);
-                var response = Response<ICollection<ProductVariantDTO>>.CreateSuccessResponse(listVariantsDTO, "Danh sách phiên bản của sản phẩm id: " + id);
+                var response = Response<ICollection<ProductVariantResponse>>.CreateSuccessResponse(listVariantsDTO, "Danh sách phiên bản của sản phẩm id: " + id);
                 return Ok(response);
             }
             catch (Exception ex)

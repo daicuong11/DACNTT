@@ -6,12 +6,12 @@ import ProductCard from '../../../components/items/ProductCard'
 
 import { Autoplay, Grid } from 'swiper/modules'
 import { useElementWidth } from '@/hooks'
-import { ProductType } from '@/types/product.type'
+import { ProductResponse, ProductType } from '@/types/product.type'
 
 interface CarouselProductType {
   row?: 1 | 2
   autoPlay?: boolean
-  dataSource: ProductType[]
+  dataSource: ProductResponse[]
 }
 const CarouselProduct: FC<CarouselProductType> = ({ row = 1, autoPlay = true, dataSource }) => {
   const swiperRef = useRef<SwiperRef>(null)

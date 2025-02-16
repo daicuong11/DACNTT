@@ -81,10 +81,7 @@ const validateProductVariant = ({
     toast.error('Sản phẩm phải có ít nhất một thông số kỹ thuật!')
     return false
   }
-  if (!variant.variantName) {
-    toast.error('Tên phiên bản không được để trống!')
-    return false
-  }
+
   if (!variant.color) {
     toast.error('Màu sắc không được để trống!')
     return false
@@ -282,6 +279,8 @@ const AddProduct = () => {
         product: createProductSlice.product!,
         listVariant: newListProductVariant
       }
+
+      console.log('req:', req)
       fetchAddProduct(req, {
         onSuccess: () => {
           toast.success('Thêm sản phẩm thành công!')

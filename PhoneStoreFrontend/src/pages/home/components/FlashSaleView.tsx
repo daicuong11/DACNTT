@@ -5,9 +5,7 @@ import React, { useEffect, useState } from 'react'
 import CarouselProduct from './CarouselProduct'
 import { LoadingItem, SkeletonFlashSaleView } from '../../../components'
 import CountdownTimer from './CountdownTimer'
-import { exampleProductVariant } from '../../../datas'
-import { useGetAllProductVariants } from '@/hooks/querys/product_variant.query'
-import { useGetProducts } from '@/hooks/querys/product.query'
+import { useGetAllProducts } from '@/hooks/querys/product.query'
 
 interface FlashSaleViewProps {}
 
@@ -28,7 +26,7 @@ const initListCategorySale = [
 
 const FlashSaleView: React.FC<FlashSaleViewProps> = ({}) => {
   const [categoryActive, setCategoryActive] = useState<number>(initListCategorySale[0].categoryId)
-  const { data: products, isLoading } = useGetProducts()
+  const { data: products, isLoading } = useGetAllProducts()
 
   // const [isLoading, setIsLoading] = useState(true)
 
@@ -46,7 +44,9 @@ const FlashSaleView: React.FC<FlashSaleViewProps> = ({}) => {
   //   console.log('saleActive', saleActive)
   // }
 
-  return (
+  return isLoading ? (
+    <SkeletonFlashSaleView />
+  ) : (
     <div className='bg-gradient-to-r-from-primary rounded-xl '>
       <div className='flex items-center justify-between p-4'>
         <div className='flex items-end text-white'>
@@ -80,7 +80,7 @@ const FlashSaleView: React.FC<FlashSaleViewProps> = ({}) => {
         </div>
       </div>
 
-      {isLoading ? <LoadingItem /> : <CarouselProduct dataSource={products!} />}
+      <CarouselProduct dataSource={products || []} />
     </div>
   )
 }

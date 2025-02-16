@@ -1,10 +1,8 @@
 import { FC, HTMLAttributes, useState } from 'react'
 import { ConfigProvider, Flex, Rate, Tag } from 'antd'
-import FavoriteButton from '../buttons/FavoriteButton'
 import classNames from 'classnames'
 import { useNavigate } from 'react-router-dom'
 import { getProductRoute } from '../../utils/getProductRoute'
-import { getRating } from '../../utils/getRating'
 import formatPrice from '../../utils/formatPrice'
 import { ProductVariantType } from '../../types/product_variant.type'
 import { iphone1 } from '@/assets/images/iphone'
@@ -41,7 +39,7 @@ const ProductCardSimple: FC<ProductCardSimpleType> = ({ productVariant, ...props
         </div>
         <div className='flex flex-col justify-end flex-1 mt-2'>
           <div className='flex items-center justify-between'>
-            <div className={classNames({ invisible: getRating(productVariant.productVariantId) === -1 })}>
+            <div className={classNames({ invisible: false })}>
               <ConfigProvider
                 theme={{
                   token: {
@@ -49,7 +47,7 @@ const ProductCardSimple: FC<ProductCardSimpleType> = ({ productVariant, ...props
                   }
                 }}
               >
-                <Rate value={getRating(productVariant.productVariantId)} allowHalf disabled className='text-base' />
+                <Rate value={5} allowHalf disabled className='text-base' />
               </ConfigProvider>
             </div>
             <div className='text-xs text-gray-500'>17 đánh giá</div>

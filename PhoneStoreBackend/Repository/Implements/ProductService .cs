@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using PhoneStoreBackend.Api.Response;
 using PhoneStoreBackend.DbContexts;
 using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
@@ -16,51 +17,145 @@ namespace PhoneStoreBackend.Repository.Implements
             _context = context;
             _mapper = mapper;
         }
-
-        // Lấy danh sách tất cả sản phẩm
-        public async Task<ICollection<ProductDTO>> GetAllAsync()
+        public async Task<ICollection<ProductResponse>> GetAllAsync()
         {
             var list = await _context.Products
-                .Include(p => p.Category)
-                .Include(p => p.Brand)
+                .Include(p => p.Category) // Include bảng Category
+                .Include(p => p.Brand) // Include bảng Brand
+
+                // Include ProductVariants và liên kết với các bảng con
                 .Include(p => p.ProductVariants)
-                    .ThenInclude(pv => pv.Discount)
+                    .ThenInclude(v => v.ProductImages)
+
                 .Include(p => p.ProductVariants)
-                    .ThenInclude(pv => pv.ProductImages)
+                    .ThenInclude(v => v.Discount)
+
                 .Include(p => p.ProductVariants)
-                    .ThenInclude(pv => pv.ProductSpecifications)
+                    .ThenInclude(v => v.ProductSpecifications)
+
+                .Select(p => new ProductResponse
+                {
+                    ProductId = p.ProductId,
+                    Name = p.Name,
+                    Category = new CategoryRespone
+                    {
+                        CategoryId = p.CategoryId,
+                        Name = p.Category.Name,
+                    },
+                    Brand = new BrandResponse
+                    {
+                        BrandId = p.BrandId,
+                        Name = p.Brand.Name,
+                    },
+                    ProductVariants = p.ProductVariants.Select(v => new ProductVariantResponse
+                    {
+                        VariantId = v.ProductVariantId,
+                        Slug = v.Slug,
+                        VariantName = v.VariantName,
+                        DiscountPercentage = v.Discount != null ? v.Discount.Percentage : 0,
+                        Price = v.Price,
+                        Color = v.Color,
+                        ImageUrl = v.ProductImages
+                            .OrderByDescending(img => img.IsMain) // Ưu tiên lấy ảnh chính
+                            .Select(img => img.ImageUrl)
+                            .FirstOrDefault() ?? "default-image-url.jpg",
+
+                        RAM = v.ProductSpecifications
+                            .Where(spec => spec.Key.ToLower() == "dung lượng ram")
+                            .Select(spec => spec.Value)
+                            .FirstOrDefault() ?? "",
+
+                        ScreenSize = v.ProductSpecifications
+                            .Where(spec => spec.Key.ToLower() == "kích thước màn hình")
+                            .Select(spec => spec.Value)
+                            .FirstOrDefault() ?? "",
+
+                        Storage = v.ProductSpecifications
+                            .Where(spec => spec.Key.ToLower() == "ổ cứng" ||
+                                           spec.Key.ToLower() == "bộ nhớ trong")
+                            .Select(spec => spec.Value)
+                            .FirstOrDefault() ?? ""
+                    }).ToList(),
+                })
                 .ToListAsync();
-            return _mapper.Map<List<ProductDTO>>(list);
+
+            return list;
         }
 
-        public async Task<ICollection<ProductDTO>> GetAllProductOfLaptop()
+        public async Task<ICollection<ProductResponse>> GetAllProductOfLaptop()
         {
             var categoryLaptop = await _context.Categories
                 .FirstOrDefaultAsync(c => c.Name.ToLower() == "laptop");
 
             if (categoryLaptop == null)
             {
-                return new List<ProductDTO>();
+                return new List<ProductResponse>();
             }
 
-            var listProductVariants = await _context.Products
+            var list = await _context.Products
+                .Where(p => p.CategoryId == categoryLaptop.CategoryId) 
+                .Take(15)
                 .Include(p => p.Category)
                 .Include(p => p.Brand)
                 .Include(p => p.ProductVariants)
-                    .ThenInclude(pv => pv.Discount)
+                    .ThenInclude(v => v.ProductImages)
                 .Include(p => p.ProductVariants)
-                    .ThenInclude(pv => pv.ProductImages)  
+                    .ThenInclude(v => v.Discount)
                 .Include(p => p.ProductVariants)
-                    .ThenInclude(pv => pv.ProductSpecifications)  
-                .Where(p => p.CategoryId == categoryLaptop.CategoryId)
+                    .ThenInclude(v => v.ProductSpecifications)
+                .Select(p => new ProductResponse
+                {
+                    ProductId = p.ProductId,
+                    Name = p.Name,
+                    Category = new CategoryRespone
+                    {
+                        CategoryId = p.CategoryId,
+                        Name = p.Category.Name,
+                    },
+                    Brand = new BrandResponse
+                    {
+                        BrandId = p.BrandId,
+                        Name = p.Brand.Name,
+                    },
+                    ProductVariants = p.ProductVariants.Select(v => new ProductVariantResponse
+                    {
+                        VariantId = v.ProductVariantId,
+                        Slug = v.Slug,
+                        VariantName = v.VariantName,
+                        DiscountPercentage = v.Discount != null ? v.Discount.Percentage : 0,
+                        Price = v.Price,
+                        Color = v.Color,
+                        ImageUrl = v.ProductImages
+                            .OrderByDescending(img => img.IsMain)
+                            .Select(img => img.ImageUrl)
+                            .FirstOrDefault() ?? "default-image-url.jpg",
+
+                        RAM = v.ProductSpecifications
+                            .Where(spec => spec.Key.ToLower() == "dung lượng ram")
+                            .Select(spec => spec.Value)
+                            .FirstOrDefault() ?? "",
+
+                        ScreenSize = v.ProductSpecifications
+                            .Where(spec => spec.Key.ToLower() == "kích thước màn hình")
+                            .Select(spec => spec.Value)
+                            .FirstOrDefault() ?? "",
+
+                        Storage = v.ProductSpecifications
+                            .Where(spec => spec.Key.ToLower() == "ổ cứng" ||
+                                           spec.Key.ToLower() == "bộ nhớ trong")
+                            .Select(spec => spec.Value)
+                            .FirstOrDefault() ?? ""
+                    }).ToList(),
+                })
                 .ToListAsync();
 
-            return _mapper.Map<ICollection<ProductDTO>>(listProductVariants);
+            return list;
         }
 
 
 
-        public async Task<ICollection<ProductDTO>> GetAllProductOfMobile()
+
+        public async Task<ICollection<ProductResponse>> GetAllProductOfMobile()
         {
             var categoryMobile = await _context.Categories
                 .FirstOrDefaultAsync(c => c.Name.ToLower() == "điện thoại".ToLower());
@@ -68,22 +163,67 @@ namespace PhoneStoreBackend.Repository.Implements
 
             if (categoryMobile == null)
             {
-                return new List<ProductDTO>();
+                return new List<ProductResponse>();
             }
 
-            var listProductVariants = await _context.Products
+            var list = await _context.Products
+                .Where(p => p.CategoryId == categoryMobile.CategoryId)
+                .Take(15)
                 .Include(p => p.Category)
                 .Include(p => p.Brand)
                 .Include(p => p.ProductVariants)
-                    .ThenInclude(pv => pv.Discount)
+                    .ThenInclude(v => v.ProductImages)
                 .Include(p => p.ProductVariants)
-                    .ThenInclude(pv => pv.ProductImages)
+                    .ThenInclude(v => v.Discount)
                 .Include(p => p.ProductVariants)
-                    .ThenInclude(pv => pv.ProductSpecifications)
-                .Where(v => v.CategoryId == categoryMobile.CategoryId)
+                    .ThenInclude(v => v.ProductSpecifications)
+                .Select(p => new ProductResponse
+                {
+                    ProductId = p.ProductId,
+                    Name = p.Name,
+                    Category = new CategoryRespone
+                    {
+                        CategoryId = p.CategoryId,
+                        Name = p.Category.Name,
+                    },
+                    Brand = new BrandResponse
+                    {
+                        BrandId = p.BrandId,
+                        Name = p.Brand.Name,
+                    },
+                    ProductVariants = p.ProductVariants.Select(v => new ProductVariantResponse
+                    {
+                        VariantId = v.ProductVariantId,
+                        Slug = v.Slug,
+                        VariantName = v.VariantName,
+                        DiscountPercentage = v.Discount != null ? v.Discount.Percentage : 0,
+                        Price = v.Price,
+                        Color = v.Color,
+                        ImageUrl = v.ProductImages
+                            .OrderByDescending(img => img.IsMain)
+                            .Select(img => img.ImageUrl)
+                            .FirstOrDefault() ?? "default-image-url.jpg",
+
+                        RAM = v.ProductSpecifications
+                            .Where(spec => spec.Key.ToLower() == "dung lượng ram")
+                            .Select(spec => spec.Value)
+                            .FirstOrDefault() ?? "",
+
+                        ScreenSize = v.ProductSpecifications
+                            .Where(spec => spec.Key.ToLower() == "kích thước màn hình")
+                            .Select(spec => spec.Value)
+                            .FirstOrDefault() ?? "",
+
+                        Storage = v.ProductSpecifications
+                            .Where(spec => spec.Key.ToLower() == "ổ cứng" ||
+                                           spec.Key.ToLower() == "bộ nhớ trong")
+                            .Select(spec => spec.Value)
+                            .FirstOrDefault() ?? ""
+                    }).ToList(),
+                })
                 .ToListAsync();
 
-            return _mapper.Map<ICollection<ProductDTO>>(listProductVariants);
+            return list;
         }
 
         // Lấy sản phẩm theo ID
@@ -96,6 +236,80 @@ namespace PhoneStoreBackend.Repository.Implements
             }
             return _mapper.Map<ProductDTO>(product);
         }
+
+        public async Task<ICollection<ProductResponse>> GetSimilarProductsAsync(int productId, int limit = 15)
+        {
+            // Lấy sản phẩm hiện tại
+            var currentProduct = await _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.Brand)
+                .FirstOrDefaultAsync(p => p.ProductId == productId);
+
+            if (currentProduct == null)
+            {
+                throw new KeyNotFoundException($"Product with id {productId} not found.");
+            }
+
+            var list = await _context.Products
+                .Where(p => p.CategoryId == currentProduct.CategoryId && p.ProductId != productId)
+                .Take(limit)
+                .Include(p => p.Category)
+                .Include(p => p.Brand)
+                .Include(p => p.ProductVariants)
+                    .ThenInclude(v => v.ProductImages)
+                .Include(p => p.ProductVariants)
+                    .ThenInclude(v => v.Discount)
+                .Include(p => p.ProductVariants)
+                    .ThenInclude(v => v.ProductSpecifications)
+                .Select(p => new ProductResponse
+                {
+                    ProductId = p.ProductId,
+                    Name = p.Name,
+                    Category = new CategoryRespone
+                    {
+                        CategoryId = p.CategoryId,
+                        Name = p.Category.Name,
+                    },
+                    Brand = new BrandResponse
+                    {
+                        BrandId = p.BrandId,
+                        Name = p.Brand.Name,
+                    },
+                    ProductVariants = p.ProductVariants.Select(v => new ProductVariantResponse
+                    {
+                        VariantId = v.ProductVariantId,
+                        Slug = v.Slug,
+                        VariantName = v.VariantName,
+                        DiscountPercentage = v.Discount != null ? v.Discount.Percentage : 0,
+                        Price = v.Price,
+                        Color = v.Color,
+                        ImageUrl = v.ProductImages
+                            .OrderByDescending(img => img.IsMain)
+                            .Select(img => img.ImageUrl)
+                            .FirstOrDefault() ?? "default-image-url.jpg",
+
+                        RAM = v.ProductSpecifications
+                            .Where(spec => spec.Key.ToLower() == "dung lượng ram")
+                            .Select(spec => spec.Value)
+                            .FirstOrDefault() ?? "",
+
+                        ScreenSize = v.ProductSpecifications
+                            .Where(spec => spec.Key.ToLower() == "kích thước màn hình")
+                            .Select(spec => spec.Value)
+                            .FirstOrDefault() ?? "",
+
+                        Storage = v.ProductSpecifications
+                            .Where(spec => spec.Key.ToLower() == "ổ cứng" ||
+                                           spec.Key.ToLower() == "bộ nhớ trong")
+                            .Select(spec => spec.Value)
+                            .FirstOrDefault() ?? ""
+                    }).ToList(),
+                })
+                .ToListAsync();
+
+            return list;
+        }
+
 
         // Thêm mới một sản phẩm
         public async Task<ProductDTO> AddProductAsync(Product product)

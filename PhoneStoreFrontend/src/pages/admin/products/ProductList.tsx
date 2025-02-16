@@ -1,11 +1,11 @@
-import { useGetProducts } from '@/hooks/querys/product.query'
-import { ProductType } from '@/types/product.type'
-import { Button, Table } from 'antd'
+import { ProductResponse } from '@/types/product.type'
+import { Table } from 'antd'
 import { ColumnsType } from 'antd/es/table'
-import { Link, Links, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Card from '../components/Card'
+import { useGetAllProducts } from '@/hooks/querys/product.query'
 
-const columns: ColumnsType<ProductType> = [
+const columns: ColumnsType<ProductResponse> = [
   {
     title: 'Mã sản phẩm',
     dataIndex: 'productId',
@@ -30,7 +30,7 @@ const columns: ColumnsType<ProductType> = [
     title: 'Actions',
     key: 'actions',
     render: (_, record) => (
-      <Link to={`/admin/products/details/${record.productId}`} className='btn btn-option text-xs'>
+      <Link to={`/admin/products/details/${record.productId}`} className='text-xs btn btn-option'>
         Xem biến thể
       </Link>
     )
@@ -38,8 +38,7 @@ const columns: ColumnsType<ProductType> = [
 ]
 
 export default function ProductList() {
-  const { data: products } = useGetProducts()
-  console.log(products)
+  const { data: products } = useGetAllProducts()
   return (
     <Card
       title='Danh Sách Sản Phẩm'

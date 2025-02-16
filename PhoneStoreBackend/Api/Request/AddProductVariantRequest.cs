@@ -11,11 +11,11 @@ namespace PhoneStoreBackend.Api.Request
         public string Slug { get; set; }
 
         [Required(ErrorMessage = "Màu sắc là bắt buộc.")]
-        [StringLength(50, ErrorMessage = "Màu sắc không được vượt quá 50 ký tự.")]
+        [StringLength(100, ErrorMessage = "Màu sắc không được vượt quá 50 ký tự.")]
         public string Color { get; set; }
 
         [Required(ErrorMessage = "Dung lượng bộ nhớ là bắt buộc.")]
-        [StringLength(50, ErrorMessage = "Dung lượng bộ nhớ không được vượt quá 50 ký tự.")]
+        [StringLength(100, ErrorMessage = "Dung lượng bộ nhớ không được vượt quá 50 ký tự.")]
         public string Storage { get; set; }
 
         [Required(ErrorMessage = "Giá sản phẩm là bắt buộc.")]

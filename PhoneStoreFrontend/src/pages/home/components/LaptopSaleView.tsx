@@ -21,7 +21,7 @@ const LaptopSaleView: FC<LaptopSaleViewProps> = () => {
           <button className='btn btn-light !text-slate-600 border border-gray-100 !text-xs'>MSI</button>
         </div>
       </div>
-      {isLoading ? <LoadingItem /> : <CarouselProduct dataSource={products!} />}
+      {isLoading ? <LoadingItem /> : <CarouselProduct dataSource={products || []} />}
     </div>
   )
 }

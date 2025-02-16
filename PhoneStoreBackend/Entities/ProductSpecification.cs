@@ -12,7 +12,8 @@ namespace PhoneStoreBackend.Entities
 
         [Required]
         public int ProductSpecificationGroupId { get; set; }
-        [ForeignKey("SpecificationGroupId")]
+        [ForeignKey("ProductSpecificationGroupId")]
+        [JsonIgnore]
         public ProductSpecificationGroup ProductSpecificationGroup { get; set; }
 
         [Required]

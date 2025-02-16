@@ -4,6 +4,7 @@ import colors from 'tailwindcss/colors';
 /** @type {import('tailwindcss').Config} */
 
 import scrollbarHide from 'tailwind-scrollbar-hide';
+import typograply from '@tailwindcss/typography'
 
 export default {
   content: [
@@ -272,6 +273,6 @@ export default {
       }
     },
   },
-  plugins: [scrollbarHide],
+  plugins: [scrollbarHide, typograply],
 }
 

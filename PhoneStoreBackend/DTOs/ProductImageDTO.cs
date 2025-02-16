@@ -5,7 +5,7 @@
         public int ImageId { get; set; }
         public int ProductVariantId { get; set; }
         public string ImageUrl { get; set; }
-        public bool Ismain { get; set; } = false;
+        public bool IsMain { get; set; } = false;
 
     }
 }

@@ -21,7 +21,6 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> GetAllProductSpecifications()
         {
             try
@@ -38,7 +37,6 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize]
         public async Task<IActionResult> GetProductSpecificationById(int id)
         {
             try
@@ -60,6 +58,48 @@ namespace PhoneStoreBackend.Controllers
             }
         }
 
+        [HttpGet("variant/{id}")]
+        public async Task<IActionResult> GetProductSpecGroupByVariantId(int id)
+        {
+            try
+            {
+                var group = await _productSpecificationRepository.GetProductSpecificationsByVariantIdAsync(id);
+                if (group == null)
+                {
+                    return NotFound(Response<object>.CreateErrorResponse("Nhóm thông số kỹ thuật không tồn tại"));
+                }
+
+                var response = Response<ICollection<ProductSpecificationGroupDTO>>.CreateSuccessResponse(group, "Lấy thông tin nhóm thông số kỹ thuật thành công");
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = Response<object>.CreateErrorResponse($"Đã xảy ra lỗi: {ex.Message}");
+                return BadRequest(errorResponse);
+            }
+        }
+
+        [HttpGet("variant/special/{id}")]
+        public async Task<IActionResult> GetProductSpecSpecialByVariantId(int id)
+        {
+            try
+            {
+                var group = await _productSpecificationRepository.GetProductSpecificationsSpecialByVariantIdAsync(id);
+                if (group == null)
+                {
+                    return NotFound(Response<object>.CreateErrorResponse("Nhóm thông số kỹ thuật không tồn tại"));
+                }
+
+                var response = Response<ICollection<ProductSpecificationDTO>>.CreateSuccessResponse(group, "Lấy thông tin nhóm thông số kỹ thuật thành công");
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = Response<object>.CreateErrorResponse($"Đã xảy ra lỗi: {ex.Message}");
+                return BadRequest(errorResponse);
+            }
+        }
+
         [HttpPost]
         [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> AddProductSpecification([FromBody] SpecificationRequest specificationReq)
@@ -72,7 +112,7 @@ namespace PhoneStoreBackend.Controllers
 
                 var specification = new ProductSpecification
                 {
-                    ProductSpecificationGroupId = specificationReq.SpecificationGroupId,
+                    ProductSpecificationGroupId = specificationReq.ProductSpecificationGroupId,
                     ProductVariantId = specificationReq.ProductVariantId,
                     Key = specificationReq.Key,
                     Value = specificationReq.Value,
@@ -103,7 +143,7 @@ namespace PhoneStoreBackend.Controllers
 
                 var specification = new ProductSpecification
                 {
-                    ProductSpecificationGroupId = specificationReq.SpecificationGroupId,
+                    ProductSpecificationGroupId = specificationReq.ProductSpecificationGroupId,
                     ProductVariantId = specificationReq.ProductVariantId,
                     Key = specificationReq.Key,
                     Value = specificationReq.Value,

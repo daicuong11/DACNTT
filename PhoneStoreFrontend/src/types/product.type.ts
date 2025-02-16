@@ -33,3 +33,34 @@ export interface AddProductWithVariantsRequestType {
   product: ProductRequestType
   listVariant: ListVariantRequestType[]
 }
+
+export interface BrandResponse {
+  brandId: number
+  name: string
+}
+
+export interface CategoryResponse {
+  categoryId: number
+  name: string
+}
+
+export interface VariantResponse {
+  variantId: number
+  slug: string
+  variantName: string
+  color: string
+  screenSize: string
+  ram: string
+  storage: string
+  imageUrl: string
+  price: number
+  discountPercentage: number
+}
+
+export interface ProductResponse {
+  productId: number
+  name: string
+  category: CategoryResponse
+  brand: BrandResponse
+  productVariants: VariantResponse[]
+}

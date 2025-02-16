@@ -1,7 +1,6 @@
-import { ProductType } from '@/types/product.type'
-import { ProductVariantType } from '@/types/product_variant.type'
+import { ProductResponse, ProductType, VariantResponse } from '@/types/product.type'
 
-export const getProductFullName = (product: ProductType) => {
-  const variant = product.productVariants[0] as ProductVariantType
+export const getProductFullName = (product: ProductResponse) => {
+  const variant: VariantResponse = product.productVariants[0]
   return product.name + ' ' + variant.variantName
 }
