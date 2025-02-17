@@ -1,22 +1,21 @@
-import { BrandType } from '@/types/brand.type'
-import http from '../configs/http'
+import axiosInstance from '@/configs/http'
 import { BaseResponse } from '@/types/auth.type'
+import { BrandType } from '@/types/brand.type'
 
-export const addBrand = async (formData: FormData) => {
-  return http.post<BrandType>('brands', formData, {
-    headers: { 'Content-Type': 'multipart/form-data' }
-  })
+class BrandAPI {
+  addBrand = async (formData: FormData): Promise<BaseResponse<BrandType>> => {
+    return axiosInstance.post('brands', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    })
+  }
+
+  getBrands = async (): Promise<BaseResponse<BrandType[]>> => {
+    return axiosInstance.get('brands')
+  }
+
+  updateBrand = async (brandId: number, formData: FormData): Promise<BaseResponse<BrandType>> => {
+    return axiosInstance.put(`brands/${brandId}`, formData)
+  }
 }
 
-export const getBrands = async () => {
-  return http.get<BrandType[]>('brands')
-}
-
-export const updateBrand = async (brandId: number, formData: FormData) => {
-  return http.put<BrandType>(`brands/${brandId}`, formData)
-}
-
-// cuong create
-export const getAllBrands = async (): Promise<BaseResponse<BrandType[]>> => {
-  return await http.get('brands')
-}
+export default new BrandAPI()

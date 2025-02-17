@@ -1,11 +1,11 @@
-import { addCategory, getAllCategories, getCategories, getCategoryById, updateCategory } from '@/apis/category.api'
+import categoryApi from '@/apis/category.api'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 
 export const useGetCategories = () => {
   return useQuery({
-    queryKey: ['categories'],
-    queryFn: getCategories
+    queryKey: ['getCategories'],
+    queryFn: categoryApi.getCategories
   })
 }
 
@@ -14,12 +14,12 @@ export const useAddCategory = () => {
 
   const mutation = useMutation({
     mutationKey: ['addCategory'],
-    mutationFn: (formData: FormData) => addCategory(formData),
+    mutationFn: (formData: FormData) => categoryApi.addCategory(formData),
     onSuccess: (data) => {
       toast.success(`Thêm thành công danh mục: ${data.data.name}!`)
       console.log('Add category successful:', data)
 
-      queryClient.invalidateQueries({ queryKey: ['categories'] })
+      queryClient.invalidateQueries({ queryKey: ['getCategories'] })
     },
 
     onError: (error: unknown) => {
@@ -38,7 +38,7 @@ export const useUpdateCategory = () => {
 
   const mutation = useMutation({
     mutationKey: ['updateCategory'],
-    mutationFn: ({ id, data }: { id: number; data: FormData }) => updateCategory(id, data),
+    mutationFn: ({ id, data }: { id: number; data: FormData }) => categoryApi.updateCategory(id, data),
     onSuccess: (data) => {
       toast.success(`Sửa thành công danh mục: ${data.data.name}!`)
       console.log('Update category successful:', data)
@@ -57,19 +57,10 @@ export const useUpdateCategory = () => {
   return mutation
 }
 
-// cuong create
-export const useGetAllCategories = () => {
-  const query = useQuery({
-    queryKey: ['getAllCategories'],
-    queryFn: getAllCategories
-  })
-  return query
-}
-
 export const useGetCategoryById = (categoryId: number) => {
   const query = useQuery({
     queryKey: ['getCategoryById', categoryId],
-    queryFn: () => getCategoryById(categoryId),
+    queryFn: () => categoryApi.getCategoryById(categoryId),
     enabled: categoryId >= 0,
     staleTime: 1000 * 60 * 60 * 24,
     refetchOnWindowFocus: false

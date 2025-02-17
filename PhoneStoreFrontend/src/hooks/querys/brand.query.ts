@@ -1,11 +1,11 @@
-import { addBrand, getAllBrands, getBrands, updateBrand } from '@/apis/brand.api'
+import brandApi from '@/apis/brand.api'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 
 export const useGetBrands = () => {
   return useQuery({
-    queryKey: ['brands'],
-    queryFn: getBrands
+    queryKey: ['getBrands'],
+    queryFn: brandApi.getBrands
   })
 }
 
@@ -14,12 +14,12 @@ export const useAddBrand = () => {
 
   const mutation = useMutation({
     mutationKey: ['addBrand'],
-    mutationFn: (formData: FormData) => addBrand(formData),
+    mutationFn: (formData: FormData) => brandApi.addBrand(formData),
     onSuccess: (data) => {
       toast.success(`Thêm thành công thương hiệu: ${data.data.name}!`)
       console.log('Add brand successful:', data)
 
-      queryClient.invalidateQueries({ queryKey: ['brands'] })
+      queryClient.invalidateQueries({ queryKey: ['getBrands'] })
     },
 
     onError: (error: unknown) => {
@@ -38,7 +38,7 @@ export const useUpdateBrand = () => {
 
   const mutation = useMutation({
     mutationKey: ['updateBrand'],
-    mutationFn: ({ id, data }: { id: number; data: FormData }) => updateBrand(id, data),
+    mutationFn: ({ id, data }: { id: number; data: FormData }) => brandApi.updateBrand(id, data),
     onSuccess: (data) => {
       toast.success(`Sửa thành công thương hiệu: ${data.data.name}!`)
       console.log('Update brand successful:', data)
@@ -57,12 +57,3 @@ export const useUpdateBrand = () => {
   return mutation
 }
 
-// cuong create
-
-export const useGetAllBrands = () => {
-  const query = useQuery({
-    queryKey: ['getAllBrands'],
-    queryFn: getAllBrands
-  })
-  return query
-}

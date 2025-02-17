@@ -26,8 +26,8 @@ const validateProduct = (product: ProductRequestType | null) => {
 
 import { toast } from 'react-toastify'
 import classNames from 'classnames'
-import { useGetAllCategories } from '@/hooks/querys/category.query'
-import { useGetAllBrands } from '@/hooks/querys/brand.query'
+import { useGetCategories } from '@/hooks/querys/category.query'
+import { useGetBrands } from '@/hooks/querys/brand.query'
 import { LoadingItem, LoadingOpacity } from '@/components'
 import { SpecificationGroupType } from '@/types/specification_group.type'
 import slug from 'slug'
@@ -130,8 +130,8 @@ const initialProductInput: ProductRequestType = {
 
 const AddProduct = () => {
   // query var
-  const { data: categoriesResponse, error: categoriesError, isLoading: isCategoriesLoading } = useGetAllCategories()
-  const { data: brandsResponse, error: brandsError, isLoading: isBrandsLoading } = useGetAllBrands()
+  const { data: categoriesResponse, error: categoriesError, isLoading: isCategoriesLoading } = useGetCategories()
+  const { data: brandsResponse, error: brandsError, isLoading: isBrandsLoading } = useGetBrands()
   const { mutate: fetchAddProduct, isPending: isAddProductPending } = useAddProductWithVariants()
   // component var
   const navigate = useNavigate()
