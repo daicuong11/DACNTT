@@ -8,6 +8,7 @@ interface ListSimilarProductsProps {
 }
 const ListSimilarProducts: FC<ListSimilarProductsProps> = ({ productVariant }) => {
   const { data } = useGet15ProductSimilar(productVariant.productId)
+  if (!data || data.length === 0) return null
   return (
     <div className='flex flex-col gap-y-2.5'>
       <div className='text-xl font-bold leading-none uppercase text-black/70'>Sản phẩm tương tự</div>

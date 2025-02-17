@@ -1,5 +1,6 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using PhoneStoreBackend.DTOs;
+using PhoneStoreBackend.Entities;
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -16,7 +17,7 @@ namespace PhoneStoreBackend.Repository.Implements
             _configuration = configuration;
         }
 
-        public string GenerateToken(UserDTO user, int expirationInMinutes = 15)
+        public string GenerateToken(User user, int expirationInMinutes = 15)
         {
             var claims = new List<Claim>
         {
@@ -38,7 +39,7 @@ namespace PhoneStoreBackend.Repository.Implements
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public string GenerateRefreshToken(UserDTO user)
+        public string GenerateRefreshToken(User user)
         {
             var claims = new[]
             {

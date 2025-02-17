@@ -37,10 +37,8 @@ namespace PhoneStoreBackend.Repository.Implements
 
             var tokenExpirationInMinutes = 15;
 
-            var userDTO = _mapper.Map<UserDTO>(user);
-
-            var accessToken = _tokenService.GenerateToken(userDTO, tokenExpirationInMinutes);
-            var refreshToken = _tokenService.GenerateRefreshToken(userDTO);
+            var accessToken = _tokenService.GenerateToken(user, tokenExpirationInMinutes);
+            var refreshToken = _tokenService.GenerateRefreshToken(user);
             user.RefreshToken = refreshToken;
             user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
 
@@ -78,16 +76,18 @@ namespace PhoneStoreBackend.Repository.Implements
                     IsGoogleAccount = false
                 };
 
-                var newUser = await _userService.AddUserAsync(createUser);
+                var newUser = await _context.Users.AddAsync(createUser);
+                await _context.SaveChangesAsync();
+                var getUser = newUser.Entity;
 
                 var tokenExpirationInMinutes = 15;
-                var accessToken = _tokenService.GenerateToken(newUser, tokenExpirationInMinutes);
-                var refreshToken = _tokenService.GenerateRefreshToken(newUser);
+                var accessToken = _tokenService.GenerateToken(getUser, tokenExpirationInMinutes);
+                var refreshToken = _tokenService.GenerateRefreshToken(getUser);
 
-                user.RefreshToken = refreshToken;
-                user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+                getUser.RefreshToken = refreshToken;
+                getUser.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
 
-                _context.Users.Update(user);
+                _context.Users.Update(getUser);
                 await _context.SaveChangesAsync();
 
                 await transaction.CommitAsync();
@@ -167,11 +167,10 @@ namespace PhoneStoreBackend.Repository.Implements
                 throw new UnauthorizedAccessException("Invalid or expired refresh token.");
             }
 
-            var userDTO  = _mapper.Map<UserDTO>(user);
 
             // Tạo token mới
-            string newAccessToken = _tokenService.GenerateToken(userDTO);
-            string newRefreshToken = _tokenService.GenerateRefreshToken(userDTO);
+            string newAccessToken = _tokenService.GenerateToken(user);
+            string newRefreshToken = _tokenService.GenerateRefreshToken(user);
 
             // Cập nhật refresh token mới vào DB
             user.RefreshToken = newRefreshToken;

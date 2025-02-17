@@ -64,65 +64,65 @@ namespace PhoneStoreBackend.Controllers
             return Challenge(properties, GoogleDefaults.AuthenticationScheme);
         }
 
-        [HttpGet("google-callback", Name = "google-callback")]
-        [AllowAnonymous]
-        public async Task<IActionResult> HandleGoogleCallback()
-        {
-            var result = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
+        //[HttpGet("google-callback", Name = "google-callback")]
+        //[AllowAnonymous]
+        //public async Task<IActionResult> HandleGoogleCallback()
+        //{
+        //    var result = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
 
-            if (!result.Succeeded)
-            {
-                return Unauthorized(Response<object>.CreateErrorResponse("Google authentication failed"));
-            }
+        //    if (!result.Succeeded)
+        //    {
+        //        return Unauthorized(Response<object>.CreateErrorResponse("Google authentication failed"));
+        //    }
 
-            var claims = result.Principal?.Identities.FirstOrDefault()?.Claims;
-            var email = claims?.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
-            var fullName = claims?.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
+        //    var claims = result.Principal?.Identities.FirstOrDefault()?.Claims;
+        //    var email = claims?.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+        //    var fullName = claims?.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value;
 
-            if (string.IsNullOrEmpty(email))
-            {
-                return BadRequest(Response<object>.CreateErrorResponse("Email is required from Google."));
-            }
+        //    if (string.IsNullOrEmpty(email))
+        //    {
+        //        return BadRequest(Response<object>.CreateErrorResponse("Email is required from Google."));
+        //    }
 
-            var user = await _userService.GetUserByEmailAsync(email);
+        //    var user = await _userService.GetUserByEmailAsync(email);
 
-            var tokenExpirationInMinutes = 15;
+        //    var tokenExpirationInMinutes = 15;
 
-            UserDTO userDTO;
+        //    UserDTO userDTO;
 
-            if (user == null)
-            {
-                var newUser = new User
-                {
-                    Name = fullName,
-                    Email = email,
-                    IsGoogleAccount = true,
-                    Role = RoleEnum.CUSTOMER.ToString(),
-                    Active = true
-                };
+        //    if (user != null)
+        //    {
+        //        var newUser = new User
+        //        {
+        //            Name = fullName,
+        //            Email = email,
+        //            IsGoogleAccount = true,
+        //            Role = RoleEnum.CUSTOMER.ToString(),
+        //            Active = true
+        //        };
 
-                userDTO = await _userService.AddUserAsync(newUser);
+        //        userDTO = await _userService.AddUserAsync(newUser);
 
-            }
-            else
-            {
-                userDTO = _mapper.Map<UserDTO>(user);
-            }
+        //    }
+        //    else
+        //    {
+        //        userDTO = _mapper.Map<UserDTO>(user);
+        //    }
 
-            if (userDTO == null) return BadRequest(Response<object>.CreateErrorResponse("Tạo tài khoản hoặc đăng nhập thất bại"));
+        //    if (userDTO == null) return BadRequest(Response<object>.CreateErrorResponse("Tạo tài khoản hoặc đăng nhập thất bại"));
 
-            var accessToken = _tokenService.GenerateToken(userDTO, tokenExpirationInMinutes);
-            var refreshToken = _tokenService.GenerateRefreshToken(userDTO);
+        //    var accessToken = _tokenService.GenerateToken(userDTO, tokenExpirationInMinutes);
+        //    var refreshToken = _tokenService.GenerateRefreshToken(userDTO);
 
-            var loginResult = new LoginResponse
-            {
-                AccessToken = accessToken,
-                RefreshToken = refreshToken,
-            };
-            var response = Response<LoginResponse>.CreateSuccessResponse(loginResult, "Login Google Account Successfully");
+        //    var loginResult = new LoginResponse
+        //    {
+        //        AccessToken = accessToken,
+        //        RefreshToken = refreshToken,
+        //    };
+        //    var response = Response<LoginResponse>.CreateSuccessResponse(loginResult, "Login Google Account Successfully");
 
-            return Ok(response);
-        }
+        //    return Ok(response);
+        //}
 
         // Đăng ký
         [HttpPost("register")]

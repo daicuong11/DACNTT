@@ -71,17 +71,19 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
               <ContainerPanel title='Thông tin sản phẩm'>
                 <ContainerPanel.Item
                   iconElement={<Smartphone size={22} strokeWidth={1.6} />}
-                  text='CellphoneS hiện là đại lý bán lẻ uỷ quyền iPhone chính hãng VN/A của Apple Việt Nam'
+                  text='Mới, đầy đủ phụ kiện từ nhà sản xuất'
                 />
 
-                <ContainerPanel.Item
-                  iconElement={<PackageOpen size={22} strokeWidth={1.6} />}
-                  text='iPhone sử dụng iOS 18, Cáp Sạc USB‑C (1m), Tài liệu'
-                />
+                {productVariant && (
+                  <ContainerPanel.Item
+                    iconElement={<PackageOpen size={22} strokeWidth={1.6} />}
+                    text={`${productVariant.product.category.name} ${productVariant.product.name} ${productVariant.variantName}`}
+                  />
+                )}
 
                 <ContainerPanel.Item
                   iconElement={<CalendarClock size={22} strokeWidth={1.6} />}
-                  text='1 ĐỔI 1 trong 30 ngày nếu có lỗi phần cứng nhà sản xuất. Bảo hành 12 tháng tại trung tâm bảo hành chính hãng Apple: CareS.vn(xem chi tiết)'
+                  text='1 ĐỔI 1 trong 30 ngày nếu có lỗi phần cứng nhà sản xuất'
                 />
 
                 <ContainerPanel.Item
