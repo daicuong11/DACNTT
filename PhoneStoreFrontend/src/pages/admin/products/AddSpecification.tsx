@@ -21,10 +21,10 @@ const getInputs = (category: CategoryType | undefined): SpecificationGroupType[]
 
   return category.productSpecificationGroups.map((group) => ({
     ...group,
-    specifications:
+    productSpecifications:
       listGroup
         .find((spec) => spec.groupName === group.groupName)
-        ?.specifications.map((spec, index) => ({
+        ?.productSpecifications.map((spec, index) => ({
           ...spec,
           displayOrder: index,
           productSpecificationGroupId: group.productSpecificationGroupId,
@@ -73,8 +73,8 @@ const AddSpecification = () => {
         group.productSpecificationGroupId === specificationGroupId
           ? {
               ...group,
-              specifications: group.specifications.map((spec) =>
-                spec.specificationId === specificationId
+              productSpecifications: group.productSpecifications.map((spec) =>
+                spec.productSpecificationId === specificationId
                   ? { ...spec, value, productSpecificationGroupId: specificationGroupId }
                   : spec
               )
@@ -86,6 +86,8 @@ const AddSpecification = () => {
 
   if (error) return <div>Đã có lỗi xảy ra</div>
   if (isLoading) return <LoadingItem />
+
+  console.log('inputs', inputs)
 
   return (
     <div className='p-5 space-y-6 bg-white border border-gray-300 rounded-lg'>
@@ -100,9 +102,9 @@ const AddSpecification = () => {
           <div key={index} className='flex flex-col px-5'>
             <div className='font-bold'>{group.groupName}</div>
             <div className='mt-3 font-normal text-gray-700 bg-gray-100 border border-gray-200 rounded-lg'>
-              {group.specifications.map((spec, index) => (
+              {group.productSpecifications.map((spec, index) => (
                 <div
-                  key={spec.specificationId}
+                  key={index}
                   className={classNames('flex items-center gap-3 px-2 py-2.5 last:rounded-b-lg first:rounded-t-lg', {
                     'bg-white': index % 2 !== 0
                   })}
@@ -116,7 +118,11 @@ const AddSpecification = () => {
                       placeholder={`Nhập ${spec.key.toLowerCase()}`}
                       variant='borderless'
                       onChange={(e) =>
-                        handleInputChange(group.productSpecificationGroupId, spec.specificationId, e.target.value)
+                        handleInputChange(
+                          group.productSpecificationGroupId,
+                          spec.productSpecificationId,
+                          e.target.value
+                        )
                       }
                     />
                   </span>

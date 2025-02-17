@@ -3,5 +3,5 @@ import { CartItemType } from './cart_item.type'
 export interface CartType {
   cartId: number
   userId: number
-  cartItem: CartItemType[]
+  cartItems: CartItemType[]
 }

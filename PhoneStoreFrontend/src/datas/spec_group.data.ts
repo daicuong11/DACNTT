@@ -6,9 +6,9 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
       productSpecificationGroupId: 0,
       groupName: 'Màn hình',
       displayOrder: 0,
-      specifications: [
+      productSpecifications: [
         {
-          specificationId: 0,
+          productSpecificationId: 0,
           productVariantId: -1,
           productSpecificationGroupId: 0,
           key: 'Kích thước màn hình',
@@ -17,7 +17,7 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
           isSpecial: true
         },
         {
-          specificationId: 1,
+          productSpecificationId: 1,
           productVariantId: -1,
           productSpecificationGroupId: 0,
           key: 'Công nghệ màn hình',
@@ -26,7 +26,7 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
           isSpecial: true
         },
         {
-          specificationId: 2,
+          productSpecificationId: 2,
           productVariantId: -1,
           productSpecificationGroupId: 0,
           key: 'Độ phân giải màn hình',
@@ -35,7 +35,7 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
           isSpecial: true
         },
         {
-          specificationId: 3,
+          productSpecificationId: 3,
           productVariantId: -1,
           productSpecificationGroupId: 0,
           key: 'Tính năng màn hình',
@@ -44,7 +44,7 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
           isSpecial: true
         },
         {
-          specificationId: 4,
+          productSpecificationId: 4,
           productVariantId: -1,
           productSpecificationGroupId: 0,
           key: 'Tần số quét',
@@ -53,7 +53,7 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
           isSpecial: false
         },
         {
-          specificationId: 5,
+          productSpecificationId: 5,
           productVariantId: -1,
           productSpecificationGroupId: 0,
           key: 'Kiểu màn hình',
@@ -67,9 +67,9 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
       productSpecificationGroupId: 1,
       groupName: 'Camera sau',
       displayOrder: 1,
-      specifications: [
+      productSpecifications: [
         {
-          specificationId: 6,
+          productSpecificationId: 6,
           productVariantId: -1,
           productSpecificationGroupId: 1,
           key: 'Camera sau',
@@ -78,7 +78,7 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
           isSpecial: true
         },
         {
-          specificationId: 7,
+          productSpecificationId: 7,
           productVariantId: -1,
           productSpecificationGroupId: 1,
           key: 'Quay video',
@@ -87,7 +87,7 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
           isSpecial: false
         },
         {
-          specificationId: 8,
+          productSpecificationId: 8,
           productVariantId: -1,
           productSpecificationGroupId: 1,
           key: 'Tính năng camera',
@@ -101,9 +101,9 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
       productSpecificationGroupId: 2,
       groupName: 'Camera trước',
       displayOrder: 2,
-      specifications: [
+      productSpecifications: [
         {
-          specificationId: 9,
+          productSpecificationId: 9,
           productVariantId: -1,
           productSpecificationGroupId: 2,
           key: 'Camera trước',
@@ -112,7 +112,7 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
           isSpecial: true
         },
         {
-          specificationId: 10,
+          productSpecificationId: 10,
           productVariantId: -1,
           productSpecificationGroupId: 2,
           key: 'Quay video trước',
@@ -126,9 +126,9 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
       productSpecificationGroupId: 3,
       groupName: 'Vi xử lý & đồ họa',
       displayOrder: 3,
-      specifications: [
+      productSpecifications: [
         {
-          specificationId: 11,
+          productSpecificationId: 11,
           productVariantId: -1,
           productSpecificationGroupId: 3,
           key: 'Chipset',
@@ -137,7 +137,7 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
           isSpecial: true
         },
         {
-          specificationId: 12,
+          productSpecificationId: 12,
           productVariantId: -1,
           productSpecificationGroupId: 3,
           key: 'GPU',
@@ -151,9 +151,9 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
       productSpecificationGroupId: 4,
       groupName: 'Giao tiếp & kết nối',
       displayOrder: 4,
-      specifications: [
+      productSpecifications: [
         {
-          specificationId: 13,
+          productSpecificationId: 13,
           productVariantId: -1,
           productSpecificationGroupId: 4,
           key: 'Công nghệ NFC',
@@ -162,7 +162,7 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
           isSpecial: true
         },
         {
-          specificationId: 14,
+          productSpecificationId: 14,
           productVariantId: -1,
           productSpecificationGroupId: 4,
           key: 'Thẻ SIM',
@@ -171,7 +171,7 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
           isSpecial: true
         },
         {
-          specificationId: 15,
+          productSpecificationId: 15,
           productVariantId: -1,
           productSpecificationGroupId: 4,
           key: 'Hỗ trợ mạng',
@@ -180,7 +180,7 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
           isSpecial: false
         },
         {
-          specificationId: 16,
+          productSpecificationId: 16,
           productVariantId: -1,
           productSpecificationGroupId: 4,
           key: 'GPS',
@@ -194,9 +194,9 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
       productSpecificationGroupId: 5,
       groupName: 'RAM & lưu trữ',
       displayOrder: 5,
-      specifications: [
+      productSpecifications: [
         {
-          specificationId: 100,
+          productSpecificationId: 100,
           productVariantId: -1,
           productSpecificationGroupId: 5,
           key: 'Dung lượng RAM',
@@ -205,7 +205,7 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
           isSpecial: true
         },
         {
-          specificationId: 17,
+          productSpecificationId: 17,
           productVariantId: -1,
           productSpecificationGroupId: 5,
           key: 'Bộ nhớ trong',
@@ -219,9 +219,9 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
       productSpecificationGroupId: 6,
       groupName: 'Tính năng khác',
       displayOrder: 6,
-      specifications: [
+      productSpecifications: [
         {
-          specificationId: 18,
+          productSpecificationId: 18,
           productVariantId: -1,
           productSpecificationGroupId: 6,
           key: 'Hệ điều hành',
@@ -235,9 +235,9 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
       productSpecificationGroupId: 7,
       groupName: 'Bộ xử lý & đồ họa',
       displayOrder: 7,
-      specifications: [
+      productSpecifications: [
         {
-          specificationId: 19,
+          productSpecificationId: 19,
           productVariantId: -1,
           productSpecificationGroupId: 7,
           key: 'Loại CPU',
@@ -251,9 +251,9 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
       productSpecificationGroupId: 8,
       groupName: 'Kích thước & trọng lượng',
       displayOrder: 8,
-      specifications: [
+      productSpecifications: [
         {
-          specificationId: 20,
+          productSpecificationId: 20,
           productVariantId: -1,
           productSpecificationGroupId: 8,
           key: 'Kích thước',
@@ -262,7 +262,7 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
           isSpecial: false
         },
         {
-          specificationId: 21,
+          productSpecificationId: 21,
           productVariantId: -1,
           productSpecificationGroupId: 8,
           key: 'Trọng lượng',
@@ -276,9 +276,9 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
       productSpecificationGroupId: 9,
       groupName: 'Thiết kế & trọng lượng',
       displayOrder: 9,
-      specifications: [
+      productSpecifications: [
         {
-          specificationId: 22,
+          productSpecificationId: 22,
           productVariantId: -1,
           productSpecificationGroupId: 9,
           key: 'Chất liệu mặt lưng',
@@ -287,7 +287,7 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
           isSpecial: false
         },
         {
-          specificationId: 23,
+          productSpecificationId: 23,
           productVariantId: -1,
           productSpecificationGroupId: 9,
           key: 'Chất liệu khung viền',
@@ -301,9 +301,9 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
       productSpecificationGroupId: 10,
       groupName: 'Thông số khác',
       displayOrder: 10,
-      specifications: [
+      productSpecifications: [
         {
-          specificationId: 24,
+          productSpecificationId: 24,
           productVariantId: -1,
           productSpecificationGroupId: 10,
           key: 'Tương thích',
@@ -312,7 +312,7 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
           isSpecial: true
         },
         {
-          specificationId: 25,
+          productSpecificationId: 25,
           productVariantId: -1,
           productSpecificationGroupId: 10,
           key: 'Chỉ số kháng nước, bụi',
@@ -321,7 +321,7 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
           isSpecial: false
         },
         {
-          specificationId: 26,
+          productSpecificationId: 26,
           productVariantId: -1,
           productSpecificationGroupId: 10,
           key: 'Công nghệ - Tiện ích',
@@ -330,7 +330,7 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
           isSpecial: false
         },
         {
-          specificationId: 27,
+          productSpecificationId: 27,
           productVariantId: -1,
           productSpecificationGroupId: 10,
           key: 'Tiện ích khác',
@@ -339,7 +339,7 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
           isSpecial: false
         },
         {
-          specificationId: 28,
+          productSpecificationId: 28,
           productVariantId: -1,
           productSpecificationGroupId: 10,
           key: 'Công nghệ âm thanh',
@@ -353,9 +353,9 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
       productSpecificationGroupId: 11,
       groupName: 'Pin & công nghệ sạc',
       displayOrder: 11,
-      specifications: [
+      productSpecifications: [
         {
-          specificationId: 29,
+          productSpecificationId: 29,
           productVariantId: -1,
           productSpecificationGroupId: 11,
           key: 'Công nghệ sạc',
@@ -364,7 +364,7 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
           isSpecial: false
         },
         {
-          specificationId: 30,
+          productSpecificationId: 30,
           productVariantId: -1,
           productSpecificationGroupId: 11,
           key: 'Cổng sạc',
@@ -378,9 +378,9 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
       productSpecificationGroupId: 12,
       groupName: 'Tiện ích khác',
       displayOrder: 12,
-      specifications: [
+      productSpecifications: [
         {
-          specificationId: 31,
+          productSpecificationId: 31,
           productVariantId: -1,
           productSpecificationGroupId: 12,
           key: 'Các loại cảm biến',
@@ -389,7 +389,7 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
           isSpecial: false
         },
         {
-          specificationId: 32,
+          productSpecificationId: 32,
           productVariantId: -1,
           productSpecificationGroupId: 12,
           key: 'Tính năng đặc biệt',
@@ -403,9 +403,9 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
       productSpecificationGroupId: 13,
       groupName: 'Cổng kết nối',
       displayOrder: 13,
-      specifications: [
+      productSpecifications: [
         {
-          specificationId: 33,
+          productSpecificationId: 33,
           productVariantId: -1,
           productSpecificationGroupId: 13,
           key: 'Wi-Fi',
@@ -414,7 +414,7 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
           isSpecial: false
         },
         {
-          specificationId: 34,
+          productSpecificationId: 34,
           productVariantId: -1,
           productSpecificationGroupId: 13,
           key: 'Bluetooth',
@@ -428,9 +428,9 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
       productSpecificationGroupId: 14,
       groupName: 'Thông tin chung',
       displayOrder: 14,
-      specifications: [
+      productSpecifications: [
         {
-          specificationId: 35,
+          productSpecificationId: 35,
           productVariantId: -1,
           productSpecificationGroupId: 14,
           key: 'Thời điểm ra mắt',
@@ -446,9 +446,9 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
       productSpecificationGroupId: 15,
       groupName: 'Bộ xử lý & Đồ họa',
       displayOrder: 1,
-      specifications: [
+      productSpecifications: [
         {
-          specificationId: 101,
+          productSpecificationId: 101,
           productVariantId: -1,
           productSpecificationGroupId: 15,
           key: 'Loại card đồ họa',
@@ -457,7 +457,7 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
           isSpecial: true
         },
         {
-          specificationId: 102,
+          productSpecificationId: 102,
           productVariantId: -1,
           productSpecificationGroupId: 15,
           key: 'Loại CPU',
@@ -471,9 +471,9 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
       productSpecificationGroupId: 16,
       groupName: 'Bộ nhớ RAM, Ổ cứng',
       displayOrder: 2,
-      specifications: [
+      productSpecifications: [
         {
-          specificationId: 103,
+          productSpecificationId: 103,
           productVariantId: -1,
           productSpecificationGroupId: 16,
           key: 'Dung lượng RAM',
@@ -482,7 +482,7 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
           isSpecial: false
         },
         {
-          specificationId: 104,
+          productSpecificationId: 104,
           productVariantId: -1,
           productSpecificationGroupId: 16,
           key: 'Loại RAM',
@@ -491,7 +491,7 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
           isSpecial: false
         },
         {
-          specificationId: 105,
+          productSpecificationId: 105,
           productVariantId: -1,
           productSpecificationGroupId: 16,
           key: 'Số khe ram',
@@ -500,7 +500,7 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
           isSpecial: false
         },
         {
-          specificationId: 106,
+          productSpecificationId: 106,
           productVariantId: -1,
           productSpecificationGroupId: 16,
           key: 'Ổ cứng',
@@ -514,9 +514,9 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
       productSpecificationGroupId: 17,
       groupName: 'Màn hình',
       displayOrder: 3,
-      specifications: [
+      productSpecifications: [
         {
-          specificationId: 107,
+          productSpecificationId: 107,
           productVariantId: -1,
           productSpecificationGroupId: 17,
           key: 'Tần số quét',
@@ -525,7 +525,7 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
           isSpecial: true
         },
         {
-          specificationId: 108,
+          productSpecificationId: 108,
           productVariantId: -1,
           productSpecificationGroupId: 17,
           key: 'Chất liệu tấm nền',
@@ -534,7 +534,7 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
           isSpecial: false
         },
         {
-          specificationId: 109,
+          productSpecificationId: 109,
           productVariantId: -1,
           productSpecificationGroupId: 17,
           key: 'Công nghệ màn hình',
@@ -543,7 +543,7 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
           isSpecial: true
         },
         {
-          specificationId: 110,
+          productSpecificationId: 110,
           productVariantId: -1,
           productSpecificationGroupId: 17,
           key: 'Kích thước màn hình',
@@ -552,7 +552,7 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
           isSpecial: true
         },
         {
-          specificationId: 111,
+          productSpecificationId: 111,
           productVariantId: -1,
           productSpecificationGroupId: 17,
           key: 'Độ phân giải màn hình',
@@ -566,9 +566,9 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
       productSpecificationGroupId: 18,
       groupName: 'Âm thanh',
       displayOrder: 4,
-      specifications: [
+      productSpecifications: [
         {
-          specificationId: 112,
+          productSpecificationId: 112,
           productVariantId: -1,
           productSpecificationGroupId: 18,
           key: 'Công nghệ âm thanh',
@@ -582,9 +582,9 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
       productSpecificationGroupId: 19,
       groupName: 'Tiện ích khác',
       displayOrder: 5,
-      specifications: [
+      productSpecifications: [
         {
-          specificationId: 113,
+          productSpecificationId: 113,
           productVariantId: -1,
           productSpecificationGroupId: 19,
           key: 'Loại đèn bàn phím',
@@ -593,7 +593,7 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
           isSpecial: false
         },
         {
-          specificationId: 114,
+          productSpecificationId: 114,
           productVariantId: -1,
           productSpecificationGroupId: 19,
           key: 'Tiện ích đặc biệt',
@@ -607,9 +607,9 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
       productSpecificationGroupId: 20,
       groupName: 'Tính năng khác',
       displayOrder: 6,
-      specifications: [
+      productSpecifications: [
         {
-          specificationId: 115,
+          productSpecificationId: 115,
           productVariantId: -1,
           productSpecificationGroupId: 19,
           key: 'Bảo mật',
@@ -618,7 +618,7 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
           isSpecial: false
         },
         {
-          specificationId: 116,
+          productSpecificationId: 116,
           productVariantId: -1,
           productSpecificationGroupId: 19,
           key: 'Webcam',
@@ -627,7 +627,7 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
           isSpecial: false
         },
         {
-          specificationId: 117,
+          productSpecificationId: 117,
           productVariantId: -1,
           productSpecificationGroupId: 19,
           key: 'Hệ điều hành',
@@ -641,9 +641,9 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
       productSpecificationGroupId: 21,
       groupName: 'Pin & công nghệ sạc',
       displayOrder: 7,
-      specifications: [
+      productSpecifications: [
         {
-          specificationId: 118,
+          productSpecificationId: 118,
           productVariantId: -1,
           productSpecificationGroupId: 19,
           key: 'Pin',
@@ -657,9 +657,9 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
       productSpecificationGroupId: 21,
       groupName: 'Cổng kết nối',
       displayOrder: 8,
-      specifications: [
+      productSpecifications: [
         {
-          specificationId: 17,
+          productSpecificationId: 17,
           productVariantId: -1,
           productSpecificationGroupId: 21,
           key: 'Khe đọc thẻ nhớ',
@@ -668,7 +668,7 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
           isSpecial: true
         },
         {
-          specificationId: 18,
+          productSpecificationId: 18,
           productVariantId: -1,
           productSpecificationGroupId: 21,
           key: 'Wi-Fi',
@@ -677,7 +677,7 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
           isSpecial: true
         },
         {
-          specificationId: 19,
+          productSpecificationId: 19,
           productVariantId: -1,
           productSpecificationGroupId: 21,
           key: 'Bluetooth',
@@ -686,7 +686,7 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
           isSpecial: true
         },
         {
-          specificationId: 20,
+          productSpecificationId: 20,
           productVariantId: -1,
           productSpecificationGroupId: 21,
           key: 'Cổng giao tiếp',
@@ -700,9 +700,9 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
       productSpecificationGroupId: 21,
       groupName: 'Kích thước & Trọng lượng',
       displayOrder: 8,
-      specifications: [
+      productSpecifications: [
         {
-          specificationId: 22,
+          productSpecificationId: 22,
           productVariantId: -1,
           productSpecificationGroupId: 23,
           key: 'Chất liệu',
@@ -711,7 +711,7 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
           isSpecial: true
         },
         {
-          specificationId: 23,
+          productSpecificationId: 23,
           productVariantId: -1,
           productSpecificationGroupId: 23,
           key: 'Kích thước',
@@ -720,7 +720,7 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
           isSpecial: true
         },
         {
-          specificationId: 24,
+          productSpecificationId: 24,
           productVariantId: -1,
           productSpecificationGroupId: 23,
           key: 'Trọng lượng',
@@ -734,9 +734,9 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
       productSpecificationGroupId: 21,
       groupName: 'Loại máy & Chức năng',
       displayOrder: 8,
-      specifications: [
+      productSpecifications: [
         {
-          specificationId: 26,
+          productSpecificationId: 26,
           productVariantId: -1,
           productSpecificationGroupId: 25,
           key: 'Loại máy',
@@ -750,9 +750,9 @@ export const groupSpecificationsData: SpecificationGroupType[][] = [
       productSpecificationGroupId: 21,
       groupName: 'Tiện ích',
       displayOrder: 8,
-      specifications: [
+      productSpecifications: [
         {
-          specificationId: 27,
+          productSpecificationId: 27,
           productVariantId: -1,
           productSpecificationGroupId: 26,
           key: 'Tính năng khác',

@@ -1,69 +1,87 @@
 import axiosInstance from '@/configs/http'
+import { CartType } from '@/types/cart.type'
 import { CartItemType } from '@/types/cart_item.type'
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
-
-export const fetchCart = createAsyncThunk('cart/fetchCart', async (userId: number): Promise<CartItemType[]> => {
-  const res = await axiosInstance.get(`/carts/${userId}`)
-  return res.data
-})
-
-export const updateCart = createAsyncThunk(
-  'cart/updateCart',
-  async ({ userId, items }: { userId: number; items: CartItemType[] }): Promise<CartItemType[]> => {
-    const res = await axiosInstance.put(`/carts/${userId}`, { items })
-    return res.data
-  }
-)
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
 interface CartState {
   items: CartItemType[]
-  status: 'idle' | 'loading' | 'failed'
+  status: 'idle' | 'loading' | 'succeeded' | 'failed'
+  error: string | null
 }
 
 const initialState: CartState = {
   items: [],
-  status: 'idle'
+  status: 'idle',
+  error: null
 }
+
+export const fetchCart = createAsyncThunk('cart/fetchCart', async (userId: number): Promise<CartType> => {
+  const response = await axiosInstance.get(`carts/${userId}`)
+  return response.data
+})
+
+export const addCartItem = createAsyncThunk(
+  'cart/addCartItem',
+  async ({ userId, cartItem }: { userId: number; cartItem: CartItemType }): Promise<CartItemType> => {
+    const response = await axiosInstance.post(`carts/${userId}/items`, cartItem)
+    return response.data
+  }
+)
+
+export const updateCartItem = createAsyncThunk(
+  'cart/updateCartItem',
+  async ({
+    userId,
+    itemId,
+    cartItem
+  }: {
+    userId: number
+    itemId: number
+    cartItem: CartItemType
+  }): Promise<CartItemType> => {
+    const response = await axiosInstance.put(`carts/${userId}/items/${itemId}`, cartItem)
+    return response.data
+  }
+)
+
+export const removeCartItem = createAsyncThunk(
+  'cart/removeCartItem',
+  async ({ userId, itemId }: { userId: number; itemId: number }) => {
+    await axiosInstance.delete(`carts/${userId}/items/${itemId}`)
+    return itemId
+  }
+)
 
 const cartSlice = createSlice({
   name: 'cart',
   initialState,
-  reducers: {
-    addItem: (state, action: PayloadAction<CartItemType>) => {
-      const existingItem = state.items.find((item) => item.cartItemId === action.payload.cartItemId)
-      if (existingItem) {
-        existingItem.quantity += action.payload.quantity
-      } else {
-        state.items.push(action.payload)
-      }
-    },
-    removeItem: (state, action: PayloadAction<number>) => {
-      state.items = state.items.filter((item) => item.cartItemId !== action.payload)
-    },
-    updateQuantity: (state, action: PayloadAction<{ id: number; quantity: number }>) => {
-      const item = state.items.find((item) => item.cartItemId === action.payload.id)
-      if (item) {
-        item.quantity = action.payload.quantity
-      }
-    }
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchCart.pending, (state) => {
         state.status = 'loading'
       })
       .addCase(fetchCart.fulfilled, (state, action) => {
-        state.items = action.payload
-        state.status = 'idle'
+        state.status = 'succeeded'
+        state.items = action.payload.cartItems
       })
-      .addCase(fetchCart.rejected, (state) => {
+      .addCase(fetchCart.rejected, (state, action) => {
         state.status = 'failed'
+        state.error = action.error.message || 'Failed to fetch cart'
       })
-      .addCase(updateCart.fulfilled, (state, action) => {
-        state.items = action.payload
+      .addCase(addCartItem.fulfilled, (state, action) => {
+        state.items.push(action.payload)
+      })
+      .addCase(updateCartItem.fulfilled, (state, action) => {
+        const index = state.items.findIndex((item) => item.cartItemId === action.payload.cartItemId)
+        if (index !== -1) {
+          state.items[index] = action.payload
+        }
+      })
+      .addCase(removeCartItem.fulfilled, (state, action) => {
+        state.items = state.items.filter((item) => item.cartItemId !== action.payload)
       })
   }
 })
 
-export const { addItem, removeItem, updateQuantity } = cartSlice.actions
 export default cartSlice.reducer
