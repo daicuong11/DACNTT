@@ -32,7 +32,7 @@ import { LoadingItem, LoadingOpacity } from '@/components'
 import { SpecificationGroupType } from '@/types/specification_group.type'
 import slug from 'slug'
 import { useAddProductWithVariants } from '@/hooks/querys/product.query'
-import { SpecificationRequestType } from '@/types/specification.type'
+import { SpecificationRequestType, SpecificationType } from '@/types/specification.type'
 import { useNavigate } from 'react-router-dom'
 import { ShowReturnBackLayout } from '@/layouts'
 
@@ -254,17 +254,10 @@ const AddProduct = () => {
         },
         specifications: variant.specificationGroups
           .map((specificationGroup) =>
-            specificationGroup.specifications
+            specificationGroup.productSpecifications
               .map((spec) => {
                 if (spec.value.trim() !== '') {
-                  return {
-                    productVariantId: spec.productVariantId,
-                    productSpecificationGroupId: spec.productSpecificationGroupId,
-                    key: spec.key,
-                    value: spec.value.trim(),
-                    displayOrder: spec.displayOrder,
-                    isSpecial: spec.isSpecial
-                  }
+                  return spec
                 }
               })
               .filter(Boolean)

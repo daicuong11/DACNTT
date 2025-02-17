@@ -18,63 +18,75 @@ namespace PhoneStoreBackend.Repository.Implements
             _mapper = mapper;
         }
 
-        // Lấy tất cả giỏ hàng
-        public async Task<ICollection<CartDTO>> GetAllAsync()
-        {
-            var carts = await _context.Carts.ToListAsync();
-            return carts.Select(c => _mapper.Map<CartDTO>(c)).ToList();
-        }
-
-        // Lấy giỏ hàng theo CartId
-        public async Task<CartDTO> GetCartByIdAsync(int cartId)
+        public async Task<Cart> GetCartByUserIdAsync(int userId)
         {
             var cart = await _context.Carts
-                                      .FirstOrDefaultAsync(c => c.CartId == cartId);
+                .Include(c => c.CartItems)
+                .ThenInclude(ci => ci.ProductVariant)
+                .FirstOrDefaultAsync(c => c.UserId == userId);
+
             if (cart == null)
             {
-                throw new KeyNotFoundException("Cart not found.");
+                cart = new Cart
+                {
+                    UserId = userId,
+                    CartItems = new List<CartItem>() 
+                };
+
+                _context.Carts.Add(cart);
+                await _context.SaveChangesAsync();
             }
 
-            return _mapper.Map<CartDTO>(cart);
+            return cart;
         }
 
-        // Thêm giỏ hàng mới
-        public async Task<CartDTO> AddCartAsync(Cart cart)
+
+        public async Task<CartItem> AddCartItemAsync(int userId, CartItem cartItem)
         {
-            var newCart = await _context.Carts.AddAsync(cart);
-            await _context.SaveChangesAsync();
-            return _mapper.Map<CartDTO>(newCart.Entity);
-        }
-
-        // Cập nhật giỏ hàng
-        public async Task<bool> UpdateCartAsync(int cartId, Cart cart)
-        {
-            var existingCart = await _context.Carts.FindAsync(cartId);
-            if (existingCart == null)
-            {
-                throw new KeyNotFoundException("Cart not found.");
-            }
-
-            existingCart.UserId = cart.UserId;
-            _context.Carts.Update(existingCart);
-            await _context.SaveChangesAsync();
-
-            return true;
-        }
-
-        // Xóa giỏ hàng
-        public async Task<bool> DeleteCartAsync(int cartId)
-        {
-            var cart = await _context.Carts.FindAsync(cartId);
+            var cart = await _context.Carts.FirstOrDefaultAsync(c => c.UserId == userId);
             if (cart == null)
             {
-                throw new KeyNotFoundException("Cart not found.");
+                cart = new Cart { UserId = userId };
+                _context.Carts.Add(cart);
             }
 
-            _context.Carts.Remove(cart);
+            cartItem.CartId = cart.CartId;
+            _context.CartItems.Add(cartItem);
             await _context.SaveChangesAsync();
+            return cartItem;
+        }
 
-            return true;
+        public async Task<CartItem> UpdateCartItemAsync(int userId, int itemId, CartItem cartItem)
+        {
+            var existingItem = await _context.CartItems.FirstOrDefaultAsync(ci => ci.CartItemId == itemId && ci.Cart.UserId == userId);
+            if (existingItem == null)
+            {
+                return null;
+            }
+
+            existingItem.Quantity = cartItem.Quantity;
+            await _context.SaveChangesAsync();
+            return existingItem;
+        }
+
+        public async Task<bool> RemoveCartItemAsync(int userId, int itemId)
+        {
+            var item = await _context.CartItems.FirstOrDefaultAsync(ci => ci.CartItemId == itemId && ci.Cart.UserId == userId);
+            if (item != null)
+            {
+                _context.CartItems.Remove(item);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<ICollection<Cart>> GetAllAsync()
+        {
+            return await _context.Carts
+                .Include(c => c.CartItems)
+                .ThenInclude(ci => ci.ProductVariant)
+                .ToListAsync();
         }
     }
 }

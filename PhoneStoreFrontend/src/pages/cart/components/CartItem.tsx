@@ -4,20 +4,27 @@ import { Link } from 'react-router-dom'
 import { AppCheckBox } from '../../../components'
 import { iphone1 } from '../../../assets/images/iphone'
 import { FC } from 'react'
-import { CartItemPayloadType } from '../../../types/cart_item.type'
+import { CartItemPayloadType, CartItemType } from '../../../types/cart_item.type'
+import { useAppDispatch } from '@/hooks'
+import { updateCartItem } from '@/features/cart/cart.slice'
+import { removeCartItem } from '@/features/order/order.slice'
 
 interface CartItemProps {
   checked?: boolean
-  cartItem: CartItemPayloadType
+  cartItem: CartItemType
   handleSelect?: () => void
-  onChangeQuantity: (quantity: number) => void
-  handleRemove: (productVariantID: number) => void
 }
 
-const CartItem: FC<CartItemProps> = ({ cartItem, checked, handleSelect, onChangeQuantity, handleRemove }) => {
-  const HandleChangeQuantity = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, quantity: number) => {
-    e.stopPropagation()
-    onChangeQuantity(quantity)
+const CartItem: FC<CartItemProps> = ({ cartItem, checked, handleSelect }) => {
+  const dispatch = useAppDispatch()
+
+  const handleUpdateItem = (itemId: number) => {
+    const updatedItem = { productVariantId: 1, quantity: 2 }
+    // dispatch(updateCartItem({ userId: 1, itemId, cartItem: updatedItem }))
+  }
+
+  const handleRemoveItem = (itemId: number) => {
+    // dispatch(removeCartItem({ userId: 1, itemId }))
   }
 
   return (
@@ -31,7 +38,7 @@ const CartItem: FC<CartItemProps> = ({ cartItem, checked, handleSelect, onChange
       <button
         onClick={(e) => {
           e.stopPropagation()
-          handleRemove(cartItem.productVariantID)
+          handleRemoveItem(cartItem.cartItemId)
         }}
         className='absolute p-2 rounded hover:bg-gray-100 right-2 top-4'
       >
@@ -60,14 +67,14 @@ const CartItem: FC<CartItemProps> = ({ cartItem, checked, handleSelect, onChange
             </div>
             <div onClick={(e) => e.stopPropagation()} className='flex gap-x-0.5 justify-end'>
               <button
-                onClick={(e) => HandleChangeQuantity(e, cartItem.quantity - 1)}
+                onClick={(e) => handleUpdateItem(cartItem.cartItemId)}
                 className='flex items-center justify-center p-2 bg-gray-100 rounded hover:bg-gray-200'
               >
                 <Minus size={14} strokeWidth={2} />
               </button>
               <div className='w-[30px] h-[30px] flex items-center justify-center'>{cartItem.quantity}</div>
               <button
-                onClick={(e) => HandleChangeQuantity(e, cartItem.quantity + 1)}
+                onClick={(e) => handleUpdateItem(cartItem.cartItemId)}
                 className='flex items-center justify-center p-2 bg-gray-100 rounded hover:bg-gray-200'
               >
                 <Plus size={14} strokeWidth={2} />

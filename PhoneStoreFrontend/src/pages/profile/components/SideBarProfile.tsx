@@ -23,7 +23,7 @@ const SideBarProfile: FC<SideBarProfileProps> = ({ children }) => {
   }
 
   return (
-    <div className='w-[254px] bg-white rounded-md px-2 py-6 h-[calc(100vh-84px)] sticky top-[84px] flex flex-col gap-y-3 mt-4'>
+    <div className='w-[254px] flex-shrink-0 bg-white rounded-md px-2 py-6 h-[calc(100vh-84px)] sticky top-[84px] flex flex-col gap-y-3 mt-4'>
       {children}
       {currentUser?.role === RoleEnum.ADMIN && <MyDivider className='opacity-60 !h-[0.5px]' />}
       {currentUser?.role === RoleEnum.ADMIN && (

@@ -3,13 +3,13 @@ import { ProductVariantType } from './product_variant.type'
 export interface CartItemType {
   cartItemId: number
   cartId: number
-  productVariantID: number
+  productVariantId: number
   productVariant: ProductVariantType
   quantity: number
 }
 
 export interface CartItemPayloadType {
-  productVariantID: number
+  productVariantId: number
   productVariant: ProductVariantType
   quantity: number
 }
