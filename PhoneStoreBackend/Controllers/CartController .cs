@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PhoneStoreBackend.Api.Request;
 using PhoneStoreBackend.Api.Response;
 using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
+using PhoneStoreBackend.Helpers;
 using PhoneStoreBackend.Repository;
 
 namespace PhoneStoreBackend.Controllers
@@ -24,7 +26,7 @@ namespace PhoneStoreBackend.Controllers
             try
             {
                 var carts = await _cartRepository.GetAllAsync();
-                var response = Response<ICollection<Cart>>.CreateSuccessResponse(carts, "Danh sách giỏ hàng");
+                var response = Response<ICollection<CartResponse>>.CreateSuccessResponse(carts, "Danh sách giỏ hàng");
                 return Ok(response);
             }
             catch (Exception ex)
@@ -46,7 +48,7 @@ namespace PhoneStoreBackend.Controllers
                     var errorResponse = Response<object>.CreateErrorResponse("Không tìm thấy giỏ hàng");
                     return NotFound(errorResponse);
                 }
-                var response = Response<Cart>.CreateSuccessResponse(cart, "Giỏ hàng của bạn");
+                var response = Response<CartResponse>.CreateSuccessResponse(cart, "Giỏ hàng của bạn");
                 return Ok(response);
             }
             catch (Exception ex)
@@ -58,12 +60,20 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpPost("{userId}/items")]
-        public async Task<ActionResult> AddCartItem(int userId, [FromBody] CartItem cartItem)
+        public async Task<ActionResult> AddCartItem(int userId, [FromBody] CartItemRequest cartItem)
         {
             try
             {
-                var addedItem = await _cartRepository.AddCartItemAsync(userId, cartItem);
-                var response = Response<CartItem>.CreateSuccessResponse(addedItem, "Thêm vào giỏ hàng thành công");
+                var responseError = ModelStateHelper.CheckModelState(ModelState);
+                if (responseError != null)
+                    return BadRequest(responseError);
+                var createCartItem = new CartItem
+                {
+                    ProductVariantId = cartItem.ProductVariantId,
+                    Quantity = cartItem.Quantity,
+                };
+                var addedItem = await _cartRepository.AddCartItemAsync(userId, createCartItem);
+                var response = Response<CartItemResponse>.CreateSuccessResponse(addedItem, "Thêm vào giỏ hàng thành công");
 
                 return Ok(response);
             }
@@ -76,14 +86,23 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpPut("{userId}/items/{itemId}")]
-        public async Task<ActionResult> UpdateCartItem(int userId, int itemId, [FromBody] CartItem cartItem)
+        public async Task<ActionResult> UpdateCartItem(int userId, int itemId, [FromBody] CartItemRequest cartItem)
         {
             try
             {
-                var updatedItem = await _cartRepository.UpdateCartItemAsync(userId, itemId, cartItem);
-                var response = Response<CartItem>.CreateSuccessResponse(updatedItem, "Chỉnh sửa vào giỏ hàng thành công");
+                var responseError = ModelStateHelper.CheckModelState(ModelState);
+                if (responseError != null)
+                    return BadRequest(responseError);
+                var createCartItem = new CartItem
+                {
+                    ProductVariantId = cartItem.ProductVariantId,
+                    Quantity = cartItem.Quantity,
+                };
 
-                return Ok(updatedItem);
+                var updatedItem = await _cartRepository.UpdateCartItemAsync(userId, itemId, createCartItem);
+                var response = Response<CartItemResponse>.CreateSuccessResponse(updatedItem, "Chỉnh sửa vào giỏ hàng thành công");
+
+                return Ok(response);
             }
             catch (Exception ex)
             {

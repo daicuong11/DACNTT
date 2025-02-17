@@ -1,6 +1,6 @@
 import { FC, useState, useEffect, useMemo, useCallback } from 'react'
 import useSetDocTitle from '../../hooks/useSetDocTitle'
-import { useNavigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 import { AppCheckBox, LoadingOpacity } from '../../components'
 import CartItem from './components/CartItem'
 import formatPrice from '../../utils/formatPrice'
@@ -9,6 +9,9 @@ import { FixedBottomLayout } from '../../layouts'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { setNewCartItems } from '../../features/order/order.slice'
 import { fetchCart } from '@/features/cart/cart.slice'
+import { cart_empty_removebg } from '@/assets/images'
+import CartItemSkeleton from '@/components/sekeletons/cart/CartItemSkeleton'
+import getPriceAfterDiscount from '@/utils/getPriceAfterDiscount'
 
 interface CartPageProps {}
 
@@ -18,17 +21,17 @@ const CartPage: FC<CartPageProps> = () => {
   const navigate = useNavigate()
 
   const { items, status, error } = useAppSelector((state) => state.cart)
-  const { user } = useAppSelector((state) => state.auth)
+  const userId = useAppSelector((state) => state.auth.user?.id)
   const dispatch = useAppDispatch()
 
   const [selectAll, setSelectAll] = useState<boolean>(false)
   const [listSelected, setListSelected] = useState<number[]>([])
 
   useEffect(() => {
-    if (user?.id) {
-      dispatch(fetchCart(user.id))
+    if (userId) {
+      dispatch(fetchCart(userId))
     }
-  }, [dispatch, user])
+  }, [dispatch, userId])
 
   const onSelectAllProduct = useCallback(() => {
     if (selectAll) {
@@ -55,8 +58,8 @@ const CartPage: FC<CartPageProps> = () => {
       return
     }
     const newCartItems = items.filter((item) => listSelected.includes(item.cartItemId))
-    dispatch(setNewCartItems(newCartItems))
-    navigate('/cart/payment-info')
+    // dispatch(setNewCartItems(newCartItems))
+    // navigate('/cart/payment-info')
   }, [listSelected, items, dispatch, navigate])
 
   const totalOrderAmount = useMemo(() => {
@@ -65,9 +68,17 @@ const CartPage: FC<CartPageProps> = () => {
       if (!cartItemFind) {
         return total
       }
-      return total + cartItemFind.productVariant.price * cartItemFind.quantity
+      return (
+        total +
+        getPriceAfterDiscount(cartItemFind.productVariant.price, cartItemFind.productVariant.discountPercentage) *
+          cartItemFind.quantity
+      )
     }, 0)
   }, [listSelected, items])
+
+  if (!userId) {
+    return <Navigate to='/signin' />
+  }
 
   if (status === 'loading') {
     return (
@@ -79,11 +90,8 @@ const CartPage: FC<CartPageProps> = () => {
               <AppCheckBox>Chọn tất cả</AppCheckBox>
             </div>
             <div className='flex flex-col pb-16 mt-2 gap-y-4'>
-              {[1, 2, 3, 4, 5].map((_, index) => (
-                <div
-                  key={index}
-                  className='max-w-[600px] relative px-3 py-4 pl-8 shadow-sm border rounded-lg cursor-pointer border-gray-200 bg-white min-h-[100px] animate-pulse bg-gray-300'
-                ></div>
+              {[1, 2, 3].map((_, index) => (
+                <CartItemSkeleton key={index} />
               ))}
             </div>
           </div>
@@ -113,7 +121,7 @@ const CartPage: FC<CartPageProps> = () => {
     return (
       <div className='flex flex-col items-center justify-center h-full'>
         <p className='text-lg font-medium text-red-500'>Lỗi: {error}</p>
-        <button onClick={() => dispatch(fetchCart(user!.id))} className='mt-4 btn btn-primary'>
+        <button onClick={() => dispatch(fetchCart(userId))} className='mt-4 btn btn-primary'>
           Thử lại
         </button>
       </div>
@@ -126,11 +134,10 @@ const CartPage: FC<CartPageProps> = () => {
         navigateTo={() => navigate('/')}
         title='Giỏ hàng của bạn'
         body={
-          <div className='flex flex-col items-center justify-center h-full'>
-            <p className='text-lg font-medium text-gray-500'>Giỏ hàng của bạn đang trống</p>
-            <button onClick={() => navigate('/')} className='mt-4 btn btn-primary'>
-              Tiếp tục mua sắm
-            </button>
+          <div className='flex flex-col items-center justify-center h-full my-20'>
+            <img className='w-[362px] h-[260px] object-cover' src={cart_empty_removebg} />
+            <div className='text-[17px] text-gray-800 text-center'>Giỏ hàng của bạn đang trống.</div>
+            <div className='text-[17px] text-gray-800 text-center'>Hãy chọn thêm sản phẩm để mua sắm nhé</div>
           </div>
         }
         footer={
@@ -148,11 +155,17 @@ const CartPage: FC<CartPageProps> = () => {
       body={
         <div className='pb-10'>
           <div className='flex items-center justify-between'>
-            <AppCheckBox value={selectAll} onChange={onSelectAllProduct}>
+            <AppCheckBox value={selectAll || listSelected.length == items.length} onChange={onSelectAllProduct}>
               {selectAll ? 'Bỏ chọn tất cả' : 'Chọn tất cả'}
             </AppCheckBox>
             {listSelected.length > 0 && (
-              <button className='py-0.5 text-sm italic font-medium text-gray-400' onClick={() => setListSelected([])}>
+              <button
+                className='py-0.5 text-sm italic font-medium text-gray-400'
+                onClick={() => {
+                  setListSelected([])
+                  setSelectAll(false)
+                }}
+              >
                 Xóa sản phẩm đã chọn
               </button>
             )}

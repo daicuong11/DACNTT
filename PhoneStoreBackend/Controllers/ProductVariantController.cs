@@ -76,7 +76,7 @@ namespace PhoneStoreBackend.Controllers
             {
                 var findProductVariant = await productVariantRepository.GetProductVariantById(id);
 
-                var response = Response<ProductVariantDTO>.CreateSuccessResponse(findProductVariant, "Thông tin sản phẩm: ");
+                var response = Response<VariantBasicResponse>.CreateSuccessResponse(findProductVariant, "Thông tin sản phẩm: ");
                 return Ok(response);
             }
             catch (KeyNotFoundException)

@@ -18,10 +18,17 @@ import getPriceAfterDiscount from '@/utils/getPriceAfterDiscount'
 import { getProductRoute } from '@/utils/getProductRoute'
 import { getMainImage } from '@/utils/getMainImage'
 import ListSimilarProducts from './components/ListSimilarProducts'
+import { CartItemRequestType } from '@/types/cart_item.type'
+import { useAppDispatch, useAppSelector, useModal } from '@/hooks'
+import { addCartItem } from '@/features/cart/cart.slice'
+import LoginOfRegisterModal from '@/components/modals/LoginOrRegisterModal'
+import { toast } from 'react-toastify'
+import classNames from 'classnames'
 
 interface ProductDetailPageProps {}
 const ProductDetailPage: FC<ProductDetailPageProps> = () => {
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
   const { productSlug } = useParams<{ productSlug: string }>()
   const { data: productVariant, isLoading, error } = useGetVariantBySlug(productSlug || '')
   const { data: listVariants, isLoading: isLoadingVariants } = useGetVariantByProductId(productVariant?.productId || 0)
@@ -29,6 +36,9 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
   useSetDocTitle(productVariant?.product.name || 'Product Detail')
 
   const [selectedStorage, setSelectedStorage] = useState<string>(productVariant?.storage || '')
+  const userId = useAppSelector((state) => state.auth.user?.id)
+  const { isOpen, openModal, closeModal } = useModal()
+  const [isLoadingAddToCart, setIsLoadingAddToCart] = useState<boolean>(false)
 
   useEffect(() => {
     if (listVariants && productVariant) {
@@ -36,10 +46,28 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
     }
   }, [listVariants, productVariant])
 
+  const handleAddToCart = async () => {
+    if (userId) {
+      if (productVariant) {
+        const cartItem: CartItemRequestType = {
+          productVariantId: productVariant.productVariantId,
+          quantity: 1
+        }
+        setIsLoadingAddToCart(true)
+        await dispatch(addCartItem({ userId, cartItem }))
+        setIsLoadingAddToCart(false)
+        toast('Thêm vào giỏ hàng thành công')
+      }
+    } else {
+      openModal()
+    }
+  }
+
   if (error) return <Navigate to={'/not-found'} />
 
   return (
     <div className='flex flex-col my-4 gap-y-4'>
+      <LoginOfRegisterModal isOpen={isOpen} onClose={closeModal} />
       {isLoading && <LoadingOpacity />}
       <div className='flex flex-col gap-4'>
         <div className='flex items-center gap-2'>
@@ -201,10 +229,21 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
                 </div>
               </div>
               <div className='flex gap-2.5'>
-                <button className='flex items-center w-full flex-1 btn btn-danger h-[60px]'>
+                <button
+                  disabled={isLoadingAddToCart}
+                  className={classNames('flex items-center w-full flex-1 btn btn-danger h-[60px]', {
+                    'opacity-50 cursor-not-allowed': isLoadingAddToCart
+                  })}
+                >
                   <span className='text-lg font-bold leading-none uppercase'>Mua ngay</span>
                 </button>
-                <button className='items-center p-0 gap-1 btn btn-outline flex-col w-[60px] flex-shrink-0'>
+                <button
+                  onClick={handleAddToCart}
+                  disabled={isLoadingAddToCart}
+                  className={classNames('items-center p-0 gap-1 btn btn-outline flex-col w-[60px] flex-shrink-0', {
+                    'opacity-50 cursor-not-allowed': isLoadingAddToCart
+                  })}
+                >
                   <span className=''>
                     <ShoppingCart size={28} strokeWidth={1.6} />
                   </span>

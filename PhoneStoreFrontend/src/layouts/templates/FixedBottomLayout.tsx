@@ -14,7 +14,7 @@ const FixedBottomLayout: FC<FixedBottomLayoutProps> = ({ title, body, footer, na
   const navigate = useNavigate()
   return (
     <div className='w-full pt-2'>
-      <div className='max-w-[600px] mx-auto min-h-screen'>
+      <div className='max-w-[600px] mx-auto'>
         <div className='relative font-semibold text-center py-1.5 text-lg'>
           {title}
           <button

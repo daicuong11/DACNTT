@@ -1,3 +1,5 @@
+import { BrandType } from './brand.type'
+import { CategoryType } from './category.type'
 import { DiscountType } from './discount.type'
 import { ProductType } from './product.type'
 import { ProductImageType } from './product_image.type'
@@ -32,4 +34,20 @@ export interface ProductVariantRequestType {
   importPrice: number
   price: number
   stock: number
+}
+
+export interface VariantBasicResponse {
+  productVariantId: number
+  fullNameVariant: string
+  productId: number
+  brand: BrandType
+  category: CategoryType
+  discountPercentage: number
+  slug: string
+  color: string
+  storage: string
+  price: number
+  importPrice: number
+  stock: number
+  imageUrl: string
 }

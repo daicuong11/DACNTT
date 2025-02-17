@@ -6,6 +6,7 @@ import orderReducer from './features/order/order.slice'
 import cartReducer from './features/cart/cart.slice'
 import createProductReducer from './features/admin/create_product.slice'
 import { fetchUserMiddleware } from './middlewares/fetchUserMiddleware'
+
 const rootReducer = combineReducers({
   auth: authReducer,
   order: orderReducer,

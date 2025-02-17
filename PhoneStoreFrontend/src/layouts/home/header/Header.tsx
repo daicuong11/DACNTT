@@ -2,28 +2,56 @@ import { CircleUserRound, ShoppingBag, SquareMenu } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import { GiaoHangIcon } from '../../../assets/images'
 import { CategoryModal } from '../../../components'
-import { useAppSelector, useModal } from '../../../hooks'
+import { useAppDispatch, useAppSelector, useModal } from '../../../hooks'
 import { ButtonHeader, Search } from './components'
 import Breadcrumbs from './components/Breadcrumbs'
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import getLastWordOrTwoWithLimit from '@/utils/getLastWordOrTwoWithLimit'
+import LoginOfRegisterModal from '@/components/modals/LoginOrRegisterModal'
+import { fetchCart } from '@/features/cart/cart.slice'
 
 interface HeaderProps {
   showBreadcrumb?: boolean
 }
 const Header: FC<HeaderProps> = ({ showBreadcrumb = true }) => {
   const { isOpen, toggleModal, closeModal } = useModal()
+  const { isOpen: isOpenProfileModal, openModal: openProfileModal, closeModal: closeProfileModal } = useModal()
 
   const currentUser = useAppSelector((state) => state.auth.user)
+  const cartItems = useAppSelector((state) => state.cart.items)
 
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    const userId = currentUser?.id
+    if (userId) {
+      dispatch(fetchCart(userId))
+    }
+  }, [dispatch, currentUser])
 
   const handleProfileClick = () => {
-    navigate(currentUser ? '/profile' : '/signin')
+    if (currentUser) {
+      navigate('/profile')
+    } else {
+      openProfileModal()
+    }
   }
+
+  const handleCartButtonClick = () => {
+    if (currentUser) {
+      navigate('/cart')
+    } else {
+      openProfileModal()
+    }
+  }
+
+  const totalQuantity = cartItems.reduce((total, item) => total + item.quantity, 0)
 
   return (
     <header className='sticky top-0 z-[999] w-full bg-white'>
+      <LoginOfRegisterModal isOpen={isOpenProfileModal} onClose={closeProfileModal} />
+
       <div className='h-[64px] bg-primary px-2.5'>
         <div className='max-w-[1200px] grid grid-cols-3 mx-auto gap-x-3 leading-[64px]'>
           <div className='flex items-center gap-x-3'>
@@ -54,12 +82,12 @@ const Header: FC<HeaderProps> = ({ showBreadcrumb = true }) => {
             </ButtonHeader>
             <ButtonHeader
               className='relative hidden sm:flex'
-              onClick={() => navigate('/cart')}
+              onClick={handleCartButtonClick}
               icon={<ShoppingBag strokeWidth={1.6} size={26} color='white' />}
             >
               Giỏ hàng
               <span className='absolute flex w-[16px] h-[15px] items-center justify-center text-sm font-semibold text-center leading-none text-white -translate-y-1/2 bg-primary left-[12.5px] top-[55%]'>
-                3
+                {totalQuantity}
               </span>
             </ButtonHeader>
             <ButtonHeader
@@ -70,7 +98,7 @@ const Header: FC<HeaderProps> = ({ showBreadcrumb = true }) => {
               icon={<CircleUserRound strokeWidth={1.6} size={24} color='white' />}
               className='font-medium transition-all duration-300 ease-in-out hover:scale-95'
             >
-              {currentUser ? getLastWordOrTwoWithLimit(currentUser.name) : 'Đăng nhập'}
+              {currentUser ? getLastWordOrTwoWithLimit(currentUser.name) : 'Tài khoản'}
             </ButtonHeader>
           </div>
         </div>

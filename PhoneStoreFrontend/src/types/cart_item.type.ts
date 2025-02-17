@@ -1,4 +1,4 @@
-import { ProductVariantType } from './product_variant.type'
+import { ProductVariantType, VariantBasicResponse } from './product_variant.type'
 
 export interface CartItemType {
   cartItemId: number
@@ -11,5 +11,17 @@ export interface CartItemType {
 export interface CartItemPayloadType {
   productVariantId: number
   productVariant: ProductVariantType
+  quantity: number
+}
+
+export interface CartItemRequestType {
+  productVariantId: number
+  quantity: number
+}
+
+export interface CartItemResponse {
+  cartItemId: number
+  cartId: number
+  productVariant: VariantBasicResponse
   quantity: number
 }

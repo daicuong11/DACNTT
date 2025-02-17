@@ -4,9 +4,6 @@ namespace PhoneStoreBackend.Api.Request
 {
     public class CartItemRequest
     {
-        [Required(ErrorMessage = "Mã giỏ hàng là bắt buộc.")]
-        public int CartId { get; set; }
-
         [Required(ErrorMessage = "Mã biến thể sản phẩm là bắt buộc.")]
         public int ProductVariantId { get; set; }
 

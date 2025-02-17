@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace PhoneStoreBackend.Entities
 {
@@ -11,6 +12,7 @@ namespace PhoneStoreBackend.Entities
 
         public int CartId { get; set; }
         [ForeignKey("CartId")]
+        [JsonIgnore]
         public Cart Cart { get; set; }
 
         public int ProductVariantId { get; set; }

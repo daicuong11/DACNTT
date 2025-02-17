@@ -55,13 +55,13 @@ namespace PhoneStoreBackend.Repository.Implements
             return _mapper.Map<List<ProductVariantDTO>>(productVariants);
         }
 
-        public async Task<ProductVariantDTO> GetProductVariantById(int id)
+        public async Task<VariantBasicResponse> GetProductVariantById(int id)
         {
             var findProductVariant = await _context.ProductVariants
-                .Include(pv => pv.Product) 
-                    .ThenInclude(p => p.Brand) 
                 .Include(pv => pv.Product)
-                    .ThenInclude(p => p.Category) 
+                    .ThenInclude(p => p.Brand)
+                .Include(pv => pv.Product)
+                    .ThenInclude(p => p.Category)
                 .Include(pv => pv.Discount)
                 .Include(v => v.ProductImages)
                 .Include(v => v.ProductSpecifications)
@@ -71,8 +71,25 @@ namespace PhoneStoreBackend.Repository.Implements
             {
                 throw new KeyNotFoundException($"ProductVariant with id {id} not found.");
             }
-            return _mapper.Map<ProductVariantDTO>(findProductVariant);
+
+            return new VariantBasicResponse
+            {
+                ProductVariantId = findProductVariant.ProductVariantId,
+                FullNameVariant = $"{findProductVariant.Product.Name} {findProductVariant.VariantName}",
+                ProductId = findProductVariant.ProductId,
+                Brand = findProductVariant.Product.Brand, 
+                Category = findProductVariant.Product.Category,  
+                Color = findProductVariant.Color,
+                DiscountPercentage = findProductVariant.Discount?.Percentage ?? 0,
+                ImageUrl = findProductVariant.ProductImages.FirstOrDefault()?.ImageUrl ?? "",
+                ImportPrice = findProductVariant.ImportPrice,
+                Price = findProductVariant.Price,
+                Slug = findProductVariant.Slug,
+                Stock = findProductVariant.Stock,
+                Storage = findProductVariant.Storage,
+            };
         }
+
 
         public async Task<ProductVariantDTO> GetProductVariantBySlug(string slug)
         {

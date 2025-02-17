@@ -7,7 +7,7 @@ namespace PhoneStoreBackend.Repository
     public interface IProductVariantRepository
     {
         Task<ICollection<ProductVariantDTO>> GetAllAsync();
-        Task<ProductVariantDTO> GetProductVariantById(int id);
+        Task<VariantBasicResponse> GetProductVariantById(int id);
         Task<ProductVariantDTO> GetProductVariantBySlug(string slug);
         Task<ICollection<ProductVariantResponse>> GetProductVariantByProductId(int id);
         Task<ICollection<ProductVariantDTO>> GetAllProductVariantOfMobile();

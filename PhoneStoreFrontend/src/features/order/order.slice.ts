@@ -41,16 +41,16 @@ const orderSlice = createSlice({
       state.totalAmount = getTotalAmountOfCartItems(state.cartItems)
     },
     removeCartItem: (state, action: PayloadAction<number>) => {
-      state.cartItems = state.cartItems.filter((item) => item.productVariantID !== action.payload)
+      state.cartItems = state.cartItems.filter((item) => item.productVariantId !== action.payload)
       state.totalAmount = getTotalAmountOfCartItems(state.cartItems)
     },
     increaseQuantity: (state, action: PayloadAction<number>) => {
-      const index = state.cartItems.findIndex((item) => item.productVariantID === action.payload)
+      const index = state.cartItems.findIndex((item) => item.productVariantId === action.payload)
       state.cartItems[index].quantity += 1
       state.totalAmount = getTotalAmountOfCartItems(state.cartItems)
     },
     decreaseQuantity: (state, action: PayloadAction<number>) => {
-      const index = state.cartItems.findIndex((item) => item.productVariantID === action.payload)
+      const index = state.cartItems.findIndex((item) => item.productVariantId === action.payload)
       if (state.cartItems[index].quantity === 1) {
         state.cartItems.splice(index, 1)
       } else {
@@ -113,7 +113,7 @@ const orderSlice = createSlice({
       state.note = null
     },
     removeOrderDetail: (state, action: PayloadAction<number>) => {
-      state.cartItems = state.cartItems.filter((item) => item.productVariantID !== action.payload)
+      state.cartItems = state.cartItems.filter((item) => item.productVariantId !== action.payload)
     }
   }
 })

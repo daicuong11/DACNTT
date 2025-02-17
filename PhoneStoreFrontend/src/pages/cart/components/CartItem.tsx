@@ -2,29 +2,49 @@ import { Minus, Plus, Trash2 } from 'lucide-react'
 import formatPrice from '../../../utils/formatPrice'
 import { Link } from 'react-router-dom'
 import { AppCheckBox } from '../../../components'
-import { iphone1 } from '../../../assets/images/iphone'
 import { FC } from 'react'
-import { CartItemPayloadType, CartItemType } from '../../../types/cart_item.type'
-import { useAppDispatch } from '@/hooks'
-import { updateCartItem } from '@/features/cart/cart.slice'
-import { removeCartItem } from '@/features/order/order.slice'
+import { CartItemRequestType, CartItemResponse } from '../../../types/cart_item.type'
+import { useAppDispatch, useAppSelector } from '@/hooks'
+import { removeCartItem, updateCartItem } from '@/features/cart/cart.slice'
+import getPriceAfterDiscount from '@/utils/getPriceAfterDiscount'
+import { Tag } from 'antd'
 
 interface CartItemProps {
   checked?: boolean
-  cartItem: CartItemType
+  cartItem: CartItemResponse
   handleSelect?: () => void
 }
 
 const CartItem: FC<CartItemProps> = ({ cartItem, checked, handleSelect }) => {
+  const userId = useAppSelector((state) => state.auth.user?.id)
   const dispatch = useAppDispatch()
 
-  const handleUpdateItem = (itemId: number) => {
-    const updatedItem = { productVariantId: 1, quantity: 2 }
-    // dispatch(updateCartItem({ userId: 1, itemId, cartItem: updatedItem }))
+  const handleUpQuality = () => {
+    const newCartItemReq: CartItemRequestType = {
+      productVariantId: cartItem.productVariant.productVariantId,
+      quantity: cartItem.quantity + 1
+    }
+    if (userId) {
+      dispatch(updateCartItem({ userId, itemId: cartItem.cartItemId, cartItem: newCartItemReq }))
+    }
   }
 
-  const handleRemoveItem = (itemId: number) => {
-    // dispatch(removeCartItem({ userId: 1, itemId }))
+  const handleDownQuality = () => {
+    if (cartItem.quantity > 1) {
+      const newCartItemReq: CartItemRequestType = {
+        productVariantId: cartItem.productVariant.productVariantId,
+        quantity: cartItem.quantity - 1
+      }
+      if (userId) {
+        dispatch(updateCartItem({ userId, itemId: cartItem.cartItemId, cartItem: newCartItemReq }))
+      }
+    }
+  }
+
+  const handleRemoveItem = () => {
+    if (userId) {
+      dispatch(removeCartItem({ userId, itemId: cartItem.cartItemId }))
+    }
   }
 
   return (
@@ -38,7 +58,7 @@ const CartItem: FC<CartItemProps> = ({ cartItem, checked, handleSelect }) => {
       <button
         onClick={(e) => {
           e.stopPropagation()
-          handleRemoveItem(cartItem.cartItemId)
+          handleRemoveItem()
         }}
         className='absolute p-2 rounded hover:bg-gray-100 right-2 top-4'
       >
@@ -46,7 +66,7 @@ const CartItem: FC<CartItemProps> = ({ cartItem, checked, handleSelect }) => {
       </button>
       <div className='flex gap-x-4'>
         <div className='w-[100px] h-[100px] flex-shrink-0'>
-          <img src={iphone1} className='object-contain w-full h-full' />
+          <img src={cartItem.productVariant.imageUrl} className='object-contain w-full h-full' />
         </div>
         <div className='flex flex-col w-full gap-y-2'>
           <Link
@@ -54,31 +74,40 @@ const CartItem: FC<CartItemProps> = ({ cartItem, checked, handleSelect }) => {
             to={''}
             className='w-[70%] line-clamp-2 text-[#3a3a3a] text-[17px] hover:underline'
           >
-            {cartItem.productVariant.product.name}
+            {cartItem.productVariant.fullNameVariant}
           </Link>
-          <div className='flex flex-col justify-between w-full gap-2 sm:items-end sm:flex-row'>
-            <div className='flex items-end gap-x-2'>
-              <span className='text-lg font-medium leading-none text-primary'>
-                {formatPrice(cartItem.productVariant.price)}
-              </span>
-              <span className='font-medium text-[#707070] text-sm leading-none line-through'>
-                {formatPrice(cartItem.productVariant.price)}
-              </span>
+          <div className='flex flex-col'>
+            <div className=''>
+              <Tag color='default' className='text-[10px] md:text-[12px] text-gray-500 font-medium'>
+                {cartItem.productVariant.color}
+              </Tag>
             </div>
-            <div onClick={(e) => e.stopPropagation()} className='flex gap-x-0.5 justify-end'>
-              <button
-                onClick={(e) => handleUpdateItem(cartItem.cartItemId)}
-                className='flex items-center justify-center p-2 bg-gray-100 rounded hover:bg-gray-200'
-              >
-                <Minus size={14} strokeWidth={2} />
-              </button>
-              <div className='w-[30px] h-[30px] flex items-center justify-center'>{cartItem.quantity}</div>
-              <button
-                onClick={(e) => handleUpdateItem(cartItem.cartItemId)}
-                className='flex items-center justify-center p-2 bg-gray-100 rounded hover:bg-gray-200'
-              >
-                <Plus size={14} strokeWidth={2} />
-              </button>
+            <div className='flex flex-col justify-between w-full gap-2 sm:items-end sm:flex-row'>
+              <div className='flex items-end gap-x-2'>
+                <span className='text-lg font-medium leading-none text-primary'>
+                  {formatPrice(
+                    getPriceAfterDiscount(cartItem.productVariant.price, cartItem.productVariant.discountPercentage)
+                  )}
+                </span>
+                <span className='font-medium text-[#707070] text-sm leading-none line-through'>
+                  {formatPrice(cartItem.productVariant.price)}
+                </span>
+              </div>
+              <div onClick={(e) => e.stopPropagation()} className='flex gap-x-0.5 justify-end'>
+                <button
+                  onClick={handleDownQuality}
+                  className='flex items-center justify-center p-2 bg-gray-100 rounded hover:bg-gray-200'
+                >
+                  <Minus size={14} strokeWidth={2} />
+                </button>
+                <div className='w-[30px] h-[30px] flex items-center justify-center'>{cartItem.quantity}</div>
+                <button
+                  onClick={handleUpQuality}
+                  className='flex items-center justify-center p-2 bg-gray-100 rounded hover:bg-gray-200'
+                >
+                  <Plus size={14} strokeWidth={2} />
+                </button>
+              </div>
             </div>
           </div>
         </div>

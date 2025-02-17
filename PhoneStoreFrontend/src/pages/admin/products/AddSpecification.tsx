@@ -87,8 +87,6 @@ const AddSpecification = () => {
   if (error) return <div>Đã có lỗi xảy ra</div>
   if (isLoading) return <LoadingItem />
 
-  console.log('inputs', inputs)
-
   return (
     <div className='p-5 space-y-6 bg-white border border-gray-300 rounded-lg'>
       <div className='flex items-center justify-between'>

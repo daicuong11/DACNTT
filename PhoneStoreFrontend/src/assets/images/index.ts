@@ -21,6 +21,10 @@ import rigthbanner_dienthoai from './Rightbanner-mobile.jpg'
 import rigthbanner_laptop from './Rightbanner_Laptop.jpg'
 import robot_hello from './robot_hello.png'
 import google_logo from './google_logo.png'
+import cart_empty from './cart_empty.png'
+import cart_empty_removebg from './cart_empty-removebg.png'
+import cart_full_1 from './cart_full_1.png'
+import cart_full_2 from './cart_full_2.png'
 
 export * from './payment_methods'
 
@@ -49,7 +53,11 @@ export {
   atm_card_img,
   flame_img,
   robot_hello,
-  google_logo
+  google_logo,
+  cart_empty,
+  cart_empty_removebg,
+  cart_full_1,
+  cart_full_2
 }
 
 export const rightBannerImages = [

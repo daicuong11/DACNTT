@@ -1,10 +1,10 @@
 import axiosInstance from '@/configs/http'
-import { CartType } from '@/types/cart.type'
-import { CartItemType } from '@/types/cart_item.type'
+import { CartResponse } from '@/types/cart.type'
+import { CartItemRequestType, CartItemResponse } from '@/types/cart_item.type'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
 interface CartState {
-  items: CartItemType[]
+  items: CartItemResponse[]
   status: 'idle' | 'loading' | 'succeeded' | 'failed'
   error: string | null
 }
@@ -15,14 +15,14 @@ const initialState: CartState = {
   error: null
 }
 
-export const fetchCart = createAsyncThunk('cart/fetchCart', async (userId: number): Promise<CartType> => {
+export const fetchCart = createAsyncThunk('cart/fetchCart', async (userId: number): Promise<CartResponse> => {
   const response = await axiosInstance.get(`carts/${userId}`)
   return response.data
 })
 
 export const addCartItem = createAsyncThunk(
   'cart/addCartItem',
-  async ({ userId, cartItem }: { userId: number; cartItem: CartItemType }): Promise<CartItemType> => {
+  async ({ userId, cartItem }: { userId: number; cartItem: CartItemRequestType }): Promise<CartItemResponse> => {
     const response = await axiosInstance.post(`carts/${userId}/items`, cartItem)
     return response.data
   }
@@ -37,8 +37,8 @@ export const updateCartItem = createAsyncThunk(
   }: {
     userId: number
     itemId: number
-    cartItem: CartItemType
-  }): Promise<CartItemType> => {
+    cartItem: CartItemRequestType
+  }): Promise<CartItemResponse> => {
     const response = await axiosInstance.put(`carts/${userId}/items/${itemId}`, cartItem)
     return response.data
   }
@@ -70,10 +70,17 @@ const cartSlice = createSlice({
         state.error = action.error.message || 'Failed to fetch cart'
       })
       .addCase(addCartItem.fulfilled, (state, action) => {
-        state.items.push(action.payload)
+        const index = state.items.findIndex((item) => item.cartItemId === action.payload.cartItemId)
+
+        if (index !== -1) {
+          state.items[index] = action.payload
+        } else {
+          state.items.push(action.payload)
+        }
       })
       .addCase(updateCartItem.fulfilled, (state, action) => {
         const index = state.items.findIndex((item) => item.cartItemId === action.payload.cartItemId)
+
         if (index !== -1) {
           state.items[index] = action.payload
         }

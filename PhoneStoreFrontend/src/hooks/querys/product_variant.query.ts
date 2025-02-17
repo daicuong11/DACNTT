@@ -37,3 +37,11 @@ export const useGetVariantBySlug = (slug: string) => {
     enabled: !!slug
   })
 }
+
+export const useGetProductVariantById = (id: number) => {
+  return useQuery({
+    queryKey: ['getProductVariantById', id],
+    queryFn: () => productVariantAPI.getProductVariantById(id),
+    enabled: !!id
+  })
+}
