@@ -3,7 +3,6 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
-import { BrowserRouter } from 'react-router-dom'
 import 'react-toastify/dist/ReactToastify.css'
 import { PersistGate } from 'redux-persist/integration/react'
 import 'swiper/swiper-bundle.css'
@@ -19,7 +18,7 @@ createRoot(document.getElementById('root')!).render(
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
         <PersistGate loading={<AppLoading />} persistor={persistor}>
-            <App />
+          <App />
         </PersistGate>
       </Provider>
       <ReactQueryDevtools initialIsOpen={false} />

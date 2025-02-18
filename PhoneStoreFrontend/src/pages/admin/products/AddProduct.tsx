@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Card from '../components/Card'
 import { Input, Select, UploadFile } from 'antd'
 import { BadgePlus, Pencil } from 'lucide-react'

@@ -1,7 +1,5 @@
-// utils/axiosInstance.ts
 import axios from 'axios'
-import { store } from '../store'
-import { clearAuth, setTokens } from '@/features/auth/auth.slice'
+
 const API_BASE_URL: string = import.meta.env.VITE_API_BASE_URL || ''
 
 // Create Axios instance
@@ -11,20 +9,32 @@ const axiosInstance = axios.create({
   timeout: 20000
 })
 
-// Helper functions to get tokens from Redux store
+// Helper function to get tokens from Redux Persist in localStorage
+const getPersistedState = (): any => {
+  const persistedData = localStorage.getItem('persist:root')
+  return persistedData ? JSON.parse(persistedData) : null
+}
+
 export const getAccessToken = (): string | null => {
-  const state = store.getState()
-  return state.auth.accessToken || null
+  const state = getPersistedState()
+  return state?.auth ? JSON.parse(state.auth).accessToken : null
 }
 
 export const getRefreshToken = (): string | null => {
-  const state = store.getState()
-  return state.auth.refreshToken || null
+  const state = getPersistedState()
+  return state?.auth ? JSON.parse(state.auth).refreshToken : null
 }
 
-// Function to set tokens to Redux store
+// Function to set tokens in Redux Persist (stored in localStorage)
 export const setToken = (token: { accessToken: string; refreshToken: string }) => {
-  store.dispatch(setTokens(token))
+  const state = getPersistedState()
+  if (state?.auth) {
+    const authState = JSON.parse(state.auth)
+    authState.accessToken = token.accessToken
+    authState.refreshToken = token.refreshToken
+    state.auth = JSON.stringify(authState)
+    localStorage.setItem('persist:root', JSON.stringify(state))
+  }
 }
 
 // Variables to handle refresh token race condition
@@ -55,8 +65,7 @@ const refreshToken = async () => {
     return newToken.accessToken
   } catch (error) {
     console.error('Refresh token failed:', error)
-    localStorage.removeItem('token')
-    store.dispatch(clearAuth())
+    localStorage.removeItem('persist:root') // Xóa luôn nếu refresh thất bại
     isRefreshing = false
     refreshSubscribers = []
     return null

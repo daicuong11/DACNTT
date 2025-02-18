@@ -8,7 +8,7 @@ import { Search } from '@/layouts/home/header/components'
 import getLastWordOrTwoWithLimit from '@/utils/getLastWordOrTwoWithLimit'
 import LoginOfRegisterModal from '@/components/modals/LoginOrRegisterModal'
 import { useEffect } from 'react'
-import { fetchCart } from '@/features/cart/cart.slice'
+import { fetchCart } from '@/features/cart/cartThunks'
 
 const Header = () => {
   const { isOpen, toggleModal, closeModal } = useModal()

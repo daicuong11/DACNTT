@@ -8,10 +8,10 @@ import classNames from 'classnames'
 import { FixedBottomLayout } from '../../layouts'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import { setNewCartItems } from '../../features/order/order.slice'
-import { fetchCart } from '@/features/cart/cart.slice'
 import { cart_empty_removebg } from '@/assets/images'
 import CartItemSkeleton from '@/components/sekeletons/cart/CartItemSkeleton'
 import getPriceAfterDiscount from '@/utils/getPriceAfterDiscount'
+import { fetchCart } from '@/features/cart/cartThunks'
 
 interface CartPageProps {}
 
@@ -20,8 +20,8 @@ const CartPage: FC<CartPageProps> = () => {
 
   const navigate = useNavigate()
 
-  const { items, status, error } = useAppSelector((state) => state.cart)
   const userId = useAppSelector((state) => state.auth.user?.id)
+  const { items, status, error } = useAppSelector((state) => state.cart)
   const dispatch = useAppDispatch()
 
   const [selectAll, setSelectAll] = useState<boolean>(false)

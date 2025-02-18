@@ -8,7 +8,7 @@ import Breadcrumbs from './components/Breadcrumbs'
 import { FC, useEffect } from 'react'
 import getLastWordOrTwoWithLimit from '@/utils/getLastWordOrTwoWithLimit'
 import LoginOfRegisterModal from '@/components/modals/LoginOrRegisterModal'
-import { fetchCart } from '@/features/cart/cart.slice'
+import { fetchCart } from '@/features/cart/cartThunks'
 
 interface HeaderProps {
   showBreadcrumb?: boolean

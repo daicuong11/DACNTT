@@ -5,9 +5,9 @@ import { AppCheckBox } from '../../../components'
 import { FC } from 'react'
 import { CartItemRequestType, CartItemResponse } from '../../../types/cart_item.type'
 import { useAppDispatch, useAppSelector } from '@/hooks'
-import { removeCartItem, updateCartItem } from '@/features/cart/cart.slice'
 import getPriceAfterDiscount from '@/utils/getPriceAfterDiscount'
 import { Tag } from 'antd'
+import { removeCartItem, updateCartItem } from '@/features/cart/cartThunks'
 
 interface CartItemProps {
   checked?: boolean

@@ -1,9 +1,9 @@
+import cartReducer from './features/cart/cart.slice'
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
 import { persistStore, persistReducer, PersistConfig } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import authReducer from './features/auth/auth.slice'
 import orderReducer from './features/order/order.slice'
-import cartReducer from './features/cart/cart.slice'
 import createProductReducer from './features/admin/create_product.slice'
 import { fetchUserMiddleware } from './middlewares/fetchUserMiddleware'
 

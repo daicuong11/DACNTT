@@ -20,10 +20,10 @@ import { getMainImage } from '@/utils/getMainImage'
 import ListSimilarProducts from './components/ListSimilarProducts'
 import { CartItemRequestType } from '@/types/cart_item.type'
 import { useAppDispatch, useAppSelector, useModal } from '@/hooks'
-import { addCartItem } from '@/features/cart/cart.slice'
 import LoginOfRegisterModal from '@/components/modals/LoginOrRegisterModal'
 import { toast } from 'react-toastify'
 import classNames from 'classnames'
+import { addCartItem } from '@/features/cart/cartThunks'
 
 interface ProductDetailPageProps {}
 const ProductDetailPage: FC<ProductDetailPageProps> = () => {
