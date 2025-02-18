@@ -6,11 +6,29 @@ import { AddressType } from '../../types/address.type'
 interface SelectAddressModalProps {
   isOpen: boolean
   onClose: () => void
-  listAddress: AddressType[]
   onFinishedSelectAddress?: (address: AddressType) => void
 }
 
-const SelectAddressModal: FC<SelectAddressModalProps> = ({ isOpen, onClose, listAddress, onFinishedSelectAddress }) => {
+const listAddress: AddressType[] = [
+  {
+    addressId: 1,
+    province: 'Hồ Chí Minh',
+    district: 'Quận 1',
+    ward: 'Phường Bến Nghé',
+    street: 'Số 1 Đại Cương',
+    isDefault: true
+  },
+  {
+    addressId: 2,
+    province: 'Hồ Chí Minh',
+    district: 'Quận 2',
+    ward: 'Phường Thảo Điền',
+    street: 'Số 2 Đại Cương',
+    isDefault: false
+  }
+]
+
+const SelectAddressModal: FC<SelectAddressModalProps> = ({ isOpen, onClose, onFinishedSelectAddress }) => {
   const [selectedAddress, setSelectedAddress] = useState(listAddress[0].addressId)
 
   const onChangeSelectedAddress = (e: RadioChangeEvent) => {

@@ -59,7 +59,7 @@ const FlashSaleView: React.FC<FlashSaleViewProps> = ({}) => {
           </span>
           <CountdownTimer
             startTime='2025-02-19T00:23:59'
-            endTime='2025-02-20T00:00:00'
+            endTime='2025-02-22T00:00:00'
             // onSaleStatusChange={handleSaleStatusChange}
           />
         </div>

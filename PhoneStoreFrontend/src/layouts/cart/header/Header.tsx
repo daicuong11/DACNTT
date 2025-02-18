@@ -94,7 +94,9 @@ const Header = () => {
             icon={<CircleUserRound strokeWidth={1.6} size={24} color='white' />}
             className='font-medium transition-all duration-300 ease-in-out hover:scale-95'
           >
-            {currentUser ? getLastWordOrTwoWithLimit(currentUser.name) : 'Tài khoản'}
+            <span className='text-nowrap'>
+              {currentUser ? getLastWordOrTwoWithLimit(currentUser.name) : 'Tài khoản'}
+            </span>
           </ButtonHeader>
         </div>
       </div>

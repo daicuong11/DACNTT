@@ -3,17 +3,26 @@ import formatPrice from '../../utils/formatPrice'
 import classNames from 'classnames'
 import { useEffect, useState } from 'react'
 import Item from './components/Item'
-import { ChevronDown, ChevronRight, ChevronUp } from 'lucide-react'
-import { ConfigProvider, Input, Select } from 'antd'
+import { ChevronDown, ChevronUp } from 'lucide-react'
+import { Input } from 'antd'
 import { toast } from 'react-toastify'
-import { SelectAddressModal } from '../../components'
-import { useAppDispatch, useAppSelector, useModal } from '../../hooks'
-import { AddressType } from '../../types/address.type'
-import getAddressString from '../../utils/getAddressString'
+import { LoadingOpacity } from '../../components'
+import { useAppDispatch, useAppSelector } from '../../hooks'
 import useSetDocTitle from '../../hooks/useSetDocTitle'
 import { useNavigate } from 'react-router-dom'
-import { setEmail, setInfoShipping, setNote } from '../../features/order/order.slice'
-interface InfoCustomerType {
+import FormCustomerInfo from './components/FormCustomerInfo'
+import { setEmail, setInfoShipping, setNote, setShippingFee } from '@/features/order/order.slice'
+import { AddressType } from '@/types/address.type'
+import {
+  useGetAllProvince,
+  useGetDistrictByProvince,
+  useGetShippingFee,
+  useGetWardByDistrict
+} from '@/hooks/querys/GHN.query'
+import { ItemShippingFeeGHNRequest, ShippingFeeGHNRequest } from '@/types/GHN.type'
+import { get } from 'http'
+
+export interface InfoCustomerType {
   name: string
   phone: string
   province: string
@@ -24,51 +33,13 @@ interface InfoCustomerType {
 }
 
 const initialInfoCustomer: InfoCustomerType = {
-  name: 'Lý Đại Cương',
-  phone: '0333333333',
-  province: 'Hồ Chí Minh',
+  name: '',
+  phone: '',
+  province: '',
   district: '',
   ward: '',
   address: '',
   note: ''
-}
-
-const districtOptions = [
-  { value: 'Hồ Chí Minh', label: 'Hồ Chí Minh' },
-  { value: 'Hà Nội', label: 'Hà Nội' },
-  { value: 'Đà Nẵng', label: 'Đà Nẵng' },
-  { value: 'Hải Phòng', label: 'Hải Phòng' },
-  { value: 'Cần Thơ', label: 'Cần Thơ' }
-]
-
-const exampleListAddress: AddressType[] = [
-  {
-    addressId: 1,
-    province: 'Hồ Chí Minh',
-    district: 'Quận 1',
-    ward: 'Phường Bến Nghé',
-    street: 'Số 1 Đại Cương',
-    isDefault: true
-  },
-  {
-    addressId: 2,
-    province: 'Hồ Chí Minh',
-    district: 'Quận 2',
-    ward: 'Phường Thảo Điền',
-    street: 'Số 2 Đại Cương',
-    isDefault: false
-  }
-]
-
-const handleGetAddressDefault = () => {
-  if (exampleListAddress.length === 0) {
-    return null
-  }
-  const addressDefault = exampleListAddress.find((address) => address.isDefault)
-  if (addressDefault) {
-    return addressDefault
-  }
-  return exampleListAddress[0]
 }
 
 const checkShippingAddress = (shippingAddress: AddressType | null): boolean => {
@@ -87,16 +58,20 @@ const checkShippingAddress = (shippingAddress: AddressType | null): boolean => {
 }
 
 const PaymentInfoPage = () => {
-  useSetDocTitle('PhoneStore - Giỏ hàng')
+  useSetDocTitle('BC Mobile - Giỏ hàng')
+
+  const { mutate, isPending } = useGetShippingFee()
 
   const navigate = useNavigate()
 
   const orderSlice = useAppSelector((state) => state.order)
+  const currentUser = useAppSelector((state) => state.auth.user)
+
   const dispatch = useAppDispatch()
 
   const [showAllProduct, setShowAllProduct] = useState<boolean>(false)
-  const [selectedAddress, setSelectedAddress] = useState<AddressType | null>(null)
 
+  const [emailInput, setEmailInput] = useState(orderSlice.email || '')
   const [infoCustomer, setInfoCustomer] = useState<InfoCustomerType>(
     orderSlice.shippingAddress
       ? {
@@ -110,9 +85,14 @@ const PaymentInfoPage = () => {
         }
       : initialInfoCustomer
   )
-  const [emailInput, setEmailInput] = useState(orderSlice.email || '')
 
-  const { isOpen, closeModal, openModal } = useModal()
+  const { data: province, isLoading: isProvinceLoading } = useGetAllProvince()
+  const { data: districts } = useGetDistrictByProvince(
+    province?.find((p) => p.ProvinceName === infoCustomer.province)?.ProvinceID || 0
+  )
+  const { data: wards } = useGetWardByDistrict(
+    districts?.find((d) => d.DistrictName === infoCustomer.district)?.DistrictID || 0
+  )
 
   useEffect(() => {
     if (orderSlice.cartItems.length === 0) {
@@ -121,39 +101,12 @@ const PaymentInfoPage = () => {
   }, [orderSlice.cartItems])
 
   useEffect(() => {
-    if (selectedAddress) {
-      setInfoCustomer({
-        ...infoCustomer,
-        province: selectedAddress.province,
-        district: selectedAddress.district,
-        ward: selectedAddress.ward,
-        address: selectedAddress.street
-      })
-    }
-  }, [selectedAddress])
-
-  useEffect(() => {
-    if (checkShippingAddress(orderSlice.shippingAddress)) {
-      if (orderSlice.shippingAddress?.addressId == -1) {
-        setSelectedAddress(null)
-        setInfoCustomer({
-          ...infoCustomer,
-          province: orderSlice.shippingAddress.province,
-          district: orderSlice.shippingAddress.district,
-          ward: orderSlice.shippingAddress.ward,
-          address: orderSlice.shippingAddress.street
-        })
-      } else {
-        setSelectedAddress(orderSlice.shippingAddress)
+    if (currentUser) {
+      if (emailInput.trim() === '') {
+        setEmailInput(currentUser.email || '')
       }
-    } else {
-      setSelectedAddress(handleGetAddressDefault())
     }
-  }, [])
-
-  const handleInfoCustomer = (key: string, value: string) => {
-    setInfoCustomer({ ...infoCustomer, [key]: value })
-  }
+  }, [currentUser])
 
   const handleEmailInput = (value: string) => {
     setEmailInput(value)
@@ -168,18 +121,7 @@ const PaymentInfoPage = () => {
     return true
   }
 
-  const handleOpenNewForm = () => {
-    setSelectedAddress(null)
-    setInfoCustomer({
-      ...infoCustomer,
-      province: '',
-      district: '',
-      ward: '',
-      address: ''
-    })
-  }
-
-  const handleSubmitGetInfoCustomer = () => {
+  const handleSubmitGetInfoCustomer = async () => {
     if (!handleCheckEmail()) {
       return
     }
@@ -214,10 +156,40 @@ const PaymentInfoPage = () => {
       toast.error('Quý khách vui lòng kiểm tra lại số điện thoại người nhận thay')
       return
     }
+    const findDistrictID = districts?.find((d) => d.DistrictName === infoCustomer.district)?.DistrictID
+    const findWardCode = wards?.find((w) => w.WardName === infoCustomer.ward)?.WardCode
+
+    if (findDistrictID && findWardCode) {
+      const listItemRequest: ItemShippingFeeGHNRequest[] = orderSlice.cartItems.map((item) => {
+        return {
+          name: item.productVariant.fullNameVariant + '-' + item.productVariant.color,
+          quantity: item.quantity
+        }
+      })
+
+      const getQuantity = orderSlice.cartItems.reduce((acc, item) => acc + item.quantity, 0)
+      const totalWeight = Math.round(getQuantity * 300)
+      const totalHeight = Math.round(getQuantity * 6)
+      const totalWidth = 30
+      const totalLength = 30
+      const getShippingFeeRequest: ShippingFeeGHNRequest = {
+        service_type_id: 2,
+        length: totalLength,
+        width: totalWidth,
+        height: totalHeight,
+        weight: totalWeight,
+        from_district_id: 1449,
+        from_ward_code: '20706',
+        to_district_id: findDistrictID,
+        to_ward_code: findWardCode,
+        items: listItemRequest
+      }
+      mutate(getShippingFeeRequest)
+    }
     dispatch(
       setInfoShipping({
         customerInfo: { name: infoCustomer.name, phone: infoCustomer.phone },
-        address: selectedAddress || {
+        address: {
           addressId: -1,
           province: infoCustomer.province,
           district: infoCustomer.district,
@@ -237,14 +209,7 @@ const PaymentInfoPage = () => {
       title='Thông tin'
       body={
         <div className='flex flex-col pb-40'>
-          {exampleListAddress.length > 1 && (
-            <SelectAddressModal
-              isOpen={isOpen}
-              onClose={closeModal}
-              listAddress={exampleListAddress}
-              onFinishedSelectAddress={(address) => setSelectedAddress(address)}
-            />
-          )}
+          {isPending && <LoadingOpacity />}
 
           <div className='sticky top-0 z-[5] flex justify-between gap-x-6 bg-[#f4f6f8] pb-3'>
             <div
@@ -304,8 +269,8 @@ const PaymentInfoPage = () => {
             <div className='uppercase'>Thông tin khách hàng</div>
             <div className='p-5 space-y-4 bg-white border border-gray-300 rounded-lg'>
               <div className='flex items-center justify-between'>
-                <div className='font-semibold'>Lý Đại Cương</div>
-                <div className='text-[15px] font-medium text-gray-500 font-roboto'>0333333333</div>
+                <div className='font-semibold'>{currentUser?.name}</div>
+                <div className='text-[15px] font-medium text-gray-500 font-roboto'>{currentUser?.phoneNumber}</div>
               </div>
               <div className='flex flex-col gap-y-2.5 border-b transition-all focus-within:border-blue-600 group'>
                 <div className='text-xs text-gray-500 uppercase group-focus-within:text-blue-600'>email</div>
@@ -324,152 +289,7 @@ const PaymentInfoPage = () => {
               </div>
             </div>
           </div>
-          <div className='mt-6 space-y-3'>
-            <div className='uppercase'>Thông tin nhận hàng</div>
-
-            <div className='p-5 space-y-4 bg-white border border-gray-300 rounded-lg'>
-              <ConfigProvider
-                theme={{
-                  components: {
-                    Select: {
-                      fontSize: 16
-                    }
-                  }
-                }}
-              >
-                <div className='flex flex-col sm:grid sm:grid-cols-2 gap-x-3 gap-y-5'>
-                  <div className='flex flex-col gap-y-2.5 border-b transition-all focus-within:border-blue-600 group'>
-                    <div className='text-xs text-gray-500 uppercase group-focus-within:text-blue-600'>
-                      tên người nhận
-                    </div>
-                    <Input
-                      value={infoCustomer.name}
-                      onChange={(e) => handleInfoCustomer('name', e.target.value)}
-                      variant='borderless'
-                      placeholder='Họ tên người nhận'
-                      allowClear
-                      className='text-base'
-                    />
-                  </div>
-                  <div className='flex flex-col gap-y-2.5 border-b transition-all focus-within:border-blue-600 group'>
-                    <div className='text-xs text-gray-500 uppercase group-focus-within:text-blue-600'>
-                      sđt người nhận
-                    </div>
-                    <Input
-                      value={infoCustomer.phone}
-                      onChange={(e) => handleInfoCustomer('phone', e.target.value)}
-                      variant='borderless'
-                      placeholder='Số điện thoại người nhận'
-                      allowClear
-                      className='text-base'
-                    />
-                  </div>
-                  {!selectedAddress && (
-                    <div className='flex flex-col gap-y-2.5 border-b transition-all focus-within:border-blue-600 group'>
-                      <div className='text-xs text-gray-500 uppercase group-focus-within:text-blue-600'>
-                        tỉnh/thành phố
-                      </div>
-                      <Select
-                        showSearch
-                        value={infoCustomer.province || undefined}
-                        onChange={(value) => handleInfoCustomer('province', value)}
-                        variant='borderless'
-                        options={districtOptions}
-                        placeholder='Chọn tỉnh thành'
-                        className='text-base'
-                      />
-                    </div>
-                  )}
-                  {!selectedAddress && (
-                    <div className='flex flex-col gap-y-2.5 border-b transition-all focus-within:border-blue-600 group'>
-                      <div className='text-xs text-gray-500 uppercase group-focus-within:text-blue-600'>Quận/huyện</div>
-                      <Select
-                        showSearch
-                        value={infoCustomer.district || undefined}
-                        onChange={(value) => handleInfoCustomer('district', value)}
-                        placeholder={'Chọn quận huyện'}
-                        variant='borderless'
-                        options={districtOptions}
-                        className='text-base'
-                      />
-                    </div>
-                  )}
-                  {!selectedAddress && (
-                    <div className='flex flex-col gap-y-2.5 border-b transition-all focus-within:border-blue-600 group'>
-                      <div className='text-xs text-gray-500 uppercase group-focus-within:text-blue-600'>phường/xã</div>
-                      <Select
-                        showSearch
-                        value={infoCustomer.ward || undefined}
-                        onChange={(value) => handleInfoCustomer('ward', value)}
-                        placeholder={'Chọn phường/xã'}
-                        variant='borderless'
-                        options={districtOptions}
-                        className='text-base'
-                      />
-                    </div>
-                  )}
-                  {!selectedAddress && (
-                    <div className='flex flex-col gap-y-2.5 border-b transition-all focus-within:border-blue-600 group'>
-                      <div className='text-xs text-gray-500 uppercase group-focus-within:text-blue-600'>Địa chỉ</div>
-                      <Input
-                        value={infoCustomer.address}
-                        onChange={(e) => handleInfoCustomer('address', e.target.value)}
-                        variant='borderless'
-                        placeholder='Số nhà, tên đường'
-                        allowClear
-                        className='text-base'
-                      />
-                    </div>
-                  )}
-                  {selectedAddress && exampleListAddress.length > 1 && (
-                    <div className='col-span-2'>
-                      <div className='flex items-start cursor-pointer gap-x-1'>
-                        <div className='flex items-start justify-between w-full gap-x-4'>
-                          <span className='font-normal'>Địa chỉ:</span>
-                          <div className='flex flex-col items-start justify-center flex-1 w-full h-full pt-1 gap-y-1'>
-                            <div className='text-sm font-medium'>{getAddressString(selectedAddress)}</div>
-                            {selectedAddress.isDefault && (
-                              <div className=''>
-                                <span className='flex-shrink-0 h-min text-[12px] rounded-md text-primary py-0.5 px-3 bg-primary/10 inline-flex items-center justify-center'>
-                                  Mặc định
-                                </span>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                  {exampleListAddress.length > 1 && (
-                    <div className='col-span-2'>
-                      <div
-                        onClick={selectedAddress ? () => handleOpenNewForm() : openModal}
-                        className='flex items-center justify-end py-1 cursor-pointer text-primary hover:underline'
-                      >
-                        <span className='text-xs font-medium line-clamp-1'>
-                          {selectedAddress ? 'Nhập địa chỉ mới' : 'Chọn địa chỉ đã lưu'}
-                        </span>
-                        <span className='ml-1'>
-                          <ChevronRight size={16} />
-                        </span>
-                      </div>
-                    </div>
-                  )}
-                  <div className='flex flex-col gap-y-2.5 border-b transition-all focus-within:border-blue-600 group col-span-2'>
-                    <div className='text-xs text-gray-500 uppercase group-focus-within:text-blue-600'>Ghi chú</div>
-                    <Input
-                      value={infoCustomer.note}
-                      onChange={(e) => handleInfoCustomer('note', e.target.value)}
-                      variant='borderless'
-                      placeholder='Ghi chú khác (nếu có)'
-                      allowClear
-                      className='text-base'
-                    />
-                  </div>
-                </div>
-              </ConfigProvider>
-            </div>
-          </div>
+          <FormCustomerInfo infoCustomer={infoCustomer} setInfoCustomer={setInfoCustomer} />
 
           <div className='mt-1 space-x-1.5'>
             <span className='text-xs font-bold text-slate-600'>Mẹo:</span>

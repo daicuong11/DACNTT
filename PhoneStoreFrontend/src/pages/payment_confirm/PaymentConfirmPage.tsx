@@ -3,9 +3,9 @@ import formatPrice from '../../utils/formatPrice'
 import classNames from 'classnames'
 import { useEffect, useState } from 'react'
 import { Input } from 'antd'
-import { AppCheckBox, MyDivider, PaymentMethodModal } from '../../components'
+import { AppCheckBox, LoadingOpacity, MyDivider, PaymentMethodModal } from '../../components'
 import useSetDocTitle from '../../hooks/useSetDocTitle'
-import { useNavigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 import { ChevronRight } from 'lucide-react'
 import { atm_card_img } from '../../assets/images'
 import { useAppDispatch, useAppSelector, useModal } from '../../hooks'
@@ -19,6 +19,7 @@ import { getCouponDiscount } from '../../utils/getCouponDiscount'
 import { getTotalAmountOfCartItems } from '../../utils/getTotalAmountOfCartItems'
 import { formatQuantity } from '../../utils/formatQuantity'
 import ReviewCartItemModal from '../../components/modals/ReviewCartItemModal'
+import getAddressString from '@/utils/getAddressString'
 
 const PaymentConfirmPage = () => {
   useSetDocTitle('PhoneStore - Giỏ hàng')
@@ -26,6 +27,8 @@ const PaymentConfirmPage = () => {
   const navigate = useNavigate()
 
   const orderSlice = useAppSelector((state) => state.order)
+  const currentUser = useAppSelector((state) => state.auth.user)
+
   const dispatch = useAppDispatch()
 
   const { openModal, closeModal, isOpen } = useModal()
@@ -83,6 +86,25 @@ const PaymentConfirmPage = () => {
     dispatch(clearCoupon())
     setCouponCodeInput('')
     toast(`Đã xóa mã giảm giá thành công.`)
+  }
+
+  const handlePayment = () => {
+    if (!orderSlice.paymentMethod || orderSlice.paymentMethod.trim() === '') {
+      toast.error('Vui lòng chọn phương thức thanh toán')
+      return
+    }
+    if (orderSlice.paymentMethod === 'Thanh toán khi nhận hàng') {
+      navigate('/cart/payment-result')
+    } else if (orderSlice.paymentMethod === 'VNPay') {
+      navigate('/cart/payment-result')
+    } else {
+      toast.error('Lỗi trong quá trình thanh toán')
+      navigate('/')
+    }
+  }
+
+  if (!currentUser) {
+    return <Navigate to='/signin' />
   }
 
   return (
@@ -159,7 +181,9 @@ const PaymentConfirmPage = () => {
               )}
               <div className='flex items-end  text-[15px] justify-between mt-1 font-roboto'>
                 <span className='font-medium text-gray-500 '>Số lượng sản phẩm</span>
-                <span className='text-gray-800'>{formatQuantity(orderSlice.cartItems.length)}</span>
+                <span className='text-gray-800'>
+                  {formatQuantity(orderSlice.cartItems.reduce((total, item) => total + item.quantity, 0))}
+                </span>
               </div>
               <div className='flex items-end  text-[15px] justify-between font-roboto'>
                 <span className='font-medium text-gray-500 '>Tiền hàng (tạm tính)</span>
@@ -169,7 +193,9 @@ const PaymentConfirmPage = () => {
               </div>
               <div className='flex items-end  text-[15px] justify-between font-roboto'>
                 <span className='font-medium text-gray-500 '>Phí vận chuyển</span>
-                <span className='text-gray-800'>Miễn phí</span>
+                <span className='text-gray-800'>
+                  {orderSlice.shippingFee ? formatPrice(orderSlice.shippingFee) : 'Miễn phí'}
+                </span>
               </div>
               {couponActive && (
                 <div className='flex items-end  text-[15px] justify-between font-roboto'>
@@ -184,7 +210,7 @@ const PaymentConfirmPage = () => {
                   <span className='mr-1 font-sans font-bold text-black'>Tổng tiền</span>(Đã bao gồm VAT)
                 </span>
                 <span className='font-sans font-bold tracking-tight text-black'>
-                  {formatPrice(orderSlice.totalAmount)}
+                  {formatPrice(orderSlice.totalAmount + (orderSlice?.shippingFee ?? 0))}
                 </span>
               </div>
             </div>
@@ -246,7 +272,7 @@ const PaymentConfirmPage = () => {
                 <span className='font-medium text-gray-500 w-[120px] flex-shrink-0 text-nowrap font-roboto '>
                   Nhận hàng tại
                 </span>
-                <span className='font-semibold text-end'>Tổ 2, Thị trấn An Phú, Huyện An Phú, An Giang</span>
+                <span className='font-semibold text-end'>{getAddressString(orderSlice.shippingAddress!)}</span>
               </div>
               {orderSlice.note && (
                 <div className='flex justify-between gap-x-4'>
@@ -260,7 +286,7 @@ const PaymentConfirmPage = () => {
           </div>
           <div className='my-6'>
             <AppCheckBox value={isCheckTerms} onChange={() => setIsCheckTerms(!isCheckTerms)}>
-              Bằng việc Đặt hàng, bạn đồng ý với Điều khoản sử dụng của PhoneStore.
+              Bằng việc Đặt hàng, bạn đồng ý với Điều khoản sử dụng của BC Mobile.
             </AppCheckBox>
           </div>
         </div>
@@ -269,9 +295,13 @@ const PaymentConfirmPage = () => {
         <div className='flex flex-col gap-y-3'>
           <div className='flex items-center justify-between w-full'>
             <div className='font-semibold'>Tổng tiền tạm tính:</div>
-            <span className='text-base font-bold font-roboto text-primary'>{formatPrice(orderSlice.totalAmount)}</span>
+            <span className='text-base font-bold font-roboto text-primary'>
+              {formatPrice(orderSlice.totalAmount + (orderSlice?.shippingFee ?? 0))}
+            </span>
           </div>
-          <button className='rounded-md btn btn-danger'>Thanh toán</button>
+          <button onClick={handlePayment} className='rounded-md btn btn-danger'>
+            Thanh toán
+          </button>
           <button
             onClick={reviewCartItemModalController.openModal}
             className='text-sm text-blue-600 rounded-md shadow-none btn hover:underline'

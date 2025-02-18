@@ -1,13 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ShippingInfoType } from '../../types/app.type'
-import { CartItemPayloadType } from '../../types/cart_item.type'
+import { CartItemPayloadType, CartItemResponse } from '../../types/cart_item.type'
 import { AddressFormType, AddressType } from '../../types/address.type'
 import { getTotalAmountOfCartItems } from '../../utils/getTotalAmountOfCartItems'
 import { CouponType } from '../../types/coupon.type'
 import { getCouponDiscount } from '../../utils/getCouponDiscount'
+import { clear } from 'console'
 
 interface OrderState {
-  cartItems: CartItemPayloadType[]
+  cartItems: CartItemResponse[]
   shippingInfo: ShippingInfoType | null
   coupon: CouponType | null
   totalAmount: number
@@ -15,6 +16,7 @@ interface OrderState {
   email: string | null
   shippingAddress: AddressType | null
   note: string | null
+  shippingFee: number | null
 }
 
 const initialState: OrderState = {
@@ -25,32 +27,39 @@ const initialState: OrderState = {
   paymentMethod: null,
   email: null,
   shippingAddress: null,
-  note: null
+  note: null,
+  shippingFee: null
 }
 
 const orderSlice = createSlice({
   name: 'order',
   initialState,
   reducers: {
-    addCartItem: (state, action: PayloadAction<CartItemPayloadType>) => {
+    addCartItem: (state, action: PayloadAction<CartItemResponse>) => {
+      const findIndex = state.cartItems.findIndex((item) => item.cartItemId === action.payload.cartItemId)
+      if (findIndex !== -1) {
+        state.cartItems[findIndex].quantity = action.payload.quantity
+        state.totalAmount = getTotalAmountOfCartItems(state.cartItems)
+        return
+      }
       state.cartItems.push(action.payload)
       state.totalAmount = getTotalAmountOfCartItems(state.cartItems)
     },
-    setNewCartItems: (state, action: PayloadAction<CartItemPayloadType[]>) => {
+    setNewCartItems: (state, action: PayloadAction<CartItemResponse[]>) => {
       state.cartItems = action.payload
       state.totalAmount = getTotalAmountOfCartItems(state.cartItems)
     },
     removeCartItem: (state, action: PayloadAction<number>) => {
-      state.cartItems = state.cartItems.filter((item) => item.productVariantId !== action.payload)
+      state.cartItems = state.cartItems.filter((item) => item.cartItemId !== action.payload)
       state.totalAmount = getTotalAmountOfCartItems(state.cartItems)
     },
     increaseQuantity: (state, action: PayloadAction<number>) => {
-      const index = state.cartItems.findIndex((item) => item.productVariantId === action.payload)
+      const index = state.cartItems.findIndex((item) => item.cartItemId === action.payload)
       state.cartItems[index].quantity += 1
       state.totalAmount = getTotalAmountOfCartItems(state.cartItems)
     },
     decreaseQuantity: (state, action: PayloadAction<number>) => {
-      const index = state.cartItems.findIndex((item) => item.productVariantId === action.payload)
+      const index = state.cartItems.findIndex((item) => item.cartItemId === action.payload)
       if (state.cartItems[index].quantity === 1) {
         state.cartItems.splice(index, 1)
       } else {
@@ -86,12 +95,14 @@ const orderSlice = createSlice({
     },
     setShippingAddress: (state, action: PayloadAction<AddressType | null>) => {
       state.shippingAddress = action.payload
+      state.shippingFee = null
     },
     clearListCartItems: (state) => {
       state.cartItems = []
     },
     clearShippingAddress: (state) => {
       state.shippingAddress = null
+      state.shippingFee = null
     },
     clearCoupon: (state) => {
       state.coupon = null
@@ -111,9 +122,16 @@ const orderSlice = createSlice({
       state.email = null
       state.shippingAddress = null
       state.note = null
+      state.shippingFee = null
     },
     removeOrderDetail: (state, action: PayloadAction<number>) => {
-      state.cartItems = state.cartItems.filter((item) => item.productVariantId !== action.payload)
+      state.cartItems = state.cartItems.filter((item) => item.cartItemId !== action.payload)
+    },
+    setShippingFee: (state, action: PayloadAction<number>) => {
+      state.shippingFee = action.payload
+    },
+    clearShippingFee: (state) => {
+      state.shippingFee = null
     }
   }
 })
@@ -138,7 +156,9 @@ export const {
   setShippingInfo,
   setTotalAmount,
   setEmail,
-  setNote
+  setNote,
+  setShippingFee,
+  clearShippingFee
 } = orderSlice.actions
 
 export const selectOrder = (state: { order: OrderState }) => state.order

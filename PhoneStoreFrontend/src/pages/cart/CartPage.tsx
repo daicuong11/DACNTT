@@ -58,8 +58,8 @@ const CartPage: FC<CartPageProps> = () => {
       return
     }
     const newCartItems = items.filter((item) => listSelected.includes(item.cartItemId))
-    // dispatch(setNewCartItems(newCartItems))
-    // navigate('/cart/payment-info')
+    dispatch(setNewCartItems(newCartItems))
+    navigate('/cart/payment-info')
   }, [listSelected, items, dispatch, navigate])
 
   const totalOrderAmount = useMemo(() => {
