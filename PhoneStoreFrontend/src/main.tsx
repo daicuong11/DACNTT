@@ -10,8 +10,10 @@ import App from './App.tsx'
 import { AppLoading } from './components/index.ts'
 import './index.css'
 import { persistor, store } from './store.ts'
+import { injectStore } from './configs/http.ts'
 
 const queryClient = new QueryClient()
+injectStore(store)
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

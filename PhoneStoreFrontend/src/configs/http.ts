@@ -1,3 +1,5 @@
+// utils/axiosInstance.ts
+import { setTokens as setAuth, clearAuth } from '@/features/auth/auth.slice'
 import axios from 'axios'
 
 const API_BASE_URL: string = import.meta.env.VITE_API_BASE_URL || ''
@@ -9,39 +11,35 @@ const axiosInstance = axios.create({
   timeout: 20000
 })
 
-// Helper function to get tokens from Redux Persist in localStorage
-const getPersistedState = (): any => {
-  const persistedData = localStorage.getItem('persist:root')
-  return persistedData ? JSON.parse(persistedData) : null
+let store: any // Khai báo biến store nhưng chưa gán ngay
+
+// Hàm inject store (Gọi từ index.tsx sau khi store được tạo)
+export const injectStore = (_store: any) => {
+  store = _store
 }
 
+// Helper functions to get tokens from store
 export const getAccessToken = (): string | null => {
-  const state = getPersistedState()
-  return state?.auth ? JSON.parse(state.auth).accessToken : null
+  return store?.getState()?.auth?.accessToken || null
 }
 
 export const getRefreshToken = (): string | null => {
-  const state = getPersistedState()
-  return state?.auth ? JSON.parse(state.auth).refreshToken : null
+  return store?.getState()?.auth?.refreshToken || null
 }
 
-// Function to set tokens in Redux Persist (stored in localStorage)
-export const setToken = (token: { accessToken: string; refreshToken: string }) => {
-  const state = getPersistedState()
-  if (state?.auth) {
-    const authState = JSON.parse(state.auth)
-    authState.accessToken = token.accessToken
-    authState.refreshToken = token.refreshToken
-    state.auth = JSON.stringify(authState)
-    localStorage.setItem('persist:root', JSON.stringify(state))
-  }
+// Function to set tokens in store
+export const setTokens = (token: { accessToken: string; refreshToken: string }) => {
+  store.dispatch(setAuth(token))
 }
 
-// Variables to handle refresh token race condition
+export const clearTokens = () => {
+  store.dispatch(clearAuth())
+}
+
+// Refresh token logic
 let isRefreshing = false
 let refreshSubscribers: ((token: string) => void)[] = []
 
-// Function to refresh token
 const refreshToken = async () => {
   if (isRefreshing) {
     return new Promise<string>((resolve) => {
@@ -54,18 +52,18 @@ const refreshToken = async () => {
   if (!refreshTokenData) return null
 
   try {
-    const response = await axiosInstance.post('/auth/refresh', {
-      refreshToken: refreshTokenData
-    })
+    const response = await axiosInstance.post('/auth/refresh', { refreshToken: refreshTokenData })
     const newToken = response.data
-    setToken(newToken)
+    setTokens(newToken)
+
     isRefreshing = false
     refreshSubscribers.forEach((cb) => cb(newToken.accessToken))
     refreshSubscribers = []
+
     return newToken.accessToken
   } catch (error) {
     console.error('Refresh token failed:', error)
-    localStorage.removeItem('persist:root') // Xóa luôn nếu refresh thất bại
+    clearTokens()
     isRefreshing = false
     refreshSubscribers = []
     return null
