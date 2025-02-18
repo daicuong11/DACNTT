@@ -1,5 +1,7 @@
 import axiosGHN from '@/configs/httpGHN'
 import {
+  CreateOrderGHNRequest,
+  CreateOrderGHNResponse,
   DistrictGHNResponse,
   ProvinceGHNResponse,
   ShippingFeeGHNRequest,
@@ -45,6 +47,15 @@ class GHNApi {
       return res.data
     } catch (error: any) {
       throw new Error(error.message || 'Failed to fetch shipping fee')
+    }
+  }
+
+  createGHNOrder = async (orderRequest: CreateOrderGHNRequest): Promise<CreateOrderGHNResponse> => {
+    try {
+      const res = await axiosGHN.post('v2/shipping-order/create', orderRequest)
+      return res.data
+    } catch (error: any) {
+      throw new Error(error.message || 'Failed to create order')
     }
   }
 }

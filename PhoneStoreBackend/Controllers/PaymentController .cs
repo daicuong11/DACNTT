@@ -79,11 +79,11 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpPost("pay/cod")]
-        public async Task<IActionResult> PayCOD([FromBody] Order order)
+        public async Task<IActionResult> PayCOD([FromBody] PaymentRequest paymentReq)
         {
-            if (order == null || order.TotalAmount <= 0)
+            if (paymentReq == null || paymentReq.Amount <= 0)
             {
-                return BadRequest("Thông tin đơn hàng không hợp lệ.");
+                return BadRequest("Thông tin đơn hàng không hợp lệ. Tổng tiền sai");
             }
 
             var responseError = ModelStateHelper.CheckModelState(ModelState);
@@ -95,10 +95,10 @@ namespace PhoneStoreBackend.Controllers
                 var payment = new Payment
                 {
                     TransactionId = Guid.NewGuid().ToString(),
-                    OrderId = order.OrderId,
+                    OrderId = paymentReq.OrderId,
                     PaymentMethod = PaymentMethodEnum.COD.ToString(),
                     PaymentStatus = PaymentStatusEnum.Pending.ToString(),
-                    Amount = order.TotalAmount,
+                    Amount = paymentReq.Amount,
                     PaymentDate = DateTime.Now
                 };
 
@@ -268,10 +268,10 @@ namespace PhoneStoreBackend.Controllers
                 var createPayment = new Payment
                 {
                     OrderId = payment.OrderId,
-                    PaymentStatus = payment.PaymentStatus,
+                    PaymentStatus = PaymentStatusEnum.Pending.ToString(),
                     Amount = payment.Amount,
                     PaymentDate = DateTime.Now,
-                    PaymentMethod = payment.PaymentMethod
+                    PaymentMethod = PaymentMethodEnum.COD.ToString()
                 };
 
                 var createdPayment = await _paymentRepository.AddPaymentAsync(createPayment);
@@ -285,40 +285,40 @@ namespace PhoneStoreBackend.Controllers
             }
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdatePayment(int id, [FromBody] PaymentRequest payment)
-        {
-            try
-            {
-                var responseError = ModelStateHelper.CheckModelState(ModelState);
-                if (responseError != null)
-                    return BadRequest(responseError);
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> UpdatePayment(int id, [FromBody] PaymentRequest payment)
+        //{
+        //    try
+        //    {
+        //        var responseError = ModelStateHelper.CheckModelState(ModelState);
+        //        if (responseError != null)
+        //            return BadRequest(responseError);
 
-                var createPayment = new Payment
-                {
-                    OrderId = payment.OrderId,
-                    PaymentStatus = payment.PaymentStatus,
-                    Amount = payment.Amount,
-                    PaymentDate = DateTime.Now,
-                    PaymentMethod = payment.PaymentMethod
-                };
+        //        var createPayment = new Payment
+        //        {
+        //            OrderId = payment.OrderId,
+        //            PaymentStatus = payment.PaymentStatus,
+        //            Amount = payment.Amount,
+        //            PaymentDate = DateTime.Now,
+        //            PaymentMethod = payment.PaymentMethod
+        //        };
 
-                var isUpdated = await _paymentRepository.UpdatePaymentAsync(id, createPayment);
-                if (!isUpdated)
-                {
-                    var notFoundResponse = Response<object>.CreateErrorResponse("Không tìm thấy thông tin thanh toán để cập nhật.");
-                    return NotFound(notFoundResponse);
-                }
+        //        var isUpdated = await _paymentRepository.UpdatePaymentAsync(id, createPayment);
+        //        if (!isUpdated)
+        //        {
+        //            var notFoundResponse = Response<object>.CreateErrorResponse("Không tìm thấy thông tin thanh toán để cập nhật.");
+        //            return NotFound(notFoundResponse);
+        //        }
 
-                var response = Response<object>.CreateSuccessResponse(null, "Thông tin thanh toán đã được cập nhật thành công");
-                return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                var errorResponse = Response<object>.CreateErrorResponse($"Đã xảy ra lỗi: {ex.Message}");
-                return BadRequest(errorResponse);
-            }
-        }
+        //        var response = Response<object>.CreateSuccessResponse(null, "Thông tin thanh toán đã được cập nhật thành công");
+        //        return Ok(response);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        var errorResponse = Response<object>.CreateErrorResponse($"Đã xảy ra lỗi: {ex.Message}");
+        //        return BadRequest(errorResponse);
+        //    }
+        //}
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePayment(int id)

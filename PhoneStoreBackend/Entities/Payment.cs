@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using PhoneStoreBackend.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PhoneStoreBackend.Entities
@@ -22,7 +23,7 @@ namespace PhoneStoreBackend.Entities
 
         [Required]
         [Column(TypeName = "nvarchar(50)")]
-        public string PaymentStatus { get; set; } = "Pending"; // Pending, Completed, Failed
+        public string PaymentStatus { get; set; } = PaymentStatusEnum.Pending.ToString(); // Pending, Completed, Failed
 
         [Column(TypeName = "decimal(18, 2)")]
         public decimal Amount { get; set; }

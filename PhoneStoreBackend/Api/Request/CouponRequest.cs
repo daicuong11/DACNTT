@@ -13,7 +13,7 @@ namespace PhoneStoreBackend.Api.Request
         public bool IsPercentage { get; set; }
 
         [Required(ErrorMessage = "Giá trị giảm giá là bắt buộc.")]
-        [Range(0.01, double.MaxValue, ErrorMessage = "Giá trị giảm giá phải lớn hơn 0.")]
+        [Range(0.0, double.MaxValue, ErrorMessage = "Giá trị giảm giá phải lớn hơn = 0.")]
         public decimal DiscountValue { get; set; }
 
         [Range(0, double.MaxValue, ErrorMessage = "Số tiền tối thiểu cho đơn hàng không được âm.")]

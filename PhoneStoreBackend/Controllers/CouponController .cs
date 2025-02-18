@@ -20,7 +20,7 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> GetAllCoupons()
         {
             try
@@ -37,7 +37,7 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> GetCouponById(int id)
         {
             try
@@ -59,7 +59,7 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpGet("code/{code}")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> GetCouponByCode(string code)
         {
             try
@@ -81,7 +81,7 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "ADMIN")]
+        //[Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> AddCoupon([FromBody] CouponRequest coupon)
         {
             try

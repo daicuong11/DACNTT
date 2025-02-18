@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PhoneStoreBackend.DbContexts;
 
@@ -11,9 +12,10 @@ using PhoneStoreBackend.DbContexts;
 namespace PhoneStoreBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250218205444_addCustomer")]
+    partial class addCustomer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -330,7 +332,7 @@ namespace PhoneStoreBackend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"), 1L, 1);
 
-                    b.Property<int?>("CouponId")
+                    b.Property<int>("CouponId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
@@ -347,10 +349,6 @@ namespace PhoneStoreBackend.Migrations
 
                     b.Property<string>("ShippingAddress")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal?>("ShippingFee")
-                        .IsRequired()
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -840,7 +838,9 @@ namespace PhoneStoreBackend.Migrations
                 {
                     b.HasOne("Coupon", "Coupon")
                         .WithMany("Orders")
-                        .HasForeignKey("CouponId");
+                        .HasForeignKey("CouponId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("PhoneStoreBackend.Entities.Customer", "Customer")
                         .WithOne("Order")

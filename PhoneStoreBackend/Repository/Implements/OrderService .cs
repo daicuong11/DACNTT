@@ -46,9 +46,16 @@ namespace PhoneStoreBackend.Repository.Implements
         // Thêm đơn hàng mới
         public async Task<OrderDTO> AddOrderAsync(Order order)
         {
-            var newOrder = await _context.Orders.AddAsync(order);
-            await _context.SaveChangesAsync();
-            return _mapper.Map<OrderDTO>(newOrder.Entity);
+            try
+            {
+                var newOrder = await _context.Orders.AddAsync(order);
+                await _context.SaveChangesAsync();
+                return _mapper.Map<OrderDTO>(newOrder.Entity);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Lỗi thêm order: " + ex.Message);
+            }
         }
 
         // Cập nhật đơn hàng

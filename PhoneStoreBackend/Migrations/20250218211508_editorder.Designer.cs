@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PhoneStoreBackend.DbContexts;
 
@@ -11,9 +12,10 @@ using PhoneStoreBackend.DbContexts;
 namespace PhoneStoreBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250218211508_editorder")]
+    partial class editorder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -347,10 +349,6 @@ namespace PhoneStoreBackend.Migrations
 
                     b.Property<string>("ShippingAddress")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal?>("ShippingFee")
-                        .IsRequired()
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Status")
                         .IsRequired()

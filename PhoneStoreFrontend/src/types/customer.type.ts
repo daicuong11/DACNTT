@@ -3,3 +3,8 @@ export interface CustomerType {
   name: string
   phoneNumber: string
 }
+
+export interface CustomerRequestType {
+  name: string
+  phoneNumber: string
+}

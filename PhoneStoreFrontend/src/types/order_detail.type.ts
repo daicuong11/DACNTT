@@ -3,7 +3,7 @@ import { ProductVariantType } from './product_variant.type'
 export interface OrderDetailType {
   orderDetailId: number
   orderId: number
-  productVariantID: number
+  productVariantId: number
   productVariant: ProductVariantType
   quantity: number
   price: number
@@ -12,8 +12,17 @@ export interface OrderDetailType {
 }
 
 export interface OrderDetailPayloadType {
-  productVariantID: number
+  productVariantId: number
   productVariant: ProductVariantType
+  quantity: number
+  price: number
+  discount: number
+  unitPrice: number
+}
+
+export interface OrderDetailRequestType {
+  orderId: number
+  productVariantId: number
   quantity: number
   price: number
   discount: number

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using PhoneStoreBackend.Entities;
 
 namespace PhoneStoreBackend.DbContexts
@@ -11,6 +12,7 @@ namespace PhoneStoreBackend.DbContexts
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductVariant> ProductVariants { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Customer> Customers { get; set; }
         public DbSet<Brand> Brands { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }

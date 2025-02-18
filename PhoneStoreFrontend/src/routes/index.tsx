@@ -64,7 +64,7 @@ const MyRoutes = () => {
           element: <PaymentConfirmPage />
         },
         {
-          path: 'payment-result',
+          path: 'payment-result/:orderId',
           element: <PaymentResultPage />
         }
       ]

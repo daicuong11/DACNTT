@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PhoneStoreBackend.Api.Request;
 using PhoneStoreBackend.Api.Response;
+using PhoneStoreBackend.DbContexts;
 using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
 using PhoneStoreBackend.Enums;
@@ -14,15 +16,19 @@ namespace PhoneStoreBackend.Controllers
     [ApiController]
     public class OrderController : ControllerBase
     {
+        private readonly AppDbContext _context;
+        private readonly IOrderDetailRepository _orderDetailRepository;
         private readonly IOrderRepository _orderRepository;
 
-        public OrderController(IOrderRepository orderRepository)
+        public OrderController(IOrderRepository orderRepository, IOrderDetailRepository orderDetailRepository, AppDbContext context)
         {
             _orderRepository = orderRepository;
+            _orderDetailRepository = orderDetailRepository;
+            _context = context;
         }
 
         [HttpGet]
-        [Authorize(Roles = "ADMIN")]
+        //[Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> GetAllOrders()
         {
             try
@@ -39,7 +45,7 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> GetOrderById(int id)
         {
             try
@@ -62,7 +68,7 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpGet("user/{userId}")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> GetOrdersByUserId(int userId)
         {
             try
@@ -79,9 +85,10 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> AddOrder([FromBody] OrderRequest order)
         {
+            using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
                 var responseError = ModelStateHelper.CheckModelState(ModelState);
@@ -92,7 +99,9 @@ namespace PhoneStoreBackend.Controllers
                 {
                     UserId = order.UserId,
                     CouponId = order.CouponId,
+                    CustomerId = order.CustomerId,
                     OrderDate = DateTime.Now,
+                    ShippingFee = order.ShippingFee,
                     TotalAmount = order.TotalAmount,
                     Status = OrderStatusEnum.Pending.ToString(),
                     ShippingAddress = order.ShippingAddress,
@@ -101,12 +110,34 @@ namespace PhoneStoreBackend.Controllers
                     UpdatedAt = DateTime.Now,
                 };
 
+                if (order.CouponId != null && order.CouponId >= 0)
+                {
+                    newOrder.CouponId = order.CouponId;
+                }
                 var createdOrder = await _orderRepository.AddOrderAsync(newOrder);
+
+                foreach(OrderDetailRequest orderDetail in order.orderDetailRequests)
+                {
+                    var newOrderDetail = new OrderDetail
+                    {
+                        OrderId = createdOrder.OrderId,
+                        ProductVariantId = orderDetail.ProductVariantId,
+                        Discount = orderDetail.Discount,
+                        Price = orderDetail.Price,
+                        Quantity = orderDetail.Quantity,
+                        UnitPrice = orderDetail.UnitPrice,
+                    };
+                    
+                    await _orderDetailRepository.AddOrderDetailAsync(newOrderDetail);
+                }
+
                 var response = Response<OrderDTO>.CreateSuccessResponse(createdOrder, "Đơn hàng đã được thêm thành công");
-                return CreatedAtAction(nameof(GetOrderById), new { id = createdOrder.OrderId }, response);
+                await transaction.CommitAsync();
+                return Ok(response);
             }
             catch (Exception ex)
             {
+                await transaction.RollbackAsync();
                 var errorResponse = Response<object>.CreateErrorResponse($"Đã xảy ra lỗi: {ex.Message}");
                 return BadRequest(errorResponse);
             }
@@ -128,7 +159,7 @@ namespace PhoneStoreBackend.Controllers
                     CouponId = order.CouponId,
                     OrderDate = DateTime.Now,
                     TotalAmount = order.TotalAmount,
-                    Status = order.Status,
+                    Status = OrderStatusEnum.Pending.ToString(),
                     ShippingAddress = order.ShippingAddress,
                     Note = order.Note,
                     CreatedAt = DateTime.Now,

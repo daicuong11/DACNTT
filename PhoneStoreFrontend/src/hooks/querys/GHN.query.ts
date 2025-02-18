@@ -41,3 +41,11 @@ export const useGetShippingFee = () => {
 
   return mutation
 }
+
+export const useCreateGHNOrder = () => {
+  const mutation = useMutation({
+    mutationKey: ['createGHNOrder'],
+    mutationFn: ghnApi.createGHNOrder
+  })
+  return mutation
+}

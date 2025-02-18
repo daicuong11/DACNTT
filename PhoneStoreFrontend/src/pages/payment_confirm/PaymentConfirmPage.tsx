@@ -10,7 +10,7 @@ import { ChevronRight } from 'lucide-react'
 import { atm_card_img } from '../../assets/images'
 import { useAppDispatch, useAppSelector, useModal } from '../../hooks'
 import { PaymentMethodType } from '../../types/app.type'
-import { clearCoupon, setCoupon, setPaymentMethod } from '../../features/order/order.slice'
+import { clearCoupon, clearOrder, setCoupon, setPaymentMethod } from '../../features/order/order.slice'
 import { listPaymentMethod } from '../../datas/paymentMethod.data'
 import { toast } from 'react-toastify'
 import { CouponType } from '../../types/coupon.type'
@@ -20,14 +20,31 @@ import { getTotalAmountOfCartItems } from '../../utils/getTotalAmountOfCartItems
 import { formatQuantity } from '../../utils/formatQuantity'
 import ReviewCartItemModal from '../../components/modals/ReviewCartItemModal'
 import getAddressString from '@/utils/getAddressString'
+import { useAddCustomer } from '@/hooks/querys/customer.query'
+import { useCreateOrder } from '@/hooks/querys/order.query'
+import { useCreateGHNOrder } from '@/hooks/querys/GHN.query'
+import { useCreatePayCOD } from '@/hooks/querys/payment.query'
+import { CustomerRequestType } from '@/types/customer.type'
+import { OrderRequestType } from '@/types/order.type'
+import getPriceAfterDiscount from '@/utils/getPriceAfterDiscount'
+import { CreateOrderGHNRequest, RequiredNoteGHN } from '@/types/GHN.type'
+import { PayCodRequestType } from '@/types/payment.type'
+import { set } from 'react-hook-form'
 
 const PaymentConfirmPage = () => {
   useSetDocTitle('PhoneStore - Giỏ hàng')
+
+  const { mutate: addCustomer } = useAddCustomer()
+  const { mutate: createOrder } = useCreateOrder()
+  const { mutate: createGHNOrder } = useCreateGHNOrder()
+  const { mutate: createPayCOD } = useCreatePayCOD()
 
   const navigate = useNavigate()
 
   const orderSlice = useAppSelector((state) => state.order)
   const currentUser = useAppSelector((state) => state.auth.user)
+
+  const [isLoading, setIsLoading] = useState(false)
 
   const dispatch = useAppDispatch()
 
@@ -93,8 +110,97 @@ const PaymentConfirmPage = () => {
       toast.error('Vui lòng chọn phương thức thanh toán')
       return
     }
+    setIsLoading(true)
+    const getQuantity = orderSlice.cartItems.reduce((acc, item) => acc + item.quantity, 0)
+    const totalWeight = Math.round(getQuantity * 300)
+    const totalHeight = Math.round(getQuantity * 6)
+    const totalWidth = 30
+    const totalLength = 30
     if (orderSlice.paymentMethod === 'Thanh toán khi nhận hàng') {
-      navigate('/cart/payment-result')
+      const customerReq: CustomerRequestType = {
+        name: orderSlice.shippingInfo?.name!,
+        phoneNumber: orderSlice.shippingInfo?.phone!
+      }
+      const orderReq: OrderRequestType = {
+        couponId: 1,
+        customerId: -1,
+        note: orderSlice.note!,
+        shippingAddress: getAddressString(orderSlice.shippingAddress!),
+        shippingFee: orderSlice.shippingFee!,
+        totalAmount: orderSlice.totalAmount + orderSlice.shippingFee!,
+        userId: currentUser!.id,
+        orderDetailRequests: orderSlice.cartItems.map((item) => ({
+          quantity: item.quantity,
+          discount: item.productVariant.discountPercentage,
+          price: item.productVariant.price,
+          orderId: -1,
+          productVariantId: item.productVariant.productVariantId,
+          unitPrice:
+            getPriceAfterDiscount(item.productVariant.price, item.productVariant.discountPercentage) * item.quantity
+        }))
+      }
+
+      const orderGHNRed: CreateOrderGHNRequest = {
+        client_order_code: 'order_123',
+        height: totalHeight,
+        length: totalLength,
+        payment_type_id: 2,
+        required_note: RequiredNoteGHN.CHOXEMHANGKHONGTHU,
+        service_type_id: 2,
+        to_address: getAddressString(orderSlice.shippingAddress!),
+        to_district_name: orderSlice.shippingAddress?.district!,
+        to_name: orderSlice.shippingInfo?.name!,
+        to_phone: orderSlice.shippingInfo?.phone!,
+        to_province_name: orderSlice.shippingAddress?.province!,
+        to_ward_name: orderSlice.shippingAddress?.ward!,
+        weight: totalWeight,
+        width: totalWidth,
+        items: orderSlice.cartItems.map((item) => ({
+          name: item.productVariant.fullNameVariant,
+          quantity: item.quantity
+        }))
+      }
+
+      const payCodeReq: PayCodRequestType = {
+        orderId: -1,
+        amount: orderSlice.totalAmount + orderSlice.shippingFee!
+      }
+
+      // console.log(orderGHNRed)
+      // console.log(orderReq)
+      // console.log(customerReq)
+      try {
+        addCustomer(customerReq, {
+          onSuccess: (customer) => {
+            console.log('customer', customer)
+            orderReq.customerId = customer.customerId
+            createOrder(orderReq, {
+              onSuccess: (order) => {
+                console.log('order', order)
+                orderGHNRed.client_order_code = `${order.orderId}`
+                createGHNOrder(orderGHNRed, {
+                  onSuccess: (ghnRes) => {
+                    console.log('ghnRes', ghnRes)
+                    payCodeReq.orderId = order.orderId
+                    payCodeReq.amount = order.totalAmount
+                    createPayCOD(payCodeReq, {
+                      onSuccess: (payRes) => {
+                        console.log('payRes', payRes)
+                        dispatch(clearOrder())
+                        setIsLoading(false)
+                        navigate(`/cart/payment-result/${payRes.orderId}`) // uncomment this line to navigate after payment success
+                      }
+                    })
+                  }
+                })
+              }
+            })
+          }
+        })
+      } catch (err) {
+        console.log(err)
+      }
+      // navigate('/cart/payment-result')
     } else if (orderSlice.paymentMethod === 'VNPay') {
       navigate('/cart/payment-result')
     } else {
@@ -123,6 +229,8 @@ const PaymentConfirmPage = () => {
             isOpen={reviewCartItemModalController.isOpen}
             onClose={reviewCartItemModalController.closeModal}
           />
+          {isLoading && <LoadingOpacity />}
+
           <div className='sticky top-0 z-[5] flex justify-between gap-x-6 bg-[#f4f6f8] pb-3'>
             <div
               onClick={() => navigate('/cart/payment-info')}

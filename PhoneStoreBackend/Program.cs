@@ -91,6 +91,7 @@ builder.Services.AddScoped<IWishlistRepository, WishlistService>();
 builder.Services.AddScoped<IWishlistItemRepository, WishlistItemService>();
 builder.Services.AddScoped<IActivityLogRepository, ActivityLogService>();
 builder.Services.AddScoped<INotificationRepository, NotificationService>();
+builder.Services.AddScoped<ICustomerRepository, CustomerService>();
 
 
 // Database configuration

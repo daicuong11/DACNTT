@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace PhoneStoreBackend.Entities
 {
@@ -16,7 +17,7 @@ namespace PhoneStoreBackend.Entities
         [Required]
         [StringLength(20)]
         public string PhoneNumber { get; set; }
-
+        [JsonIgnore]
         public Order Order { get; set; }
     }
 }
