@@ -49,6 +49,7 @@ namespace PhoneStoreBackend.Controllers
                 {
                     Name = cusReq.Name,
                     PhoneNumber = cusReq.PhoneNumber,
+                    Email = cusReq.Email,
                 };
 
                 var createCus = await _customerRepository.AddAsync(newCus);

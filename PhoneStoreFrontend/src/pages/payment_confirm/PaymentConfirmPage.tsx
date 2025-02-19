@@ -57,12 +57,6 @@ const PaymentConfirmPage = () => {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<PaymentMethodType | null>(null)
 
   useEffect(() => {
-    if (orderSlice.cartItems.length === 0) {
-      navigate('/cart/')
-    }
-  }, [orderSlice.cartItems])
-
-  useEffect(() => {
     setSelectedPaymentMethod(listPaymentMethod.find((method) => method.name === orderSlice.paymentMethod) || null)
     if (orderSlice.coupon) {
       setCouponActive(orderSlice.coupon)
@@ -119,7 +113,8 @@ const PaymentConfirmPage = () => {
     if (orderSlice.paymentMethod === 'Thanh toán khi nhận hàng') {
       const customerReq: CustomerRequestType = {
         name: orderSlice.shippingInfo?.name!,
-        phoneNumber: orderSlice.shippingInfo?.phone!
+        phoneNumber: orderSlice.shippingInfo?.phone!,
+        email: orderSlice.email!
       }
       const orderReq: OrderRequestType = {
         couponId: 1,
@@ -181,20 +176,36 @@ const PaymentConfirmPage = () => {
                 createGHNOrder(orderGHNRed, {
                   onSuccess: (ghnRes) => {
                     console.log('ghnRes', ghnRes)
-                    payCodeReq.orderId = order.orderId
-                    payCodeReq.amount = order.totalAmount
-                    createPayCOD(payCodeReq, {
-                      onSuccess: (payRes) => {
-                        console.log('payRes', payRes)
-                        dispatch(clearOrder())
-                        setIsLoading(false)
-                        navigate(`/cart/payment-result/${payRes.orderId}`) // uncomment this line to navigate after payment success
-                      }
-                    })
+                  },
+                  onError: (err) => {
+                    console.log(err)
+                    setIsLoading(false)
                   }
                 })
+
+                payCodeReq.orderId = order.orderId
+                payCodeReq.amount = order.totalAmount
+                createPayCOD(payCodeReq, {
+                  onSuccess: (payRes) => {
+                    console.log('payRes', payRes)
+                    setIsLoading(false)
+                    navigate(`/payment-result/${payRes.orderId}`)
+                  },
+                  onError: (err) => {
+                    console.log(err)
+                    setIsLoading(false)
+                  }
+                })
+              },
+              onError: (err) => {
+                console.log(err)
+                setIsLoading(false)
               }
             })
+          },
+          onError: (err) => {
+            console.log(err)
+            setIsLoading(false)
           }
         })
       } catch (err) {
@@ -202,7 +213,7 @@ const PaymentConfirmPage = () => {
       }
       // navigate('/cart/payment-result')
     } else if (orderSlice.paymentMethod === 'VNPay') {
-      navigate('/cart/payment-result')
+      navigate('/payment-result')
     } else {
       toast.error('Lỗi trong quá trình thanh toán')
       navigate('/')
@@ -211,6 +222,10 @@ const PaymentConfirmPage = () => {
 
   if (!currentUser) {
     return <Navigate to='/signin' />
+  }
+
+  if (orderSlice.cartItems.length === 0) {
+    return <Navigate to='/cart' />
   }
 
   return (

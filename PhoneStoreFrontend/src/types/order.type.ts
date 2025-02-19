@@ -1,6 +1,6 @@
 import { CouponType } from './coupon.type'
 import { CustomerType } from './customer.type'
-import { OrderDetailRequestType } from './order_detail.type'
+import { OrderDetailRequestType, OrderDetailType } from './order_detail.type'
 import { PaymentType } from './payment.type'
 import { UserAuthType, UserType } from './user.type'
 
@@ -10,6 +10,8 @@ export interface OrderType {
   status: string
   totalAmount: number
   note: string
+  shippingFee: number
+  shippingAddress: string
   customer: CustomerType
   paymentId: number
   payment: PaymentType
@@ -39,9 +41,14 @@ export interface OrderResponseType {
   status: string
   totalAmount: number
   note: string
+  shippingFee: number
+  shippingAddress: string
   orderDate: string
   paymentId: number
   payment: PaymentType
   couponId: number
   coupon: CouponType
+  orderDetails: OrderDetailType[]
+  createdAt: string
+  updatedAt: string
 }

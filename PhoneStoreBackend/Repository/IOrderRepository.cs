@@ -7,6 +7,7 @@ namespace PhoneStoreBackend.Repository
     {
         Task<ICollection<OrderDTO>> GetAllOrdersAsync();
         Task<OrderDTO> GetOrderByIdAsync(int orderId);
+        Task<OrderDTO> GetOrderByUserIdAndOrderIdAsync(int userID, int orderId);
         Task<ICollection<OrderDTO>> GetOrdersByUserIdAsync(int userId);
         Task<OrderDTO> AddOrderAsync(Order order);
         Task<bool> UpdateOrderAsync(int orderId, Order order);

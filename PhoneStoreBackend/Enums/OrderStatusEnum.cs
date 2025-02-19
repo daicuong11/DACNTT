@@ -3,14 +3,15 @@
     public enum OrderStatusEnum
     {
         Pending,        // Đang chờ xử lý
-        Processing,     // Đang xử lý
-        Shipped,        // Đã giao hàng
-        Delivered,      // Đã nhận hàng
-        Cancelled,      // Đã hủy
-        OnHold,         // Tạm giữ
+        Picking,     // Đang lấy hàng
+        Picked,        // Đã lấy hàng
+        Sorting,        // Hàng đang ở kho
+        Delivering,     // Đang giao
+        Delivered,      // Đã nhận hàng thành công
+        Delivered_fail, // Giao hàng thất bại
+        Return,         // Trả hàng
+        Returning,      // Đang trả hàng
         Returned,       // Đã trả hàng
-        Refunded,       // Đã hoàn tiền
-        Failed,         // Thất bại
-        Completed       // Hoàn thành
+        Return_fail,       // Đã trả hàng thất bại
     }
 }

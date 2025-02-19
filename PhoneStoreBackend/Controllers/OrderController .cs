@@ -67,6 +67,30 @@ namespace PhoneStoreBackend.Controllers
             }
         }
 
+        [HttpGet("detail/{userId}/{id}")]
+        //[Authorize]
+        public async Task<IActionResult> GetOrderByUserIdAndOrderId(int userId, int id)
+        {
+            try
+            {
+                var order = await _orderRepository.GetOrderByUserIdAndOrderIdAsync(userId, id);
+                if (order == null)
+                {
+                    var notFoundResponse = Response<object>.CreateErrorResponse("Đơn hàng không tồn tại.");
+                    return NotFound(notFoundResponse);
+                }
+
+                var response = Response<OrderDTO>.CreateSuccessResponse(order, "Thông tin đơn hàng");
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = Response<object>.CreateErrorResponse($"Đã xảy ra lỗi: {ex.Message}");
+                return BadRequest(errorResponse);
+            }
+        }
+
+
         [HttpGet("user/{userId}")]
         //[Authorize]
         public async Task<IActionResult> GetOrdersByUserId(int userId)

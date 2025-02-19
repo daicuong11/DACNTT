@@ -13,5 +13,7 @@ namespace PhoneStoreBackend.Api.Request
         [Phone(ErrorMessage = "Số điện thoại không hợp lệ.")]
         [StringLength(15, ErrorMessage = "Số điện thoại không được vượt quá 15 ký tự.")]
         public string PhoneNumber { get; set; }
+
+        public string Email { get; set; }
     }
 }

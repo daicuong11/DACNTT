@@ -21,7 +21,7 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "ADMIN")]
+        //[Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> GetAllOrderDetails()
         {
             try
@@ -38,7 +38,7 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> GetOrderDetailById(int id)
         {
             try
@@ -61,7 +61,7 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpGet("order/{orderId}")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> GetOrderDetailsByOrderId(int orderId)
         {
             try

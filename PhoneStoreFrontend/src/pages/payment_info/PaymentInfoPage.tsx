@@ -9,7 +9,7 @@ import { toast } from 'react-toastify'
 import { LoadingOpacity } from '../../components'
 import { useAppDispatch, useAppSelector } from '../../hooks'
 import useSetDocTitle from '../../hooks/useSetDocTitle'
-import { useNavigate } from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom'
 import FormCustomerInfo from './components/FormCustomerInfo'
 import { setEmail, setInfoShipping, setNote, setShippingFee } from '@/features/order/order.slice'
 import { AddressType } from '@/types/address.type'
@@ -93,12 +93,6 @@ const PaymentInfoPage = () => {
   const { data: wards } = useGetWardByDistrict(
     districts?.find((d) => d.DistrictName === infoCustomer.district)?.DistrictID || 0
   )
-
-  useEffect(() => {
-    if (orderSlice.cartItems.length === 0) {
-      navigate('/cart/')
-    }
-  }, [orderSlice.cartItems])
 
   useEffect(() => {
     if (currentUser) {
@@ -201,6 +195,10 @@ const PaymentInfoPage = () => {
     )
     dispatch(setNote(infoCustomer.note))
     navigate('/cart/payment')
+  }
+
+  if (orderSlice.cartItems.length === 0) {
+    return <Navigate to='/cart' />
   }
 
   return (

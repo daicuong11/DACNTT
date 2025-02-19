@@ -3,6 +3,8 @@ import {
   CreateOrderGHNRequest,
   CreateOrderGHNResponse,
   DistrictGHNResponse,
+  GetOrderStatusGHNRequest,
+  GetOrderStatusGHNResponse,
   ProvinceGHNResponse,
   ShippingFeeGHNRequest,
   ShippingFeeGHNResponse,
@@ -56,6 +58,15 @@ class GHNApi {
       return res.data
     } catch (error: any) {
       throw new Error(error.message || 'Failed to create order')
+    }
+  }
+
+  getGHNOrderStatus = async (getOrderStatusReq: GetOrderStatusGHNRequest): Promise<GetOrderStatusGHNResponse> => {
+    try {
+      const res = await axiosGHN.post('v2/shipping-order/detail-by-client-code', getOrderStatusReq)
+      return res.data
+    } catch (error: any) {
+      throw new Error(error.message || 'Failed to fetch order status')
     }
   }
 }

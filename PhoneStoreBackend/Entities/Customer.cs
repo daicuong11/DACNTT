@@ -17,6 +17,8 @@ namespace PhoneStoreBackend.Entities
         [Required]
         [StringLength(20)]
         public string PhoneNumber { get; set; }
+
+        public string Email { get; set; }
         [JsonIgnore]
         public Order Order { get; set; }
     }

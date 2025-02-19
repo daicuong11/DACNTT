@@ -49,3 +49,12 @@ export const useCreateGHNOrder = () => {
   })
   return mutation
 }
+
+export const useGetOrderStatusGHN = (orderId: string) => {
+  return useQuery({
+    queryKey: ['getOrderStatusGHN', orderId],
+    queryFn: () => ghnApi.getGHNOrderStatus({ client_order_code: orderId }),
+    enabled: !!orderId,
+    refetchOnWindowFocus: true
+  })
+}

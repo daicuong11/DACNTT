@@ -21,14 +21,37 @@ namespace PhoneStoreBackend.Repository.Implements
         // Lấy tất cả các đơn hàng
         public async Task<ICollection<OrderDTO>> GetAllOrdersAsync()
         {
-            var orders = await _context.Orders.ToListAsync();
-            return orders.Select(o => _mapper.Map<OrderDTO>(o)).ToList();
+            var orders = await _context.Orders
+                .Include(o => o.Payment)
+                .Include(o => o.Customer)
+                .ToListAsync();
+            return _mapper.Map<ICollection<OrderDTO>>(orders);
         }
 
         // Lấy đơn hàng theo OrderId
+
         public async Task<OrderDTO> GetOrderByIdAsync(int orderId)
         {
-            var order = await _context.Orders.FirstOrDefaultAsync(o => o.OrderId == orderId);
+            var order = await _context.Orders
+                .Include(o => o.Payment)
+                .Include(o => o.Customer)
+                .Include(o => o.OrderDetails)
+                .FirstOrDefaultAsync(o => o.OrderId == orderId);
+            if (order == null)
+            {
+                throw new KeyNotFoundException("Order not found.");
+            }
+            return _mapper.Map<OrderDTO>(order);
+        }
+
+        public async Task<OrderDTO> GetOrderByUserIdAndOrderIdAsync(int userId, int orderId)
+        {
+            var order = await _context.Orders
+                .Include(o => o.Payment)
+                .Include(o => o.Customer)
+                .Include(o => o.OrderDetails)
+                    .ThenInclude(od => od.ProductVariant)
+                .FirstOrDefaultAsync(o => o.OrderId == orderId && o.UserId == userId);
             if (order == null)
             {
                 throw new KeyNotFoundException("Order not found.");

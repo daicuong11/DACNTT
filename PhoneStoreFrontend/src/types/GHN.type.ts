@@ -74,3 +74,17 @@ export interface CreateOrderGHNResponse {
   total_fee: string
   expected_delivery_time: string
 }
+
+export interface GetOrderStatusGHNRequest {
+  client_order_code: string
+}
+
+export interface GetOrderStatusGHNResponse {
+  status: string
+  log: LogEntry[]
+}
+
+type LogEntry = {
+  status: string
+  updated_date: string
+}
