@@ -9,6 +9,7 @@ import { FC, useEffect } from 'react'
 import getLastWordOrTwoWithLimit from '@/utils/getLastWordOrTwoWithLimit'
 import LoginOfRegisterModal from '@/components/modals/LoginOrRegisterModal'
 import { fetchCart } from '@/features/cart/cartThunks'
+import { clearCart } from '@/features/cart/cart.slice'
 
 interface HeaderProps {
   showBreadcrumb?: boolean
@@ -27,6 +28,8 @@ const Header: FC<HeaderProps> = ({ showBreadcrumb = true }) => {
     const userId = currentUser?.id
     if (userId) {
       dispatch(fetchCart(userId))
+    } else {
+      dispatch(clearCart())
     }
   }, [dispatch, currentUser])
 
