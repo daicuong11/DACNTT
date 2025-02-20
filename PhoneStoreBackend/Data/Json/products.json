@@ -1,0 +1,282 @@
+﻿[
+  {
+    "ProductId": 1,
+    "Name": "iPhone 15 Pro Max",
+    "Description": "<p><strong>Chip A17 Pro</strong> với hiệu suất vượt trội và camera 48MP.</p>",
+    "CategoryId": 1,
+    "BrandId": 1
+  },
+  {
+    "ProductId": 2,
+    "Name": "iPhone 15 Pro",
+    "Description": "<p>Màn hình <strong>6.1 inch</strong> Super Retina XDR, chip A17 Pro.</p>",
+    "CategoryId": 1,
+    "BrandId": 1
+  },
+  {
+    "ProductId": 3,
+    "Name": "iPhone 15",
+    "Description": "<p>Thiết kế khung nhôm, camera 48MP, chip A16 Bionic.</p>",
+    "CategoryId": 1,
+    "BrandId": 1
+  },
+  {
+    "ProductId": 4,
+    "Name": "iPhone 14 Pro Max",
+    "Description": "<p><strong>Dynamic Island</strong>, camera 48MP, chip A16 Bionic.</p>",
+    "CategoryId": 1,
+    "BrandId": 1
+  },
+  {
+    "ProductId": 5,
+    "Name": "iPhone 14 Pro",
+    "Description": "<p>Màn hình LTPO 120Hz, Always-On Display, camera nâng cấp.</p>",
+    "CategoryId": 1,
+    "BrandId": 1
+  },
+  {
+    "ProductId": 6,
+    "Name": "iPhone 14",
+    "Description": "<p>Chip A15 Bionic, thiết kế bền bỉ, camera kép 12MP.</p>",
+    "CategoryId": 1,
+    "BrandId": 1
+  },
+  {
+    "ProductId": 7,
+    "Name": "iPhone 13 Pro Max",
+    "Description": "<p>Hiệu suất mạnh mẽ với A15 Bionic, camera ProMotion 120Hz.</p>",
+    "CategoryId": 1,
+    "BrandId": 1
+  },
+  {
+    "ProductId": 8,
+    "Name": "iPhone 13 Pro",
+    "Description": "<p>Khung thép không gỉ, camera tele 3x, pin lâu.</p>",
+    "CategoryId": 1,
+    "BrandId": 1
+  },
+  {
+    "ProductId": 9,
+    "Name": "iPhone 13",
+    "Description": "<p>Chip A15, camera kép với Night Mode, màn hình OLED.</p>",
+    "CategoryId": 1,
+    "BrandId": 1
+  },
+  {
+    "ProductId": 10,
+    "Name": "iPhone SE 2022",
+    "Description": "<p>Chip A15, Touch ID, thiết kế nhỏ gọn, giá phải chăng.</p>",
+    "CategoryId": 1,
+    "BrandId": 1
+  },
+  {
+    "ProductId": 11,
+    "Name": "Samsung Galaxy S24 Ultra",
+    "Description": "<p>Camera 200MP, chip Snapdragon 8 Gen 3, bút S-Pen.</p>",
+    "CategoryId": 1,
+    "BrandId": 2
+  },
+  {
+    "ProductId": 12,
+    "Name": "Xiaomi 13 Pro",
+    "Description": "<p>Hợp tác với Leica, camera 1 inch, Snapdragon 8 Gen 2.</p>",
+    "CategoryId": 1,
+    "BrandId": 3
+  },
+  {
+    "ProductId": 13,
+    "Name": "Oppo Find X6 Pro",
+    "Description": "<p>Màn hình AMOLED 120Hz, camera zoom 100x.</p>",
+    "CategoryId": 1,
+    "BrandId": 4
+  },
+  {
+    "ProductId": 14,
+    "Name": "Vivo X90 Pro",
+    "Description": "<p>Camera ZEISS, chip Dimensity 9200, màn hình cong.</p>",
+    "CategoryId": 1,
+    "BrandId": 5
+  },
+  {
+    "ProductId": 15,
+    "Name": "Realme GT Neo 5",
+    "Description": "<p>Sạc nhanh 240W, màn hình AMOLED 144Hz.</p>",
+    "CategoryId": 1,
+    "BrandId": 6
+  },
+  {
+    "ProductId": 16,
+    "Name": "OnePlus 11 5G",
+    "Description": "<p>Hiệu năng cao với OxygenOS, Snapdragon 8 Gen 2.</p>",
+    "CategoryId": 1,
+    "BrandId": 7
+  },
+  {
+    "ProductId": 17,
+    "Name": "Sony Xperia 1 V",
+    "Description": "<p>Màn hình OLED 4K, camera chuyên nghiệp.</p>",
+    "CategoryId": 1,
+    "BrandId": 8
+  },
+  {
+    "ProductId": 18,
+    "Name": "Nokia XR21",
+    "Description": "<p>Điện thoại siêu bền đạt chuẩn quân đội MIL-STD-810H.</p>",
+    "CategoryId": 1,
+    "BrandId": 9
+  },
+  {
+    "ProductId": 19,
+    "Name": "Asus ROG Phone 7",
+    "Description": "<p>Điện thoại gaming với màn hình 165Hz và Snapdragon 8 Gen 2.</p>",
+    "CategoryId": 1,
+    "BrandId": 10
+  },
+  {
+    "ProductId": 20,
+    "Name": "Apple iPad Pro 12.9",
+    "Description": "<p>Chip M2, màn hình Liquid Retina XDR, bút Apple Pencil.</p>",
+    "CategoryId": 2,
+    "BrandId": 1
+  },
+  {
+    "ProductId": 21,
+    "Name": "Apple AirPods Pro 2",
+    "Description": "Tai nghe không dây chống ồn tốt nhất của Apple",
+    "CategoryId": 6,
+    "BrandId": 1
+  },
+  {
+    "ProductId": 22,
+    "Name": "Samsung Galaxy Watch 6",
+    "Description": "Đồng hồ thông minh với màn hình Super AMOLED",
+    "CategoryId": 5,
+    "BrandId": 2
+  },
+  {
+    "ProductId": 23,
+    "Name": "Xiaomi Pad 6 Pro",
+    "Description": "Máy tính bảng với Snapdragon 8+ Gen 1",
+    "CategoryId": 2,
+    "BrandId": 3
+  },
+  {
+    "ProductId": 24,
+    "Name": "Asus TUF Gaming F15",
+    "Description": "Laptop gaming giá tốt với RTX 4060",
+    "CategoryId": 3,
+    "BrandId": 10
+  },
+  {
+    "ProductId": 25,
+    "Name": "MacBook Pro M3 Max",
+    "Description": "Laptop mạnh mẽ cho dân thiết kế và lập trình viên",
+    "CategoryId": 3,
+    "BrandId": 1
+  },
+  {
+    "ProductId": 26,
+    "Name": "Sony Xperia 1 V",
+    "Description": "Điện thoại flagship với màn hình 4K OLED",
+    "CategoryId": 1,
+    "BrandId": 8
+  },
+  {
+    "ProductId": 27,
+    "Name": "Nokia XR21",
+    "Description": "Điện thoại siêu bền chuẩn quân đội",
+    "CategoryId": 1,
+    "BrandId": 9
+  },
+  {
+    "ProductId": 28,
+    "Name": "Oppo Reno 10 Pro+",
+    "Description": "Điện thoại chụp ảnh zoom ấn tượng",
+    "CategoryId": 1,
+    "BrandId": 4
+  },
+  {
+    "ProductId": 29,
+    "Name": "Realme 11 Pro+",
+    "Description": "Điện thoại giá rẻ với camera 200MP",
+    "CategoryId": 1,
+    "BrandId": 6
+  },
+  {
+    "ProductId": 30,
+    "Name": "OnePlus Nord 3",
+    "Description": "Điện thoại tầm trung với hiệu năng mạnh",
+    "CategoryId": 1,
+    "BrandId": 7
+  },
+  {
+    "ProductId": 31,
+    "Name": "Apple Magic Keyboard",
+    "Description": "Bàn phím không dây dành cho iPad",
+    "CategoryId": 4,
+    "BrandId": 1
+  },
+  {
+    "ProductId": 32,
+    "Name": "Samsung 65\" Neo QLED 8K",
+    "Description": "Smart TV 8K với công nghệ Mini LED",
+    "CategoryId": 7,
+    "BrandId": 2
+  },
+  {
+    "ProductId": 33,
+    "Name": "Xiaomi Smart Air Purifier 4",
+    "Description": "Thiết bị lọc không khí thông minh",
+    "CategoryId": 8,
+    "BrandId": 3
+  },
+  {
+    "ProductId": 34,
+    "Name": "Asus ZenBook Duo 14",
+    "Description": "Laptop màn hình kép sáng tạo",
+    "CategoryId": 3,
+    "BrandId": 10
+  },
+  {
+    "ProductId": 35,
+    "Name": "Sony PlayStation 5",
+    "Description": "Console chơi game thế hệ mới",
+    "CategoryId": 8,
+    "BrandId": 8
+  },
+  {
+    "ProductId": 36,
+    "Name": "Oppo Pad Air",
+    "Description": "Máy tính bảng giá rẻ với Snapdragon 680",
+    "CategoryId": 2,
+    "BrandId": 4
+  },
+  {
+    "ProductId": 37,
+    "Name": "Vivo V29 Pro",
+    "Description": "Điện thoại có camera chụp chân dung đẹp",
+    "CategoryId": 1,
+    "BrandId": 5
+  },
+  {
+    "ProductId": 38,
+    "Name": "Apple HomePod Mini",
+    "Description": "Loa thông minh với Siri",
+    "CategoryId": 9,
+    "BrandId": 1
+  },
+  {
+    "ProductId": 39,
+    "Name": "Samsung T7 Shield SSD",
+    "Description": "Ổ cứng di động tốc độ cao",
+    "CategoryId": 10,
+    "BrandId": 2
+  },
+  {
+    "ProductId": 40,
+    "Name": "Xiaomi Mi Band 8",
+    "Description": "Vòng đeo tay thông minh theo dõi sức khỏe",
+    "CategoryId": 5,
+    "BrandId": 3
+  }
+]

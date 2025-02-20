@@ -1,0 +1,72 @@
+[
+  {
+    "DiscountId": 1,
+    "Percentage": 10,
+    "StartDate": "2025-03-01",
+    "EndDate": "2025-03-10",
+    "IsActive": true
+  },
+  {
+    "DiscountId": 2,
+    "Percentage": 15,
+    "StartDate": "2025-03-05",
+    "EndDate": "2025-03-15",
+    "IsActive": true
+  },
+  {
+    "DiscountId": 3,
+    "Percentage": 20,
+    "StartDate": "2025-02-25",
+    "EndDate": "2025-03-05",
+    "IsActive": false
+  },
+  {
+    "DiscountId": 4,
+    "Percentage": 5,
+    "StartDate": "2025-04-01",
+    "EndDate": "2025-04-30",
+    "IsActive": true
+  },
+  {
+    "DiscountId": 5,
+    "Percentage": 25,
+    "StartDate": "2025-02-20",
+    "EndDate": "2025-02-25",
+    "IsActive": false
+  },
+  {
+    "DiscountId": 6,
+    "Percentage": 30,
+    "StartDate": "2025-03-10",
+    "EndDate": "2025-03-20",
+    "IsActive": true
+  },
+  {
+    "DiscountId": 7,
+    "Percentage": 12,
+    "StartDate": "2025-02-28",
+    "EndDate": "2025-03-07",
+    "IsActive": true
+  },
+  {
+    "DiscountId": 8,
+    "Percentage": 18,
+    "StartDate": "2025-03-15",
+    "EndDate": "2025-03-25",
+    "IsActive": true
+  },
+  {
+    "DiscountId": 9,
+    "Percentage": 22,
+    "StartDate": "2025-04-05",
+    "EndDate": "2025-04-15",
+    "IsActive": true
+  },
+  {
+    "DiscountId": 10,
+    "Percentage": 8,
+    "StartDate": "2025-03-01",
+    "EndDate": "2025-03-08",
+    "IsActive": true
+  }
+]

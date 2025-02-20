@@ -16,7 +16,7 @@ namespace PhoneStoreBackend.Entities
 
         public int DisplayOrder { get; set; }
 
-        public int CategoryId { get; set; }
+        public int? CategoryId { get; set; }
         [ForeignKey("CategoryId")]
         [JsonIgnore]
         public Category Category { get; set; }

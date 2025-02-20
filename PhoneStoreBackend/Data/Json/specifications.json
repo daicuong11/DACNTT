@@ -1,0 +1,542 @@
+[
+  {
+    "SpecificationId": 1,
+    "ProductSpecificationGroupId": 1,
+    "ProductVariantId": 1,
+    "Key": "Màn hình",
+    "Value": "6.7 inch Super Retina XDR",
+    "DisplayOrder": 1,
+    "IsSpecial": true
+  },
+  {
+    "SpecificationId": 2,
+    "ProductSpecificationGroupId": 1,
+    "ProductVariantId": 1,
+    "Key": "Chất liệu khung",
+    "Value": "Titanium",
+    "DisplayOrder": 2,
+    "IsSpecial": false
+  },
+  {
+    "SpecificationId": 3,
+    "ProductSpecificationGroupId": 2,
+    "ProductVariantId": 1,
+    "Key": "Chip xử lý",
+    "Value": "Apple A17 Pro",
+    "DisplayOrder": 1,
+    "IsSpecial": true
+  },
+  {
+    "SpecificationId": 4,
+    "ProductSpecificationGroupId": 2,
+    "ProductVariantId": 1,
+    "Key": "RAM",
+    "Value": "8GB",
+    "DisplayOrder": 2,
+    "IsSpecial": false
+  },
+  {
+    "SpecificationId": 5,
+    "ProductSpecificationGroupId": 3,
+    "ProductVariantId": 1,
+    "Key": "Camera chính",
+    "Value": "48MP",
+    "DisplayOrder": 1,
+    "IsSpecial": true
+  },
+  {
+    "SpecificationId": 6,
+    "ProductSpecificationGroupId": 3,
+    "ProductVariantId": 1,
+    "Key": "Camera tele",
+    "Value": "12MP 5X zoom quang học",
+    "DisplayOrder": 2,
+    "IsSpecial": false
+  },
+  {
+    "SpecificationId": 7,
+    "ProductSpecificationGroupId": 4,
+    "ProductVariantId": 1,
+    "Key": "Dung lượng pin",
+    "Value": "4422mAh",
+    "DisplayOrder": 1,
+    "IsSpecial": false
+  },
+  {
+    "SpecificationId": 8,
+    "ProductSpecificationGroupId": 4,
+    "ProductVariantId": 1,
+    "Key": "Sạc nhanh",
+    "Value": "20W",
+    "DisplayOrder": 2,
+    "IsSpecial": false
+  },
+  {
+    "SpecificationId": 9,
+    "ProductSpecificationGroupId": 5,
+    "ProductVariantId": 1,
+    "Key": "Kết nối",
+    "Value": "5G",
+    "DisplayOrder": 1,
+    "IsSpecial": true
+  },
+  {
+    "SpecificationId": 10,
+    "ProductSpecificationGroupId": 5,
+    "ProductVariantId": 1,
+    "Key": "Cổng sạc",
+    "Value": "USB-C",
+    "DisplayOrder": 2,
+    "IsSpecial": false
+  },
+  {
+    "SpecificationId": 11,
+    "ProductSpecificationGroupId": 1,
+    "ProductVariantId": 2,
+    "Key": "Màn hình",
+    "Value": "6.7 inch Super Retina XDR",
+    "DisplayOrder": 1,
+    "IsSpecial": true
+  },
+  {
+    "SpecificationId": 12,
+    "ProductSpecificationGroupId": 1,
+    "ProductVariantId": 2,
+    "Key": "Chất liệu khung",
+    "Value": "Titanium",
+    "DisplayOrder": 2,
+    "IsSpecial": false
+  },
+  {
+    "SpecificationId": 13,
+    "ProductSpecificationGroupId": 2,
+    "ProductVariantId": 2,
+    "Key": "Chip xử lý",
+    "Value": "Apple A17 Pro",
+    "DisplayOrder": 1,
+    "IsSpecial": true
+  },
+  {
+    "SpecificationId": 14,
+    "ProductSpecificationGroupId": 2,
+    "ProductVariantId": 2,
+    "Key": "RAM",
+    "Value": "8GB",
+    "DisplayOrder": 2,
+    "IsSpecial": false
+  },
+  {
+    "SpecificationId": 15,
+    "ProductSpecificationGroupId": 3,
+    "ProductVariantId": 2,
+    "Key": "Camera chính",
+    "Value": "48MP",
+    "DisplayOrder": 1,
+    "IsSpecial": true
+  },
+  {
+    "SpecificationId": 16,
+    "ProductSpecificationGroupId": 3,
+    "ProductVariantId": 2,
+    "Key": "Camera tele",
+    "Value": "12MP 5X zoom quang học",
+    "DisplayOrder": 2,
+    "IsSpecial": false
+  },
+  {
+    "SpecificationId": 17,
+    "ProductSpecificationGroupId": 4,
+    "ProductVariantId": 2,
+    "Key": "Dung lượng pin",
+    "Value": "4422mAh",
+    "DisplayOrder": 1,
+    "IsSpecial": false
+  },
+  {
+    "SpecificationId": 18,
+    "ProductSpecificationGroupId": 4,
+    "ProductVariantId": 2,
+    "Key": "Sạc nhanh",
+    "Value": "20W",
+    "DisplayOrder": 2,
+    "IsSpecial": false
+  },
+  {
+    "SpecificationId": 19,
+    "ProductSpecificationGroupId": 5,
+    "ProductVariantId": 2,
+    "Key": "Kết nối",
+    "Value": "5G",
+    "DisplayOrder": 1,
+    "IsSpecial": true
+  },
+  {
+    "SpecificationId": 20,
+    "ProductSpecificationGroupId": 5,
+    "ProductVariantId": 2,
+    "Key": "Cổng sạc",
+    "Value": "USB-C",
+    "DisplayOrder": 2,
+    "IsSpecial": false
+  },
+  {
+    "SpecificationId": 21,
+    "ProductSpecificationGroupId": 1,
+    "ProductVariantId": 3,
+    "Key": "Màn hình",
+    "Value": "6.1 inch Super Retina XDR",
+    "DisplayOrder": 1,
+    "IsSpecial": true
+  },
+  {
+    "SpecificationId": 22,
+    "ProductSpecificationGroupId": 1,
+    "ProductVariantId": 3,
+    "Key": "Chất liệu khung",
+    "Value": "Titanium",
+    "DisplayOrder": 2,
+    "IsSpecial": false
+  },
+  {
+    "SpecificationId": 23,
+    "ProductSpecificationGroupId": 2,
+    "ProductVariantId": 3,
+    "Key": "Chip xử lý",
+    "Value": "Apple A17 Pro",
+    "DisplayOrder": 1,
+    "IsSpecial": true
+  },
+  {
+    "SpecificationId": 24,
+    "ProductSpecificationGroupId": 2,
+    "ProductVariantId": 3,
+    "Key": "RAM",
+    "Value": "8GB",
+    "DisplayOrder": 2,
+    "IsSpecial": false
+  },
+  {
+    "SpecificationId": 25,
+    "ProductSpecificationGroupId": 3,
+    "ProductVariantId": 3,
+    "Key": "Camera chính",
+    "Value": "48MP",
+    "DisplayOrder": 1,
+    "IsSpecial": true
+  },
+  {
+    "SpecificationId": 26,
+    "ProductSpecificationGroupId": 3,
+    "ProductVariantId": 3,
+    "Key": "Camera tele",
+    "Value": "12MP 3X zoom quang học",
+    "DisplayOrder": 2,
+    "IsSpecial": false
+  },
+  {
+    "SpecificationId": 27,
+    "ProductSpecificationGroupId": 4,
+    "ProductVariantId": 3,
+    "Key": "Dung lượng pin",
+    "Value": "3274mAh",
+    "DisplayOrder": 1,
+    "IsSpecial": false
+  },
+  {
+    "SpecificationId": 28,
+    "ProductSpecificationGroupId": 4,
+    "ProductVariantId": 3,
+    "Key": "Sạc nhanh",
+    "Value": "20W",
+    "DisplayOrder": 2,
+    "IsSpecial": false
+  },
+  {
+    "SpecificationId": 29,
+    "ProductSpecificationGroupId": 5,
+    "ProductVariantId": 3,
+    "Key": "Kết nối",
+    "Value": "5G",
+    "DisplayOrder": 1,
+    "IsSpecial": true
+  },
+  {
+    "SpecificationId": 30,
+    "ProductSpecificationGroupId": 5,
+    "ProductVariantId": 3,
+    "Key": "Cổng sạc",
+    "Value": "USB-C",
+    "DisplayOrder": 2,
+    "IsSpecial": false
+  },
+  {
+    "SpecificationId": 31,
+    "ProductSpecificationGroupId": 1,
+    "ProductVariantId": 5,
+    "Key": "Màn hình",
+    "Value": "6.1 inch Super Retina XDR",
+    "DisplayOrder": 1,
+    "IsSpecial": true
+  },
+  {
+    "SpecificationId": 32,
+    "ProductSpecificationGroupId": 1,
+    "ProductVariantId": 5,
+    "Key": "Chất liệu khung",
+    "Value": "Nhôm",
+    "DisplayOrder": 2,
+    "IsSpecial": false
+  },
+  {
+    "SpecificationId": 33,
+    "ProductSpecificationGroupId": 2,
+    "ProductVariantId": 5,
+    "Key": "Chip xử lý",
+    "Value": "Apple A16 Bionic",
+    "DisplayOrder": 1,
+    "IsSpecial": true
+  },
+  {
+    "SpecificationId": 34,
+    "ProductSpecificationGroupId": 2,
+    "ProductVariantId": 5,
+    "Key": "RAM",
+    "Value": "6GB",
+    "DisplayOrder": 2,
+    "IsSpecial": false
+  },
+  {
+    "SpecificationId": 35,
+    "ProductSpecificationGroupId": 3,
+    "ProductVariantId": 5,
+    "Key": "Camera chính",
+    "Value": "48MP",
+    "DisplayOrder": 1,
+    "IsSpecial": true
+  },
+  {
+    "SpecificationId": 36,
+    "ProductSpecificationGroupId": 3,
+    "ProductVariantId": 5,
+    "Key": "Camera tele",
+    "Value": "Không có",
+    "DisplayOrder": 2,
+    "IsSpecial": false
+  },
+  {
+    "SpecificationId": 37,
+    "ProductSpecificationGroupId": 4,
+    "ProductVariantId": 5,
+    "Key": "Dung lượng pin",
+    "Value": "3349mAh",
+    "DisplayOrder": 1,
+    "IsSpecial": false
+  },
+  {
+    "SpecificationId": 38,
+    "ProductSpecificationGroupId": 4,
+    "ProductVariantId": 5,
+    "Key": "Sạc nhanh",
+    "Value": "20W",
+    "DisplayOrder": 2,
+    "IsSpecial": false
+  },
+  {
+    "SpecificationId": 39,
+    "ProductSpecificationGroupId": 5,
+    "ProductVariantId": 5,
+    "Key": "Kết nối",
+    "Value": "5G",
+    "DisplayOrder": 1,
+    "IsSpecial": true
+  },
+  {
+    "SpecificationId": 40,
+    "ProductSpecificationGroupId": 5,
+    "ProductVariantId": 5,
+    "Key": "Cổng sạc",
+    "Value": "USB-C",
+    "DisplayOrder": 2,
+    "IsSpecial": false
+  },
+  {
+    "SpecificationId": 41,
+    "ProductSpecificationGroupId": 1,
+    "ProductVariantId": 11,
+    "Key": "Màn hình",
+    "Value": "6.1 inch Super Retina XDR",
+    "DisplayOrder": 1,
+    "IsSpecial": true
+  },
+  {
+    "SpecificationId": 42,
+    "ProductSpecificationGroupId": 1,
+    "ProductVariantId": 11,
+    "Key": "Chất liệu khung",
+    "Value": "Nhôm",
+    "DisplayOrder": 2,
+    "IsSpecial": false
+  },
+  {
+    "SpecificationId": 43,
+    "ProductSpecificationGroupId": 2,
+    "ProductVariantId": 11,
+    "Key": "Chip xử lý",
+    "Value": "Apple A15 Bionic",
+    "DisplayOrder": 1,
+    "IsSpecial": true
+  },
+  {
+    "SpecificationId": 44,
+    "ProductSpecificationGroupId": 2,
+    "ProductVariantId": 11,
+    "Key": "RAM",
+    "Value": "6GB",
+    "DisplayOrder": 2,
+    "IsSpecial": false
+  },
+  {
+    "SpecificationId": 45,
+    "ProductSpecificationGroupId": 3,
+    "ProductVariantId": 11,
+    "Key": "Camera chính",
+    "Value": "12MP",
+    "DisplayOrder": 1,
+    "IsSpecial": true
+  },
+  {
+    "SpecificationId": 46,
+    "ProductSpecificationGroupId": 3,
+    "ProductVariantId": 11,
+    "Key": "Camera tele",
+    "Value": "Không có",
+    "DisplayOrder": 2,
+    "IsSpecial": false
+  },
+  {
+    "SpecificationId": 47,
+    "ProductSpecificationGroupId": 4,
+    "ProductVariantId": 11,
+    "Key": "Dung lượng pin",
+    "Value": "3279mAh",
+    "DisplayOrder": 1,
+    "IsSpecial": false
+  },
+  {
+    "SpecificationId": 48,
+    "ProductSpecificationGroupId": 4,
+    "ProductVariantId": 11,
+    "Key": "Sạc nhanh",
+    "Value": "20W",
+    "DisplayOrder": 2,
+    "IsSpecial": false
+  },
+  {
+    "SpecificationId": 49,
+    "ProductSpecificationGroupId": 5,
+    "ProductVariantId": 11,
+    "Key": "Kết nối",
+    "Value": "5G",
+    "DisplayOrder": 1,
+    "IsSpecial": true
+  },
+  {
+    "SpecificationId": 50,
+    "ProductSpecificationGroupId": 5,
+    "ProductVariantId": 11,
+    "Key": "Cổng sạc",
+    "Value": "Lightning",
+    "DisplayOrder": 2,
+    "IsSpecial": false
+  },
+  {
+    "SpecificationId": 51,
+    "ProductSpecificationGroupId": 1,
+    "ProductVariantId": 16,
+    "Key": "Màn hình",
+    "Value": "4.7 inch Retina HD",
+    "DisplayOrder": 1,
+    "IsSpecial": true
+  },
+  {
+    "SpecificationId": 52,
+    "ProductSpecificationGroupId": 1,
+    "ProductVariantId": 16,
+    "Key": "Chất liệu khung",
+    "Value": "Nhôm",
+    "DisplayOrder": 2,
+    "IsSpecial": false
+  },
+  {
+    "SpecificationId": 53,
+    "ProductSpecificationGroupId": 2,
+    "ProductVariantId": 16,
+    "Key": "Chip xử lý",
+    "Value": "Apple A15 Bionic",
+    "DisplayOrder": 1,
+    "IsSpecial": true
+  },
+  {
+    "SpecificationId": 54,
+    "ProductSpecificationGroupId": 2,
+    "ProductVariantId": 16,
+    "Key": "RAM",
+    "Value": "4GB",
+    "DisplayOrder": 2,
+    "IsSpecial": false
+  },
+  {
+    "SpecificationId": 55,
+    "ProductSpecificationGroupId": 3,
+    "ProductVariantId": 16,
+    "Key": "Camera chính",
+    "Value": "12MP",
+    "DisplayOrder": 1,
+    "IsSpecial": true
+  },
+  {
+    "SpecificationId": 56,
+    "ProductSpecificationGroupId": 3,
+    "ProductVariantId": 16,
+    "Key": "Camera tele",
+    "Value": "Không có",
+    "DisplayOrder": 2,
+    "IsSpecial": false
+  },
+  {
+    "SpecificationId": 57,
+    "ProductSpecificationGroupId": 4,
+    "ProductVariantId": 16,
+    "Key": "Dung lượng pin",
+    "Value": "2018mAh",
+    "DisplayOrder": 1,
+    "IsSpecial": false
+  },
+  {
+    "SpecificationId": 58,
+    "ProductSpecificationGroupId": 4,
+    "ProductVariantId": 16,
+    "Key": "Sạc nhanh",
+    "Value": "18W",
+    "DisplayOrder": 2,
+    "IsSpecial": false
+  },
+  {
+    "SpecificationId": 59,
+    "ProductSpecificationGroupId": 5,
+    "ProductVariantId": 16,
+    "Key": "Kết nối",
+    "Value": "5G",
+    "DisplayOrder": 1,
+    "IsSpecial": true
+  },
+  {
+    "SpecificationId": 60,
+    "ProductSpecificationGroupId": 5,
+    "ProductVariantId": 16,
+    "Key": "Cổng sạc",
+    "Value": "Lightning",
+    "DisplayOrder": 2,
+    "IsSpecial": false
+  }
+]

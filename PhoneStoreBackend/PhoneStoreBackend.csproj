@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Data\Json\categories.json" />
+    <Content Remove="Data\Json\products.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="CloudinaryDotNet" Version="1.27.2" />
@@ -27,6 +32,11 @@
   <ItemGroup>
     <Folder Include="Configs\" />
     <Folder Include="Exceptions\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Data\Json\categories.json" />
+    <None Include="Data\Json\products.json" />
   </ItemGroup>
 
 </Project>

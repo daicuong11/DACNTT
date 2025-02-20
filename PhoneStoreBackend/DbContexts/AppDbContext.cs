@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
+using PhoneStoreBackend.Data.Seeding;
 using PhoneStoreBackend.Entities;
 
 namespace PhoneStoreBackend.DbContexts
@@ -63,7 +63,7 @@ namespace PhoneStoreBackend.DbContexts
                 .HasOne(ps => ps.ProductVariant)
                 .WithMany(pv => pv.ProductSpecifications)
                 .HasForeignKey(ps => ps.ProductVariantId)
-                .OnDelete(DeleteBehavior.NoAction); 
+                .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<ProductSpecification>()
                 .HasOne(ps => ps.ProductSpecificationGroup)
@@ -71,6 +71,7 @@ namespace PhoneStoreBackend.DbContexts
                 .HasForeignKey(ps => ps.ProductSpecificationGroupId)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            DatabaseSeeder.Seed(modelBuilder); // migration add SeedData -> update-database
         }
     }
 }

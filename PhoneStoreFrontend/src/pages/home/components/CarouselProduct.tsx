@@ -4,9 +4,9 @@ import { FC, useEffect, useRef, useState } from 'react'
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react'
 import ProductCard from '../../../components/items/ProductCard'
 
-import { Autoplay, Grid } from 'swiper/modules'
 import { useElementWidth } from '@/hooks'
-import { ProductResponse, ProductType } from '@/types/product.type'
+import { ProductResponse } from '@/types/product.type'
+import { Autoplay, Grid } from 'swiper/modules'
 
 interface CarouselProductType {
   row?: 1 | 2
@@ -56,11 +56,14 @@ const CarouselProduct: FC<CarouselProductType> = ({ row = 1, autoPlay = true, da
           'h-[814px] ': row !== 1
         })}
       >
-        {dataSource.map((item, index) => (
-          <SwiperSlide key={index} className={classNames('h-full')}>
-            <ProductCard product={item} />
-          </SwiperSlide>
-        ))}
+        {dataSource
+          .filter(item => item.productVariants.length > 0)
+          .map((item, index) => (
+            <SwiperSlide key={index} className={classNames('h-full')}>
+              <ProductCard product={item} />
+            </SwiperSlide>
+          ))}
+
       </Swiper>
       {currentSlide != 0 && (
         <button

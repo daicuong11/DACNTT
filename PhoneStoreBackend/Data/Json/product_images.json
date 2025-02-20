@@ -1,0 +1,56 @@
+[
+  {
+    "ImageId": 1,
+    "ProductVariantId": 1,
+    "ImageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_3.png",
+    "IsMain": true
+  },
+  {
+    "ImageId": 2,
+    "ProductVariantId": 1,
+    "ImageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_4__1.jpg",
+    "IsMain": false
+  },
+  {
+    "ImageId": 3,
+    "ProductVariantId": 1,
+    "ImageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_5__1.jpg",
+    "IsMain": false
+  },
+  {
+    "ImageId": 4,
+    "ProductVariantId": 1,
+    "ImageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_6__1.jpg",
+    "IsMain": false
+  },
+  {
+    "ImageId": 5,
+    "ProductVariantId": 1,
+    "ImageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_7__1.jpg",
+    "IsMain": false
+  },
+  {
+    "ImageId": 6,
+    "ProductVariantId": 1,
+    "ImageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_8__1.jpg",
+    "IsMain": false
+  },
+  {
+    "ImageId": 7,
+    "ProductVariantId": 1,
+    "ImageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_9__1.jpg",
+    "IsMain": false
+  },
+  {
+    "ImageId": 8,
+    "ProductVariantId": 1,
+    "ImageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_1__1.jpg",
+    "IsMain": false
+  },
+  {
+    "ImageId": 9,
+    "ProductVariantId": 1,
+    "ImageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_10__1.jpg",
+    "IsMain": false
+  }
+]

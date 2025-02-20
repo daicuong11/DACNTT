@@ -1,0 +1,62 @@
+[
+  {
+    "BrandId": 1,
+    "Name": "Apple",
+    "Description": "Thương hiệu cao cấp với iPhone, iPad, MacBook và phụ kiện",
+    "ImageUrl": "https://example.com/images/apple.jpg"
+  },
+  {
+    "BrandId": 2,
+    "Name": "Samsung",
+    "Description": "Hãng công nghệ hàng đầu với điện thoại Galaxy, máy tính bảng và TV",
+    "ImageUrl": "https://example.com/images/samsung.jpg"
+  },
+  {
+    "BrandId": 3,
+    "Name": "Xiaomi",
+    "Description": "Thương hiệu giá rẻ với các sản phẩm điện thoại, tai nghe và thiết bị thông minh",
+    "ImageUrl": "https://example.com/images/xiaomi.jpg"
+  },
+  {
+    "BrandId": 4,
+    "Name": "Oppo",
+    "Description": "Chuyên về điện thoại chụp ảnh đẹp và công nghệ sạc nhanh",
+    "ImageUrl": "https://example.com/images/oppo.jpg"
+  },
+  {
+    "BrandId": 5,
+    "Name": "Vivo",
+    "Description": "Tập trung vào trải nghiệm âm thanh và camera cho điện thoại",
+    "ImageUrl": "https://example.com/images/vivo.jpg"
+  },
+  {
+    "BrandId": 6,
+    "Name": "Realme",
+    "Description": "Thương hiệu con của Oppo với thiết bị giá rẻ nhưng mạnh mẽ",
+    "ImageUrl": "https://example.com/images/realme.jpg"
+  },
+  {
+    "BrandId": 7,
+    "Name": "OnePlus",
+    "Description": "Điện thoại cao cấp với hiệu năng mạnh và phần mềm mượt mà",
+    "ImageUrl": "https://example.com/images/oneplus.jpg"
+  },
+  {
+    "BrandId": 8,
+    "Name": "Sony",
+    "Description": "Chuyên về tai nghe, máy ảnh, loa và điện thoại Xperia",
+    "ImageUrl": "https://example.com/images/sony.jpg"
+  },
+  {
+    "BrandId": 9,
+    "Name": "Nokia",
+    "Description": "Điện thoại bền bỉ với pin lâu và hệ điều hành Android gốc",
+    "ImageUrl": "https://example.com/images/nokia.jpg"
+  },
+  {
+    "BrandId": 10,
+    "Name": "Asus",
+    "Description": "Nổi bật với dòng ROG Phone cho game thủ và laptop mạnh mẽ",
+    "ImageUrl": "https://example.com/images/asus.jpg"
+  }
+]

@@ -110,12 +110,12 @@ builder.Services.AddScoped<ICustomerRepository, CustomerService>();
 //    options.UseSqlServer(connectionString));
 
 //Database configuration của Cuong
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Connection1")));
+//builder.Services.AddDbContext<AppDbContext>(options =>
+//    options.UseSqlServer(builder.Configuration.GetConnectionString("Connection1")));
 
 //Database configuration của Bien
-//builder.Services.AddDbContext<AppDbContext>(options =>
-//    options.UseSqlServer(builder.Configuration.GetConnectionString("Connection2")));
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Connection2")));
 
 
 // JWT and Google OAuth2 configuration

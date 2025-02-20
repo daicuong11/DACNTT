@@ -1,0 +1,242 @@
+[
+  {
+    "ProductSpecificationGroupId": 1,
+    "GroupName": "Thiết kế & Màn hình",
+    "DisplayOrder": 1,
+    "CategoryId": 1
+  },
+  {
+    "ProductSpecificationGroupId": 2,
+    "GroupName": "Hiệu năng & Bộ nhớ",
+    "DisplayOrder": 2,
+    "CategoryId": 1
+  },
+  {
+    "ProductSpecificationGroupId": 3,
+    "GroupName": "Camera",
+    "DisplayOrder": 3,
+    "CategoryId": 1
+  },
+  {
+    "ProductSpecificationGroupId": 4,
+    "GroupName": "Pin & Sạc",
+    "DisplayOrder": 4,
+    "CategoryId": 1
+  },
+  {
+    "ProductSpecificationGroupId": 5,
+    "GroupName": "Kết nối & Cảm biến",
+    "DisplayOrder": 5,
+    "CategoryId": 1
+  },
+  {
+    "ProductSpecificationGroupId": 6,
+    "GroupName": "Hệ điều hành & Giao diện",
+    "DisplayOrder": 6,
+    "CategoryId": 1
+  },
+  {
+    "ProductSpecificationGroupId": 7,
+    "GroupName": "Âm thanh",
+    "DisplayOrder": 7,
+    "CategoryId": 1
+  },
+  {
+    "ProductSpecificationGroupId": 8,
+    "GroupName": "Phụ kiện đi kèm",
+    "DisplayOrder": 8,
+    "CategoryId": 1
+  },
+  {
+    "ProductSpecificationGroupId": 9,
+    "GroupName": "Màn hình",
+    "DisplayOrder": 1,
+    "CategoryId": 2
+  },
+  {
+    "ProductSpecificationGroupId": 10,
+    "GroupName": "Hiệu năng & Bộ nhớ",
+    "DisplayOrder": 2,
+    "CategoryId": 2
+  },
+  {
+    "ProductSpecificationGroupId": 11,
+    "GroupName": "Camera & Hỗ trợ bút",
+    "DisplayOrder": 3,
+    "CategoryId": 2
+  },
+  {
+    "ProductSpecificationGroupId": 12,
+    "GroupName": "Pin & Sạc",
+    "DisplayOrder": 4,
+    "CategoryId": 2
+  },
+  {
+    "ProductSpecificationGroupId": 13,
+    "GroupName": "Hệ điều hành & Kết nối",
+    "DisplayOrder": 5,
+    "CategoryId": 2
+  },
+  {
+    "ProductSpecificationGroupId": 14,
+    "GroupName": "Thiết kế & Màn hình",
+    "DisplayOrder": 1,
+    "CategoryId": 3
+  },
+  {
+    "ProductSpecificationGroupId": 15,
+    "GroupName": "Hiệu năng & Tản nhiệt",
+    "DisplayOrder": 2,
+    "CategoryId": 3
+  },
+  {
+    "ProductSpecificationGroupId": 16,
+    "GroupName": "Bàn phím & Touchpad",
+    "DisplayOrder": 3,
+    "CategoryId": 3
+  },
+  {
+    "ProductSpecificationGroupId": 17,
+    "GroupName": "Pin & Cổng kết nối",
+    "DisplayOrder": 4,
+    "CategoryId": 3
+  },
+  {
+    "ProductSpecificationGroupId": 18,
+    "GroupName": "Hệ điều hành & Phần mềm",
+    "DisplayOrder": 5,
+    "CategoryId": 3
+  },
+  {
+    "ProductSpecificationGroupId": 19,
+    "GroupName": "Màn hình & Chất lượng âm thanh",
+    "DisplayOrder": 1,
+    "CategoryId": 4
+  },
+  {
+    "ProductSpecificationGroupId": 20,
+    "GroupName": "Hiệu suất & Đồ họa",
+    "DisplayOrder": 2,
+    "CategoryId": 4
+  },
+  {
+    "ProductSpecificationGroupId": 21,
+    "GroupName": "Pin & Thời gian sử dụng",
+    "DisplayOrder": 3,
+    "CategoryId": 4
+  },
+  {
+    "ProductSpecificationGroupId": 22,
+    "GroupName": "Hệ điều hành & Ứng dụng",
+    "DisplayOrder": 4,
+    "CategoryId": 4
+  },
+  {
+    "ProductSpecificationGroupId": 23,
+    "GroupName": "Tính năng & Công nghệ",
+    "DisplayOrder": 1,
+    "CategoryId": 5
+  },
+  {
+    "ProductSpecificationGroupId": 24,
+    "GroupName": "Màn hình & Hiển thị",
+    "DisplayOrder": 2,
+    "CategoryId": 5
+  },
+  {
+    "ProductSpecificationGroupId": 25,
+    "GroupName": "Thời lượng pin & Sạc",
+    "DisplayOrder": 3,
+    "CategoryId": 5
+  },
+  {
+    "ProductSpecificationGroupId": 26,
+    "GroupName": "Kết nối & Tiện ích",
+    "DisplayOrder": 4,
+    "CategoryId": 5
+  },
+  {
+    "ProductSpecificationGroupId": 27,
+    "GroupName": "Tính năng & Công nghệ",
+    "DisplayOrder": 1,
+    "CategoryId": 6
+  },
+  {
+    "ProductSpecificationGroupId": 28,
+    "GroupName": "Thời lượng pin & Sạc",
+    "DisplayOrder": 2,
+    "CategoryId": 6
+  },
+  {
+    "ProductSpecificationGroupId": 29,
+    "GroupName": "Thiết kế & Khả năng chống ồn",
+    "DisplayOrder": 3,
+    "CategoryId": 6
+  },
+  {
+    "ProductSpecificationGroupId": 30,
+    "GroupName": "Kết nối & Điều khiển",
+    "DisplayOrder": 4,
+    "CategoryId": 6
+  },
+  {
+    "ProductSpecificationGroupId": 31,
+    "GroupName": "Kích thước & Trọng lượng",
+    "DisplayOrder": 1,
+    "CategoryId": 7
+  },
+  {
+    "ProductSpecificationGroupId": 32,
+    "GroupName": "Công nghệ hiển thị",
+    "DisplayOrder": 2,
+    "CategoryId": 7
+  },
+  {
+    "ProductSpecificationGroupId": 33,
+    "GroupName": "Hệ điều hành & Ứng dụng",
+    "DisplayOrder": 3,
+    "CategoryId": 7
+  },
+  {
+    "ProductSpecificationGroupId": 34,
+    "GroupName": "Kết nối & Tiện ích",
+    "DisplayOrder": 4,
+    "CategoryId": 7
+  },
+  {
+    "ProductSpecificationGroupId": 35,
+    "GroupName": "Hiệu suất & Lưu trữ",
+    "DisplayOrder": 1,
+    "CategoryId": 8
+  },
+  {
+    "ProductSpecificationGroupId": 36,
+    "GroupName": "Kết nối & Cảm biến",
+    "DisplayOrder": 2,
+    "CategoryId": 8
+  },
+  {
+    "ProductSpecificationGroupId": 37,
+    "GroupName": "Tính năng thông minh",
+    "DisplayOrder": 3,
+    "CategoryId": 8
+  },
+  {
+    "ProductSpecificationGroupId": 38,
+    "GroupName": "Độ bền & Chống nước",
+    "DisplayOrder": 4,
+    "CategoryId": 8
+  },
+  {
+    "ProductSpecificationGroupId": 39,
+    "GroupName": "Dung lượng & Chuẩn tốc độ",
+    "DisplayOrder": 1,
+    "CategoryId": 9
+  },
+  {
+    "ProductSpecificationGroupId": 40,
+    "GroupName": "Kết nối & Bảo mật",
+    "DisplayOrder": 2,
+    "CategoryId": 9
+  }
+]

@@ -1,0 +1,62 @@
+﻿[
+  {
+    "CategoryId": 1,
+    "Name": "Điện thoại",
+    "Description": "Các mẫu điện thoại mới nhất và phổ biến",
+    "ImageUrl": "https://example.com/images/smartphones.jpg"
+  },
+  {
+    "CategoryId": 2,
+    "Name": "Máy tính bảng",
+    "Description": "Hiệu suất cao cho công việc và giải trí",
+    "ImageUrl": "https://example.com/images/tablets.jpg"
+  },
+  {
+    "CategoryId": 3,
+    "Name": "Laptop",
+    "Description": "Laptop mạnh mẽ đáp ứng mọi nhu cầu",
+    "ImageUrl": "https://example.com/images/laptops.jpg"
+  },
+  {
+    "CategoryId": 4,
+    "Name": "Phụ kiện",
+    "Description": "Những phụ kiện thiết yếu cho thiết bị của bạn",
+    "ImageUrl": "https://example.com/images/accessories.jpg"
+  },
+  {
+    "CategoryId": 5,
+    "Name": "Đồng hồ thông minh",
+    "Description": "Luôn kết nối với đồng hồ thông minh mới nhất",
+    "ImageUrl": "https://example.com/images/smartwatches.jpg"
+  },
+  {
+    "CategoryId": 6,
+    "Name": "Tai nghe",
+    "Description": "Trải nghiệm âm thanh chất lượng cao",
+    "ImageUrl": "https://example.com/images/headphones.jpg"
+  },
+  {
+    "CategoryId": 7,
+    "Name": "Sạc điện thoại",
+    "Description": "Sạc nhanh và đáng tin cậy cho thiết bị của bạn",
+    "ImageUrl": "https://example.com/images/chargers.jpg"
+  },
+  {
+    "CategoryId": 8,
+    "Name": "Ốp lưng & Bao da",
+    "Description": "Bảo vệ thiết bị với ốp lưng thời trang",
+    "ImageUrl": "https://example.com/images/cases.jpg"
+  },
+  {
+    "CategoryId": 9,
+    "Name": "Loa",
+    "Description": "Loa Bluetooth di động và mạnh mẽ",
+    "ImageUrl": "https://example.com/images/speakers.jpg"
+  },
+  {
+    "CategoryId": 10,
+    "Name": "Thẻ nhớ",
+    "Description": "Mở rộng dung lượng lưu trữ với thẻ nhớ tốc độ cao",
+    "ImageUrl": "https://example.com/images/memorycards.jpg"
+  }
+]
