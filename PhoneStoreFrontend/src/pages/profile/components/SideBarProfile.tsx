@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '@/hooks'
 import { clearAuth } from '@/features/auth/auth.slice'
 import { RoleEnum } from '@/types/user.type'
+import { clearCart } from '@/features/cart/cart.slice'
 
 interface SideBarProfileProps {
   children?: ReactElement | ReactElement[]
@@ -20,6 +21,7 @@ const SideBarProfile: FC<SideBarProfileProps> = ({ children }) => {
 
   const handleLogout = () => {
     dispatch(clearAuth())
+    dispatch(clearCart())
   }
 
   return (

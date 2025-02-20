@@ -9,6 +9,7 @@ import getLastWordOrTwoWithLimit from '@/utils/getLastWordOrTwoWithLimit'
 import LoginOfRegisterModal from '@/components/modals/LoginOrRegisterModal'
 import { useEffect } from 'react'
 import { fetchCart } from '@/features/cart/cartThunks'
+import { clearCart } from '@/features/cart/cart.slice'
 
 const Header = () => {
   const { isOpen, toggleModal, closeModal } = useModal()
@@ -24,6 +25,8 @@ const Header = () => {
     const userId = currentUser?.id
     if (userId) {
       dispatch(fetchCart(userId))
+    } else {
+      dispatch(clearCart())
     }
   }, [dispatch, currentUser])
 
