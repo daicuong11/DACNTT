@@ -66,8 +66,14 @@ const MyRoutes = () => {
       ]
     },
     {
-      path: 'payment-result/:orderId',
-      element: <PaymentResultPage />
+      path: 'payment',
+      element: <CartLayout />,
+      children: [
+        {
+          path: 'result/:orderId',
+          element: <PaymentResultPage />
+        }
+      ]
     },
     {
       path: 'not-found',

@@ -189,7 +189,7 @@ const PaymentConfirmPage = () => {
                   onSuccess: (payRes) => {
                     console.log('payRes', payRes)
                     setIsLoading(false)
-                    navigate(`/payment-result/${payRes.orderId}`)
+                    navigate(`/payment/result/${payRes.orderId}`)
                   },
                   onError: (err) => {
                     console.log(err)
