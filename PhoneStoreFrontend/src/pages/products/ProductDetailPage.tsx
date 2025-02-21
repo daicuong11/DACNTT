@@ -91,7 +91,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
       <div className='flex flex-col gap-4'>
         <div className='flex items-center gap-2'>
           <div className='text-xl font-semibold'>
-            {productVariant?.product.name + ' ' + productVariant?.variantName}
+            {productVariant?.variantName}
           </div>
           <ConfigProvider
             theme={{

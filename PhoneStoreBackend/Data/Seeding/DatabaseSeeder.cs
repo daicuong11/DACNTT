@@ -8,6 +8,7 @@ namespace PhoneStoreBackend.Data.Seeding
     {
         public static void Seed(ModelBuilder modelBuilder)
         {
+            SeedUserFromJson(modelBuilder, "users.json");
             SeedFromJson<Brand>(modelBuilder, "brands.json");
             SeedFromJson<Category>(modelBuilder, "categories.json");
             //SeedFromJson<Product>(modelBuilder, "products.json");
@@ -34,6 +35,44 @@ namespace PhoneStoreBackend.Data.Seeding
                     {
                         modelBuilder.Entity<T>().HasData(data);
                         Console.WriteLine($"✅ Seed data thành công cho {typeof(T).Name} từ {fileName}!");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"❌ Lỗi: Dữ liệu JSON null hoặc không hợp lệ trong {fileName}!");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"❌ Lỗi khi đọc JSON từ {fileName}: {ex.Message}");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"❌ File không tồn tại: {filePath}");
+            }
+        }
+
+        public static void SeedUserFromJson(ModelBuilder modelBuilder, string fileName)
+        {
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "Json", fileName);
+
+            if (File.Exists(filePath))
+            {
+                try
+                {
+                    string jsonData = File.ReadAllText(filePath);
+                    var data = JsonSerializer.Deserialize<List<User>>(jsonData);
+
+                    foreach (var user in data)
+                    {
+                        string hashedPassword = BCrypt.Net.BCrypt.HashPassword(user.Password, BCrypt.Net.BCrypt.GenerateSalt(12));
+                        user.Password = hashedPassword;
+                    }
+
+                    if (data != null && data.Count > 0)
+                    {
+                        modelBuilder.Entity<User>().HasData(data);
+                        Console.WriteLine($"✅ Seed data thành công cho {typeof(User).Name} từ {fileName}!");
                     }
                     else
                     {
