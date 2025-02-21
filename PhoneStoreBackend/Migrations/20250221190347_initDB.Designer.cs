@@ -12,7 +12,7 @@ using PhoneStoreBackend.DbContexts;
 namespace PhoneStoreBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250220170802_initDB")]
+    [Migration("20250221190347_initDB")]
     partial class initDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -951,86 +951,6 @@ namespace PhoneStoreBackend.Migrations
                             CategoryId = 1,
                             Description = "Điện thoại tầm trung với hiệu năng mạnh",
                             Name = "OnePlus Nord 3"
-                        },
-                        new
-                        {
-                            ProductId = 31,
-                            BrandId = 1,
-                            CategoryId = 4,
-                            Description = "Bàn phím không dây dành cho iPad",
-                            Name = "Apple Magic Keyboard"
-                        },
-                        new
-                        {
-                            ProductId = 32,
-                            BrandId = 2,
-                            CategoryId = 7,
-                            Description = "Smart TV 8K với công nghệ Mini LED",
-                            Name = "Samsung 65\" Neo QLED 8K"
-                        },
-                        new
-                        {
-                            ProductId = 33,
-                            BrandId = 3,
-                            CategoryId = 8,
-                            Description = "Thiết bị lọc không khí thông minh",
-                            Name = "Xiaomi Smart Air Purifier 4"
-                        },
-                        new
-                        {
-                            ProductId = 34,
-                            BrandId = 10,
-                            CategoryId = 3,
-                            Description = "Laptop màn hình kép sáng tạo",
-                            Name = "Asus ZenBook Duo 14"
-                        },
-                        new
-                        {
-                            ProductId = 35,
-                            BrandId = 8,
-                            CategoryId = 8,
-                            Description = "Console chơi game thế hệ mới",
-                            Name = "Sony PlayStation 5"
-                        },
-                        new
-                        {
-                            ProductId = 36,
-                            BrandId = 4,
-                            CategoryId = 2,
-                            Description = "Máy tính bảng giá rẻ với Snapdragon 680",
-                            Name = "Oppo Pad Air"
-                        },
-                        new
-                        {
-                            ProductId = 37,
-                            BrandId = 5,
-                            CategoryId = 1,
-                            Description = "Điện thoại có camera chụp chân dung đẹp",
-                            Name = "Vivo V29 Pro"
-                        },
-                        new
-                        {
-                            ProductId = 38,
-                            BrandId = 1,
-                            CategoryId = 9,
-                            Description = "Loa thông minh với Siri",
-                            Name = "Apple HomePod Mini"
-                        },
-                        new
-                        {
-                            ProductId = 39,
-                            BrandId = 2,
-                            CategoryId = 10,
-                            Description = "Ổ cứng di động tốc độ cao",
-                            Name = "Samsung T7 Shield SSD"
-                        },
-                        new
-                        {
-                            ProductId = 40,
-                            BrandId = 3,
-                            CategoryId = 5,
-                            Description = "Vòng đeo tay thông minh theo dõi sức khỏe",
-                            Name = "Xiaomi Mi Band 8"
                         });
                 });
 
@@ -1121,6 +1041,349 @@ namespace PhoneStoreBackend.Migrations
                             ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_10__1.jpg",
                             IsMain = false,
                             ProductVariantId = 1
+                        },
+                        new
+                        {
+                            ImageId = 10,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_3.png",
+                            IsMain = true,
+                            ProductVariantId = 2
+                        },
+                        new
+                        {
+                            ImageId = 11,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_3.png",
+                            IsMain = true,
+                            ProductVariantId = 3
+                        },
+                        new
+                        {
+                            ImageId = 12,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_3.png",
+                            IsMain = true,
+                            ProductVariantId = 4
+                        },
+                        new
+                        {
+                            ImageId = 13,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-plus_1__1.png",
+                            IsMain = true,
+                            ProductVariantId = 5
+                        },
+                        new
+                        {
+                            ImageId = 14,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-plus_1__1.png",
+                            IsMain = true,
+                            ProductVariantId = 6
+                        },
+                        new
+                        {
+                            ImageId = 15,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-14-pro-max-256gb.png",
+                            IsMain = true,
+                            ProductVariantId = 7
+                        },
+                        new
+                        {
+                            ImageId = 16,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-14-pro-max-256gb.png",
+                            IsMain = true,
+                            ProductVariantId = 8
+                        },
+                        new
+                        {
+                            ImageId = 17,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-14-pro_2__4.png",
+                            IsMain = true,
+                            ProductVariantId = 9
+                        },
+                        new
+                        {
+                            ImageId = 18,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-14-pro_2__4.png",
+                            IsMain = true,
+                            ProductVariantId = 10
+                        },
+                        new
+                        {
+                            ImageId = 19,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-14_1.png",
+                            IsMain = true,
+                            ProductVariantId = 11
+                        },
+                        new
+                        {
+                            ImageId = 20,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-14_1.png",
+                            IsMain = true,
+                            ProductVariantId = 12
+                        },
+                        new
+                        {
+                            ImageId = 21,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-13-pro-max.png",
+                            IsMain = true,
+                            ProductVariantId = 13
+                        },
+                        new
+                        {
+                            ImageId = 22,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/1/_/1_66_6_2_4.jpg",
+                            IsMain = true,
+                            ProductVariantId = 14
+                        },
+                        new
+                        {
+                            ImageId = 23,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-13_2_.png",
+                            IsMain = true,
+                            ProductVariantId = 15
+                        },
+                        new
+                        {
+                            ImageId = 24,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/_/0/_0002_iphone-se-starlight-select-20220_2_2.jpg",
+                            IsMain = true,
+                            ProductVariantId = 16
+                        },
+                        new
+                        {
+                            ImageId = 25,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/s/ss-s24-ultra-xam-222.png",
+                            IsMain = true,
+                            ProductVariantId = 17
+                        },
+                        new
+                        {
+                            ImageId = 26,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/ipad-pro-2022-12-9-inch-m2_3.png",
+                            IsMain = true,
+                            ProductVariantId = 18
+                        },
+                        new
+                        {
+                            ImageId = 27,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/a/p/apple-airpods-pro-2-usb-c_1_.png",
+                            IsMain = true,
+                            ProductVariantId = 19
+                        },
+                        new
+                        {
+                            ImageId = 28,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/w/a/watch6_classic_thumbnail_1.png",
+                            IsMain = true,
+                            ProductVariantId = 20
+                        },
+                        new
+                        {
+                            ImageId = 29,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/1/3/13_prooo_2_2_3.jpg",
+                            IsMain = true,
+                            ProductVariantId = 21
+                        },
+                        new
+                        {
+                            ImageId = 30,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/1/3/13_prooo_2_2_3.jpg",
+                            IsMain = true,
+                            ProductVariantId = 22
+                        },
+                        new
+                        {
+                            ImageId = 31,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/o/p/oppo-find-x6-pro.png",
+                            IsMain = true,
+                            ProductVariantId = 23
+                        },
+                        new
+                        {
+                            ImageId = 32,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/o/p/oppo-find-x6-pro.png",
+                            IsMain = true,
+                            ProductVariantId = 24
+                        },
+                        new
+                        {
+                            ImageId = 33,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/v/i/vivo-x90-pro.png",
+                            IsMain = true,
+                            ProductVariantId = 25
+                        },
+                        new
+                        {
+                            ImageId = 34,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/v/i/vivo-x90-pro.png",
+                            IsMain = true,
+                            ProductVariantId = 26
+                        },
+                        new
+                        {
+                            ImageId = 35,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/p/u/purple-be8e0ce5d0.png",
+                            IsMain = true,
+                            ProductVariantId = 27
+                        },
+                        new
+                        {
+                            ImageId = 36,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/p/u/purple-be8e0ce5d0.png",
+                            IsMain = true,
+                            ProductVariantId = 28
+                        },
+                        new
+                        {
+                            ImageId = 37,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/o/n/oneplus_11_-_black_-_rgb.jpg",
+                            IsMain = true,
+                            ProductVariantId = 29
+                        },
+                        new
+                        {
+                            ImageId = 38,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/o/n/oneplus_11_-_black_-_rgb.jpg",
+                            IsMain = true,
+                            ProductVariantId = 30
+                        },
+                        new
+                        {
+                            ImageId = 39,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/o/sony-xperia-1-v.png",
+                            IsMain = true,
+                            ProductVariantId = 31
+                        },
+                        new
+                        {
+                            ImageId = 40,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/o/sony-xperia-1-v.png",
+                            IsMain = true,
+                            ProductVariantId = 32
+                        },
+                        new
+                        {
+                            ImageId = 41,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/n/o/nokia-xr21.png",
+                            IsMain = true,
+                            ProductVariantId = 33
+                        },
+                        new
+                        {
+                            ImageId = 42,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/n/o/nokia-xr21.png",
+                            IsMain = true,
+                            ProductVariantId = 34
+                        },
+                        new
+                        {
+                            ImageId = 43,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/a/s/asus-rog-phone-7.png",
+                            IsMain = true,
+                            ProductVariantId = 35
+                        },
+                        new
+                        {
+                            ImageId = 44,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/a/s/asus-rog-phone-7.png",
+                            IsMain = true,
+                            ProductVariantId = 36
+                        },
+                        new
+                        {
+                            ImageId = 45,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-pad-6-pro_2_.png",
+                            IsMain = true,
+                            ProductVariantId = 37
+                        },
+                        new
+                        {
+                            ImageId = 46,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-pad-6-pro_2_.png",
+                            IsMain = true,
+                            ProductVariantId = 38
+                        },
+                        new
+                        {
+                            ImageId = 47,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/g/r/group_509_55_.png",
+                            IsMain = true,
+                            ProductVariantId = 39
+                        },
+                        new
+                        {
+                            ImageId = 48,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/g/r/group_509_13__1.png",
+                            IsMain = true,
+                            ProductVariantId = 40
+                        },
+                        new
+                        {
+                            ImageId = 49,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/g/r/group_560_13_.png",
+                            IsMain = true,
+                            ProductVariantId = 41
+                        },
+                        new
+                        {
+                            ImageId = 50,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/g/r/group_562_2_.png",
+                            IsMain = true,
+                            ProductVariantId = 42
+                        },
+                        new
+                        {
+                            ImageId = 51,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/o/sony-xperia-1-v.png",
+                            IsMain = true,
+                            ProductVariantId = 43
+                        },
+                        new
+                        {
+                            ImageId = 52,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/n/o/nokia-xr21.png",
+                            IsMain = true,
+                            ProductVariantId = 44
+                        },
+                        new
+                        {
+                            ImageId = 53,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/o/p/oppo-reno10-pro-plus-tim.png",
+                            IsMain = true,
+                            ProductVariantId = 45
+                        },
+                        new
+                        {
+                            ImageId = 54,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/o/p/oppo-reno10-pro-plus-tim.png",
+                            IsMain = true,
+                            ProductVariantId = 46
+                        },
+                        new
+                        {
+                            ImageId = 55,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/r/e/realme_note_50_8_.png",
+                            IsMain = true,
+                            ProductVariantId = 47
+                        },
+                        new
+                        {
+                            ImageId = 56,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/r/e/realme_note_50_8_.png",
+                            IsMain = true,
+                            ProductVariantId = 48
+                        },
+                        new
+                        {
+                            ImageId = 57,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/o/n/oneplus-nord-3_1_2.png",
+                            IsMain = true,
+                            ProductVariantId = 49
+                        },
+                        new
+                        {
+                            ImageId = 58,
+                            ImageUrl = "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/o/n/oneplus-nord-3_1_2.png",
+                            IsMain = true,
+                            ProductVariantId = 50
                         });
                 });
 
@@ -1168,600 +1431,410 @@ namespace PhoneStoreBackend.Migrations
                             SpecificationId = 1,
                             DisplayOrder = 1,
                             IsSpecial = true,
-                            Key = "Màn hình",
+                            Key = "Kích thước màn hình",
                             ProductSpecificationGroupId = 1,
                             ProductVariantId = 1,
-                            Value = "6.7 inch Super Retina XDR"
+                            Value = "6.7 inchs"
                         },
                         new
                         {
                             SpecificationId = 2,
                             DisplayOrder = 2,
-                            IsSpecial = false,
-                            Key = "Chất liệu khung",
+                            IsSpecial = true,
+                            Key = "Công nghệ màn hình",
                             ProductSpecificationGroupId = 1,
                             ProductVariantId = 1,
-                            Value = "Titanium"
+                            Value = "Super Retina XDR OLED"
                         },
                         new
                         {
                             SpecificationId = 3,
-                            DisplayOrder = 1,
+                            DisplayOrder = 3,
                             IsSpecial = true,
-                            Key = "Chip xử lý",
-                            ProductSpecificationGroupId = 2,
+                            Key = "Độ phân giải màn hình",
+                            ProductSpecificationGroupId = 1,
                             ProductVariantId = 1,
-                            Value = "Apple A17 Pro"
+                            Value = "2796 x 1290-pixel"
                         },
                         new
                         {
                             SpecificationId = 4,
-                            DisplayOrder = 2,
+                            DisplayOrder = 4,
                             IsSpecial = false,
-                            Key = "RAM",
-                            ProductSpecificationGroupId = 2,
+                            Key = "Tính năng màn hình",
+                            ProductSpecificationGroupId = 1,
                             ProductVariantId = 1,
-                            Value = "8GB"
+                            Value = "Tốc độ làm mới 120Hz\n460 ppi\n2000 nits\nHDR\nTrue Tone\nDải màu rộng (P3)\nHaptic Touch\nTỷ lệ tương phản 2.000.000:1"
                         },
                         new
                         {
                             SpecificationId = 5,
-                            DisplayOrder = 1,
+                            DisplayOrder = 5,
                             IsSpecial = true,
-                            Key = "Camera chính",
-                            ProductSpecificationGroupId = 3,
+                            Key = "Tần số quét",
+                            ProductSpecificationGroupId = 1,
                             ProductVariantId = 1,
-                            Value = "48MP"
+                            Value = "120Hz"
                         },
                         new
                         {
                             SpecificationId = 6,
-                            DisplayOrder = 2,
+                            DisplayOrder = 6,
                             IsSpecial = false,
-                            Key = "Camera tele",
-                            ProductSpecificationGroupId = 3,
+                            Key = "Kiểu màn hình",
+                            ProductSpecificationGroupId = 1,
                             ProductVariantId = 1,
-                            Value = "12MP 5X zoom quang học"
+                            Value = "Dynamic Island"
                         },
                         new
                         {
                             SpecificationId = 7,
                             DisplayOrder = 1,
                             IsSpecial = false,
-                            Key = "Dung lượng pin",
-                            ProductSpecificationGroupId = 4,
+                            Key = "Camera sau",
+                            ProductSpecificationGroupId = 2,
                             ProductVariantId = 1,
-                            Value = "4422mAh"
+                            Value = "Camera chính: 48MP, 24 mm, ƒ/1.78\nCamera góc siêu rộng: 12 MP, 13 mm, ƒ/2.2\nCamera Tele: 12 MP"
                         },
                         new
                         {
                             SpecificationId = 8,
                             DisplayOrder = 2,
                             IsSpecial = false,
-                            Key = "Sạc nhanh",
-                            ProductSpecificationGroupId = 4,
+                            Key = "Quay video",
+                            ProductSpecificationGroupId = 2,
                             ProductVariantId = 1,
-                            Value = "20W"
+                            Value = "4K@24/25/30/60 fps\nHD 1080p@25/30/60 fps\nHD 720p@30 fps"
                         },
                         new
                         {
                             SpecificationId = 9,
-                            DisplayOrder = 1,
-                            IsSpecial = true,
-                            Key = "Kết nối",
-                            ProductSpecificationGroupId = 5,
+                            DisplayOrder = 3,
+                            IsSpecial = false,
+                            Key = "Tính năng camera",
+                            ProductSpecificationGroupId = 2,
                             ProductVariantId = 1,
-                            Value = "5G"
+                            Value = "Flash True Tone Thích Ứng\nPhotonic Engine\nDeep Fusion\nHDR thông minh thế hệ 5\nẢnh chân dung thế hệ mới với Focus và Depth Control\nHiệu ứng Chiếu Sáng Chân Dung với sáu chế độ\nChế độ Ban Đêm"
                         },
                         new
                         {
                             SpecificationId = 10,
-                            DisplayOrder = 2,
+                            DisplayOrder = 1,
                             IsSpecial = false,
-                            Key = "Cổng sạc",
-                            ProductSpecificationGroupId = 5,
+                            Key = "Camera trước",
+                            ProductSpecificationGroupId = 3,
                             ProductVariantId = 1,
-                            Value = "USB-C"
+                            Value = "12MP, ƒ/1.9"
                         },
                         new
                         {
                             SpecificationId = 11,
-                            DisplayOrder = 1,
-                            IsSpecial = true,
-                            Key = "Màn hình",
-                            ProductSpecificationGroupId = 1,
-                            ProductVariantId = 2,
-                            Value = "6.7 inch Super Retina XDR"
+                            DisplayOrder = 2,
+                            IsSpecial = false,
+                            Key = "Quay video trước",
+                            ProductSpecificationGroupId = 3,
+                            ProductVariantId = 1,
+                            Value = "4K@24/25/30/60 fps\nHD 1080p@25/30/60 fps"
                         },
                         new
                         {
                             SpecificationId = 12,
-                            DisplayOrder = 2,
-                            IsSpecial = false,
-                            Key = "Chất liệu khung",
-                            ProductSpecificationGroupId = 1,
-                            ProductVariantId = 2,
-                            Value = "Titanium"
+                            DisplayOrder = 1,
+                            IsSpecial = true,
+                            Key = "Chipset",
+                            ProductSpecificationGroupId = 4,
+                            ProductVariantId = 1,
+                            Value = "Apple A17 Pro 6 nhân"
                         },
                         new
                         {
                             SpecificationId = 13,
-                            DisplayOrder = 1,
+                            DisplayOrder = 2,
                             IsSpecial = true,
-                            Key = "Chip xử lý",
-                            ProductSpecificationGroupId = 2,
-                            ProductVariantId = 2,
-                            Value = "Apple A17 Pro"
+                            Key = "GPU",
+                            ProductSpecificationGroupId = 4,
+                            ProductVariantId = 1,
+                            Value = "GPU 6 nhân mới"
                         },
                         new
                         {
                             SpecificationId = 14,
-                            DisplayOrder = 2,
-                            IsSpecial = false,
-                            Key = "RAM",
-                            ProductSpecificationGroupId = 2,
-                            ProductVariantId = 2,
-                            Value = "8GB"
+                            DisplayOrder = 1,
+                            IsSpecial = true,
+                            Key = "Công nghệ NFC",
+                            ProductSpecificationGroupId = 5,
+                            ProductVariantId = 1,
+                            Value = "Có"
                         },
                         new
                         {
                             SpecificationId = 15,
-                            DisplayOrder = 1,
+                            DisplayOrder = 2,
                             IsSpecial = true,
-                            Key = "Camera chính",
-                            ProductSpecificationGroupId = 3,
-                            ProductVariantId = 2,
-                            Value = "48MP"
+                            Key = "Thẻ SIM",
+                            ProductSpecificationGroupId = 5,
+                            ProductVariantId = 1,
+                            Value = "2 SIM (nano‑SIM và eSIM)"
                         },
                         new
                         {
                             SpecificationId = 16,
-                            DisplayOrder = 2,
-                            IsSpecial = false,
-                            Key = "Camera tele",
-                            ProductSpecificationGroupId = 3,
-                            ProductVariantId = 2,
-                            Value = "12MP 5X zoom quang học"
+                            DisplayOrder = 3,
+                            IsSpecial = true,
+                            Key = "Hồng ngoại",
+                            ProductSpecificationGroupId = 5,
+                            ProductVariantId = 1,
+                            Value = "Có"
                         },
                         new
                         {
                             SpecificationId = 17,
-                            DisplayOrder = 1,
-                            IsSpecial = false,
-                            Key = "Dung lượng pin",
-                            ProductSpecificationGroupId = 4,
-                            ProductVariantId = 2,
-                            Value = "4422mAh"
+                            DisplayOrder = 4,
+                            IsSpecial = true,
+                            Key = "Jack tai nghe 3.5",
+                            ProductSpecificationGroupId = 5,
+                            ProductVariantId = 1,
+                            Value = "Không"
                         },
                         new
                         {
                             SpecificationId = 18,
-                            DisplayOrder = 2,
+                            DisplayOrder = 5,
                             IsSpecial = false,
-                            Key = "Sạc nhanh",
-                            ProductSpecificationGroupId = 4,
-                            ProductVariantId = 2,
-                            Value = "20W"
-                        },
-                        new
-                        {
-                            SpecificationId = 19,
-                            DisplayOrder = 1,
-                            IsSpecial = true,
-                            Key = "Kết nối",
+                            Key = "Hỗ trợ mạng",
                             ProductSpecificationGroupId = 5,
-                            ProductVariantId = 2,
+                            ProductVariantId = 1,
                             Value = "5G"
                         },
                         new
                         {
-                            SpecificationId = 20,
-                            DisplayOrder = 2,
-                            IsSpecial = false,
-                            Key = "Cổng sạc",
+                            SpecificationId = 19,
+                            DisplayOrder = 6,
+                            IsSpecial = true,
+                            Key = "GPS",
                             ProductSpecificationGroupId = 5,
-                            ProductVariantId = 2,
-                            Value = "USB-C"
+                            ProductVariantId = 1,
+                            Value = "GPS tần số kép chính xác (GPS, GLONASS, Galileo, QZSS, BeiDou và NavIC)"
+                        },
+                        new
+                        {
+                            SpecificationId = 20,
+                            DisplayOrder = 1,
+                            IsSpecial = true,
+                            Key = "Dung lượng RAM",
+                            ProductSpecificationGroupId = 6,
+                            ProductVariantId = 1,
+                            Value = "8 GB"
                         },
                         new
                         {
                             SpecificationId = 21,
-                            DisplayOrder = 1,
+                            DisplayOrder = 2,
                             IsSpecial = true,
-                            Key = "Màn hình",
-                            ProductSpecificationGroupId = 1,
-                            ProductVariantId = 3,
-                            Value = "6.1 inch Super Retina XDR"
+                            Key = "Bộ nhớ trong",
+                            ProductSpecificationGroupId = 6,
+                            ProductVariantId = 1,
+                            Value = "256 GB"
                         },
                         new
                         {
                             SpecificationId = 22,
-                            DisplayOrder = 2,
+                            DisplayOrder = 3,
                             IsSpecial = false,
-                            Key = "Chất liệu khung",
-                            ProductSpecificationGroupId = 1,
-                            ProductVariantId = 3,
-                            Value = "Titanium"
+                            Key = "Khe cắm thẻ nhớ",
+                            ProductSpecificationGroupId = 6,
+                            ProductVariantId = 1,
+                            Value = "Không"
                         },
                         new
                         {
                             SpecificationId = 23,
                             DisplayOrder = 1,
                             IsSpecial = true,
-                            Key = "Chip xử lý",
-                            ProductSpecificationGroupId = 2,
-                            ProductVariantId = 3,
-                            Value = "Apple A17 Pro"
+                            Key = "Pin",
+                            ProductSpecificationGroupId = 7,
+                            ProductVariantId = 1,
+                            Value = "4422 mAh"
                         },
                         new
                         {
                             SpecificationId = 24,
                             DisplayOrder = 2,
                             IsSpecial = false,
-                            Key = "RAM",
-                            ProductSpecificationGroupId = 2,
-                            ProductVariantId = 3,
-                            Value = "8GB"
+                            Key = "Công nghệ sạc",
+                            ProductSpecificationGroupId = 7,
+                            ProductVariantId = 1,
+                            Value = "Sạc nhanh 20 W\nSạc không dây 15W\nSạc không dây Qi 7.5W"
                         },
                         new
                         {
                             SpecificationId = 25,
-                            DisplayOrder = 1,
+                            DisplayOrder = 3,
                             IsSpecial = true,
-                            Key = "Camera chính",
-                            ProductSpecificationGroupId = 3,
-                            ProductVariantId = 3,
-                            Value = "48MP"
+                            Key = "Cổng sạc",
+                            ProductSpecificationGroupId = 7,
+                            ProductVariantId = 1,
+                            Value = "USB Type-C"
                         },
                         new
                         {
                             SpecificationId = 26,
-                            DisplayOrder = 2,
-                            IsSpecial = false,
-                            Key = "Camera tele",
-                            ProductSpecificationGroupId = 3,
-                            ProductVariantId = 3,
-                            Value = "12MP 3X zoom quang học"
+                            DisplayOrder = 1,
+                            IsSpecial = true,
+                            Key = "Hệ điều hành",
+                            ProductSpecificationGroupId = 8,
+                            ProductVariantId = 1,
+                            Value = "iOS 17"
                         },
                         new
                         {
                             SpecificationId = 27,
                             DisplayOrder = 1,
                             IsSpecial = false,
-                            Key = "Dung lượng pin",
-                            ProductSpecificationGroupId = 4,
-                            ProductVariantId = 3,
-                            Value = "3274mAh"
+                            Key = "Loại CPU",
+                            ProductSpecificationGroupId = 9,
+                            ProductVariantId = 1,
+                            Value = "CPU 6 lõi mới với 2 lõi hiệu năng và 4 lõi hiệu suất"
                         },
                         new
                         {
                             SpecificationId = 28,
-                            DisplayOrder = 2,
+                            DisplayOrder = 1,
                             IsSpecial = false,
-                            Key = "Sạc nhanh",
-                            ProductSpecificationGroupId = 4,
-                            ProductVariantId = 3,
-                            Value = "20W"
+                            Key = "Kích thước",
+                            ProductSpecificationGroupId = 10,
+                            ProductVariantId = 1,
+                            Value = "159,9 x 76,7 x 8,25 mm"
                         },
                         new
                         {
                             SpecificationId = 29,
-                            DisplayOrder = 1,
-                            IsSpecial = true,
-                            Key = "Kết nối",
-                            ProductSpecificationGroupId = 5,
-                            ProductVariantId = 3,
-                            Value = "5G"
+                            DisplayOrder = 2,
+                            IsSpecial = false,
+                            Key = "Trọng lượng",
+                            ProductSpecificationGroupId = 10,
+                            ProductVariantId = 1,
+                            Value = "221 g"
                         },
                         new
                         {
                             SpecificationId = 30,
-                            DisplayOrder = 2,
+                            DisplayOrder = 1,
                             IsSpecial = false,
-                            Key = "Cổng sạc",
-                            ProductSpecificationGroupId = 5,
-                            ProductVariantId = 3,
-                            Value = "USB-C"
+                            Key = "Chất liệu mặt lưng",
+                            ProductSpecificationGroupId = 11,
+                            ProductVariantId = 1,
+                            Value = "Kính"
                         },
                         new
                         {
                             SpecificationId = 31,
-                            DisplayOrder = 1,
-                            IsSpecial = true,
-                            Key = "Màn hình",
-                            ProductSpecificationGroupId = 1,
-                            ProductVariantId = 5,
-                            Value = "6.1 inch Super Retina XDR"
+                            DisplayOrder = 2,
+                            IsSpecial = false,
+                            Key = "Chất liệu khung viền",
+                            ProductSpecificationGroupId = 11,
+                            ProductVariantId = 1,
+                            Value = "Titanium"
                         },
                         new
                         {
                             SpecificationId = 32,
-                            DisplayOrder = 2,
+                            DisplayOrder = 1,
                             IsSpecial = false,
-                            Key = "Chất liệu khung",
-                            ProductSpecificationGroupId = 1,
-                            ProductVariantId = 5,
-                            Value = "Nhôm"
+                            Key = "Chỉ số kháng nước, bụi",
+                            ProductSpecificationGroupId = 12,
+                            ProductVariantId = 1,
+                            Value = "Đạt mức IP68 (chống nước ở độ sâu tối đa 6 mét trong vòng tối đa 30 phút)"
                         },
                         new
                         {
                             SpecificationId = 33,
-                            DisplayOrder = 1,
-                            IsSpecial = true,
-                            Key = "Chip xử lý",
-                            ProductSpecificationGroupId = 2,
-                            ProductVariantId = 5,
-                            Value = "Apple A16 Bionic"
+                            DisplayOrder = 2,
+                            IsSpecial = false,
+                            Key = "Công nghệ - Tiện ích",
+                            ProductSpecificationGroupId = 12,
+                            ProductVariantId = 1,
+                            Value = "Camera TrueDepth hỗ trợ nhận diện khuôn mặt"
                         },
                         new
                         {
                             SpecificationId = 34,
-                            DisplayOrder = 2,
+                            DisplayOrder = 3,
                             IsSpecial = false,
-                            Key = "RAM",
-                            ProductSpecificationGroupId = 2,
-                            ProductVariantId = 5,
-                            Value = "6GB"
+                            Key = "Tiện ích khác",
+                            ProductSpecificationGroupId = 12,
+                            ProductVariantId = 1,
+                            Value = "SOS Khẩn Cấp\nPhát Hiện Va Chạm"
                         },
                         new
                         {
                             SpecificationId = 35,
-                            DisplayOrder = 1,
-                            IsSpecial = true,
-                            Key = "Camera chính",
-                            ProductSpecificationGroupId = 3,
-                            ProductVariantId = 5,
-                            Value = "48MP"
+                            DisplayOrder = 4,
+                            IsSpecial = false,
+                            Key = "Công nghệ âm thanh",
+                            ProductSpecificationGroupId = 12,
+                            ProductVariantId = 1,
+                            Value = "AAC, MP3, Apple Lossless, FLAC, Dolby Digital, Dolby Digital Plus và Dolby Atmos"
                         },
                         new
                         {
                             SpecificationId = 36,
-                            DisplayOrder = 2,
-                            IsSpecial = false,
-                            Key = "Camera tele",
-                            ProductSpecificationGroupId = 3,
-                            ProductVariantId = 5,
-                            Value = "Không có"
+                            DisplayOrder = 1,
+                            IsSpecial = true,
+                            Key = "Cảm biến vân tay",
+                            ProductSpecificationGroupId = 13,
+                            ProductVariantId = 1,
+                            Value = "Không"
                         },
                         new
                         {
                             SpecificationId = 37,
-                            DisplayOrder = 1,
+                            DisplayOrder = 2,
                             IsSpecial = false,
-                            Key = "Dung lượng pin",
-                            ProductSpecificationGroupId = 4,
-                            ProductVariantId = 5,
-                            Value = "3349mAh"
+                            Key = "Các loại cảm biến",
+                            ProductSpecificationGroupId = 13,
+                            ProductVariantId = 1,
+                            Value = "Cảm biến gia tốc\nCảm biến tiệm cận\nCảm biến ánh sáng\nLa bàn\nCon quay hồi chuyển\nCảm biến áp kế\nCảm biến trọng lực"
                         },
                         new
                         {
                             SpecificationId = 38,
-                            DisplayOrder = 2,
+                            DisplayOrder = 3,
                             IsSpecial = false,
-                            Key = "Sạc nhanh",
-                            ProductSpecificationGroupId = 4,
-                            ProductVariantId = 5,
-                            Value = "20W"
+                            Key = "Tính năng đặc biệt",
+                            ProductSpecificationGroupId = 13,
+                            ProductVariantId = 1,
+                            Value = "Hỗ trợ 5G\nSạc không dây\nNhận diện khuôn mặt\nKháng nước, kháng bụi\nĐiện thoại AI"
                         },
                         new
                         {
                             SpecificationId = 39,
                             DisplayOrder = 1,
                             IsSpecial = true,
-                            Key = "Kết nối",
-                            ProductSpecificationGroupId = 5,
-                            ProductVariantId = 5,
-                            Value = "5G"
+                            Key = "Wi-Fi",
+                            ProductSpecificationGroupId = 14,
+                            ProductVariantId = 1,
+                            Value = "Wi‑Fi 6E (802.11ax)"
                         },
                         new
                         {
                             SpecificationId = 40,
                             DisplayOrder = 2,
-                            IsSpecial = false,
-                            Key = "Cổng sạc",
-                            ProductSpecificationGroupId = 5,
-                            ProductVariantId = 5,
-                            Value = "USB-C"
+                            IsSpecial = true,
+                            Key = "Bluetooth",
+                            ProductSpecificationGroupId = 14,
+                            ProductVariantId = 1,
+                            Value = "v5.3"
                         },
                         new
                         {
                             SpecificationId = 41,
                             DisplayOrder = 1,
-                            IsSpecial = true,
-                            Key = "Màn hình",
-                            ProductSpecificationGroupId = 1,
-                            ProductVariantId = 11,
-                            Value = "6.1 inch Super Retina XDR"
-                        },
-                        new
-                        {
-                            SpecificationId = 42,
-                            DisplayOrder = 2,
                             IsSpecial = false,
-                            Key = "Chất liệu khung",
-                            ProductSpecificationGroupId = 1,
-                            ProductVariantId = 11,
-                            Value = "Nhôm"
-                        },
-                        new
-                        {
-                            SpecificationId = 43,
-                            DisplayOrder = 1,
-                            IsSpecial = true,
-                            Key = "Chip xử lý",
-                            ProductSpecificationGroupId = 2,
-                            ProductVariantId = 11,
-                            Value = "Apple A15 Bionic"
-                        },
-                        new
-                        {
-                            SpecificationId = 44,
-                            DisplayOrder = 2,
-                            IsSpecial = false,
-                            Key = "RAM",
-                            ProductSpecificationGroupId = 2,
-                            ProductVariantId = 11,
-                            Value = "6GB"
-                        },
-                        new
-                        {
-                            SpecificationId = 45,
-                            DisplayOrder = 1,
-                            IsSpecial = true,
-                            Key = "Camera chính",
-                            ProductSpecificationGroupId = 3,
-                            ProductVariantId = 11,
-                            Value = "12MP"
-                        },
-                        new
-                        {
-                            SpecificationId = 46,
-                            DisplayOrder = 2,
-                            IsSpecial = false,
-                            Key = "Camera tele",
-                            ProductSpecificationGroupId = 3,
-                            ProductVariantId = 11,
-                            Value = "Không có"
-                        },
-                        new
-                        {
-                            SpecificationId = 47,
-                            DisplayOrder = 1,
-                            IsSpecial = false,
-                            Key = "Dung lượng pin",
-                            ProductSpecificationGroupId = 4,
-                            ProductVariantId = 11,
-                            Value = "3279mAh"
-                        },
-                        new
-                        {
-                            SpecificationId = 48,
-                            DisplayOrder = 2,
-                            IsSpecial = false,
-                            Key = "Sạc nhanh",
-                            ProductSpecificationGroupId = 4,
-                            ProductVariantId = 11,
-                            Value = "20W"
-                        },
-                        new
-                        {
-                            SpecificationId = 49,
-                            DisplayOrder = 1,
-                            IsSpecial = true,
-                            Key = "Kết nối",
-                            ProductSpecificationGroupId = 5,
-                            ProductVariantId = 11,
-                            Value = "5G"
-                        },
-                        new
-                        {
-                            SpecificationId = 50,
-                            DisplayOrder = 2,
-                            IsSpecial = false,
-                            Key = "Cổng sạc",
-                            ProductSpecificationGroupId = 5,
-                            ProductVariantId = 11,
-                            Value = "Lightning"
-                        },
-                        new
-                        {
-                            SpecificationId = 51,
-                            DisplayOrder = 1,
-                            IsSpecial = true,
-                            Key = "Màn hình",
-                            ProductSpecificationGroupId = 1,
-                            ProductVariantId = 16,
-                            Value = "4.7 inch Retina HD"
-                        },
-                        new
-                        {
-                            SpecificationId = 52,
-                            DisplayOrder = 2,
-                            IsSpecial = false,
-                            Key = "Chất liệu khung",
-                            ProductSpecificationGroupId = 1,
-                            ProductVariantId = 16,
-                            Value = "Nhôm"
-                        },
-                        new
-                        {
-                            SpecificationId = 53,
-                            DisplayOrder = 1,
-                            IsSpecial = true,
-                            Key = "Chip xử lý",
-                            ProductSpecificationGroupId = 2,
-                            ProductVariantId = 16,
-                            Value = "Apple A15 Bionic"
-                        },
-                        new
-                        {
-                            SpecificationId = 54,
-                            DisplayOrder = 2,
-                            IsSpecial = false,
-                            Key = "RAM",
-                            ProductSpecificationGroupId = 2,
-                            ProductVariantId = 16,
-                            Value = "4GB"
-                        },
-                        new
-                        {
-                            SpecificationId = 55,
-                            DisplayOrder = 1,
-                            IsSpecial = true,
-                            Key = "Camera chính",
-                            ProductSpecificationGroupId = 3,
-                            ProductVariantId = 16,
-                            Value = "12MP"
-                        },
-                        new
-                        {
-                            SpecificationId = 56,
-                            DisplayOrder = 2,
-                            IsSpecial = false,
-                            Key = "Camera tele",
-                            ProductSpecificationGroupId = 3,
-                            ProductVariantId = 16,
-                            Value = "Không có"
-                        },
-                        new
-                        {
-                            SpecificationId = 57,
-                            DisplayOrder = 1,
-                            IsSpecial = false,
-                            Key = "Dung lượng pin",
-                            ProductSpecificationGroupId = 4,
-                            ProductVariantId = 16,
-                            Value = "2018mAh"
-                        },
-                        new
-                        {
-                            SpecificationId = 58,
-                            DisplayOrder = 2,
-                            IsSpecial = false,
-                            Key = "Sạc nhanh",
-                            ProductSpecificationGroupId = 4,
-                            ProductVariantId = 16,
-                            Value = "18W"
-                        },
-                        new
-                        {
-                            SpecificationId = 59,
-                            DisplayOrder = 1,
-                            IsSpecial = true,
-                            Key = "Kết nối",
-                            ProductSpecificationGroupId = 5,
-                            ProductVariantId = 16,
-                            Value = "5G"
-                        },
-                        new
-                        {
-                            SpecificationId = 60,
-                            DisplayOrder = 2,
-                            IsSpecial = false,
-                            Key = "Cổng sạc",
-                            ProductSpecificationGroupId = 5,
-                            ProductVariantId = 16,
-                            Value = "Lightning"
+                            Key = "Thời điểm ra mắt",
+                            ProductSpecificationGroupId = 15,
+                            ProductVariantId = 1,
+                            Value = "09/2023"
                         });
                 });
 
@@ -1796,280 +1869,105 @@ namespace PhoneStoreBackend.Migrations
                             ProductSpecificationGroupId = 1,
                             CategoryId = 1,
                             DisplayOrder = 1,
-                            GroupName = "Thiết kế & Màn hình"
+                            GroupName = "Màn hình"
                         },
                         new
                         {
                             ProductSpecificationGroupId = 2,
                             CategoryId = 1,
                             DisplayOrder = 2,
-                            GroupName = "Hiệu năng & Bộ nhớ"
+                            GroupName = "Camera sau"
                         },
                         new
                         {
                             ProductSpecificationGroupId = 3,
                             CategoryId = 1,
                             DisplayOrder = 3,
-                            GroupName = "Camera"
+                            GroupName = "Camera trước"
                         },
                         new
                         {
                             ProductSpecificationGroupId = 4,
                             CategoryId = 1,
                             DisplayOrder = 4,
-                            GroupName = "Pin & Sạc"
+                            GroupName = "Vi xử lý & đồ họa"
                         },
                         new
                         {
                             ProductSpecificationGroupId = 5,
                             CategoryId = 1,
                             DisplayOrder = 5,
-                            GroupName = "Kết nối & Cảm biến"
+                            GroupName = "Giao tiếp & kết nối"
                         },
                         new
                         {
                             ProductSpecificationGroupId = 6,
                             CategoryId = 1,
                             DisplayOrder = 6,
-                            GroupName = "Hệ điều hành & Giao diện"
+                            GroupName = "RAM & lưu trữ"
                         },
                         new
                         {
                             ProductSpecificationGroupId = 7,
                             CategoryId = 1,
                             DisplayOrder = 7,
-                            GroupName = "Âm thanh"
+                            GroupName = "Pin & công nghệ sạc"
                         },
                         new
                         {
                             ProductSpecificationGroupId = 8,
                             CategoryId = 1,
                             DisplayOrder = 8,
-                            GroupName = "Phụ kiện đi kèm"
+                            GroupName = "Tính năng khác"
                         },
                         new
                         {
                             ProductSpecificationGroupId = 9,
-                            CategoryId = 2,
-                            DisplayOrder = 1,
-                            GroupName = "Màn hình"
+                            CategoryId = 1,
+                            DisplayOrder = 9,
+                            GroupName = "Bộ xử lý & Đồ họa"
                         },
                         new
                         {
                             ProductSpecificationGroupId = 10,
-                            CategoryId = 2,
-                            DisplayOrder = 2,
-                            GroupName = "Hiệu năng & Bộ nhớ"
-                        },
-                        new
-                        {
-                            ProductSpecificationGroupId = 11,
-                            CategoryId = 2,
-                            DisplayOrder = 3,
-                            GroupName = "Camera & Hỗ trợ bút"
-                        },
-                        new
-                        {
-                            ProductSpecificationGroupId = 12,
-                            CategoryId = 2,
-                            DisplayOrder = 4,
-                            GroupName = "Pin & Sạc"
-                        },
-                        new
-                        {
-                            ProductSpecificationGroupId = 13,
-                            CategoryId = 2,
-                            DisplayOrder = 5,
-                            GroupName = "Hệ điều hành & Kết nối"
-                        },
-                        new
-                        {
-                            ProductSpecificationGroupId = 14,
-                            CategoryId = 3,
-                            DisplayOrder = 1,
-                            GroupName = "Thiết kế & Màn hình"
-                        },
-                        new
-                        {
-                            ProductSpecificationGroupId = 15,
-                            CategoryId = 3,
-                            DisplayOrder = 2,
-                            GroupName = "Hiệu năng & Tản nhiệt"
-                        },
-                        new
-                        {
-                            ProductSpecificationGroupId = 16,
-                            CategoryId = 3,
-                            DisplayOrder = 3,
-                            GroupName = "Bàn phím & Touchpad"
-                        },
-                        new
-                        {
-                            ProductSpecificationGroupId = 17,
-                            CategoryId = 3,
-                            DisplayOrder = 4,
-                            GroupName = "Pin & Cổng kết nối"
-                        },
-                        new
-                        {
-                            ProductSpecificationGroupId = 18,
-                            CategoryId = 3,
-                            DisplayOrder = 5,
-                            GroupName = "Hệ điều hành & Phần mềm"
-                        },
-                        new
-                        {
-                            ProductSpecificationGroupId = 19,
-                            CategoryId = 4,
-                            DisplayOrder = 1,
-                            GroupName = "Màn hình & Chất lượng âm thanh"
-                        },
-                        new
-                        {
-                            ProductSpecificationGroupId = 20,
-                            CategoryId = 4,
-                            DisplayOrder = 2,
-                            GroupName = "Hiệu suất & Đồ họa"
-                        },
-                        new
-                        {
-                            ProductSpecificationGroupId = 21,
-                            CategoryId = 4,
-                            DisplayOrder = 3,
-                            GroupName = "Pin & Thời gian sử dụng"
-                        },
-                        new
-                        {
-                            ProductSpecificationGroupId = 22,
-                            CategoryId = 4,
-                            DisplayOrder = 4,
-                            GroupName = "Hệ điều hành & Ứng dụng"
-                        },
-                        new
-                        {
-                            ProductSpecificationGroupId = 23,
-                            CategoryId = 5,
-                            DisplayOrder = 1,
-                            GroupName = "Tính năng & Công nghệ"
-                        },
-                        new
-                        {
-                            ProductSpecificationGroupId = 24,
-                            CategoryId = 5,
-                            DisplayOrder = 2,
-                            GroupName = "Màn hình & Hiển thị"
-                        },
-                        new
-                        {
-                            ProductSpecificationGroupId = 25,
-                            CategoryId = 5,
-                            DisplayOrder = 3,
-                            GroupName = "Thời lượng pin & Sạc"
-                        },
-                        new
-                        {
-                            ProductSpecificationGroupId = 26,
-                            CategoryId = 5,
-                            DisplayOrder = 4,
-                            GroupName = "Kết nối & Tiện ích"
-                        },
-                        new
-                        {
-                            ProductSpecificationGroupId = 27,
-                            CategoryId = 6,
-                            DisplayOrder = 1,
-                            GroupName = "Tính năng & Công nghệ"
-                        },
-                        new
-                        {
-                            ProductSpecificationGroupId = 28,
-                            CategoryId = 6,
-                            DisplayOrder = 2,
-                            GroupName = "Thời lượng pin & Sạc"
-                        },
-                        new
-                        {
-                            ProductSpecificationGroupId = 29,
-                            CategoryId = 6,
-                            DisplayOrder = 3,
-                            GroupName = "Thiết kế & Khả năng chống ồn"
-                        },
-                        new
-                        {
-                            ProductSpecificationGroupId = 30,
-                            CategoryId = 6,
-                            DisplayOrder = 4,
-                            GroupName = "Kết nối & Điều khiển"
-                        },
-                        new
-                        {
-                            ProductSpecificationGroupId = 31,
-                            CategoryId = 7,
-                            DisplayOrder = 1,
+                            CategoryId = 1,
+                            DisplayOrder = 10,
                             GroupName = "Kích thước & Trọng lượng"
                         },
                         new
                         {
-                            ProductSpecificationGroupId = 32,
-                            CategoryId = 7,
-                            DisplayOrder = 2,
-                            GroupName = "Công nghệ hiển thị"
+                            ProductSpecificationGroupId = 11,
+                            CategoryId = 1,
+                            DisplayOrder = 11,
+                            GroupName = "Thiết kế & Trọng lượng"
                         },
                         new
                         {
-                            ProductSpecificationGroupId = 33,
-                            CategoryId = 7,
-                            DisplayOrder = 3,
-                            GroupName = "Hệ điều hành & Ứng dụng"
+                            ProductSpecificationGroupId = 12,
+                            CategoryId = 1,
+                            DisplayOrder = 12,
+                            GroupName = "Thông số khác"
                         },
                         new
                         {
-                            ProductSpecificationGroupId = 34,
-                            CategoryId = 7,
-                            DisplayOrder = 4,
-                            GroupName = "Kết nối & Tiện ích"
+                            ProductSpecificationGroupId = 13,
+                            CategoryId = 1,
+                            DisplayOrder = 13,
+                            GroupName = "Tiện ích khác"
                         },
                         new
                         {
-                            ProductSpecificationGroupId = 35,
-                            CategoryId = 8,
-                            DisplayOrder = 1,
-                            GroupName = "Hiệu suất & Lưu trữ"
+                            ProductSpecificationGroupId = 14,
+                            CategoryId = 1,
+                            DisplayOrder = 14,
+                            GroupName = "Cổng kết nối"
                         },
                         new
                         {
-                            ProductSpecificationGroupId = 36,
-                            CategoryId = 8,
-                            DisplayOrder = 2,
-                            GroupName = "Kết nối & Cảm biến"
-                        },
-                        new
-                        {
-                            ProductSpecificationGroupId = 37,
-                            CategoryId = 8,
-                            DisplayOrder = 3,
-                            GroupName = "Tính năng thông minh"
-                        },
-                        new
-                        {
-                            ProductSpecificationGroupId = 38,
-                            CategoryId = 8,
-                            DisplayOrder = 4,
-                            GroupName = "Độ bền & Chống nước"
-                        },
-                        new
-                        {
-                            ProductSpecificationGroupId = 39,
-                            CategoryId = 9,
-                            DisplayOrder = 1,
-                            GroupName = "Dung lượng & Chuẩn tốc độ"
-                        },
-                        new
-                        {
-                            ProductSpecificationGroupId = 40,
-                            CategoryId = 9,
-                            DisplayOrder = 2,
-                            GroupName = "Kết nối & Bảo mật"
+                            ProductSpecificationGroupId = 15,
+                            CategoryId = 1,
+                            DisplayOrder = 15,
+                            GroupName = "Thông tin chung"
                         });
                 });
 
@@ -2860,6 +2758,178 @@ namespace PhoneStoreBackend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Active = true,
+                            Address = "19 Nguyễn Hữu Thọ, Tân Hưng, Quận 7, Hồ Chí Minh",
+                            CreatedAt = new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "admin@gmail.com",
+                            IsGoogleAccount = false,
+                            Name = "Bui Yen",
+                            Password = "$2a$12$juvYYD0Il0DgOQ/q4hMZJOrZM1N9wbYZDC0Zxc4KaIHBQHrGEDSom",
+                            PhoneNumber = "0123456789",
+                            ProfilePicture = "https://compote.slate.com/images/01a4c27f-044a-489e-a891-69480c85f4db.jpeg",
+                            RefreshToken = "",
+                            RefreshTokenExpiryTime = new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            Role = "ADMIN",
+                            UpdatedAt = new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Active = true,
+                            Address = "19 Nguyễn Hữu Thọ, Tân Hưng, Quận 7, Hồ Chí Minh",
+                            CreatedAt = new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "vanbien.dev@gmail.com",
+                            IsGoogleAccount = true,
+                            Name = "Nguyễn Văn Biên",
+                            Password = "$2a$12$1rlhso2Ea6jad1wwL897nO/IhrzxoxYN99rgEzThVcekphPCW4dz2",
+                            PhoneNumber = "0987654321",
+                            ProfilePicture = "https://m.media-amazon.com/images/I/71QKVtKTbdL._AC_SL1500_.jpg",
+                            RefreshToken = "token123",
+                            RefreshTokenExpiryTime = new DateTime(2025, 3, 1, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            Role = "CUSTOMER",
+                            UpdatedAt = new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Active = false,
+                            Address = "19 Nguyễn Hữu Thọ, Tân Hưng, Quận 7, Hồ Chí Minh",
+                            CreatedAt = new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "cuong@gmail.com",
+                            IsGoogleAccount = false,
+                            Name = "Lý Đại Cương",
+                            Password = "$2a$12$IoHaeCHxfI2JsWMYPtVPB.Y8xmh1dKRIwWPu1DVEtPRLfNJRqdnES",
+                            PhoneNumber = "0345678901",
+                            ProfilePicture = "https://static.independent.co.uk/2022/03/08/21/newFile-1.jpg",
+                            RefreshToken = "",
+                            RefreshTokenExpiryTime = new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            Role = "EMPLOYEE",
+                            UpdatedAt = new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Active = true,
+                            Address = "19 Nguyễn Hữu Thọ, Tân Hưng, Quận 7, Hồ Chí Minh",
+                            CreatedAt = new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "hung@gmail.com",
+                            IsGoogleAccount = false,
+                            Name = "Đạo Thanh Hưng",
+                            Password = "$2a$12$VygkNWltkROlEb2TNW6qM.Y.OnaMQAYY9nTFfeM/ZgQmRXn.3bSSy",
+                            PhoneNumber = "0543216789",
+                            ProfilePicture = "https://compote.slate.com/images/01a4c27f-044a-489e-a891-69480c85f4db.jpeg",
+                            RefreshToken = "",
+                            RefreshTokenExpiryTime = new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            Role = "CUSTOMER",
+                            UpdatedAt = new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Active = true,
+                            Address = "33 Phạm Ngũ Lão",
+                            CreatedAt = new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "hoang.do@gmail.com",
+                            IsGoogleAccount = true,
+                            Name = "Đỗ Văn Hoàng",
+                            Password = "$2a$12$Dlg/m09cP33cyAV3hhkbQeS8HkVlyYD1twTLVqgfsq.MsgwMzVeNy",
+                            PhoneNumber = "0654321987",
+                            ProfilePicture = "profile5.jpg",
+                            RefreshToken = "token456",
+                            RefreshTokenExpiryTime = new DateTime(2025, 4, 10, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            Role = "EMPLOYEE",
+                            UpdatedAt = new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Active = true,
+                            Address = "55 Bà Triệu",
+                            CreatedAt = new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "lan.hoang@gmail.com",
+                            IsGoogleAccount = false,
+                            Name = "Hoàng Thị Lan",
+                            Password = "$2a$12$b0e2caNCEMNdkeO67.IodOj/hfxmV/NwN6quBl3FBejmxFuDqcjIW",
+                            PhoneNumber = "0789456123",
+                            ProfilePicture = "profile6.jpg",
+                            RefreshToken = "",
+                            RefreshTokenExpiryTime = new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            Role = "ADMIN",
+                            UpdatedAt = new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Active = false,
+                            Address = "67 Điện Biên Phủ",
+                            CreatedAt = new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "bao.vo@gmail.com",
+                            IsGoogleAccount = false,
+                            Name = "Võ Quốc Bảo",
+                            Password = "$2a$12$tVJR6jcbmnFnZt5T93WyJeVq/6h53H32rQbYS1j1p/L5RSIclkqCG",
+                            PhoneNumber = "0896543210",
+                            ProfilePicture = "profile7.jpg",
+                            RefreshToken = "",
+                            RefreshTokenExpiryTime = new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            Role = "EMPLOYEE",
+                            UpdatedAt = new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Active = true,
+                            Address = "99 Lý Thường Kiệt",
+                            CreatedAt = new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "hang.ngo@gmail.com",
+                            IsGoogleAccount = true,
+                            Name = "Ngô Thanh Hằng",
+                            Password = "$2a$12$siSeKKVYuy9ZVU.mD1gPwe2EZMYsvj//1n4z6YCa0AXwp7DChrohG",
+                            PhoneNumber = "0321654987",
+                            ProfilePicture = "profile8.jpg",
+                            RefreshToken = "token789",
+                            RefreshTokenExpiryTime = new DateTime(2025, 5, 5, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            Role = "CUSTOMER",
+                            UpdatedAt = new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Active = true,
+                            Address = "111 Võ Thị Sáu",
+                            CreatedAt = new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "phat.bui@gmail.com",
+                            IsGoogleAccount = false,
+                            Name = "Bùi Tấn Phát",
+                            Password = "$2a$12$9R8vUvTlZ4BdLdBz9QpMnOQVmSbSY.S/5GfjYHq5Wg.Z7keDKMroy",
+                            PhoneNumber = "0456987213",
+                            ProfilePicture = "profile9.jpg",
+                            RefreshToken = "",
+                            RefreshTokenExpiryTime = new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            Role = "ADMIN",
+                            UpdatedAt = new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Active = true,
+                            Address = "123 Nguyễn Đình Chiểu",
+                            CreatedAt = new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "nhung.cao@gmail.com",
+                            IsGoogleAccount = false,
+                            Name = "Cao Hồng Nhung",
+                            Password = "$2a$12$ApFZCAxoW3PAJJHb.JOqV.vdkdPZLtdIqa1EL49BTH.sedTX4HoQO",
+                            PhoneNumber = "0678912345",
+                            ProfilePicture = "profile10.jpg",
+                            RefreshToken = "",
+                            RefreshTokenExpiryTime = new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            Role = "EMPLOYEE",
+                            UpdatedAt = new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("PhoneStoreBackend.Entities.Wishlist", b =>

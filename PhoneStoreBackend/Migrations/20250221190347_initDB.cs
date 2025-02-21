@@ -594,50 +594,42 @@ namespace PhoneStoreBackend.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "Active", "Address", "CreatedAt", "Email", "IsGoogleAccount", "Name", "Password", "PhoneNumber", "ProfilePicture", "RefreshToken", "RefreshTokenExpiryTime", "Role", "UpdatedAt" },
+                values: new object[,]
+                {
+                    { 1, true, "19 Nguyễn Hữu Thọ, Tân Hưng, Quận 7, Hồ Chí Minh", new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified), "admin@gmail.com", false, "Bui Yen", "$2a$12$juvYYD0Il0DgOQ/q4hMZJOrZM1N9wbYZDC0Zxc4KaIHBQHrGEDSom", "0123456789", "https://compote.slate.com/images/01a4c27f-044a-489e-a891-69480c85f4db.jpeg", "", new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified), "ADMIN", new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, true, "19 Nguyễn Hữu Thọ, Tân Hưng, Quận 7, Hồ Chí Minh", new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified), "vanbien.dev@gmail.com", true, "Nguyễn Văn Biên", "$2a$12$1rlhso2Ea6jad1wwL897nO/IhrzxoxYN99rgEzThVcekphPCW4dz2", "0987654321", "https://m.media-amazon.com/images/I/71QKVtKTbdL._AC_SL1500_.jpg", "token123", new DateTime(2025, 3, 1, 12, 0, 0, 0, DateTimeKind.Unspecified), "CUSTOMER", new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, false, "19 Nguyễn Hữu Thọ, Tân Hưng, Quận 7, Hồ Chí Minh", new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified), "cuong@gmail.com", false, "Lý Đại Cương", "$2a$12$IoHaeCHxfI2JsWMYPtVPB.Y8xmh1dKRIwWPu1DVEtPRLfNJRqdnES", "0345678901", "https://static.independent.co.uk/2022/03/08/21/newFile-1.jpg", "", new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified), "EMPLOYEE", new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 4, true, "19 Nguyễn Hữu Thọ, Tân Hưng, Quận 7, Hồ Chí Minh", new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified), "hung@gmail.com", false, "Đạo Thanh Hưng", "$2a$12$VygkNWltkROlEb2TNW6qM.Y.OnaMQAYY9nTFfeM/ZgQmRXn.3bSSy", "0543216789", "https://compote.slate.com/images/01a4c27f-044a-489e-a891-69480c85f4db.jpeg", "", new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified), "CUSTOMER", new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 5, true, "33 Phạm Ngũ Lão", new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified), "hoang.do@gmail.com", true, "Đỗ Văn Hoàng", "$2a$12$Dlg/m09cP33cyAV3hhkbQeS8HkVlyYD1twTLVqgfsq.MsgwMzVeNy", "0654321987", "profile5.jpg", "token456", new DateTime(2025, 4, 10, 12, 0, 0, 0, DateTimeKind.Unspecified), "EMPLOYEE", new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 6, true, "55 Bà Triệu", new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified), "lan.hoang@gmail.com", false, "Hoàng Thị Lan", "$2a$12$b0e2caNCEMNdkeO67.IodOj/hfxmV/NwN6quBl3FBejmxFuDqcjIW", "0789456123", "profile6.jpg", "", new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified), "ADMIN", new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 7, false, "67 Điện Biên Phủ", new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified), "bao.vo@gmail.com", false, "Võ Quốc Bảo", "$2a$12$tVJR6jcbmnFnZt5T93WyJeVq/6h53H32rQbYS1j1p/L5RSIclkqCG", "0896543210", "profile7.jpg", "", new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified), "EMPLOYEE", new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 8, true, "99 Lý Thường Kiệt", new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified), "hang.ngo@gmail.com", true, "Ngô Thanh Hằng", "$2a$12$siSeKKVYuy9ZVU.mD1gPwe2EZMYsvj//1n4z6YCa0AXwp7DChrohG", "0321654987", "profile8.jpg", "token789", new DateTime(2025, 5, 5, 12, 0, 0, 0, DateTimeKind.Unspecified), "CUSTOMER", new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 9, true, "111 Võ Thị Sáu", new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified), "phat.bui@gmail.com", false, "Bùi Tấn Phát", "$2a$12$9R8vUvTlZ4BdLdBz9QpMnOQVmSbSY.S/5GfjYHq5Wg.Z7keDKMroy", "0456987213", "profile9.jpg", "", new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified), "ADMIN", new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 10, true, "123 Nguyễn Đình Chiểu", new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified), "nhung.cao@gmail.com", false, "Cao Hồng Nhung", "$2a$12$ApFZCAxoW3PAJJHb.JOqV.vdkdPZLtdIqa1EL49BTH.sedTX4HoQO", "0678912345", "profile10.jpg", "", new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified), "EMPLOYEE", new DateTime(2025, 2, 22, 12, 0, 0, 0, DateTimeKind.Unspecified) }
+                });
+
+            migrationBuilder.InsertData(
                 table: "ProductSpecificationGroups",
                 columns: new[] { "ProductSpecificationGroupId", "CategoryId", "DisplayOrder", "GroupName" },
                 values: new object[,]
                 {
-                    { 1, 1, 1, "Thiết kế & Màn hình" },
-                    { 2, 1, 2, "Hiệu năng & Bộ nhớ" },
-                    { 3, 1, 3, "Camera" },
-                    { 4, 1, 4, "Pin & Sạc" },
-                    { 5, 1, 5, "Kết nối & Cảm biến" },
-                    { 6, 1, 6, "Hệ điều hành & Giao diện" },
-                    { 7, 1, 7, "Âm thanh" },
-                    { 8, 1, 8, "Phụ kiện đi kèm" },
-                    { 9, 2, 1, "Màn hình" },
-                    { 10, 2, 2, "Hiệu năng & Bộ nhớ" },
-                    { 11, 2, 3, "Camera & Hỗ trợ bút" },
-                    { 12, 2, 4, "Pin & Sạc" },
-                    { 13, 2, 5, "Hệ điều hành & Kết nối" },
-                    { 14, 3, 1, "Thiết kế & Màn hình" },
-                    { 15, 3, 2, "Hiệu năng & Tản nhiệt" },
-                    { 16, 3, 3, "Bàn phím & Touchpad" },
-                    { 17, 3, 4, "Pin & Cổng kết nối" },
-                    { 18, 3, 5, "Hệ điều hành & Phần mềm" },
-                    { 19, 4, 1, "Màn hình & Chất lượng âm thanh" },
-                    { 20, 4, 2, "Hiệu suất & Đồ họa" },
-                    { 21, 4, 3, "Pin & Thời gian sử dụng" },
-                    { 22, 4, 4, "Hệ điều hành & Ứng dụng" },
-                    { 23, 5, 1, "Tính năng & Công nghệ" },
-                    { 24, 5, 2, "Màn hình & Hiển thị" },
-                    { 25, 5, 3, "Thời lượng pin & Sạc" },
-                    { 26, 5, 4, "Kết nối & Tiện ích" },
-                    { 27, 6, 1, "Tính năng & Công nghệ" },
-                    { 28, 6, 2, "Thời lượng pin & Sạc" },
-                    { 29, 6, 3, "Thiết kế & Khả năng chống ồn" },
-                    { 30, 6, 4, "Kết nối & Điều khiển" },
-                    { 31, 7, 1, "Kích thước & Trọng lượng" },
-                    { 32, 7, 2, "Công nghệ hiển thị" },
-                    { 33, 7, 3, "Hệ điều hành & Ứng dụng" },
-                    { 34, 7, 4, "Kết nối & Tiện ích" },
-                    { 35, 8, 1, "Hiệu suất & Lưu trữ" },
-                    { 36, 8, 2, "Kết nối & Cảm biến" },
-                    { 37, 8, 3, "Tính năng thông minh" },
-                    { 38, 8, 4, "Độ bền & Chống nước" },
-                    { 39, 9, 1, "Dung lượng & Chuẩn tốc độ" },
-                    { 40, 9, 2, "Kết nối & Bảo mật" }
+                    { 1, 1, 1, "Màn hình" },
+                    { 2, 1, 2, "Camera sau" },
+                    { 3, 1, 3, "Camera trước" },
+                    { 4, 1, 4, "Vi xử lý & đồ họa" },
+                    { 5, 1, 5, "Giao tiếp & kết nối" },
+                    { 6, 1, 6, "RAM & lưu trữ" },
+                    { 7, 1, 7, "Pin & công nghệ sạc" },
+                    { 8, 1, 8, "Tính năng khác" },
+                    { 9, 1, 9, "Bộ xử lý & Đồ họa" },
+                    { 10, 1, 10, "Kích thước & Trọng lượng" },
+                    { 11, 1, 11, "Thiết kế & Trọng lượng" },
+                    { 12, 1, 12, "Thông số khác" },
+                    { 13, 1, 13, "Tiện ích khác" },
+                    { 14, 1, 14, "Cổng kết nối" },
+                    { 15, 1, 15, "Thông tin chung" }
                 });
 
             migrationBuilder.InsertData(
@@ -646,14 +638,7 @@ namespace PhoneStoreBackend.Migrations
                 values: new object[,]
                 {
                     { 1, 1, 1, "<p><strong>Chip A17 Pro</strong> với hiệu suất vượt trội và camera 48MP.</p>", "iPhone 15 Pro Max" },
-                    { 2, 1, 1, "<p>Màn hình <strong>6.1 inch</strong> Super Retina XDR, chip A17 Pro.</p>", "iPhone 15 Pro" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Products",
-                columns: new[] { "ProductId", "BrandId", "CategoryId", "Description", "Name" },
-                values: new object[,]
-                {
+                    { 2, 1, 1, "<p>Màn hình <strong>6.1 inch</strong> Super Retina XDR, chip A17 Pro.</p>", "iPhone 15 Pro" },
                     { 3, 1, 1, "<p>Thiết kế khung nhôm, camera 48MP, chip A16 Bionic.</p>", "iPhone 15" },
                     { 4, 1, 1, "<p><strong>Dynamic Island</strong>, camera 48MP, chip A16 Bionic.</p>", "iPhone 14 Pro Max" },
                     { 5, 1, 1, "<p>Màn hình LTPO 120Hz, Always-On Display, camera nâng cấp.</p>", "iPhone 14 Pro" },
@@ -678,21 +663,23 @@ namespace PhoneStoreBackend.Migrations
                     { 24, 10, 3, "Laptop gaming giá tốt với RTX 4060", "Asus TUF Gaming F15" },
                     { 25, 1, 3, "Laptop mạnh mẽ cho dân thiết kế và lập trình viên", "MacBook Pro M3 Max" },
                     { 26, 8, 1, "Điện thoại flagship với màn hình 4K OLED", "Sony Xperia 1 V" },
-                    { 27, 9, 1, "Điện thoại siêu bền chuẩn quân đội", "Nokia XR21" },
-                    { 28, 4, 1, "Điện thoại chụp ảnh zoom ấn tượng", "Oppo Reno 10 Pro+" },
-                    { 29, 6, 1, "Điện thoại giá rẻ với camera 200MP", "Realme 11 Pro+" },
-                    { 30, 7, 1, "Điện thoại tầm trung với hiệu năng mạnh", "OnePlus Nord 3" },
-                    { 31, 1, 4, "Bàn phím không dây dành cho iPad", "Apple Magic Keyboard" },
-                    { 32, 2, 7, "Smart TV 8K với công nghệ Mini LED", "Samsung 65\" Neo QLED 8K" },
-                    { 33, 3, 8, "Thiết bị lọc không khí thông minh", "Xiaomi Smart Air Purifier 4" },
-                    { 34, 10, 3, "Laptop màn hình kép sáng tạo", "Asus ZenBook Duo 14" },
-                    { 35, 8, 8, "Console chơi game thế hệ mới", "Sony PlayStation 5" },
-                    { 36, 4, 2, "Máy tính bảng giá rẻ với Snapdragon 680", "Oppo Pad Air" },
-                    { 37, 5, 1, "Điện thoại có camera chụp chân dung đẹp", "Vivo V29 Pro" },
-                    { 38, 1, 9, "Loa thông minh với Siri", "Apple HomePod Mini" },
-                    { 39, 2, 10, "Ổ cứng di động tốc độ cao", "Samsung T7 Shield SSD" },
-                    { 40, 3, 5, "Vòng đeo tay thông minh theo dõi sức khỏe", "Xiaomi Mi Band 8" }
+                    { 27, 9, 1, "Điện thoại siêu bền chuẩn quân đội", "Nokia XR21" }
                 });
+
+            migrationBuilder.InsertData(
+                table: "Products",
+                columns: new[] { "ProductId", "BrandId", "CategoryId", "Description", "Name" },
+                values: new object[] { 28, 4, 1, "Điện thoại chụp ảnh zoom ấn tượng", "Oppo Reno 10 Pro+" });
+
+            migrationBuilder.InsertData(
+                table: "Products",
+                columns: new[] { "ProductId", "BrandId", "CategoryId", "Description", "Name" },
+                values: new object[] { 29, 6, 1, "Điện thoại giá rẻ với camera 200MP", "Realme 11 Pro+" });
+
+            migrationBuilder.InsertData(
+                table: "Products",
+                columns: new[] { "ProductId", "BrandId", "CategoryId", "Description", "Name" },
+                values: new object[] { 30, 7, 1, "Điện thoại tầm trung với hiệu năng mạnh", "OnePlus Nord 3" });
 
             migrationBuilder.InsertData(
                 table: "ProductVariants",
@@ -771,7 +758,63 @@ namespace PhoneStoreBackend.Migrations
                     { 6, "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_8__1.jpg", false, 1 },
                     { 7, "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_9__1.jpg", false, 1 },
                     { 8, "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_1__1.jpg", false, 1 },
-                    { 9, "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_10__1.jpg", false, 1 }
+                    { 9, "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_10__1.jpg", false, 1 },
+                    { 10, "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_3.png", true, 2 },
+                    { 11, "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_3.png", true, 3 },
+                    { 12, "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_3.png", true, 4 },
+                    { 13, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-plus_1__1.png", true, 5 },
+                    { 14, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-plus_1__1.png", true, 6 },
+                    { 15, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-14-pro-max-256gb.png", true, 7 },
+                    { 16, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-14-pro-max-256gb.png", true, 8 },
+                    { 17, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-14-pro_2__4.png", true, 9 },
+                    { 18, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-14-pro_2__4.png", true, 10 },
+                    { 19, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-14_1.png", true, 11 },
+                    { 20, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-14_1.png", true, 12 },
+                    { 21, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-13-pro-max.png", true, 13 },
+                    { 22, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/1/_/1_66_6_2_4.jpg", true, 14 },
+                    { 23, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-13_2_.png", true, 15 },
+                    { 24, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/_/0/_0002_iphone-se-starlight-select-20220_2_2.jpg", true, 16 },
+                    { 25, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/s/ss-s24-ultra-xam-222.png", true, 17 },
+                    { 26, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/ipad-pro-2022-12-9-inch-m2_3.png", true, 18 },
+                    { 27, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/a/p/apple-airpods-pro-2-usb-c_1_.png", true, 19 },
+                    { 28, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/w/a/watch6_classic_thumbnail_1.png", true, 20 },
+                    { 29, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/1/3/13_prooo_2_2_3.jpg", true, 21 },
+                    { 30, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/1/3/13_prooo_2_2_3.jpg", true, 22 },
+                    { 31, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/o/p/oppo-find-x6-pro.png", true, 23 },
+                    { 32, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/o/p/oppo-find-x6-pro.png", true, 24 },
+                    { 33, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/v/i/vivo-x90-pro.png", true, 25 },
+                    { 34, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/v/i/vivo-x90-pro.png", true, 26 },
+                    { 35, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/p/u/purple-be8e0ce5d0.png", true, 27 },
+                    { 36, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/p/u/purple-be8e0ce5d0.png", true, 28 },
+                    { 37, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/o/n/oneplus_11_-_black_-_rgb.jpg", true, 29 },
+                    { 38, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/o/n/oneplus_11_-_black_-_rgb.jpg", true, 30 },
+                    { 39, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/o/sony-xperia-1-v.png", true, 31 },
+                    { 40, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/o/sony-xperia-1-v.png", true, 32 },
+                    { 41, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/n/o/nokia-xr21.png", true, 33 },
+                    { 42, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/n/o/nokia-xr21.png", true, 34 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ProductImages",
+                columns: new[] { "ImageId", "ImageUrl", "IsMain", "ProductVariantId" },
+                values: new object[,]
+                {
+                    { 43, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/a/s/asus-rog-phone-7.png", true, 35 },
+                    { 44, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/a/s/asus-rog-phone-7.png", true, 36 },
+                    { 45, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-pad-6-pro_2_.png", true, 37 },
+                    { 46, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-pad-6-pro_2_.png", true, 38 },
+                    { 47, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/g/r/group_509_55_.png", true, 39 },
+                    { 48, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/g/r/group_509_13__1.png", true, 40 },
+                    { 49, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/g/r/group_560_13_.png", true, 41 },
+                    { 50, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/g/r/group_562_2_.png", true, 42 },
+                    { 51, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/o/sony-xperia-1-v.png", true, 43 },
+                    { 52, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/n/o/nokia-xr21.png", true, 44 },
+                    { 53, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/o/p/oppo-reno10-pro-plus-tim.png", true, 45 },
+                    { 54, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/o/p/oppo-reno10-pro-plus-tim.png", true, 46 },
+                    { 55, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/r/e/realme_note_50_8_.png", true, 47 },
+                    { 56, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/r/e/realme_note_50_8_.png", true, 48 },
+                    { 57, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/o/n/oneplus-nord-3_1_2.png", true, 49 },
+                    { 58, "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/o/n/oneplus-nord-3_1_2.png", true, 50 }
                 });
 
             migrationBuilder.InsertData(
@@ -779,39 +822,32 @@ namespace PhoneStoreBackend.Migrations
                 columns: new[] { "SpecificationId", "DisplayOrder", "IsSpecial", "Key", "ProductSpecificationGroupId", "ProductVariantId", "Value" },
                 values: new object[,]
                 {
-                    { 1, 1, true, "Màn hình", 1, 1, "6.7 inch Super Retina XDR" },
-                    { 2, 2, false, "Chất liệu khung", 1, 1, "Titanium" },
-                    { 3, 1, true, "Chip xử lý", 2, 1, "Apple A17 Pro" },
-                    { 4, 2, false, "RAM", 2, 1, "8GB" },
-                    { 5, 1, true, "Camera chính", 3, 1, "48MP" },
-                    { 6, 2, false, "Camera tele", 3, 1, "12MP 5X zoom quang học" },
-                    { 7, 1, false, "Dung lượng pin", 4, 1, "4422mAh" },
-                    { 8, 2, false, "Sạc nhanh", 4, 1, "20W" },
-                    { 9, 1, true, "Kết nối", 5, 1, "5G" },
-                    { 10, 2, false, "Cổng sạc", 5, 1, "USB-C" },
-                    { 11, 1, true, "Màn hình", 1, 2, "6.7 inch Super Retina XDR" },
-                    { 12, 2, false, "Chất liệu khung", 1, 2, "Titanium" },
-                    { 13, 1, true, "Chip xử lý", 2, 2, "Apple A17 Pro" },
-                    { 14, 2, false, "RAM", 2, 2, "8GB" },
-                    { 15, 1, true, "Camera chính", 3, 2, "48MP" },
-                    { 16, 2, false, "Camera tele", 3, 2, "12MP 5X zoom quang học" },
-                    { 17, 1, false, "Dung lượng pin", 4, 2, "4422mAh" },
-                    { 18, 2, false, "Sạc nhanh", 4, 2, "20W" },
-                    { 19, 1, true, "Kết nối", 5, 2, "5G" },
-                    { 20, 2, false, "Cổng sạc", 5, 2, "USB-C" },
-                    { 21, 1, true, "Màn hình", 1, 3, "6.1 inch Super Retina XDR" },
-                    { 22, 2, false, "Chất liệu khung", 1, 3, "Titanium" },
-                    { 23, 1, true, "Chip xử lý", 2, 3, "Apple A17 Pro" },
-                    { 24, 2, false, "RAM", 2, 3, "8GB" },
-                    { 25, 1, true, "Camera chính", 3, 3, "48MP" },
-                    { 26, 2, false, "Camera tele", 3, 3, "12MP 3X zoom quang học" },
-                    { 27, 1, false, "Dung lượng pin", 4, 3, "3274mAh" },
-                    { 28, 2, false, "Sạc nhanh", 4, 3, "20W" },
-                    { 29, 1, true, "Kết nối", 5, 3, "5G" },
-                    { 30, 2, false, "Cổng sạc", 5, 3, "USB-C" },
-                    { 31, 1, true, "Màn hình", 1, 5, "6.1 inch Super Retina XDR" },
-                    { 32, 2, false, "Chất liệu khung", 1, 5, "Nhôm" },
-                    { 33, 1, true, "Chip xử lý", 2, 5, "Apple A16 Bionic" }
+                    { 1, 1, true, "Kích thước màn hình", 1, 1, "6.7 inchs" },
+                    { 2, 2, true, "Công nghệ màn hình", 1, 1, "Super Retina XDR OLED" },
+                    { 3, 3, true, "Độ phân giải màn hình", 1, 1, "2796 x 1290-pixel" },
+                    { 4, 4, false, "Tính năng màn hình", 1, 1, "Tốc độ làm mới 120Hz\n460 ppi\n2000 nits\nHDR\nTrue Tone\nDải màu rộng (P3)\nHaptic Touch\nTỷ lệ tương phản 2.000.000:1" },
+                    { 5, 5, true, "Tần số quét", 1, 1, "120Hz" },
+                    { 6, 6, false, "Kiểu màn hình", 1, 1, "Dynamic Island" },
+                    { 7, 1, false, "Camera sau", 2, 1, "Camera chính: 48MP, 24 mm, ƒ/1.78\nCamera góc siêu rộng: 12 MP, 13 mm, ƒ/2.2\nCamera Tele: 12 MP" },
+                    { 8, 2, false, "Quay video", 2, 1, "4K@24/25/30/60 fps\nHD 1080p@25/30/60 fps\nHD 720p@30 fps" },
+                    { 9, 3, false, "Tính năng camera", 2, 1, "Flash True Tone Thích Ứng\nPhotonic Engine\nDeep Fusion\nHDR thông minh thế hệ 5\nẢnh chân dung thế hệ mới với Focus và Depth Control\nHiệu ứng Chiếu Sáng Chân Dung với sáu chế độ\nChế độ Ban Đêm" },
+                    { 10, 1, false, "Camera trước", 3, 1, "12MP, ƒ/1.9" },
+                    { 11, 2, false, "Quay video trước", 3, 1, "4K@24/25/30/60 fps\nHD 1080p@25/30/60 fps" },
+                    { 12, 1, true, "Chipset", 4, 1, "Apple A17 Pro 6 nhân" },
+                    { 13, 2, true, "GPU", 4, 1, "GPU 6 nhân mới" },
+                    { 14, 1, true, "Công nghệ NFC", 5, 1, "Có" },
+                    { 15, 2, true, "Thẻ SIM", 5, 1, "2 SIM (nano‑SIM và eSIM)" },
+                    { 16, 3, true, "Hồng ngoại", 5, 1, "Có" },
+                    { 17, 4, true, "Jack tai nghe 3.5", 5, 1, "Không" },
+                    { 18, 5, false, "Hỗ trợ mạng", 5, 1, "5G" },
+                    { 19, 6, true, "GPS", 5, 1, "GPS tần số kép chính xác (GPS, GLONASS, Galileo, QZSS, BeiDou và NavIC)" },
+                    { 20, 1, true, "Dung lượng RAM", 6, 1, "8 GB" },
+                    { 21, 2, true, "Bộ nhớ trong", 6, 1, "256 GB" },
+                    { 22, 3, false, "Khe cắm thẻ nhớ", 6, 1, "Không" },
+                    { 23, 1, true, "Pin", 7, 1, "4422 mAh" },
+                    { 24, 2, false, "Công nghệ sạc", 7, 1, "Sạc nhanh 20 W\nSạc không dây 15W\nSạc không dây Qi 7.5W" },
+                    { 25, 3, true, "Cổng sạc", 7, 1, "USB Type-C" },
+                    { 26, 1, true, "Hệ điều hành", 8, 1, "iOS 17" }
                 });
 
             migrationBuilder.InsertData(
@@ -819,33 +855,21 @@ namespace PhoneStoreBackend.Migrations
                 columns: new[] { "SpecificationId", "DisplayOrder", "IsSpecial", "Key", "ProductSpecificationGroupId", "ProductVariantId", "Value" },
                 values: new object[,]
                 {
-                    { 34, 2, false, "RAM", 2, 5, "6GB" },
-                    { 35, 1, true, "Camera chính", 3, 5, "48MP" },
-                    { 36, 2, false, "Camera tele", 3, 5, "Không có" },
-                    { 37, 1, false, "Dung lượng pin", 4, 5, "3349mAh" },
-                    { 38, 2, false, "Sạc nhanh", 4, 5, "20W" },
-                    { 39, 1, true, "Kết nối", 5, 5, "5G" },
-                    { 40, 2, false, "Cổng sạc", 5, 5, "USB-C" },
-                    { 41, 1, true, "Màn hình", 1, 11, "6.1 inch Super Retina XDR" },
-                    { 42, 2, false, "Chất liệu khung", 1, 11, "Nhôm" },
-                    { 43, 1, true, "Chip xử lý", 2, 11, "Apple A15 Bionic" },
-                    { 44, 2, false, "RAM", 2, 11, "6GB" },
-                    { 45, 1, true, "Camera chính", 3, 11, "12MP" },
-                    { 46, 2, false, "Camera tele", 3, 11, "Không có" },
-                    { 47, 1, false, "Dung lượng pin", 4, 11, "3279mAh" },
-                    { 48, 2, false, "Sạc nhanh", 4, 11, "20W" },
-                    { 49, 1, true, "Kết nối", 5, 11, "5G" },
-                    { 50, 2, false, "Cổng sạc", 5, 11, "Lightning" },
-                    { 51, 1, true, "Màn hình", 1, 16, "4.7 inch Retina HD" },
-                    { 52, 2, false, "Chất liệu khung", 1, 16, "Nhôm" },
-                    { 53, 1, true, "Chip xử lý", 2, 16, "Apple A15 Bionic" },
-                    { 54, 2, false, "RAM", 2, 16, "4GB" },
-                    { 55, 1, true, "Camera chính", 3, 16, "12MP" },
-                    { 56, 2, false, "Camera tele", 3, 16, "Không có" },
-                    { 57, 1, false, "Dung lượng pin", 4, 16, "2018mAh" },
-                    { 58, 2, false, "Sạc nhanh", 4, 16, "18W" },
-                    { 59, 1, true, "Kết nối", 5, 16, "5G" },
-                    { 60, 2, false, "Cổng sạc", 5, 16, "Lightning" }
+                    { 27, 1, false, "Loại CPU", 9, 1, "CPU 6 lõi mới với 2 lõi hiệu năng và 4 lõi hiệu suất" },
+                    { 28, 1, false, "Kích thước", 10, 1, "159,9 x 76,7 x 8,25 mm" },
+                    { 29, 2, false, "Trọng lượng", 10, 1, "221 g" },
+                    { 30, 1, false, "Chất liệu mặt lưng", 11, 1, "Kính" },
+                    { 31, 2, false, "Chất liệu khung viền", 11, 1, "Titanium" },
+                    { 32, 1, false, "Chỉ số kháng nước, bụi", 12, 1, "Đạt mức IP68 (chống nước ở độ sâu tối đa 6 mét trong vòng tối đa 30 phút)" },
+                    { 33, 2, false, "Công nghệ - Tiện ích", 12, 1, "Camera TrueDepth hỗ trợ nhận diện khuôn mặt" },
+                    { 34, 3, false, "Tiện ích khác", 12, 1, "SOS Khẩn Cấp\nPhát Hiện Va Chạm" },
+                    { 35, 4, false, "Công nghệ âm thanh", 12, 1, "AAC, MP3, Apple Lossless, FLAC, Dolby Digital, Dolby Digital Plus và Dolby Atmos" },
+                    { 36, 1, true, "Cảm biến vân tay", 13, 1, "Không" },
+                    { 37, 2, false, "Các loại cảm biến", 13, 1, "Cảm biến gia tốc\nCảm biến tiệm cận\nCảm biến ánh sáng\nLa bàn\nCon quay hồi chuyển\nCảm biến áp kế\nCảm biến trọng lực" },
+                    { 38, 3, false, "Tính năng đặc biệt", 13, 1, "Hỗ trợ 5G\nSạc không dây\nNhận diện khuôn mặt\nKháng nước, kháng bụi\nĐiện thoại AI" },
+                    { 39, 1, true, "Wi-Fi", 14, 1, "Wi‑Fi 6E (802.11ax)" },
+                    { 40, 2, true, "Bluetooth", 14, 1, "v5.3" },
+                    { 41, 1, false, "Thời điểm ra mắt", 15, 1, "09/2023" }
                 });
 
             migrationBuilder.CreateIndex(
