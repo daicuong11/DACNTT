@@ -453,3 +453,5 @@ const AddProduct = () => {
 }
 
 export default AddProduct
+
+export default AddProduct

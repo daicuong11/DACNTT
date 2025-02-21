@@ -176,6 +176,7 @@ const MyRoutes = () => {
             {
               path: 'details/:productId',
               element: <Details />
+              element: <Details />
             }
           ]
         },

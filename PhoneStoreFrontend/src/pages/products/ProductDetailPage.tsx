@@ -90,9 +90,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
       {/* {isLoading && <LoadingOpacity />} */}
       <div className='flex flex-col gap-4'>
         <div className='flex items-center gap-2'>
-          <div className='text-xl font-semibold'>
-            {productVariant?.variantName}
-          </div>
+          <div className='text-xl font-semibold'>{productVariant?.variantName}</div>
           <ConfigProvider
             theme={{
               token: {

@@ -105,6 +105,8 @@ builder.Services.AddScoped<ICustomerRepository, CustomerService>();
 // Đọc connection string động
 //var dbHelper = new DatabaseConnectionHelper(builder.Configuration);
 //string connectionString = dbHelper.GetAvailableConnectionString();
+//var dbHelper = new DatabaseConnectionHelper(builder.Configuration);
+//string connectionString = dbHelper.GetAvailableConnectionString();
 
 //builder.Services.AddDbContext<AppDbContext>(options =>
 //    options.UseSqlServer(connectionString));
