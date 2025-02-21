@@ -13,7 +13,6 @@ import { VariantResponse } from '@/types/product.type'
 
 export default function Details() {
   const { productId } = useParams<{ productId: string }>()
-  const { productId } = useParams<{ productId: string }>()
 
   const handleStopSell = (slug: string) => {
     console.log(slug)

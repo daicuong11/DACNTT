@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Form, FormProps, Input } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft } from 'lucide-react'
@@ -21,7 +21,7 @@ const RegisterPage: React.FC = () => {
   useSetDocTitle('BC Mobile | Đăng nhập')
   const navigate = useNavigate()
 
-  const [phoneNumber, setPhoneNumber] = React.useState('0333333333')
+  const [phoneNumber, setPhoneNumber] = useState('')
 
   const confirmPhoneNumberModalController = useModal()
 
@@ -78,7 +78,14 @@ const RegisterPage: React.FC = () => {
           >
             <div className='flex flex-col gap-y-2.5 border-b transition-all focus-within:border-blue-600 group'>
               <div className='text-xs text-gray-500 uppercase group-focus-within:text-blue-600'>Họ và tên</div>
-              <Input name='fullName' id='fullName' variant='borderless' placeholder='Nhập họ và tên' allowClear className='text-base' />
+              <Input
+                name='fullName'
+                id='fullName'
+                variant='borderless'
+                placeholder='Nhập họ và tên'
+                allowClear
+                className='text-base'
+              />
             </div>
           </Form.Item>
           <Form.Item<FieldType>
@@ -91,8 +98,8 @@ const RegisterPage: React.FC = () => {
             <div className='flex flex-col gap-y-2.5 border-b transition-all focus-within:border-blue-600 group'>
               <div className='text-xs text-gray-500 uppercase group-focus-within:text-blue-600'>Số điện thoại</div>
               <Input
-              id='phoneNumber'
-              name='phoneNumber'
+                id='phoneNumber'
+                name='phoneNumber'
                 variant='borderless'
                 placeholder='Nhập số điện thoại'
                 allowClear
@@ -110,7 +117,15 @@ const RegisterPage: React.FC = () => {
           >
             <div className='flex flex-col gap-y-2.5 border-b transition-all focus-within:border-blue-600 group'>
               <div className='text-xs text-gray-500 uppercase group-focus-within:text-blue-600'>Email</div>
-              <Input name='email' id='email' type='email' variant='borderless' placeholder='Nhập email' allowClear className='text-base' />
+              <Input
+                name='email'
+                id='email'
+                type='email'
+                variant='borderless'
+                placeholder='Nhập email'
+                allowClear
+                className='text-base'
+              />
             </div>
           </Form.Item>
           <Form.Item<FieldType>
@@ -123,7 +138,14 @@ const RegisterPage: React.FC = () => {
           >
             <div className='flex flex-col gap-y-2.5 border-b transition-all focus-within:border-blue-600 group'>
               <div className='text-xs text-gray-500 uppercase group-focus-within:text-blue-600'>Mật khẩu</div>
-              <Input.Password name='password' id='password' variant='borderless' placeholder='Nhập mật khẩu' allowClear className='text-base' />
+              <Input.Password
+                name='password'
+                id='password'
+                variant='borderless'
+                placeholder='Nhập mật khẩu'
+                allowClear
+                className='text-base'
+              />
             </div>
           </Form.Item>
           <Form.Item<FieldType>

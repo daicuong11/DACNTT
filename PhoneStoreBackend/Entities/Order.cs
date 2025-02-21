@@ -35,7 +35,7 @@ namespace PhoneStoreBackend.Entities
 
         [Required]
         [Column(TypeName = "decimal(18, 2)")]
-        public decimal? ShippingFee { get; set; }
+        public decimal ShippingFee { get; set; }
 
         [Required]
         [Column(TypeName = "decimal(18, 2)")]

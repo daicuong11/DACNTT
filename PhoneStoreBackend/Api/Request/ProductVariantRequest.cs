@@ -30,9 +30,6 @@ namespace PhoneStoreBackend.Api.Request
         [Range(0.01, double.MaxValue, ErrorMessage = "Giá nhập sản phẩm phải lớn hơn 0.")]
         public decimal ImportPrice { get; set; }
 
-        [Required(ErrorMessage = "Ảnh chính là bắt buộc.")]
-        public string ImageUrl { get; set; }
-
         [Required(ErrorMessage = "Số lượng tồn kho là bắt buộc.")]
         [Range(0, int.MaxValue, ErrorMessage = "Số lượng tồn kho không được âm.")]
         public int Stock { get; set; }

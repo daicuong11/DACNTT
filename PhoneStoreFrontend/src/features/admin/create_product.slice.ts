@@ -191,7 +191,7 @@ const createProductSlice = createSlice({
         stock: state.variant?.stock || 1
       }
       state.variant = newState
-      state.mainImage = null
+      // state.mainImage = null
     },
 
     clearAll(state) {

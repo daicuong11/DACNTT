@@ -121,7 +121,7 @@ const PaymentConfirmPage = () => {
         customerId: -1,
         note: orderSlice.note!,
         shippingAddress: getAddressString(orderSlice.shippingAddress!),
-        shippingFee: orderSlice.shippingFee!,
+        shippingFee: orderSlice.shippingFee ?? 0,
         totalAmount: orderSlice.totalAmount + orderSlice.shippingFee!,
         userId: currentUser!.id,
         orderDetailRequests: orderSlice.cartItems.map((item) => ({
@@ -179,7 +179,6 @@ const PaymentConfirmPage = () => {
                   },
                   onError: (err) => {
                     console.log(err)
-                    setIsLoading(false)
                   }
                 })
 

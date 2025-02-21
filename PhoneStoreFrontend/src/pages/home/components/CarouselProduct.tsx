@@ -56,14 +56,11 @@ const CarouselProduct: FC<CarouselProductType> = ({ row = 1, autoPlay = true, da
           'h-[814px] ': row !== 1
         })}
       >
-        {dataSource
-          .filter(item => item.productVariants.length > 0)
-          .map((item, index) => (
-            <SwiperSlide key={index} className={classNames('h-full')}>
-              <ProductCard product={item} />
-            </SwiperSlide>
-          ))}
-
+        {dataSource.map((item, index) => (
+          <SwiperSlide key={index} className={classNames('h-full')}>
+            <ProductCard product={item} />
+          </SwiperSlide>
+        ))}
       </Swiper>
       {currentSlide != 0 && (
         <button

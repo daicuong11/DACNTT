@@ -24,7 +24,7 @@ namespace PhoneStoreBackend.Api.Request
 
         [Required(ErrorMessage = "Tổng số tiền là bắt buộc.")]
         [Range(0.01, double.MaxValue, ErrorMessage = "Tổng số tiền phải lớn hơn 0.")]
-        public decimal? ShippingFee { get; set; }
+        public decimal ShippingFee { get; set; }
 
         [Required(ErrorMessage = "Tổng số tiền là bắt buộc.")]
         [Range(0.01, double.MaxValue, ErrorMessage = "Tổng số tiền phải lớn hơn 0.")]
