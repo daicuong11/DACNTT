@@ -17,6 +17,8 @@ namespace PhoneStoreBackend.DTOs
         public string Storage { get; set; }
         public decimal Price { get; set; }
         public decimal ImportPrice { get; set; }
+        public string ImageUrl { get; set; }
+
         public int Stock { get; set; }
         public ICollection<ProductImageDTO> ProductImages { get; set; }
         public ICollection<ProductSpecification> ProductSpecifications { get; set; }

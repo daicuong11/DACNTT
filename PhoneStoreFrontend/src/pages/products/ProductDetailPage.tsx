@@ -24,6 +24,7 @@ import LoginOfRegisterModal from '@/components/modals/LoginOrRegisterModal'
 import { toast } from 'react-toastify'
 import classNames from 'classnames'
 import { addCartItem } from '@/features/cart/cartThunks'
+import { setListSelected } from '@/features/cart/cart.slice'
 
 interface ProductDetailPageProps {}
 const ProductDetailPage: FC<ProductDetailPageProps> = () => {
@@ -63,12 +64,30 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
     }
   }
 
+  const handleBuyNow = async () => {
+    if (userId) {
+      if (productVariant) {
+        const cartItem: CartItemRequestType = {
+          productVariantId: productVariant.productVariantId,
+          quantity: 1
+        }
+        setIsLoadingAddToCart(true)
+        await dispatch(addCartItem({ userId, cartItem }))
+        dispatch(setListSelected([cartItem.productVariantId]))
+        setIsLoadingAddToCart(false)
+        navigate('/cart')
+      }
+    } else {
+      openModal()
+    }
+  }
+
   if (error) return <Navigate to={'/not-found'} />
 
   return (
     <div className='flex flex-col my-4 gap-y-4'>
       <LoginOfRegisterModal isOpen={isOpen} onClose={closeModal} />
-      {isLoading && <LoadingOpacity />}
+      {/* {isLoading && <LoadingOpacity />} */}
       <div className='flex flex-col gap-4'>
         <div className='flex items-center gap-2'>
           <div className='text-xl font-semibold'>
@@ -94,7 +113,12 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
         <div className='w-full h-[1px] bg-slate-200'></div>
         <div className='grid w-full grid-cols-10 gap-6'>
           <div className='col-span-6 sticky top-[108px] h-max'>
-            {productVariant && <CarouselProductImages dataSources={productVariant.productImages} />}
+            {productVariant && (
+              <CarouselProductImages
+                productVariantId={productVariant.productVariantId}
+                dataSources={productVariant.productImages}
+              />
+            )}
             <div className='flex flex-col mt-6 gap-y-6'>
               <ContainerPanel title='Thông tin sản phẩm'>
                 <ContainerPanel.Item
@@ -230,6 +254,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
               </div>
               <div className='flex gap-2.5'>
                 <button
+                  onClick={handleBuyNow}
                   disabled={isLoadingAddToCart}
                   className={classNames('flex items-center w-full flex-1 btn btn-danger h-[60px]', {
                     'opacity-50 cursor-not-allowed': isLoadingAddToCart

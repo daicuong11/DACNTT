@@ -11,6 +11,11 @@ class OrderAPI {
     const res = await axiosInstance.get(`orders/${orderId}`)
     return res.data
   }
+
+  async getOrderByUserId(userId: number): Promise<OrderResponseType[]> {
+    const res = await axiosInstance.get(`orders/user/${userId}`)
+    return res.data
+  }
 }
 
 const orderAPI = new OrderAPI()

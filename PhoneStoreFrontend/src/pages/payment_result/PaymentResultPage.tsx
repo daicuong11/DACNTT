@@ -59,7 +59,9 @@ const PaymentResultPage = () => {
                 <div className='flex items-end  text-[15px] justify-between font-roboto'>
                   <span className='font-medium text-gray-500 '>Tổng tiền (đã bao gồm VAT)</span>
                   <span className='font-semibold tracking-tight text-gray-800'>
-                    {formatPrice(data?.orderDetails.reduce((total, item) => total + item.unitPrice, 0) || 0)}
+                    {formatPrice(data?.totalAmount || 0)}
+
+                    {/* {formatPrice(data?.orderDetails.reduce((total, item) => total + item.unitPrice, 0) || 0)} */}
                   </span>
                 </div>
                 <div className='flex items-end  text-[15px] justify-between font-roboto'>

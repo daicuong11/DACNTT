@@ -10,12 +10,12 @@ namespace PhoneStoreBackend.Data.Seeding
         {
             SeedFromJson<Brand>(modelBuilder, "brands.json");
             SeedFromJson<Category>(modelBuilder, "categories.json");
-            SeedFromJson<Product>(modelBuilder, "products.json");
+            //SeedFromJson<Product>(modelBuilder, "products.json");
             SeedFromJson<Discount>(modelBuilder, "discounts.json");
-            SeedFromJson<ProductVariant>(modelBuilder, "variants.json");
+            //SeedFromJson<ProductVariant>(modelBuilder, "variants.json");
             SeedFromJson<ProductSpecificationGroup>(modelBuilder, "groups.json");
-            SeedFromJson<ProductSpecification>(modelBuilder, "specifications.json");
-            SeedFromJson<ProductImage>(modelBuilder, "product_images.json");
+            //SeedFromJson<ProductSpecification>(modelBuilder, "specifications.json");
+            //SeedFromJson<ProductImage>(modelBuilder, "product_images.json");
 
         }
 

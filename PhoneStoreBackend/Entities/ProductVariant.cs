@@ -35,6 +35,7 @@ namespace PhoneStoreBackend.Entities
 
         [Column(TypeName = "decimal(18, 4)")]
         public decimal ImportPrice { get; set; }
+        public string ImageUrl { get; set; }
 
         public int Stock { get; set; }
 

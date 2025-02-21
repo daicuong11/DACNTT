@@ -1,9 +1,10 @@
 import { CartItemResponse } from '@/types/cart_item.type'
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { addCartItem, fetchCart, removeCartItem, updateCartItem } from './cartThunks'
 
 interface CartState {
   items: CartItemResponse[]
+  listSelected: number[]
   status: 'idle' | 'loading' | 'succeeded' | 'failed'
   error: string | null
 }
@@ -11,17 +12,22 @@ interface CartState {
 const initialState: CartState = {
   items: [],
   status: 'idle',
-  error: null
+  error: null,
+  listSelected: []
 }
 
 const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
+    setListSelected(state, action: PayloadAction<number[]>) {
+      state.listSelected = action.payload
+    },
     clearCart(state) {
       state.items = []
       state.status = 'idle'
       state.error = null
+      state.listSelected = []
     }
   },
   extraReducers: (builder) => {
@@ -59,7 +65,7 @@ const cartSlice = createSlice({
   }
 })
 
-export const { clearCart } = cartSlice.actions
+export const { clearCart, setListSelected } = cartSlice.actions
 
 const cartReducer = cartSlice.reducer
 

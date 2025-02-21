@@ -242,6 +242,7 @@ const AddProduct = () => {
       const newListProductVariant = lstProductVariant.map((variant) => ({
         variant: {
           ...variant.productVariant,
+          variantName: createProductSlice.product?.name + ' ' + variant.productVariant.variantName,
           slug: slug(
             createProductSlice.product?.name +
               ' ' +

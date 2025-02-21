@@ -71,7 +71,7 @@ namespace PhoneStoreBackend.DbContexts
                 .HasForeignKey(ps => ps.ProductSpecificationGroupId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            DatabaseSeeder.Seed(modelBuilder); // migration add SeedData -> update-database
+            //DatabaseSeeder.Seed(modelBuilder); // migration add SeedData -> update-database
         }
     }
 }

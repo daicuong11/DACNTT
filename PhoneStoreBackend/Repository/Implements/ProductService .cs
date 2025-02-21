@@ -55,10 +55,7 @@ namespace PhoneStoreBackend.Repository.Implements
                         DiscountPercentage = v.Discount != null ? v.Discount.Percentage : 0,
                         Price = v.Price,
                         Color = v.Color,
-                        ImageUrl = v.ProductImages
-                            .OrderByDescending(img => img.IsMain) // Ưu tiên lấy ảnh chính
-                            .Select(img => img.ImageUrl)
-                            .FirstOrDefault() ?? "default-image-url.jpg",
+                        ImageUrl = v.ImageUrl,
 
                         RAM = v.ProductSpecifications
                             .Where(spec => spec.Key.ToLower() == "dung lượng ram")
@@ -125,10 +122,7 @@ namespace PhoneStoreBackend.Repository.Implements
                         DiscountPercentage = v.Discount != null ? v.Discount.Percentage : 0,
                         Price = v.Price,
                         Color = v.Color,
-                        ImageUrl = v.ProductImages
-                            .OrderByDescending(img => img.IsMain)
-                            .Select(img => img.ImageUrl)
-                            .FirstOrDefault() ?? "default-image-url.jpg",
+                        ImageUrl = v.ImageUrl,
 
                         RAM = v.ProductSpecifications
                             .Where(spec => spec.Key.ToLower() == "dung lượng ram")
@@ -199,10 +193,7 @@ namespace PhoneStoreBackend.Repository.Implements
                         DiscountPercentage = v.Discount != null ? v.Discount.Percentage : 0,
                         Price = v.Price,
                         Color = v.Color,
-                        ImageUrl = v.ProductImages
-                            .OrderByDescending(img => img.IsMain)
-                            .Select(img => img.ImageUrl)
-                            .FirstOrDefault() ?? "default-image-url.jpg",
+                        ImageUrl = v.ImageUrl,
 
                         RAM = v.ProductSpecifications
                             .Where(spec => spec.Key.ToLower() == "dung lượng ram")
@@ -283,10 +274,7 @@ namespace PhoneStoreBackend.Repository.Implements
                         DiscountPercentage = v.Discount != null ? v.Discount.Percentage : 0,
                         Price = v.Price,
                         Color = v.Color,
-                        ImageUrl = v.ProductImages
-                            .OrderByDescending(img => img.IsMain)
-                            .Select(img => img.ImageUrl)
-                            .FirstOrDefault() ?? "default-image-url.jpg",
+                        ImageUrl = v.ImageUrl,
 
                         RAM = v.ProductSpecifications
                             .Where(spec => spec.Key.ToLower() == "dung lượng ram")

@@ -21,7 +21,7 @@ const CartPage: FC<CartPageProps> = () => {
   const navigate = useNavigate()
 
   const userId = useAppSelector((state) => state.auth.user?.id)
-  const { items, status, error } = useAppSelector((state) => state.cart)
+  const { items, status, error, listSelected: listSelectedSlice } = useAppSelector((state) => state.cart)
   const dispatch = useAppDispatch()
 
   const [selectAll, setSelectAll] = useState<boolean>(false)
@@ -32,6 +32,17 @@ const CartPage: FC<CartPageProps> = () => {
       dispatch(fetchCart(userId))
     }
   }, [dispatch, userId])
+
+  useEffect(() => {
+    if (listSelectedSlice.length === 0) {
+      setListSelected([])
+    } else {
+      const getListCartItemIdSelected = items
+        .filter((item) => listSelectedSlice.includes(item.productVariant.productVariantId))
+        .map((item) => item.cartItemId)
+      setListSelected(getListCartItemIdSelected)
+    }
+  }, [listSelectedSlice])
 
   const onSelectAllProduct = useCallback(() => {
     if (selectAll) {
@@ -171,14 +182,16 @@ const CartPage: FC<CartPageProps> = () => {
             )}
           </div>
           <div className='flex flex-col pb-16 mt-2 gap-y-4'>
-            {items.map((cartItem, index) => (
-              <CartItem
-                checked={listSelected.includes(cartItem.cartItemId)}
-                handleSelect={() => handleSelectCartItem(cartItem.cartItemId)}
-                cartItem={cartItem}
-                key={index}
-              />
-            ))}
+            {[...items]
+              .sort((a, b) => b.cartItemId - a.cartItemId)
+              .map((cartItem, index) => (
+                <CartItem
+                  checked={listSelected.includes(cartItem.cartItemId)}
+                  handleSelect={() => handleSelectCartItem(cartItem.cartItemId)}
+                  cartItem={cartItem}
+                  key={index}
+                />
+              ))}
           </div>
         </div>
       }

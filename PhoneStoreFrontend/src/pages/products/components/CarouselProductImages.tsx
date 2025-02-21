@@ -10,12 +10,39 @@ import getPreviewNumber from '../../../utils/getPreviewNumber'
 import { useElementWidth } from '../../../hooks'
 import { FavoriteButton } from '../../../components'
 import { ProductImageType } from '@/types/product_image.type'
+import { useGetSpecificationIsSpecialByVariantId } from '@/hooks/querys/spec_group.query'
+import { SpecificationType } from '@/types/specification.type'
+
+const getListFeatures = (specifications: SpecificationType[]): string[] => {
+  return specifications.map((spec) => {
+    if (spec.key === 'Kích thước màn hình') {
+      return `Màn hình ${spec.value} lớn hơn có viền mỏng hơn, đem đến cảm giác tuyệt vời khi cầm
+                      trên tay.`
+    } else if (spec.key === 'Độ phân giải màn hình') {
+      return `Độ phân giải cao ${spec.value}, hỗ trợ hiển thị màu sắc sống động.`
+    } else if (spec.key === 'Tần số quét') {
+      return `Tần số quét ${spec.value} cho trải nghiệm mượt mà.`
+    } else if (spec.key === 'Dung lượng RAM') {
+      return `RAM ${spec.value}, đảm bảo chạy đa nhiệm mượt mà.`
+    } else if (spec.key === 'Bộ nhớ trong') {
+      return `Bộ nhớ trong (ROM) ${spec.value}, hỗ trợ lưu trữ lớn, nhiều máy còn có khe cắm thẻ nhớ mở rộng.`
+    } else if (spec.key === 'Chipset') {
+      return `Trang bị chipset mạnh mẽ ${spec.value} giúp trải nghiệm chơi game, xem phim mượt mà.`
+    } else if (spec.key === 'Hệ điều hành') {
+      return `Chạy ${spec.value}, được cập nhật thường xuyên để nâng cao bảo mật và tính năng mới.`
+    }
+    return ''
+  })
+}
 
 interface CarouselProductImagesProps {
   dataSources: ProductImageType[]
+  productVariantId: number
 }
 
-const CarouselProductImages: FC<CarouselProductImagesProps> = ({ dataSources }) => {
+const CarouselProductImages: FC<CarouselProductImagesProps> = ({ dataSources, productVariantId }) => {
+  const { data: specs } = useGetSpecificationIsSpecialByVariantId(productVariantId)
+
   const [currentSlide, setCurrentSlide] = useState<number>(0)
   const carouselRef = useRef<CarouselRef>(null)
   const swiperRef = useRef<SwiperRef>(null)
@@ -65,35 +92,8 @@ const CarouselProductImages: FC<CarouselProductImagesProps> = ({ dataSources }) 
                 </div>
                 <div className='flex-[1.5] text-white py-16 cursor-default'>
                   <div className='text-xl font-bold text-center uppercase'>Tính năng nổi bật</div>
-                  <ul className='pl-5 max-h-[200px] list-disc overflow-y-auto scrollbar-hide mt-2 pr-2 font-semibold'>
-                    <li>
-                      Màn hình Super Retina XDR 6,9 inch lớn hơn có viền mỏng hơn, đem đến cảm giác tuyệt vời khi cầm
-                      trên tay.
-                    </li>
-                    <li>
-                      Điều khiển Camera - Chỉ cần trượt ngón tay để điều chỉnh camera giúp chụp ảnh hoặc quay video đẹp
-                      hoàn hảo và siêu nhanh.
-                    </li>
-                    <li>
-                      iPhone 16 Pro Max có thiết kế titan cấp 5 với lớp hoàn thiện mới, tinh tế được xử lý bề mặt vi
-                      điểm.
-                    </li>
-                    <li>
-                      iPhone 16 Pro Max được cài đặt sẵn hệ điều hành iOS 18, cho giao diện trực quan, dễ sử dụng và
-                      nhiều tính năng hữu ích.
-                    </li>
-                    <li>
-                      iPhone 16 Pro Max được cài đặt sẵn hệ điều hành iOS 18, cho giao diện trực quan, dễ sử dụng và
-                      nhiều tính năng hữu ích.
-                    </li>
-                    <li>
-                      iPhone 16 Pro Max được cài đặt sẵn hệ điều hành iOS 18, cho giao diện trực quan, dễ sử dụng và
-                      nhiều tính năng hữu ích.
-                    </li>
-                    <li>
-                      iPhone 16 Pro Max được cài đặt sẵn hệ điều hành iOS 18, cho giao diện trực quan, dễ sử dụng và
-                      nhiều tính năng hữu ích.
-                    </li>
+                  <ul className='pl-5 max-h-[200px] list-disc overflow-y-auto scrollbar-hide mt-2 pr-2 font-semibold space-y-2'>
+                    {specs && getListFeatures(specs).map((item, index) => item && <li key={index}>{item}</li>)}
                   </ul>
                 </div>
               </div>

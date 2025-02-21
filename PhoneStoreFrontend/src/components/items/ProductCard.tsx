@@ -36,7 +36,7 @@ const ProductCard: FC<ProductCardType> = ({ product, ...props }) => {
       <div className='flex-[6] flex flex-col'>
         <div className='flex flex-col gap-3 mt-3.5'>
           <h2 className='h-[60px] text-xs sm:text-sm font-bold text-black/80 line-clamp-3'>
-            {getProductFullName(product)}
+            {variantFirst.variantName}
           </h2>
           <div className='flex items-end gap-1 font-sans text-sm font-bold md:text-base'>
             <span className='leading-none text-primary'>

@@ -13,6 +13,7 @@ export const useGetSpecificationIsSpecialByVariantId = (variantId: number) => {
   return useQuery({
     queryKey: ['specificationIsSpecial', { variantId }],
     queryFn: () => spec_groupApi.getSpecificationIsSpecialByVariantId(variantId),
-    enabled: !!variantId
+    enabled: !!variantId,
+    staleTime: 1000 * 60 * 60 * 24
   })
 }

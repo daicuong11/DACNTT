@@ -28,7 +28,10 @@ namespace PhoneStoreBackend.Repository.Implements
         // Lấy chi tiết đơn hàng theo OrderDetailId
         public async Task<OrderDetailDTO> GetOrderDetailByIdAsync(int orderDetailId)
         {
-            var orderDetail = await _context.OrderDetails.FirstOrDefaultAsync(od => od.OrderDetailId == orderDetailId);
+            var orderDetail = await _context.OrderDetails
+                .Include(od => od.ProductVariant)
+                    .ThenInclude(pv => pv.ProductImages)
+                .FirstOrDefaultAsync(od => od.OrderDetailId == orderDetailId);
             if (orderDetail == null)
             {
                 throw new KeyNotFoundException("OrderDetail not found.");

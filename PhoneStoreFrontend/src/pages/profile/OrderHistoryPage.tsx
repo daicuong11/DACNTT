@@ -1,12 +1,15 @@
 import { maskPhoneNumber } from '@/utils/maskPhoneNumber'
 import { EyeFilled, EyeInvisibleFilled, UserOutlined } from '@ant-design/icons'
 import { Avatar, Tag, DatePicker, DatePickerProps } from 'antd'
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import classNames from 'classnames'
 import OrderItem from './components/OrderItem'
+import { useAppSelector } from '@/hooks'
+import { useGetOrderByUserId } from '@/hooks/querys/order.query'
+import { LoadingOpacity } from '@/components'
 
 const { RangePicker } = DatePicker
 dayjs.extend(customParseFormat)
@@ -16,18 +19,28 @@ const listOrderStatus = ['Tất cả', 'Chờ xác nhận', 'Đã xác nhận', 
 interface OrderHistoryPageProps {}
 
 const OrderHistoryPage: FC<OrderHistoryPageProps> = () => {
+  const currentUser = useAppSelector((state) => state.auth.user)
   const [isShowPhoneNumber, setIsShowPhoneNumber] = useState(false)
   const [orderStatus, setOrderStatus] = useState(listOrderStatus[0])
   const navigate = useNavigate()
 
+  const { data: orders, mutate, isPending } = useGetOrderByUserId()
+
+  useEffect(() => {
+    if (currentUser) {
+      mutate(currentUser.id)
+    }
+  }, [orderStatus, currentUser])
+
   return (
     <div className='py-4'>
+      {isPending && <LoadingOpacity />}
       <div className='flex px-2 gap-x-2'>
         <Avatar size={72} icon={<UserOutlined />} />
         <div className='flex flex-col gap-y-0.5'>
           <h1 className='text-[19px] font-semibold text-pink-600 uppercase leading-none'>Đạo Thanh Hưng</h1>
           <div className='flex items-center text-sm font-medium text-gray-500 gap-x-2'>
-            {isShowPhoneNumber ? '0987654321' : maskPhoneNumber('0987654321')}
+            {isShowPhoneNumber ? currentUser?.phoneNumber : maskPhoneNumber(currentUser?.phoneNumber || '')}
             {isShowPhoneNumber ? (
               <EyeInvisibleFilled onClick={() => setIsShowPhoneNumber(false)} className='p-1 text-lg cursor-pointer' />
             ) : (
@@ -35,7 +48,7 @@ const OrderHistoryPage: FC<OrderHistoryPageProps> = () => {
             )}
           </div>
           <span>
-            <Tag color='red'>Quản trị viên</Tag>
+            <Tag color='red'>{currentUser?.role}</Tag>
           </span>
         </div>
       </div>
@@ -75,9 +88,9 @@ const OrderHistoryPage: FC<OrderHistoryPageProps> = () => {
       </div>
 
       <div className='flex flex-col mt-3 gap-y-2.5 mb-20'>
-        {[1, 2, 3, 4, 5, 6, 7, 8].map((_, index) => (
-          <OrderItem key={index} />
-        ))}
+        {orders?.map((order) =>
+          order.orderDetails.map((orderDetail, index) => <OrderItem key={index} orderDetail={orderDetail} />)
+        )}
       </div>
     </div>
   )

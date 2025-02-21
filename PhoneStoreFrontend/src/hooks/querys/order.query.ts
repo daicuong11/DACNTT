@@ -12,7 +12,7 @@ export const useCreateOrder = () => {
 
 export const useGetOrderById = (orderId: string) => {
   const query = useQuery({
-    queryKey: ['order', orderId],
+    queryKey: ['getOrderById', orderId],
     queryFn: () => orderAPI.getOrderById(Number(orderId)),
     enabled: !!orderId
   })
@@ -21,4 +21,12 @@ export const useGetOrderById = (orderId: string) => {
     isLoading: query.isLoading,
     isError: query.isError
   }
+}
+
+export const useGetOrderByUserId = () => {
+  const mutation = useMutation({
+    mutationKey: ['getOrderByUserId'],
+    mutationFn: orderAPI.getOrderByUserId
+  })
+  return mutation
 }

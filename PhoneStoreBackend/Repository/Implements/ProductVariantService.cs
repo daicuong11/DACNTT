@@ -75,13 +75,13 @@ namespace PhoneStoreBackend.Repository.Implements
             return new VariantBasicResponse
             {
                 ProductVariantId = findProductVariant.ProductVariantId,
-                FullNameVariant = $"{findProductVariant.Product.Name} {findProductVariant.VariantName}",
+                FullNameVariant = findProductVariant.VariantName,
                 ProductId = findProductVariant.ProductId,
                 Brand = findProductVariant.Product.Brand, 
                 Category = findProductVariant.Product.Category,  
                 Color = findProductVariant.Color,
                 DiscountPercentage = findProductVariant.Discount?.Percentage ?? 0,
-                ImageUrl = findProductVariant.ProductImages.FirstOrDefault()?.ImageUrl ?? "",
+                ImageUrl = findProductVariant.ImageUrl,
                 ImportPrice = findProductVariant.ImportPrice,
                 Price = findProductVariant.Price,
                 Slug = findProductVariant.Slug,
@@ -122,10 +122,7 @@ namespace PhoneStoreBackend.Repository.Implements
                     DiscountPercentage = v.Discount != null ? v.Discount.Percentage : 0,
                     Price = v.Price,
                     Color = v.Color,
-                    ImageUrl = v.ProductImages
-                            .OrderByDescending(img => img.IsMain) 
-                            .Select(img => img.ImageUrl)
-                            .FirstOrDefault() ?? "default-image-url.jpg",
+                    ImageUrl = v.ImageUrl,
                     Storage = v.Storage
                 })
                 .ToListAsync();

@@ -44,17 +44,14 @@ const AddSpecification = () => {
   const debouncedQuery = useDebounce(inputs, 400)
 
   useEffect(() => {
-    const fetchCategory = async () => {
-      if (category) {
-        if (specificationGroups.length === 0) {
-          const newInputs = getInputs(category)
-          setInputs(newInputs)
-        } else {
-          setInputs(specificationGroups)
-        }
+    if (category?.data) {
+      if (specificationGroups.length === 0) {
+        const newInputs = getInputs(category.data)
+        setInputs(newInputs)
+      } else {
+        setInputs(specificationGroups)
       }
     }
-    fetchCategory()
   }, [product?.categoryId, category])
 
   useEffect(() => {
@@ -91,7 +88,10 @@ const AddSpecification = () => {
     <div className='p-5 space-y-6 bg-white border border-gray-300 rounded-lg'>
       <div className='flex items-center justify-between'>
         <div className='font-semibold'>Thông số kỹ thuật</div>
-        <button onClick={() => setInputs(getInputs(category))} className='text-xs border border-gray-100 btn btn-light'>
+        <button
+          onClick={() => setInputs(getInputs(category?.data))}
+          className='text-xs border border-gray-100 btn btn-light'
+        >
           Clear
         </button>
       </div>

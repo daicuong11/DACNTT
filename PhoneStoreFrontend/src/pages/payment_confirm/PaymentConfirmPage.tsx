@@ -135,7 +135,7 @@ const PaymentConfirmPage = () => {
         }))
       }
 
-      const orderGHNRed: CreateOrderGHNRequest = {
+      const orderGHNReq: CreateOrderGHNRequest = {
         client_order_code: 'order_123',
         height: totalHeight,
         length: totalLength,
@@ -161,7 +161,7 @@ const PaymentConfirmPage = () => {
         amount: orderSlice.totalAmount + orderSlice.shippingFee!
       }
 
-      // console.log(orderGHNRed)
+      // console.log(orderGHNReq)
       // console.log(orderReq)
       // console.log(customerReq)
       try {
@@ -172,8 +172,8 @@ const PaymentConfirmPage = () => {
             createOrder(orderReq, {
               onSuccess: (order) => {
                 console.log('order', order)
-                orderGHNRed.client_order_code = `${order.orderId}`
-                createGHNOrder(orderGHNRed, {
+                orderGHNReq.client_order_code = `${order.orderId}`
+                createGHNOrder(orderGHNReq, {
                   onSuccess: (ghnRes) => {
                     console.log('ghnRes', ghnRes)
                   },
@@ -189,11 +189,12 @@ const PaymentConfirmPage = () => {
                   onSuccess: (payRes) => {
                     console.log('payRes', payRes)
                     setIsLoading(false)
-                    navigate(`/payment/result/${payRes.orderId}`)
+                    navigate(`/payment/result/${order.orderId}`)
                   },
                   onError: (err) => {
                     console.log(err)
                     setIsLoading(false)
+                    navigate(`/payment/result/${order.orderId}`)
                   }
                 })
               },
@@ -213,7 +214,7 @@ const PaymentConfirmPage = () => {
       }
       // navigate('/cart/payment-result')
     } else if (orderSlice.paymentMethod === 'VNPay') {
-      navigate('/payment-result')
+      navigate('/payment/result')
     } else {
       toast.error('Lỗi trong quá trình thanh toán')
       navigate('/')

@@ -225,6 +225,7 @@ namespace PhoneStoreBackend.Controllers
                         Slug = variantReq.Slug,
                         Color = variantReq.Color,
                         Storage = variantReq.Storage,
+                        ImageUrl = variantReq.ImageUrl,
                         Price = variantReq.Price,
                         ImportPrice = variantReq.ImportPrice,
                         Stock = variantReq.Stock,
