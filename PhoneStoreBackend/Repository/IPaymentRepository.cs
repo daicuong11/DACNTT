@@ -7,6 +7,7 @@ namespace PhoneStoreBackend.Repository
     {
         Task<ICollection<PaymentDTO>> GetAllPaymentsAsync();
         Task<PaymentDTO> GetPaymentByIdAsync(int paymentId);
+        Task<PaymentDTO> GetPaymentByOrderIdAsync(int orderId);
         Task<ICollection<PaymentDTO>> GetPaymentsByOrderIdAsync(int orderId);
         Task<PaymentDTO> AddPaymentAsync(Payment payment);
         Task<bool> UpdatePaymentAsync(int paymentId, Payment payment);

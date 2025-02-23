@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PhoneStoreBackend.Api.Request
 {
-    public class PaymentRequest
+    public class OrderPaymentRequest
     {
         [Required(ErrorMessage = "Mã đơn hàng là bắt buộc.")]
         public int OrderId { get; set; }

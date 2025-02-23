@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PhoneStoreBackend.Data.Seeding;
 using PhoneStoreBackend.Entities;
 
 namespace PhoneStoreBackend.DbContexts

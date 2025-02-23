@@ -8,15 +8,14 @@ namespace PhoneStoreBackend.Data.Seeding
     {
         public static void Seed(ModelBuilder modelBuilder)
         {
-            SeedUserFromJson(modelBuilder, "users.json");
             SeedFromJson<Brand>(modelBuilder, "brands.json");
             SeedFromJson<Category>(modelBuilder, "categories.json");
-            //SeedFromJson<Product>(modelBuilder, "products.json");
+            SeedFromJson<Product>(modelBuilder, "products.json");
             SeedFromJson<Discount>(modelBuilder, "discounts.json");
-            //SeedFromJson<ProductVariant>(modelBuilder, "variants.json");
+            SeedFromJson<ProductVariant>(modelBuilder, "variants.json");
             SeedFromJson<ProductSpecificationGroup>(modelBuilder, "groups.json");
-            //SeedFromJson<ProductSpecification>(modelBuilder, "specifications.json");
-            //SeedFromJson<ProductImage>(modelBuilder, "product_images.json");
+            SeedFromJson<ProductSpecification>(modelBuilder, "specifications.json");
+            SeedFromJson<ProductImage>(modelBuilder, "product_images.json");
 
         }
 
@@ -52,7 +51,7 @@ namespace PhoneStoreBackend.Data.Seeding
             }
         }
 
-        public static void SeedUserFromJson(ModelBuilder modelBuilder, string fileName)
+        public static List<User> GetUserFromJson(string fileName)
         {
             string filePath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "Json", fileName);
 
@@ -71,8 +70,8 @@ namespace PhoneStoreBackend.Data.Seeding
 
                     if (data != null && data.Count > 0)
                     {
-                        modelBuilder.Entity<User>().HasData(data);
-                        Console.WriteLine($"✅ Seed data thành công cho {typeof(User).Name} từ {fileName}!");
+                        Console.WriteLine($"✅ Get data thành công cho {typeof(User).Name} từ {fileName}!");
+                        return data;
                     }
                     else
                     {
@@ -88,6 +87,41 @@ namespace PhoneStoreBackend.Data.Seeding
             {
                 Console.WriteLine($"❌ File không tồn tại: {filePath}");
             }
+            return null;
         }
+
+        public static List<T> GetDataFromJson<T>(string fileName) where T : class
+        {
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "Json", fileName);
+
+            if (File.Exists(filePath))
+            {
+                try
+                {
+                    string jsonData = File.ReadAllText(filePath);
+                    var data = JsonSerializer.Deserialize<List<T>>(jsonData);
+
+                    if (data != null && data.Count > 0)
+                    {
+                        Console.WriteLine($"✅ Get data thành công cho {typeof(T).Name} từ {fileName}!");
+                        return data;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"❌ Lỗi: Dữ liệu JSON null hoặc không hợp lệ trong {fileName}!");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"❌ Lỗi khi đọc JSON từ {fileName}: {ex.Message}");
+                }
+            }
+            else
+            {
+                Console.WriteLine($"❌ File không tồn tại: {filePath}");
+            }
+            return null;
+        }
+
     }
 }

@@ -3,60 +3,60 @@
     "BrandId": 1,
     "Name": "Apple",
     "Description": "Thương hiệu cao cấp với iPhone, iPad, MacBook và phụ kiện",
-    "ImageUrl": "https://example.com/images/apple.jpg"
+    "ImageUrl": "https://banner2.cleanpng.com/20180714/ycl/aav2d20ra.webp"
   },
   {
     "BrandId": 2,
     "Name": "Samsung",
     "Description": "Hãng công nghệ hàng đầu với điện thoại Galaxy, máy tính bảng và TV",
-    "ImageUrl": "https://example.com/images/samsung.jpg"
+    "ImageUrl": "https://hienlaptop.com/wp-content/uploads/2024/12/logo-samsung-vector-6.png"
   },
   {
     "BrandId": 3,
     "Name": "Xiaomi",
     "Description": "Thương hiệu giá rẻ với các sản phẩm điện thoại, tai nghe và thiết bị thông minh",
-    "ImageUrl": "https://example.com/images/xiaomi.jpg"
+    "ImageUrl": "https://icolor.vn/wp-content/uploads/2024/08/xiaomi7.png"
   },
   {
     "BrandId": 4,
     "Name": "Oppo",
     "Description": "Chuyên về điện thoại chụp ảnh đẹp và công nghệ sạc nhanh",
-    "ImageUrl": "https://example.com/images/oppo.jpg"
+    "ImageUrl": "https://cdn.tgdd.vn/Files/2019/03/12/1154295/new-oppo-logo_600x173.png"
   },
   {
     "BrandId": 5,
     "Name": "Vivo",
     "Description": "Tập trung vào trải nghiệm âm thanh và camera cho điện thoại",
-    "ImageUrl": "https://example.com/images/vivo.jpg"
+    "ImageUrl": "https://rubee.com.vn/wp-content/uploads/2021/05/logo-vivo.jpg"
   },
   {
     "BrandId": 6,
     "Name": "Realme",
     "Description": "Thương hiệu con của Oppo với thiết bị giá rẻ nhưng mạnh mẽ",
-    "ImageUrl": "https://example.com/images/realme.jpg"
+    "ImageUrl": "https://upload.wikimedia.org/wikipedia/commons/9/91/Realme_logo.png"
   },
   {
     "BrandId": 7,
     "Name": "OnePlus",
     "Description": "Điện thoại cao cấp với hiệu năng mạnh và phần mềm mượt mà",
-    "ImageUrl": "https://example.com/images/oneplus.jpg"
+    "ImageUrl": "https://cdn11.dienmaycholon.vn/filewebdmclnew/public/userupload/files/news/dien-thoai-di-dong/one-plus-la-thuong-hieu-truc-thuoc-bbk-electronics.jpg"
   },
   {
     "BrandId": 8,
     "Name": "Sony",
     "Description": "Chuyên về tai nghe, máy ảnh, loa và điện thoại Xperia",
-    "ImageUrl": "https://example.com/images/sony.jpg"
+    "ImageUrl": "https://vudigital.co/wp-content/uploads/2022/02/logo-sony-y-nghia-va-lich-su-hinh-thanh-tu-1946-10.webp"
   },
   {
     "BrandId": 9,
     "Name": "Nokia",
     "Description": "Điện thoại bền bỉ với pin lâu và hệ điều hành Android gốc",
-    "ImageUrl": "https://example.com/images/nokia.jpg"
+    "ImageUrl": "https://banner2.cleanpng.com/20181118/gfy/kisspng-nokia-microsoft-lumia-logo-brand-font-android-nokia-fo-1713921207564.webp"
   },
   {
     "BrandId": 10,
     "Name": "Asus",
     "Description": "Nổi bật với dòng ROG Phone cho game thủ và laptop mạnh mẽ",
-    "ImageUrl": "https://example.com/images/asus.jpg"
+    "ImageUrl": "https://inkythuatso.com/uploads/thumbnails/800/2021/11/logo-asus-inkythuatso-2-01-26-09-21-11.jpg"
   }
 ]

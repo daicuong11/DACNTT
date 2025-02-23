@@ -2,7 +2,7 @@
 {
     public class PayRequest
     {
-        public PaymentRequest paymentRequest;
+        public OrderPaymentRequest paymentRequest;
         public OrderRequest orderRequest;
     }
 }

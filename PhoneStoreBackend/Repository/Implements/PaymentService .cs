@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using PhoneStoreBackend.DbContexts;
 using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
-using PhoneStoreBackend.Repository;
 
 namespace PhoneStoreBackend.Repository.Implements
 {
@@ -84,6 +83,16 @@ namespace PhoneStoreBackend.Repository.Implements
             await _context.SaveChangesAsync();
 
             return true;
+        }
+
+        public async Task<PaymentDTO> GetPaymentByOrderIdAsync(int orderId)
+        {
+            var payment = await _context.Payments.FirstOrDefaultAsync(p => p.OrderId == orderId);
+            if (payment == null)
+            {
+                throw new KeyNotFoundException("Payment not found.");
+            }
+            return _mapper.Map<PaymentDTO>(payment);
         }
     }
 }

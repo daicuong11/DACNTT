@@ -351,8 +351,7 @@ namespace PhoneStoreBackend.Migrations
                     b.Property<string>("ShippingAddress")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal?>("ShippingFee")
-                        .IsRequired()
+                    b.Property<decimal>("ShippingFee")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Status")

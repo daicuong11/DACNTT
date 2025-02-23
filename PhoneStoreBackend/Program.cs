@@ -11,6 +11,7 @@ using PhoneStoreBackend.Repository;
 using PhoneStoreBackend.Repository.Implements;
 using System.Text;
 using System.Text.Json;
+using VNPAY.NET;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -94,6 +95,10 @@ builder.Services.AddScoped<INotificationRepository, NotificationService>();
 builder.Services.AddScoped<ICustomerRepository, CustomerService>();
 
 
+// Add VNPAY service to the container.
+builder.Services.AddSingleton<IVnpay, Vnpay>();
+
+
 // Database configuration
 //builder.Services.AddDbContext<AppDbContext>(options =>
 //    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -112,12 +117,10 @@ builder.Services.AddScoped<ICustomerRepository, CustomerService>();
 //    options.UseSqlServer(connectionString));
 
 //Database configuration của Cuong
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Connection1")));
+//builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Connection1")));
 
 //Database configuration của Bien
-//builder.Services.AddDbContext<AppDbContext>(options =>
-//    options.UseSqlServer(builder.Configuration.GetConnectionString("Connection2")));
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Connection2")));
 
 
 // JWT and Google OAuth2 configuration

@@ -12,8 +12,8 @@ using PhoneStoreBackend.DbContexts;
 namespace PhoneStoreBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250221195643_initdb")]
-    partial class initdb
+    [Migration("20250222073025_initDB")]
+    partial class initDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -353,8 +353,7 @@ namespace PhoneStoreBackend.Migrations
                     b.Property<string>("ShippingAddress")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal?>("ShippingFee")
-                        .IsRequired()
+                    b.Property<decimal>("ShippingFee")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Status")

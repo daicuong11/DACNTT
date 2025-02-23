@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using PhoneStoreBackend.Api.Request;
 using PhoneStoreBackend.Api.Response;
 using PhoneStoreBackend.DTOs;
@@ -79,7 +77,7 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpPost("pay/cod")]
-        public async Task<IActionResult> PayCOD([FromBody] PaymentRequest paymentReq)
+        public async Task<IActionResult> PayCOD([FromBody] OrderPaymentRequest paymentReq)
         {
             if (paymentReq == null || paymentReq.Amount <= 0)
             {
@@ -115,7 +113,6 @@ namespace PhoneStoreBackend.Controllers
             }
         }
 
-
         [HttpPost("pay/vnpay")]
         public async Task<IActionResult> PayVNPay([FromBody] Order order)
         {
@@ -141,7 +138,7 @@ namespace PhoneStoreBackend.Controllers
             await _paymentRepository.AddPaymentAsync(payment);
 
 
-            return Redirect(vnpayUrl); 
+            return Redirect(vnpayUrl);
         }
 
         private string GetVnPayUrl(Order order)
@@ -257,7 +254,7 @@ namespace PhoneStoreBackend.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> AddPayment([FromBody] PaymentRequest payment)
+        public async Task<IActionResult> AddPayment([FromBody] OrderPaymentRequest payment)
         {
             try
             {

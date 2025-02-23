@@ -1,35 +1,35 @@
-import { FixedBottomLayout } from '../../layouts'
-import formatPrice from '../../utils/formatPrice'
-import classNames from 'classnames'
-import { useEffect, useState } from 'react'
+import { useAddCustomer } from '@/hooks/querys/customer.query'
+import { useCreateGHNOrder } from '@/hooks/querys/GHN.query'
+import { useCreateOrder } from '@/hooks/querys/order.query'
+import { useCreatePayCOD } from '@/hooks/querys/payment.query'
+import { useCreatePaymentUrl } from '@/hooks/querys/vnpay.query'
+import { CustomerRequestType } from '@/types/customer.type'
+import { CreateOrderGHNRequest, RequiredNoteGHN } from '@/types/GHN.type'
+import { OrderRequestType } from '@/types/order.type'
+import { PayCodRequestType } from '@/types/payment.type'
+import getAddressString from '@/utils/getAddressString'
+import getPriceAfterDiscount from '@/utils/getPriceAfterDiscount'
 import { Input } from 'antd'
-import { AppCheckBox, LoadingOpacity, MyDivider, PaymentMethodModal } from '../../components'
-import useSetDocTitle from '../../hooks/useSetDocTitle'
-import { Navigate, useNavigate } from 'react-router-dom'
+import classNames from 'classnames'
 import { ChevronRight } from 'lucide-react'
-import { atm_card_img } from '../../assets/images'
-import { useAppDispatch, useAppSelector, useModal } from '../../hooks'
-import { PaymentMethodType } from '../../types/app.type'
-import { clearCoupon, clearOrder, setCoupon, setPaymentMethod } from '../../features/order/order.slice'
-import { listPaymentMethod } from '../../datas/paymentMethod.data'
+import { useEffect, useState } from 'react'
+import { Navigate, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import { atm_card_img } from '../../assets/images'
+import { AppCheckBox, LoadingOpacity, MyDivider, PaymentMethodModal } from '../../components'
+import ReviewCartItemModal from '../../components/modals/ReviewCartItemModal'
+import { listPaymentMethod } from '../../datas/paymentMethod.data'
+import { clearCoupon, setCoupon, setPaymentMethod } from '../../features/order/order.slice'
+import { useAppDispatch, useAppSelector, useModal } from '../../hooks'
+import useSetDocTitle from '../../hooks/useSetDocTitle'
+import { FixedBottomLayout } from '../../layouts'
+import { PaymentMethodType } from '../../types/app.type'
 import { CouponType } from '../../types/coupon.type'
-import CouponItem from './components/CouponItem'
+import formatPrice from '../../utils/formatPrice'
+import { formatQuantity } from '../../utils/formatQuantity'
 import { getCouponDiscount } from '../../utils/getCouponDiscount'
 import { getTotalAmountOfCartItems } from '../../utils/getTotalAmountOfCartItems'
-import { formatQuantity } from '../../utils/formatQuantity'
-import ReviewCartItemModal from '../../components/modals/ReviewCartItemModal'
-import getAddressString from '@/utils/getAddressString'
-import { useAddCustomer } from '@/hooks/querys/customer.query'
-import { useCreateOrder } from '@/hooks/querys/order.query'
-import { useCreateGHNOrder } from '@/hooks/querys/GHN.query'
-import { useCreatePayCOD } from '@/hooks/querys/payment.query'
-import { CustomerRequestType } from '@/types/customer.type'
-import { OrderRequestType } from '@/types/order.type'
-import getPriceAfterDiscount from '@/utils/getPriceAfterDiscount'
-import { CreateOrderGHNRequest, RequiredNoteGHN } from '@/types/GHN.type'
-import { PayCodRequestType } from '@/types/payment.type'
-import { set } from 'react-hook-form'
+import CouponItem from './components/CouponItem'
 
 const PaymentConfirmPage = () => {
   useSetDocTitle('PhoneStore - Giỏ hàng')
@@ -55,6 +55,9 @@ const PaymentConfirmPage = () => {
   const [couponActive, setCouponActive] = useState<CouponType | null>(null)
   const [isCheckTerms, setIsCheckTerms] = useState(true)
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<PaymentMethodType | null>(null)
+
+  const { createPayment } = useCreatePaymentUrl();
+
 
   useEffect(() => {
     setSelectedPaymentMethod(listPaymentMethod.find((method) => method.name === orderSlice.paymentMethod) || null)
@@ -99,7 +102,7 @@ const PaymentConfirmPage = () => {
     toast(`Đã xóa mã giảm giá thành công.`)
   }
 
-  const handlePayment = () => {
+  const handlePayment = async () => {
     if (!orderSlice.paymentMethod || orderSlice.paymentMethod.trim() === '') {
       toast.error('Vui lòng chọn phương thức thanh toán')
       return
@@ -110,56 +113,58 @@ const PaymentConfirmPage = () => {
     const totalHeight = Math.round(getQuantity * 6)
     const totalWidth = 30
     const totalLength = 30
-    if (orderSlice.paymentMethod === 'Thanh toán khi nhận hàng') {
-      const customerReq: CustomerRequestType = {
-        name: orderSlice.shippingInfo?.name!,
-        phoneNumber: orderSlice.shippingInfo?.phone!,
-        email: orderSlice.email!
-      }
-      const orderReq: OrderRequestType = {
-        couponId: 1,
-        customerId: -1,
-        note: orderSlice.note!,
-        shippingAddress: getAddressString(orderSlice.shippingAddress!),
-        shippingFee: orderSlice.shippingFee ?? 0,
-        totalAmount: orderSlice.totalAmount + orderSlice.shippingFee!,
-        userId: currentUser!.id,
-        orderDetailRequests: orderSlice.cartItems.map((item) => ({
-          quantity: item.quantity,
-          discount: item.productVariant.discountPercentage,
-          price: item.productVariant.price,
-          orderId: -1,
-          productVariantId: item.productVariant.productVariantId,
-          unitPrice:
-            getPriceAfterDiscount(item.productVariant.price, item.productVariant.discountPercentage) * item.quantity
-        }))
-      }
 
-      const orderGHNReq: CreateOrderGHNRequest = {
-        client_order_code: 'order_123',
-        height: totalHeight,
-        length: totalLength,
-        payment_type_id: 2,
-        required_note: RequiredNoteGHN.CHOXEMHANGKHONGTHU,
-        service_type_id: 2,
-        to_address: getAddressString(orderSlice.shippingAddress!),
-        to_district_name: orderSlice.shippingAddress?.district!,
-        to_name: orderSlice.shippingInfo?.name!,
-        to_phone: orderSlice.shippingInfo?.phone!,
-        to_province_name: orderSlice.shippingAddress?.province!,
-        to_ward_name: orderSlice.shippingAddress?.ward!,
-        weight: totalWeight,
-        width: totalWidth,
-        items: orderSlice.cartItems.map((item) => ({
-          name: item.productVariant.fullNameVariant,
-          quantity: item.quantity
-        }))
-      }
-
-      const payCodeReq: PayCodRequestType = {
+    const customerReq: CustomerRequestType = {
+      name: orderSlice.shippingInfo?.name!,
+      phoneNumber: orderSlice.shippingInfo?.phone!,
+      email: orderSlice.email!
+    }
+    const orderReq: OrderRequestType = {
+      couponId: null,
+      customerId: -1,
+      note: orderSlice.note!,
+      shippingAddress: getAddressString(orderSlice.shippingAddress!),
+      shippingFee: orderSlice.shippingFee ?? 0,
+      totalAmount: orderSlice.totalAmount + orderSlice.shippingFee!,
+      userId: currentUser!.id,
+      orderDetailRequests: orderSlice.cartItems.map((item) => ({
+        quantity: item.quantity,
+        discount: item.productVariant.discountPercentage,
+        price: item.productVariant.price,
         orderId: -1,
-        amount: orderSlice.totalAmount + orderSlice.shippingFee!
-      }
+        productVariantId: item.productVariant.productVariantId,
+        unitPrice:
+          getPriceAfterDiscount(item.productVariant.price, item.productVariant.discountPercentage) * item.quantity
+      }))
+    }
+
+    const orderGHNReq: CreateOrderGHNRequest = {
+      client_order_code: 'order_123',
+      height: totalHeight,
+      length: totalLength,
+      payment_type_id: 2,
+      required_note: RequiredNoteGHN.CHOXEMHANGKHONGTHU,
+      service_type_id: 2,
+      to_address: getAddressString(orderSlice.shippingAddress!),
+      to_district_name: orderSlice.shippingAddress?.district!,
+      to_name: orderSlice.shippingInfo?.name!,
+      to_phone: orderSlice.shippingInfo?.phone!,
+      to_province_name: orderSlice.shippingAddress?.province!,
+      to_ward_name: orderSlice.shippingAddress?.ward!,
+      weight: totalWeight,
+      width: totalWidth,
+      items: orderSlice.cartItems.map((item) => ({
+        name: item.productVariant.fullNameVariant,
+        quantity: item.quantity
+      }))
+    }
+
+    const payCodeReq: PayCodRequestType = {
+      orderId: -1,
+      amount: orderSlice.totalAmount + orderSlice.shippingFee!
+    }
+
+    if (orderSlice.paymentMethod === 'Thanh toán khi nhận hàng') {
 
       // console.log(orderGHNReq)
       // console.log(orderReq)
@@ -213,7 +218,35 @@ const PaymentConfirmPage = () => {
       }
       // navigate('/cart/payment-result')
     } else if (orderSlice.paymentMethod === 'VNPay') {
-      navigate('/payment/result')
+      addCustomer(customerReq, {
+        onSuccess: (customer) => {
+          console.log('customer', customer)
+          orderReq.customerId = customer.customerId
+          createOrder(orderReq, {
+            onSuccess: (order) => {
+              console.log('order', order)
+              createPayment(
+                {orderId: order.orderId },
+                {
+                  onSuccess: (paymentUrl) => {
+                    console.log(paymentUrl)
+                    window.location.href = paymentUrl; // ✅ Điều hướng ngay trong component
+                  },
+                }
+              );
+            },
+            onError: (err) => {
+              console.log(err)
+              setIsLoading(false)
+            }
+          })
+        },
+        onError: (err) => {
+          console.log(err)
+          setIsLoading(false)
+        }
+      })
+      
     } else {
       toast.error('Lỗi trong quá trình thanh toán')
       navigate('/')

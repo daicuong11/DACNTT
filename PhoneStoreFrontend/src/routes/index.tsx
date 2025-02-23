@@ -16,6 +16,7 @@ import { Login } from '@/pages/login'
 import NotFoundPage from '@/pages/NotFoundPage'
 import { PaymentConfirmPage } from '@/pages/payment_confirm'
 import { PaymentInfoPage } from '@/pages/payment_info'
+import PaymentResult from '@/pages/payment_result/PaymentResult'
 import PaymentResultPage from '@/pages/payment_result/PaymentResultPage'
 import { ProductDetailPage } from '@/pages/products'
 import { AddressInfoPage, OrderHistoryPage, ProfilePage, SupportPage, UserInfoPage } from '@/pages/profile'
@@ -74,6 +75,10 @@ const MyRoutes = () => {
           element: <PaymentResultPage />
         }
       ]
+    },
+    {
+      path: 'payment-result',
+      element: <PaymentResult />
     },
     {
       path: 'not-found',
