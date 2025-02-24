@@ -16,8 +16,8 @@ import { Login } from '@/pages/login'
 import NotFoundPage from '@/pages/NotFoundPage'
 import { PaymentConfirmPage } from '@/pages/payment_confirm'
 import { PaymentInfoPage } from '@/pages/payment_info'
-import PaymentResult from '@/pages/payment_result/PaymentResult'
 import PaymentResultPage from '@/pages/payment_result/PaymentResultPage'
+import VnpayPaymentResultPage from '@/pages/payment_result/VnpayPaymentResultPage'
 import { ProductDetailPage } from '@/pages/products'
 import { AddressInfoPage, OrderHistoryPage, ProfilePage, SupportPage, UserInfoPage } from '@/pages/profile'
 import { RegisterPage } from '@/pages/register'
@@ -78,7 +78,7 @@ const MyRoutes = () => {
     },
     {
       path: 'payment-result',
-      element: <PaymentResult />
+      element: <VnpayPaymentResultPage />
     },
     {
       path: 'not-found',

@@ -1,6 +1,7 @@
 import vnpay from '@/apis/vnpay.api'
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
+import { useQuery } from "@tanstack/react-query";
 
 export const useCreatePaymentUrl = () => {
   const mutation = useMutation<string, unknown, { orderId: number }>({
@@ -27,3 +28,13 @@ export const useCreatePaymentUrl = () => {
     createPayment: mutation.mutate // ✅ Đổi tên mutate cho dễ hiểu
   }
 }
+
+export const useCheckPayment = (searchParams: URLSearchParams) => {
+  return useQuery({
+    queryKey: ["checkPayment", searchParams.toString()],
+    queryFn: () => vnpay.checkPayment(searchParams),
+    retry: 1, // Chỉ thử lại 1 lần nếu lỗi
+    staleTime: 0, // Không cache dữ liệu cũ
+    enabled: !!searchParams.toString(), // Chỉ chạy khi có searchParams
+  });
+};
