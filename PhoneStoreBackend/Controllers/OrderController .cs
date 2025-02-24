@@ -65,7 +65,16 @@ namespace PhoneStoreBackend.Controllers
                     var notFoundResponse = Response<object>.CreateErrorResponse("Đơn hàng không tồn tại.");
                     return NotFound(notFoundResponse);
                 }
-
+                var orderStatusGHNReq = new GetOrderStatusGHNRequest
+                {
+                    ClientOrderCode = order.OrderId.ToString()
+                };
+                var getStatusOrder = await _gHNRepository.GetGHNOrderStatusByClientOrderCode(orderStatusGHNReq);
+                if(order.Status != getStatusOrder.Status)
+                {
+                    order.Status = getStatusOrder.Status;
+                    await _orderRepository.UpdateOrderStatusAsync(order.OrderId, getStatusOrder.Status);
+                }
                 var response = Response<OrderDTO>.CreateSuccessResponse(order, "Thông tin đơn hàng");
                 return Ok(response);
             }
@@ -192,7 +201,7 @@ namespace PhoneStoreBackend.Controllers
                     OrderDate = DateTime.Now,
                     ShippingFee = orderReq.ShippingFee,
                     TotalAmount = totalAmount,
-                    Status = OrderStatusEnum.Pending.ToString(),
+                    Status = OrderStatusEnum.ready_to_pick.ToString(),
                     ShippingAddress = orderReq.ShippingAddress,
                     Note = orderReq.Note,
                     CreatedAt = DateTime.Now,
@@ -293,7 +302,7 @@ namespace PhoneStoreBackend.Controllers
                     OrderDate = DateTime.Now,
                     ShippingFee = orderReq.ShippingFee,
                     TotalAmount = totalAmount,
-                    Status = OrderStatusEnum.Pending.ToString(),
+                    Status = OrderStatusEnum.ready_to_pick.ToString(),
                     ShippingAddress = orderReq.ShippingAddress,
                     Note = orderReq.Note,
                     CreatedAt = DateTime.Now,
@@ -386,7 +395,7 @@ namespace PhoneStoreBackend.Controllers
                     CouponId = order.CouponId,
                     OrderDate = DateTime.Now,
                     TotalAmount = order.TotalAmount,
-                    Status = OrderStatusEnum.Pending.ToString(),
+                    Status = OrderStatusEnum.ready_to_pick.ToString(),
                     ShippingAddress = order.ShippingAddress,
                     Note = order.Note,
                     CreatedAt = DateTime.Now,

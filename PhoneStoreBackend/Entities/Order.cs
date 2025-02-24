@@ -31,7 +31,7 @@ namespace PhoneStoreBackend.Entities
         [Required]
         [Column(TypeName = "nvarchar(20)")]
         [EnumDataType(typeof(OrderStatusEnum))]
-        public string Status { get; set; } = OrderStatusEnum.Pending.ToString(); 
+        public string Status { get; set; } = OrderStatusEnum.ready_to_pick.ToString(); 
 
         [Required]
         [Column(TypeName = "decimal(18, 2)")]

@@ -65,7 +65,7 @@ namespace PhoneStoreBackend.Repository.Implements
                 "application/json"
             );
 
-            var response = await _httpClient.PostAsync("/v2/shipping-order/detail-by-client-code", jsonContent);
+            var response = await _httpClient.PostAsync("v2/shipping-order/detail-by-client-code", jsonContent);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -74,9 +74,9 @@ namespace PhoneStoreBackend.Repository.Implements
             }
 
             var responseBody = await response.Content.ReadAsStringAsync();
-            var result = JsonSerializer.Deserialize<GetOrderStatusGHNResponse>(responseBody, _jsonOptions);
+            var result = JsonSerializer.Deserialize<CreateOrderStatusGHNWrapperResponse>(responseBody, _jsonOptions);
 
-            return result ?? throw new Exception("Lỗi deserialize response từ GHN.");
+            return result.data ?? throw new Exception("Lỗi deserialize response từ GHN.");
         }
     }
 }
