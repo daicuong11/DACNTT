@@ -1,5 +1,5 @@
 import productVariantAPI from '@/apis/product_variant.api'
-import { useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 
 export const useGetVariantByProductId = (productId: number) => {
   return useQuery({
@@ -34,6 +34,7 @@ export const useGetVariantBySlug = (slug: string) => {
   return useQuery({
     queryKey: ['getVariantBySlug', slug],
     queryFn: () => productVariantAPI.getVariantBySlug(slug),
+    placeholderData: keepPreviousData,
     enabled: !!slug
   })
 }

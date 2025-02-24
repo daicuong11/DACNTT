@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PhoneStoreBackend.Api.Request;
+using PhoneStoreBackend.Api.Request.GHN;
 using PhoneStoreBackend.Api.Response;
 using PhoneStoreBackend.DbContexts;
 using PhoneStoreBackend.DTOs;
@@ -19,12 +20,20 @@ namespace PhoneStoreBackend.Controllers
         private readonly AppDbContext _context;
         private readonly IOrderDetailRepository _orderDetailRepository;
         private readonly IOrderRepository _orderRepository;
+        private readonly ICustomerRepository _customerRepository;
+        private readonly IPaymentRepository _paymentRepository;
+        private readonly IGHNRepository _gHNRepository;
+        private readonly IProductVariantRepository _productVariantRepository;
 
-        public OrderController(IOrderRepository orderRepository, IOrderDetailRepository orderDetailRepository, AppDbContext context)
+        public OrderController(IOrderRepository orderRepository, IOrderDetailRepository orderDetailRepository, AppDbContext context, ICustomerRepository customerRepository, IPaymentRepository paymentRepository, IGHNRepository gHNRepository, IProductVariantRepository productVariantRepository)
         {
             _orderRepository = orderRepository;
             _orderDetailRepository = orderDetailRepository;
             _context = context;
+            _customerRepository = customerRepository;
+            _paymentRepository = paymentRepository;
+            _gHNRepository = gHNRepository; 
+            _productVariantRepository = productVariantRepository;
         }
 
         [HttpGet]
@@ -110,50 +119,93 @@ namespace PhoneStoreBackend.Controllers
 
         [HttpPost]
         //[Authorize]
-        public async Task<IActionResult> AddOrder([FromBody] OrderRequest order)
+        public async Task<IActionResult> AddOrder([FromBody] AddOrderRequest addOrderRequest)
         {
+            if (addOrderRequest == null)
+                return BadRequest(Response<object>.CreateErrorResponse("Dữ liệu đầu vào không hợp lệ."));
+
+            var orderReq = addOrderRequest.Order;
+            var customerReq = addOrderRequest.CustomerInfo;
+            var addressReq = addOrderRequest.Address;
+
+            if (orderReq == null || customerReq == null || addressReq == null)
+                return BadRequest(Response<object>.CreateErrorResponse("Dữ liệu đơn hàng không đầy đủ."));
+
             using var transaction = await _context.Database.BeginTransactionAsync();
             try
             {
+                // Kiểm tra ModelState
                 var responseError = ModelStateHelper.CheckModelState(ModelState);
                 if (responseError != null)
                     return BadRequest(responseError);
 
+                var newCus = new Customer
+                {
+                    Name = customerReq.Name,
+                    PhoneNumber = customerReq.PhoneNumber,
+                    Email = customerReq.Email,
+                };
+
+                var createdCustomer = await _customerRepository.AddAsync(newCus);
+
+                // Lấy danh sách sản phẩm từ DB
+                var productVariantIds = orderReq.orderDetailRequests.Select(od => od.ProductVariantId).ToList();
+                var productVariants = await _productVariantRepository.GetProductVariantsByIds(productVariantIds);
+
+                var missingVariants = productVariantIds.Except(productVariants.Select(pv => pv.ProductVariantId)).ToList();
+                if (missingVariants.Any())
+                    return BadRequest(Response<object>.CreateErrorResponse($"Sản phẩm không tồn tại: {string.Join(", ", missingVariants)}"));
+
+                // Tạo danh sách OrderDetail
+                var orderDetailsList = orderReq.orderDetailRequests.Select(od =>
+                {
+                    var findProduct = productVariants.First(pv => pv.ProductVariantId == od.ProductVariantId);
+                    var discountPercentage = findProduct.Discount?.Percentage ?? 0;
+
+                    return new OrderDetail
+                    {
+                        ProductVariantId = findProduct.ProductVariantId,
+                        Discount = discountPercentage,
+                        Price = findProduct.Price,
+                        Quantity = od.Quantity,
+                        UnitPrice = findProduct.Price * (1 - discountPercentage / 100) * od.Quantity
+                    };
+                }).ToList();
+
+                if (!orderDetailsList.Any())
+                    return BadRequest(Response<object>.CreateErrorResponse("Danh sách đơn hàng không được rỗng."));
+
+                // Tính tổng tiền
+                var totalAmount = orderDetailsList.Sum(od => od.UnitPrice) + orderReq.ShippingFee;
+                if (totalAmount != orderReq.TotalAmount)
+                {
+
+                    return BadRequest(Response<object>.CreateErrorResponse("Giá sản phẩm đã thay đổi."));
+                }
+
+                // Tạo đơn hàng
                 var newOrder = new Order
                 {
-                    UserId = order.UserId,
-                    CouponId = order.CouponId,
-                    CustomerId = order.CustomerId,
+                    UserId = orderReq.UserId,
+                    CouponId = orderReq.CouponId ?? 1,
+                    CustomerId = createdCustomer.CustomerId,
                     OrderDate = DateTime.Now,
-                    ShippingFee = order.ShippingFee,
-                    TotalAmount = order.TotalAmount,
+                    ShippingFee = orderReq.ShippingFee,
+                    TotalAmount = totalAmount,
                     Status = OrderStatusEnum.Pending.ToString(),
-                    ShippingAddress = order.ShippingAddress,
-                    Note = order.Note,
+                    ShippingAddress = orderReq.ShippingAddress,
+                    Note = orderReq.Note,
                     CreatedAt = DateTime.Now,
                     UpdatedAt = DateTime.Now,
                 };
-
-                if (order.CouponId != null && order.CouponId >= 0)
-                {
-                    newOrder.CouponId = order.CouponId;
-                }
                 var createdOrder = await _orderRepository.AddOrderAsync(newOrder);
 
-                foreach(OrderDetailRequest orderDetail in order.orderDetailRequests)
+                // Cập nhật OrderId cho OrderDetail và lưu vào DB
+                foreach (var orderDetail in orderDetailsList)
                 {
-                    var newOrderDetail = new OrderDetail
-                    {
-                        OrderId = createdOrder.OrderId,
-                        ProductVariantId = orderDetail.ProductVariantId,
-                        Discount = orderDetail.Discount,
-                        Price = orderDetail.Price,
-                        Quantity = orderDetail.Quantity,
-                        UnitPrice = orderDetail.UnitPrice,
-                    };
-                    
-                    await _orderDetailRepository.AddOrderDetailAsync(newOrderDetail);
+                    orderDetail.OrderId = newOrder.OrderId;
                 }
+                await _orderDetailRepository.AddMultipleOrderDetailsAsync(orderDetailsList);
 
                 var response = Response<OrderDTO>.CreateSuccessResponse(createdOrder, "Đơn hàng đã được thêm thành công");
                 await transaction.CommitAsync();
@@ -166,6 +218,157 @@ namespace PhoneStoreBackend.Controllers
                 return BadRequest(errorResponse);
             }
         }
+
+        [HttpPost("cod")]
+        public async Task<IActionResult> AddOrderCOD([FromBody] AddOrderRequest addOrderRequest)
+        {
+            if (addOrderRequest == null)
+                return BadRequest(Response<object>.CreateErrorResponse("Dữ liệu đầu vào không hợp lệ."));
+
+            var orderReq = addOrderRequest.Order;
+            var customerReq = addOrderRequest.CustomerInfo;
+            var addressReq = addOrderRequest.Address;
+
+            if (orderReq == null || customerReq == null || addressReq == null)
+                return BadRequest(Response<object>.CreateErrorResponse("Dữ liệu đơn hàng không đầy đủ."));
+
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                // Kiểm tra ModelState
+                var responseError = ModelStateHelper.CheckModelState(ModelState);
+                if (responseError != null)
+                    return BadRequest(responseError);
+
+                var newCus = new Customer
+                {
+                    Name = customerReq.Name,
+                    PhoneNumber = customerReq.PhoneNumber,
+                    Email = customerReq.Email,
+                };
+
+                var createdCustomer = await _customerRepository.AddAsync(newCus);
+
+                // Lấy danh sách sản phẩm từ DB
+                var productVariantIds = orderReq.orderDetailRequests.Select(od => od.ProductVariantId).ToList();
+                var productVariants = await _productVariantRepository.GetProductVariantsByIds(productVariantIds);
+
+                var missingVariants = productVariantIds.Except(productVariants.Select(pv => pv.ProductVariantId)).ToList();
+                if (missingVariants.Any())
+                    return BadRequest(Response<object>.CreateErrorResponse($"Sản phẩm không tồn tại: {string.Join(", ", missingVariants)}"));
+
+                // Tạo danh sách OrderDetail
+                var orderDetailsList = orderReq.orderDetailRequests.Select(od =>
+                {
+                    var findProduct = productVariants.First(pv => pv.ProductVariantId == od.ProductVariantId);
+                    var discountPercentage = findProduct.Discount?.Percentage ?? 0;
+
+                    return new OrderDetail
+                    {
+                        ProductVariantId = findProduct.ProductVariantId,
+                        Discount = discountPercentage,
+                        Price = findProduct.Price,
+                        Quantity = od.Quantity,
+                        UnitPrice = findProduct.Price * (1 - discountPercentage / 100) * od.Quantity
+                    };
+                }).ToList();
+
+                if (!orderDetailsList.Any())
+                    return BadRequest(Response<object>.CreateErrorResponse("Danh sách đơn hàng không được rỗng."));
+
+                // Tính tổng tiền
+                var totalAmount = orderDetailsList.Sum(od => od.UnitPrice) + orderReq.ShippingFee;
+                if (totalAmount != orderReq.TotalAmount)
+                {
+
+                    return BadRequest(Response<object>.CreateErrorResponse("Giá sản phẩm đã thay đổi."));
+                }
+
+                // Tạo đơn hàng
+                var newOrder = new Order
+                {
+                    UserId = orderReq.UserId,
+                    CouponId = orderReq.CouponId ?? 1,
+                    CustomerId = createdCustomer.CustomerId,
+                    OrderDate = DateTime.Now,
+                    ShippingFee = orderReq.ShippingFee,
+                    TotalAmount = totalAmount,
+                    Status = OrderStatusEnum.Pending.ToString(),
+                    ShippingAddress = orderReq.ShippingAddress,
+                    Note = orderReq.Note,
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = DateTime.Now,
+                };
+                var createdOrder = await _orderRepository.AddOrderAsync(newOrder);
+
+                // Cập nhật OrderId cho OrderDetail và lưu vào DB
+                foreach (var orderDetail in orderDetailsList)
+                {
+                    orderDetail.OrderId = newOrder.OrderId;
+                }
+                await _orderDetailRepository.AddMultipleOrderDetailsAsync(orderDetailsList);
+
+                // Tạo thanh toán
+                var payment = new Payment
+                {
+                    TransactionId = Guid.NewGuid().ToString(),
+                    OrderId = newOrder.OrderId,
+                    PaymentMethod = PaymentMethodEnum.COD.ToString(),
+                    PaymentStatus = PaymentStatusEnum.Pending.ToString(),
+                    Amount = newOrder.TotalAmount,
+                    PaymentDate = DateTime.Now
+                };
+                var createdPayment = await _paymentRepository.AddPaymentAsync(payment);
+
+                // Tạo đơn giao hàng GHN
+                var getSumQuantity = orderDetailsList.Sum(od => od.Quantity);
+                var ghnReq = new CreateOrderGHNRequest
+                {
+                    ClientOrderCode = newOrder.OrderId.ToString(),
+                    PaymentTypeId = 2,
+                    Height = (int)Math.Ceiling(getSumQuantity * 6m),
+                    Length = 30,
+                    Weight = (int)Math.Ceiling(getSumQuantity * 300m),
+                    Width = 30,
+                    RequiredNote = RequiredNoteGHNEnum.KHONGCHOXEMHANG.ToString(),
+                    ServiceTypeId = 2,
+                    ToProvinceName = addressReq.Province,
+                    ToDistrictName = addressReq.District,
+                    ToWardName = addressReq.Ward,
+                    ToAddress = addressReq.Street,
+                    ToName = newCus.Name,
+                    ToPhone = newCus.PhoneNumber,
+                    Items = orderDetailsList.Select(od => new ItemOrderGHNRequest
+                    {
+                        Name = productVariants.First(pv => pv.ProductVariantId == od.ProductVariantId).VariantName,
+                        Quantity = od.Quantity,
+                    }).ToList()
+                };
+
+                var createdGHNOrder = await _gHNRepository.CreateGHNOrder(ghnReq);
+                if (createdGHNOrder == null)
+                    throw new Exception("Không thể tạo đơn hàng GHN.");
+
+                await transaction.CommitAsync();
+                return Ok(Response<object>.CreateSuccessResponse(new
+                {
+                    Customer = createdCustomer,
+                    Order = createdOrder,
+                    Payment = createdPayment,
+                    GHNOrder = new {
+                        order_code = createdGHNOrder.OrderCode,
+                        total_fee = createdGHNOrder.TotalFee,
+                        expected_delivery_time = createdGHNOrder.ExpectedDeliveryTime,
+                    },
+                }, "Đơn hàng đã được thêm thành công"));
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                return BadRequest(Response<object>.CreateErrorResponse($"Đã xảy ra lỗi: {ex.Message}"));
+            }
+        }
+
 
         [HttpPut("{id}")]
         [Authorize(Roles = "ADMIN")]

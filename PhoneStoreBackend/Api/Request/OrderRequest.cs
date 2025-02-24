@@ -12,8 +12,6 @@ namespace PhoneStoreBackend.Api.Request
         public int UserId { get; set; }
 
         public int? CouponId { get; set; }
-        [Required(ErrorMessage = "Mã khách hàng nhận hàng là bắt buộc.")]
-        public int CustomerId { get; set; }
 
         [Required(ErrorMessage = "Địa chỉ giao hàng là bắt buộc.")]
         [StringLength(200, ErrorMessage = "Địa chỉ giao hàng không được vượt quá 200 ký tự.")]

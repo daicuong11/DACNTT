@@ -81,5 +81,18 @@ namespace PhoneStoreBackend.Repository.Implements
 
             return true;
         }
+
+        public async Task<ICollection<OrderDetail>> AddMultipleOrderDetailsAsync(ICollection<OrderDetail> orderDetails)
+        {
+            if (orderDetails == null || !orderDetails.Any())
+                throw new ArgumentException("Danh sách đơn hàng không được rỗng.");
+
+            await _context.OrderDetails.AddRangeAsync(orderDetails);
+            await _context.SaveChangesAsync();
+
+            return orderDetails;
+        }
+
+
     }
 }

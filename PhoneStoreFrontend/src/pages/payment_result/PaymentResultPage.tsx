@@ -1,5 +1,6 @@
 import { payment_success_video } from '@/assets/videos'
 import { LoadingOpacity, MyDivider } from '@/components'
+import { PaymentStatusEnum } from '@/enums'
 import { useGetOrderById } from '@/hooks/querys/order.query'
 import { FixedBottomLayout } from '@/layouts'
 import formatPrice from '@/utils/formatPrice'
@@ -72,7 +73,9 @@ const PaymentResultPage = () => {
                 </div>
                 <MyDivider className='!h-[0.5px]' />
                 <div className='flex items-end  text-[15px] justify-between font-roboto'>
-                  <span className='font-sans font-semibold text-black'>Cần thanh toán</span>
+                  <span className='font-sans font-semibold text-black'>
+                    {data?.payment.paymentStatus === PaymentStatusEnum.SUCCESS ? 'Đã thanh toán' : 'Cần thanh toán'}
+                  </span>
                   <span className='font-sans font-bold tracking-tight text-primary'>
                     {formatPrice(data?.totalAmount || 0)}
                   </span>

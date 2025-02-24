@@ -1,12 +1,8 @@
 import { useAddCustomer } from '@/hooks/querys/customer.query'
-import { useCreateGHNOrder } from '@/hooks/querys/GHN.query'
-import { useCreateOrder } from '@/hooks/querys/order.query'
-import { useCreatePayCOD } from '@/hooks/querys/payment.query'
+import { useCreateOrder, useCreateOrderCOD } from '@/hooks/querys/order.query'
 import { useCreatePaymentUrl } from '@/hooks/querys/vnpay.query'
 import { CustomerRequestType } from '@/types/customer.type'
-import { CreateOrderGHNRequest, RequiredNoteGHN } from '@/types/GHN.type'
-import { OrderRequestType } from '@/types/order.type'
-import { PayCodRequestType } from '@/types/payment.type'
+import { CreateOrderRequest, OrderRequestType } from '@/types/order.type'
 import getAddressString from '@/utils/getAddressString'
 import getPriceAfterDiscount from '@/utils/getPriceAfterDiscount'
 import { Input } from 'antd'
@@ -30,14 +26,14 @@ import { formatQuantity } from '../../utils/formatQuantity'
 import { getCouponDiscount } from '../../utils/getCouponDiscount'
 import { getTotalAmountOfCartItems } from '../../utils/getTotalAmountOfCartItems'
 import CouponItem from './components/CouponItem'
+import { set } from 'react-hook-form'
 
 const PaymentConfirmPage = () => {
   useSetDocTitle('PhoneStore - Giỏ hàng')
 
   const { mutate: addCustomer } = useAddCustomer()
   const { mutate: createOrder } = useCreateOrder()
-  const { mutate: createGHNOrder } = useCreateGHNOrder()
-  const { mutate: createPayCOD } = useCreatePayCOD()
+  const { mutate: createOrderCOD } = useCreateOrderCOD()
 
   const navigate = useNavigate()
 
@@ -56,8 +52,7 @@ const PaymentConfirmPage = () => {
   const [isCheckTerms, setIsCheckTerms] = useState(true)
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<PaymentMethodType | null>(null)
 
-  const { createPayment } = useCreatePaymentUrl();
-
+  const { createPayment } = useCreatePaymentUrl()
 
   useEffect(() => {
     setSelectedPaymentMethod(listPaymentMethod.find((method) => method.name === orderSlice.paymentMethod) || null)
@@ -108,12 +103,6 @@ const PaymentConfirmPage = () => {
       return
     }
     setIsLoading(true)
-    const getQuantity = orderSlice.cartItems.reduce((acc, item) => acc + item.quantity, 0)
-    const totalWeight = Math.round(getQuantity * 300)
-    const totalHeight = Math.round(getQuantity * 6)
-    const totalWidth = 30
-    const totalLength = 30
-
     const customerReq: CustomerRequestType = {
       name: orderSlice.shippingInfo?.name!,
       phoneNumber: orderSlice.shippingInfo?.phone!,
@@ -138,75 +127,26 @@ const PaymentConfirmPage = () => {
       }))
     }
 
-    const orderGHNReq: CreateOrderGHNRequest = {
-      client_order_code: 'order_123',
-      height: totalHeight,
-      length: totalLength,
-      payment_type_id: 2,
-      required_note: RequiredNoteGHN.CHOXEMHANGKHONGTHU,
-      service_type_id: 2,
-      to_address: getAddressString(orderSlice.shippingAddress!),
-      to_district_name: orderSlice.shippingAddress?.district!,
-      to_name: orderSlice.shippingInfo?.name!,
-      to_phone: orderSlice.shippingInfo?.phone!,
-      to_province_name: orderSlice.shippingAddress?.province!,
-      to_ward_name: orderSlice.shippingAddress?.ward!,
-      weight: totalWeight,
-      width: totalWidth,
-      items: orderSlice.cartItems.map((item) => ({
-        name: item.productVariant.fullNameVariant,
-        quantity: item.quantity
-      }))
-    }
-
-    const payCodeReq: PayCodRequestType = {
-      orderId: -1,
-      amount: orderSlice.totalAmount + orderSlice.shippingFee!
+    // create order COD
+    const orderRequest: CreateOrderRequest = {
+      address: {
+        street: orderSlice.shippingAddress?.street!,
+        ward: orderSlice.shippingAddress?.ward!,
+        district: orderSlice.shippingAddress?.district!,
+        province: orderSlice.shippingAddress?.province!
+      },
+      customerInfo: customerReq,
+      order: orderReq
     }
 
     if (orderSlice.paymentMethod === 'Thanh toán khi nhận hàng') {
-
-      // console.log(orderGHNReq)
-      // console.log(orderReq)
-      // console.log(customerReq)
       try {
-        addCustomer(customerReq, {
-          onSuccess: (customer) => {
-            console.log('customer', customer)
-            orderReq.customerId = customer.customerId
-            createOrder(orderReq, {
-              onSuccess: (order) => {
-                console.log('order', order)
-                orderGHNReq.client_order_code = `${order.orderId}`
-                createGHNOrder(orderGHNReq, {
-                  onSuccess: (ghnRes) => {
-                    console.log('ghnRes', ghnRes)
-                  },
-                  onError: (err) => {
-                    console.log(err)
-                  }
-                })
-
-                payCodeReq.orderId = order.orderId
-                payCodeReq.amount = order.totalAmount
-                createPayCOD(payCodeReq, {
-                  onSuccess: (payRes) => {
-                    console.log('payRes', payRes)
-                    setIsLoading(false)
-                    navigate(`/payment/result/${order.orderId}`)
-                  },
-                  onError: (err) => {
-                    console.log(err)
-                    setIsLoading(false)
-                    navigate(`/payment/result/${order.orderId}`)
-                  }
-                })
-              },
-              onError: (err) => {
-                console.log(err)
-                setIsLoading(false)
-              }
-            })
+        createOrderCOD(orderRequest, {
+          onSuccess: (orderResponse) => {
+            console.log('orderResponse', orderResponse)
+            setIsLoading(false)
+            console.log(orderResponse.order.orderId)
+            navigate(`/payment/result/${orderResponse.order.orderId}`)
           },
           onError: (err) => {
             console.log(err)
@@ -218,35 +158,24 @@ const PaymentConfirmPage = () => {
       }
       // navigate('/cart/payment-result')
     } else if (orderSlice.paymentMethod === 'VNPay') {
-      addCustomer(customerReq, {
-        onSuccess: (customer) => {
-          console.log('customer', customer)
-          orderReq.customerId = customer.customerId
-          createOrder(orderReq, {
-            onSuccess: (order) => {
-              console.log('order', order)
-              createPayment(
-                {orderId: order.orderId },
-                {
-                  onSuccess: (paymentUrl) => {
-                    console.log(paymentUrl)
-                    window.location.href = paymentUrl; // ✅ Điều hướng ngay trong component
-                  },
-                }
-              );
-            },
-            onError: (err) => {
-              console.log(err)
-              setIsLoading(false)
+      createOrder(orderRequest, {
+        onSuccess: (order) => {
+          console.log('order', order)
+          createPayment(
+            { orderId: order.orderId },
+            {
+              onSuccess: (paymentUrl) => {
+                console.log(paymentUrl)
+                window.location.href = paymentUrl // ✅ Điều hướng ngay trong component
+              }
             }
-          })
+          )
         },
         onError: (err) => {
           console.log(err)
           setIsLoading(false)
         }
       })
-      
     } else {
       toast.error('Lỗi trong quá trình thanh toán')
       navigate('/')

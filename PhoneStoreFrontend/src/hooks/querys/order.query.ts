@@ -1,11 +1,18 @@
 import orderAPI from '@/apis/order.api'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { data } from 'react-router-dom'
 
 export const useCreateOrder = () => {
   const mutation = useMutation({
     mutationKey: ['order', 'create'],
     mutationFn: orderAPI.createOrder
+  })
+  return mutation
+}
+
+export const useCreateOrderCOD = () => {
+  const mutation = useMutation({
+    mutationKey: ['order', 'createCOD'],
+    mutationFn: orderAPI.createCODOrder
   })
   return mutation
 }

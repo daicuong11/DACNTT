@@ -199,5 +199,17 @@ namespace PhoneStoreBackend.Repository.Implements
             await _context.SaveChangesAsync();
             return true;
         }
+
+        public async Task<ICollection<ProductVariant>> GetProductVariantsByIds(List<int> productVariantIds)
+        {
+            if (productVariantIds == null || productVariantIds.Count == 0)
+            {
+                throw new ArgumentException("Danh sách productVariantIds không được rỗng.");
+            }
+            return await _context.ProductVariants
+                .Where(pv => productVariantIds.Contains(pv.ProductVariantId))
+                .Include(pv => pv.Discount)
+                .ToListAsync();
+        }
     }
 }

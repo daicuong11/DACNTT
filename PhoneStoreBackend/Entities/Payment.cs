@@ -1,6 +1,7 @@
 ﻿using PhoneStoreBackend.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace PhoneStoreBackend.Entities
 {
@@ -15,6 +16,7 @@ namespace PhoneStoreBackend.Entities
 
         public int OrderId { get; set; }
         [ForeignKey("OrderId")]
+        [JsonIgnore]
         public Order Order { get; set; }
 
         [Required]

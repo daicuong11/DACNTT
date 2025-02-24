@@ -1,9 +1,14 @@
 import axiosInstance from '@/configs/http'
-import { OrderRequestType, OrderResponseType } from '@/types/order.type'
+import { CreatedOrderResponseType, CreateOrderRequest, OrderRequestType, OrderResponseType } from '@/types/order.type'
 
 class OrderAPI {
-  async createOrder(orderReq: OrderRequestType): Promise<OrderResponseType> {
+  async createOrder(orderReq: CreateOrderRequest): Promise<OrderResponseType> {
     const res = await axiosInstance.post('orders', orderReq)
+    return res.data
+  }
+
+  async createCODOrder(orderReq: CreateOrderRequest): Promise<CreatedOrderResponseType> {
+    const res = await axiosInstance.post('orders/cod', orderReq)
     return res.data
   }
 

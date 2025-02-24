@@ -1,5 +1,6 @@
 import { CouponType } from './coupon.type'
-import { CustomerType } from './customer.type'
+import { CustomerRequestType, CustomerType } from './customer.type'
+import { CreateOrderGHNResponse } from './GHN.type'
 import { OrderDetailRequestType, OrderDetailType } from './order_detail.type'
 import { PaymentType } from './payment.type'
 import { UserAuthType, UserType } from './user.type'
@@ -51,4 +52,24 @@ export interface OrderResponseType {
   orderDetails: OrderDetailType[]
   createdAt: string
   updatedAt: string
+}
+
+type CreateOrderAddress = {
+  street: string
+  ward: string
+  district: string
+  province: string
+}
+
+export interface CreateOrderRequest {
+  address: CreateOrderAddress
+  customerInfo: CustomerRequestType
+  order: Omit<OrderRequestType, 'customerId'>
+}
+
+export interface CreatedOrderResponseType {
+  customer: CustomerType
+  order: OrderType
+  payment: PaymentType
+  ghnOrder: CreateOrderGHNResponse
 }

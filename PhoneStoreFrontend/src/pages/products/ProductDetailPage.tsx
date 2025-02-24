@@ -31,7 +31,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const { productSlug } = useParams<{ productSlug: string }>()
-  const { data: productVariant, isLoading, error } = useGetVariantBySlug(productSlug || '')
+  const { data: productVariant, isPlaceholderData, error } = useGetVariantBySlug(productSlug || '')
   const { data: listVariants, isLoading: isLoadingVariants } = useGetVariantByProductId(productVariant?.productId || 0)
 
   useSetDocTitle(productVariant?.product.name || 'Product Detail')
@@ -145,17 +145,12 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
           </div>
           <div className='flex flex-col col-span-4 sticky top-[80px] h-max gap-y-3'>
             <div className='grid grid-cols-3 gap-2.5'>
-              {productVariant && isLoadingVariants && (
-                <PriceButton
-                  title={productVariant.storage}
-                  price={getPriceAfterDiscount(productVariant.price, productVariant.discount?.percentage || 0)}
-                />
-              )}
               {listVariants &&
                 listVariants
                   .filter((variant, index, self) => index === self.findIndex((v) => v.storage === variant.storage))
                   .map((variant) => (
                     <PriceButton
+                      disabled={isPlaceholderData}
                       onClick={() =>
                         navigate(getProductRoute(productVariant?.product.category.name || '', variant.slug))
                       }
@@ -168,18 +163,6 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
             </div>
             <div className='mt-2 text-sm font-bold text-black/70'>Chọn màu để xem giá</div>
             <div className='grid gap-2.5 grid-cols-3'>
-              {productVariant && isLoadingVariants && (
-                <ColorPriceButton
-                  onClick={() =>
-                    navigate(getProductRoute(productVariant.product.category.name || '', productVariant.slug))
-                  }
-                  isActive={true}
-                  disabled={false}
-                  title={productVariant.color}
-                  price={getPriceAfterDiscount(productVariant.price, productVariant.discount?.percentage || 0)}
-                  img={getMainImage(productVariant.productImages)?.imageUrl || ''}
-                />
-              )}
               {listVariants &&
                 productVariant &&
                 listVariants
@@ -191,7 +174,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
                       }
                       key={variant.slug}
                       isActive={variant.slug === productVariant.slug}
-                      disabled={false}
+                      disabled={isPlaceholderData}
                       title={variant.color}
                       price={getPriceAfterDiscount(variant.price, variant.discountPercentage)}
                       img={variant.imageUrl}

@@ -9,6 +9,8 @@ namespace PhoneStoreBackend.Repository
         Task<OrderDetailDTO> GetOrderDetailByIdAsync(int orderDetailId);
         Task<ICollection<OrderDetailDTO>> GetOrderDetailsByOrderIdAsync(int orderId);
         Task<OrderDetailDTO> AddOrderDetailAsync(OrderDetail orderDetail);
+        Task<ICollection<OrderDetail>> AddMultipleOrderDetailsAsync(ICollection<OrderDetail> orderDetail);
+        
         Task<bool> UpdateOrderDetailAsync(int orderDetailId, OrderDetail orderDetail);
         Task<bool> DeleteOrderDetailAsync(int orderDetailId);
     }

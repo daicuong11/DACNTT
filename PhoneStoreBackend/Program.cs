@@ -67,7 +67,12 @@ if (string.IsNullOrWhiteSpace(cloudName) || string.IsNullOrWhiteSpace(apiKey) ||
 // Đăng ký CloudinaryService với DI container
 builder.Services.AddSingleton(new CloudinaryService(cloudName, apiKey, apiSecret));
 
+// get key of ghn
+builder.Services.Configure<GHNSettings>(
+    builder.Configuration.GetSection("GHN"));
+
 // Repository and service registration
+builder.Services.AddScoped<IGHNRepository, GHNService>();
 builder.Services.AddScoped<ITokenRepository, TokenService>();
 builder.Services.AddScoped<IEmailRepository, EmailService>();
 builder.Services.AddScoped<IAuthRepository, AuthService>();
@@ -117,10 +122,10 @@ builder.Services.AddSingleton<IVnpay, Vnpay>();
 //    options.UseSqlServer(connectionString));
 
 //Database configuration của Cuong
-//builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Connection1")));
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Connection1")));
 
 //Database configuration của Bien
-builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Connection2")));
+//builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Connection2")));
 
 
 // JWT and Google OAuth2 configuration
