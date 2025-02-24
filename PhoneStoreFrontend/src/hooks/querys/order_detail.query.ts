@@ -5,6 +5,7 @@ export const useGetOrderDetailById = (id: number) => {
   return useQuery({
     queryKey: ['getOrderDetailById', id],
     queryFn: () => orderDetailApi.getOrderDetailById(id),
-    enabled: !!id
+    enabled: !!id,
+    staleTime: 1000 * 60 * 5
   })
 }

@@ -9,5 +9,7 @@
         delivering,     // Đang giao
         delivered,      // Đã nhận hàng thành công
         delivery_fail,     // Giao hàng thất bại
+        cancel,         // đã hủy
+        pending,        // chờ xác nhận
     }
 }

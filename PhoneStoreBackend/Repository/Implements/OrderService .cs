@@ -60,19 +60,24 @@ namespace PhoneStoreBackend.Repository.Implements
         }
 
         // Lấy các đơn hàng theo UserId
-        public async Task<ICollection<OrderDTO>> GetOrdersByUserIdAsync(int userId)
+        public async Task<ICollection<Order>> GetOrdersByUserIdAsync(int userId, string status = "all")
         {
-            var orders = await _context.Orders.Where(o => o.UserId == userId)
+            IQueryable<Order> query = _context.Orders 
+                .Where(o => o.UserId == userId)
                 .Include(o => o.Payment)
                 .Include(o => o.Customer)
                 .Include(o => o.OrderDetails)
-                    .ThenInclude(od => od.ProductVariant)
-                .OrderByDescending(o => o.OrderDate) 
-                .ToListAsync();
+                .OrderByDescending(o => o.OrderDate);
 
-            return orders.Select(o => _mapper.Map<OrderDTO>(o)).ToList();
+            if (status != "all")
+            {
+                query = query.Where(o => o.Status.ToLower() == status);
+            }
 
+            return await query.ToListAsync(); 
         }
+
+
 
         // Thêm đơn hàng mới
         public async Task<OrderDTO> AddOrderAsync(Order order)

@@ -8,13 +8,20 @@ import customParseFormat from 'dayjs/plugin/customParseFormat'
 import classNames from 'classnames'
 import OrderItem from './components/OrderItem'
 import { useAppSelector } from '@/hooks'
-import { useGetOrderByUserId } from '@/hooks/querys/order.query'
+import { useGetOrderByUserId, useGetOrdersByStatus } from '@/hooks/querys/order.query'
 import { LoadingOpacity } from '@/components'
+import { OrderStatusEnum } from '@/enums'
 
 const { RangePicker } = DatePicker
 dayjs.extend(customParseFormat)
 
 const listOrderStatus = ['Tất cả', 'Chờ xác nhận', 'Đã xác nhận', 'Đang vận chuyển', 'Đã giao hàng', 'Đã hủy']
+
+const OrderStatusMap = Object.fromEntries(Object.entries(OrderStatusEnum).map(([key, value]) => [value, key]))
+
+const getKeyByValueStatus = (value: string) => {
+  return OrderStatusMap[value] || 'all'
+}
 
 interface OrderHistoryPageProps {}
 
@@ -24,21 +31,15 @@ const OrderHistoryPage: FC<OrderHistoryPageProps> = () => {
   const [orderStatus, setOrderStatus] = useState(listOrderStatus[0])
   const navigate = useNavigate()
 
-  const { data: orders, mutate, isPending } = useGetOrderByUserId()
-
-  useEffect(() => {
-    if (currentUser) {
-      mutate(currentUser.id)
-    }
-  }, [orderStatus, currentUser])
+  const { data: orders, isLoading } = useGetOrdersByStatus(currentUser?.id || 0, getKeyByValueStatus(orderStatus))
 
   return (
     <div className='py-4'>
-      {isPending && <LoadingOpacity />}
+      {isLoading && <LoadingOpacity />}
       <div className='flex px-2 gap-x-2'>
         <Avatar size={72} icon={<UserOutlined />} />
         <div className='flex flex-col gap-y-0.5'>
-          <h1 className='text-[19px] font-semibold text-pink-600 uppercase leading-none'>Đạo Thanh Hưng</h1>
+          <h1 className='text-[19px] font-semibold text-pink-600 uppercase leading-none'>{currentUser?.name}</h1>
           <div className='flex items-center text-sm font-medium text-gray-500 gap-x-2'>
             {isShowPhoneNumber ? currentUser?.phoneNumber : maskPhoneNumber(currentUser?.phoneNumber || '')}
             {isShowPhoneNumber ? (
@@ -65,13 +66,13 @@ const OrderHistoryPage: FC<OrderHistoryPageProps> = () => {
         </div>
       </div>
 
-      <div className='mt-3'>
+      {/* <div className='mt-3'>
         <RangePicker
           defaultValue={[dayjs('01/01/2015', 'DD/MM/YYYY'), dayjs('01/01/2015', 'DD/MM/YYYY')]}
           onChange={(dates, dateStrings) => console.log(dates, dateStrings)}
           format={'DD/MM/YYYY'}
         />
-      </div>
+      </div> */}
       <div className='sticky flex mt-3 gap-x-3 top-[84px] z-10'>
         {listOrderStatus.map((status) => (
           <button
@@ -88,9 +89,7 @@ const OrderHistoryPage: FC<OrderHistoryPageProps> = () => {
       </div>
 
       <div className='flex flex-col mt-3 gap-y-2.5 mb-20'>
-        {orders?.map((order) =>
-          order.orderDetails.map((orderDetail, index) => <OrderItem key={index} orderDetail={orderDetail} />)
-        )}
+        {orders?.map((order, index) => <OrderItem key={index} orderItem={order} />)}
       </div>
     </div>
   )

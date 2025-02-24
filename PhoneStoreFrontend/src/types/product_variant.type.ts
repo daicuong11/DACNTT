@@ -16,6 +16,7 @@ export interface ProductVariantType {
   color: string
   storage: string
   importPrice: number
+  imageUrl: string
   price: number
   stock: number
 

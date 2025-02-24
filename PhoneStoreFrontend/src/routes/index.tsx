@@ -19,7 +19,14 @@ import { PaymentInfoPage } from '@/pages/payment_info'
 import PaymentResultPage from '@/pages/payment_result/PaymentResultPage'
 import VnpayPaymentResultPage from '@/pages/payment_result/VnpayPaymentResultPage'
 import { ProductDetailPage } from '@/pages/products'
-import { AddressInfoPage, OrderHistoryPage, ProfilePage, SupportPage, UserInfoPage } from '@/pages/profile'
+import {
+  AddressInfoPage,
+  OrderDetailPage,
+  OrderHistoryPage,
+  ProfilePage,
+  SupportPage,
+  UserInfoPage
+} from '@/pages/profile'
 import { RegisterPage } from '@/pages/register'
 import { SearchResultPage } from '@/pages/search'
 import { RoleEnum } from '@/types/user.type'
@@ -121,8 +128,12 @@ const MyRoutes = () => {
           element: <ProfilePage />
         },
         {
-          path: 'order',
+          path: 'order/',
           element: <OrderHistoryPage />
+        },
+        {
+          path: 'order/order-detail/:orderId',
+          element: <OrderDetailPage />
         },
         {
           path: 'coupon',

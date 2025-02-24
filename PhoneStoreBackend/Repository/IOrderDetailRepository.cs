@@ -6,8 +6,8 @@ namespace PhoneStoreBackend.Repository
     public interface IOrderDetailRepository
     {
         Task<ICollection<OrderDetailDTO>> GetAllOrderDetailsAsync();
-        Task<OrderDetailDTO> GetOrderDetailByIdAsync(int orderDetailId);
-        Task<ICollection<OrderDetailDTO>> GetOrderDetailsByOrderIdAsync(int orderId);
+        Task<OrderDetail> GetOrderDetailByIdAsync(int orderDetailId);
+        Task<ICollection<OrderDetail>> GetOrderDetailsByOrderIdAsync(int orderId);
         Task<OrderDetailDTO> AddOrderDetailAsync(OrderDetail orderDetail);
         Task<ICollection<OrderDetail>> AddMultipleOrderDetailsAsync(ICollection<OrderDetail> orderDetail);
         

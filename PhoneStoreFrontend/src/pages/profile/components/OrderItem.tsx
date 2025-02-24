@@ -1,37 +1,63 @@
-import { iphone1 } from '@/assets/images/iphone'
-import { useGetOrderDetailById } from '@/hooks/querys/order_detail.query'
+import { OrderResponseType } from '@/types/order.type'
 import { OrderDetailType } from '@/types/order_detail.type'
 import formatPrice from '@/utils/formatPrice'
 import { Tag } from 'antd'
 import React, { FC } from 'react'
+import OrderDetailItem from './OrderDetailItem'
+import classNames from 'classnames'
+import { OrderStatusMap } from '@/datas/OrderStatusMap'
+import { useNavigate } from 'react-router-dom'
+import { formatterDay } from '@/utils/formatterDay'
 
 interface OrderItemProps {
-  orderDetail: OrderDetailType
+  orderItem: OrderResponseType
 }
 
-const OrderItem: FC<OrderItemProps> = ({ orderDetail }) => {
-  const { data: orderDetailData } = useGetOrderDetailById(orderDetail.orderDetailId)
+const OrderItem: FC<OrderItemProps> = ({ orderItem }) => {
+  const navigate = useNavigate()
 
+  const handleDetailClick = () => {
+    navigate(`/profile/order/order-detail/${orderItem.orderId}`)
+  }
   return (
-    <div className='flex bg-white rounded-lg py-3.5 p-1.5 pr-2.5 gap-x-6 cursor-pointer'>
-      <img
-        className='w-[110px] h-[110px] flex-shrink-0 ml-3'
-        src={orderDetailData?.productVariant.productImages[0].imageUrl}
-      />
-      <div className='flex flex-col flex-1 gap-y-2'>
-        <div className='text-base font-medium text-black line-clamp-2 font-roboto'>
-          {orderDetailData?.productVariant.variantName}
+    <div className='bg-white rounded-lg'>
+      <div className='flex items-center justify-between p-3.5 pb-2'>
+        <div className='flex text-sm font-medium leading-none text-gray-700 gap-x-1'>
+          Ngày đặt hàng:
+          <div className='text-sm font-medium leading-none text-gray-400 font-roboto'>
+            {formatterDay.format(new Date(orderItem.createdAt))}
+          </div>
         </div>
-        <span className=''>
+        <div className=''>
           <Tag bordered={false} className='px-3 py-0.5' color='purple'>
-            Đã hủy
+            {OrderStatusMap[orderItem.status.toLowerCase()] || 'Trạng thái lỗi'}
           </Tag>
-        </span>
-        <div className='mt-auto font-bold text-primary'>{formatPrice(23000000)}</div>
+        </div>
       </div>
-      <div className='flex flex-col justify-between'>
-        <div className='text-sm font-medium text-gray-400 font-roboto'>02/02/2025 20:16</div>
-        <button className='py-1 text-xs font-normal rounded-md btn btn-outline'>Xem chi tiết</button>
+      <div className='px-2'>
+        {orderItem.orderDetails.map((orderDetail: OrderDetailType, index) => (
+          <OrderDetailItem
+            key={orderDetail.orderDetailId}
+            orderDetail={orderDetail}
+            className={classNames({
+              '!border-t border-gray-200': index !== 0
+            })}
+          />
+        ))}
+      </div>
+      <div className='flex justify-between'>
+        <div></div>
+        <div className='flex flex-col p-3.5 gap-y-3'>
+          <div className='flex items-end text-sm font-medium leading-none text-gray-700 gap-x-2'>
+            {orderItem.orderDetails.reduce((sum, order) => sum + order.quantity, 0)} mặt hàng:
+            <div className='text-base font-bold leading-none text-primary'>{formatPrice(orderItem.totalAmount)}</div>
+          </div>
+          <div className='flex justify-end'>
+            <button onClick={handleDetailClick} className='py-1 text-xs font-normal rounded btn btn-outline'>
+              Xem chi tiết
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   )

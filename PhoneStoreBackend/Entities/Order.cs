@@ -49,6 +49,5 @@ namespace PhoneStoreBackend.Entities
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
 
         public ICollection<OrderDetail> OrderDetails { get; set; }
-        public ICollection<Customer> Customers { get; set; }
     }
 }

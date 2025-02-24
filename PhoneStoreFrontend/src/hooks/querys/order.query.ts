@@ -37,3 +37,13 @@ export const useGetOrderByUserId = () => {
   })
   return mutation
 }
+
+export const useGetOrdersByStatus = (userId: number, status: string) => {
+  return useQuery({
+    queryKey: ['orders', userId, status],
+    queryFn: () => orderAPI.getOrdersByStatus(userId, status),
+    staleTime: 1000 * 60,
+    enabled: !!userId,
+    refetchOnWindowFocus: true
+  })
+}

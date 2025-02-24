@@ -26,24 +26,22 @@ namespace PhoneStoreBackend.Repository.Implements
         }
 
         // Lấy chi tiết đơn hàng theo OrderDetailId
-        public async Task<OrderDetailDTO> GetOrderDetailByIdAsync(int orderDetailId)
+        public async Task<OrderDetail> GetOrderDetailByIdAsync(int orderDetailId)
         {
             var orderDetail = await _context.OrderDetails
                 .Include(od => od.ProductVariant)
-                    .ThenInclude(pv => pv.ProductImages)
                 .FirstOrDefaultAsync(od => od.OrderDetailId == orderDetailId);
             if (orderDetail == null)
             {
                 throw new KeyNotFoundException("OrderDetail not found.");
             }
-            return _mapper.Map<OrderDetailDTO>(orderDetail);
+            return orderDetail;
         }
 
         // Lấy các chi tiết đơn hàng theo OrderId
-        public async Task<ICollection<OrderDetailDTO>> GetOrderDetailsByOrderIdAsync(int orderId)
+        public async Task<ICollection<OrderDetail>> GetOrderDetailsByOrderIdAsync(int orderId)
         {
-            var orderDetails = await _context.OrderDetails.Where(od => od.OrderId == orderId).ToListAsync();
-            return orderDetails.Select(od => _mapper.Map<OrderDetailDTO>(od)).ToList();
+            return await _context.OrderDetails.Where(od => od.OrderId == orderId).ToListAsync();
         }
 
         // Thêm chi tiết đơn hàng

@@ -1,6 +1,5 @@
 import { rightBannerImages } from '@/assets/images'
 import { ProductCardSimple } from '@/components'
-import { exampleProductVariant } from '@/datas'
 import { useAppSelector } from '@/hooks'
 import { maskPhoneNumber } from '@/utils/maskPhoneNumber'
 import { EyeFilled, EyeInvisibleFilled, UserOutlined } from '@ant-design/icons'
@@ -115,9 +114,9 @@ const ProfilePage: FC<ProfilePageProps> = () => {
       <div className='mt-5'>
         <div className='mb-3 text-lg font-medium to-black-2'>Sản phẩm bạn yêu thích</div>
         <div className='grid gap-2.5 grid-cols-4'>
-          {exampleProductVariant.slice(0, 8).map((productVariant, index) => (
+          {/* {exampleProductVariant.slice(0, 8).map((productVariant, index) => (
             <ProductCardSimple key={index} className='' productVariant={productVariant} />
-          ))}
+          ))} */}
         </div>
         <div className='mt-2.5'>
           <button className='items-center font-roboto mx-auto text-[15px] w-min text-nowrap px-20 font-medium border border-gray-200 shadow-md btn btn-light hover:border-primary hover:text-primary hover:!bg-red-50 drop-shadow-sm'>

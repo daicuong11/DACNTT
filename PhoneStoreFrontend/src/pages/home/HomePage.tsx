@@ -6,9 +6,6 @@ import FlashSaleView from './components/FlashSaleView'
 import LaptopSaleView from './components/LaptopSaleView'
 import MobileSaleView from './components/MobileSaleView'
 import RightBanner from './components/RightBanner'
-import CarouselProduct from './components/CarouselProduct'
-import { exampleProductVariant } from '@/datas'
-import classNames from 'classnames'
 
 const HomePage = () => {
   useSetDocTitle('BC Mobile')

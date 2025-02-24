@@ -50,7 +50,7 @@ namespace PhoneStoreBackend.Controllers
                     return NotFound(notFoundResponse);
                 }
 
-                var response = Response<OrderDetailDTO>.CreateSuccessResponse(orderDetail, "Chi tiết đơn hàng");
+                var response = Response<OrderDetail>.CreateSuccessResponse(orderDetail, "Chi tiết đơn hàng");
                 return Ok(response);
             }
             catch (Exception ex)
@@ -67,7 +67,7 @@ namespace PhoneStoreBackend.Controllers
             try
             {
                 var orderDetails = await _orderDetailRepository.GetOrderDetailsByOrderIdAsync(orderId);
-                var response = Response<ICollection<OrderDetailDTO>>.CreateSuccessResponse(orderDetails, "Chi tiết đơn hàng theo ID đơn hàng");
+                var response = Response<ICollection<OrderDetail>>.CreateSuccessResponse(orderDetails, "Chi tiết đơn hàng theo ID đơn hàng");
                 return Ok(response);
             }
             catch (Exception ex)

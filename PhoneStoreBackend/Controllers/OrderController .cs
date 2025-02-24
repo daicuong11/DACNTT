@@ -69,12 +69,17 @@ namespace PhoneStoreBackend.Controllers
                 {
                     ClientOrderCode = order.OrderId.ToString()
                 };
-                var getStatusOrder = await _gHNRepository.GetGHNOrderStatusByClientOrderCode(orderStatusGHNReq);
-                if(order.Status != getStatusOrder.Status)
+                try
                 {
-                    order.Status = getStatusOrder.Status;
-                    await _orderRepository.UpdateOrderStatusAsync(order.OrderId, getStatusOrder.Status);
+                    var getStatusOrder = await _gHNRepository.GetGHNOrderStatusByClientOrderCode(orderStatusGHNReq);
+                    if (order.Status != getStatusOrder.Status)
+                    {
+                        order.Status = getStatusOrder.Status;
+                        await _orderRepository.UpdateOrderStatusAsync(order.OrderId, getStatusOrder.Status);
+                    }
                 }
+                catch { }
+                
                 var response = Response<OrderDTO>.CreateSuccessResponse(order, "Thông tin đơn hàng");
                 return Ok(response);
             }
@@ -110,13 +115,12 @@ namespace PhoneStoreBackend.Controllers
 
 
         [HttpGet("user/{userId}")]
-        //[Authorize]
-        public async Task<IActionResult> GetOrdersByUserId(int userId)
+        public async Task<IActionResult> GetOrdersByUserId(int userId, [FromQuery] string? status = "all")
         {
             try
             {
-                var orders = await _orderRepository.GetOrdersByUserIdAsync(userId);
-                var response = Response<ICollection<OrderDTO>>.CreateSuccessResponse(orders, "Danh sách đơn hàng của người dùng");
+                var orders = await _orderRepository.GetOrdersByUserIdAsync(userId, status);
+                var response = Response<ICollection<Order>>.CreateSuccessResponse(orders, "Danh sách đơn hàng của người dùng");
                 return Ok(response);
             }
             catch (Exception ex)
