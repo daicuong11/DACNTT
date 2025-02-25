@@ -36,6 +36,7 @@ namespace PhoneStoreBackend.Repository.Implements
                 .Include(o => o.Payment)
                 .Include(o => o.Customer)
                 .Include(o => o.OrderDetails)
+                    .ThenInclude(od => od.ProductVariant)
                 .FirstOrDefaultAsync(o => o.OrderId == orderId);
             if (order == null)
             {
@@ -64,9 +65,6 @@ namespace PhoneStoreBackend.Repository.Implements
         {
             IQueryable<Order> query = _context.Orders 
                 .Where(o => o.UserId == userId)
-                .Include(o => o.Payment)
-                .Include(o => o.Customer)
-                .Include(o => o.OrderDetails)
                 .OrderByDescending(o => o.OrderDate);
 
             if (status != "all")

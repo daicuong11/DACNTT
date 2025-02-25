@@ -8,12 +8,15 @@ import classNames from 'classnames'
 import { OrderStatusMap } from '@/datas/OrderStatusMap'
 import { useNavigate } from 'react-router-dom'
 import { formatterDay } from '@/utils/formatterDay'
+import { useGetOrderById } from '@/hooks/querys/order.query'
 
 interface OrderItemProps {
   orderItem: OrderResponseType
 }
 
 const OrderItem: FC<OrderItemProps> = ({ orderItem }) => {
+  const { data: order, isLoading, isError } = useGetOrderById(String(orderItem.orderId) || '')
+
   const navigate = useNavigate()
 
   const handleDetailClick = () => {
@@ -29,13 +32,22 @@ const OrderItem: FC<OrderItemProps> = ({ orderItem }) => {
           </div>
         </div>
         <div className=''>
-          <Tag bordered={false} className='px-3 py-0.5' color='purple'>
-            {OrderStatusMap[orderItem.status.toLowerCase()] || 'Trạng thái lỗi'}
+          <Tag
+            className='m-0'
+            color={classNames({
+              green: order?.status.toLowerCase() === 'delivered',
+              purple: order?.status.toLowerCase() === 'delivering',
+              default: order?.status.toLowerCase() === 'cancel',
+              processing: order?.status.toLowerCase() === 'ready_to_pick',
+              volcano: order?.status.toLowerCase() === 'pending'
+            })}
+          >
+            {OrderStatusMap[order?.status.toLowerCase() || ''] || 'Trạng thái lỗi'}
           </Tag>
         </div>
       </div>
       <div className='px-2'>
-        {orderItem.orderDetails.map((orderDetail: OrderDetailType, index) => (
+        {order?.orderDetails.map((orderDetail, index) => (
           <OrderDetailItem
             key={orderDetail.orderDetailId}
             orderDetail={orderDetail}
@@ -49,7 +61,7 @@ const OrderItem: FC<OrderItemProps> = ({ orderItem }) => {
         <div></div>
         <div className='flex flex-col p-3.5 gap-y-3'>
           <div className='flex items-end text-sm font-medium leading-none text-gray-700 gap-x-2'>
-            {orderItem.orderDetails.reduce((sum, order) => sum + order.quantity, 0)} mặt hàng:
+            {order?.orderDetails.reduce((sum, order) => sum + order.quantity, 0)} mặt hàng:
             <div className='text-base font-bold leading-none text-primary'>{formatPrice(orderItem.totalAmount)}</div>
           </div>
           <div className='flex justify-end'>

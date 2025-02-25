@@ -31,14 +31,23 @@ const OrderDetailPage = () => {
       <div className='flex justify-between mt-4'>
         <div className='flex flex-col gap-y-3 gap-x-2'>
           <div className='text-sm font-medium text-gray-600'>
-            Mã đơn hàng: <span className='text-base font-semibold text-black'>1003</span>
+            Mã đơn hàng: <span className='text-base font-semibold text-black'>{order?.orderId}</span>
           </div>
           <div className='text-sm font-medium text-gray-600'>
             {order ? formatterDay.format(new Date(order.orderDate)) : ''}
           </div>
         </div>
         <div className=''>
-          <Tag className='px-3 py-0.5' color='volcano'>
+          <Tag
+            className='m-0'
+            color={classNames({
+              green: order?.status.toLowerCase() === 'delivered',
+              purple: order?.status.toLowerCase() === 'delivering',
+              default: order?.status.toLowerCase() === 'cancel',
+              processing: order?.status.toLowerCase() === 'ready_to_pick',
+              volcano: order?.status.toLowerCase() === 'pending'
+            })}
+          >
             {OrderStatusMap[order?.status.toLowerCase() || ''] || 'Trạng thái lỗi'}
           </Tag>
         </div>

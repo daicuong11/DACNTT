@@ -65,10 +65,12 @@ namespace PhoneStoreBackend.Controllers
                     var notFoundResponse = Response<object>.CreateErrorResponse("Đơn hàng không tồn tại.");
                     return NotFound(notFoundResponse);
                 }
+
                 var orderStatusGHNReq = new GetOrderStatusGHNRequest
                 {
                     ClientOrderCode = order.OrderId.ToString()
                 };
+
                 try
                 {
                     var getStatusOrder = await _gHNRepository.GetGHNOrderStatusByClientOrderCode(orderStatusGHNReq);
@@ -78,8 +80,12 @@ namespace PhoneStoreBackend.Controllers
                         await _orderRepository.UpdateOrderStatusAsync(order.OrderId, getStatusOrder.Status);
                     }
                 }
-                catch { }
-                
+                catch (Exception ex)
+                {
+                    order.Status = OrderStatusEnum.cancel.ToString();
+                    await _orderRepository.UpdateOrderStatusAsync(order.OrderId, OrderStatusEnum.cancel.ToString());
+                }
+
                 var response = Response<OrderDTO>.CreateSuccessResponse(order, "Thông tin đơn hàng");
                 return Ok(response);
             }

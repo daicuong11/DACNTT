@@ -10,11 +10,7 @@ interface OrderDetailItemProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 const OrderDetailItem: FC<OrderDetailItemProps> = ({ orderDetail, className = '', ...props }) => {
-  const { data: orderDetailData } = useGetOrderDetailById(orderDetail.orderDetailId)
-
-  if (!orderDetailData) return null
-
-  const { productVariant, price = 0, discount = 0, quantity } = orderDetailData
+  const { productVariant, price = 0, discount = 0, quantity } = orderDetail
   const finalPrice = formatPrice(getPriceAfterDiscount(price, discount))
 
   return (
