@@ -44,6 +44,7 @@ const OrderDetailPage = () => {
               green: order?.status.toLowerCase() === 'delivered',
               purple: order?.status.toLowerCase() === 'delivering',
               default: order?.status.toLowerCase() === 'cancel',
+              red: order?.status.toLowerCase() === 'delivery_fail',
               processing: order?.status.toLowerCase() === 'ready_to_pick',
               volcano: order?.status.toLowerCase() === 'pending'
             })}

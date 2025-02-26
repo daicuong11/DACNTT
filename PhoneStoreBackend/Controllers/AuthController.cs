@@ -236,8 +236,8 @@ namespace PhoneStoreBackend.Controllers
             }
         }
 
-        [HttpPost("reset-password")]
-        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest model)
+        [HttpPost("change-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ChangePasswordRequest changePwdReq)
         {
             try
             {
@@ -245,8 +245,13 @@ namespace PhoneStoreBackend.Controllers
                 if (responseError != null)
                     return BadRequest(responseError);
 
-                var result = await _authService.ResetPasswordAsync(model.Email, model.NewPassword, model.Token);
-                var response = Response<object>.CreateSuccessResponse(new { Message = result }, "Reset password Successfully");
+                var result = await _authService.ChangePasswordAsync(changePwdReq.UserId, changePwdReq.OldPassword, changePwdReq.NewPassword);
+                if(!result)
+                {
+                    responseError = Response<object>.CreateErrorResponse("Đổi mật khẩu thất bại");
+                    return BadRequest(responseError);
+                }
+                var response = Response<object>.CreateSuccessResponse(null, "Đổi mật khẩu thành công");
 
                 return Ok(response);
             }

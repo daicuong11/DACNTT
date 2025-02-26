@@ -1,7 +1,7 @@
 import { maskPhoneNumber } from '@/utils/maskPhoneNumber'
 import { EyeFilled, EyeInvisibleFilled, UserOutlined } from '@ant-design/icons'
 import { Avatar, Tag, DatePicker, DatePickerProps } from 'antd'
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
@@ -11,6 +11,7 @@ import { useAppSelector } from '@/hooks'
 import { useGetOrderByUserId, useGetOrdersByStatus } from '@/hooks/querys/order.query'
 import { LoadingOpacity } from '@/components'
 import { OrderStatusEnum } from '@/enums'
+import formatPrice from '@/utils/formatPrice'
 
 const { RangePicker } = DatePicker
 dayjs.extend(customParseFormat)
@@ -29,9 +30,18 @@ const OrderHistoryPage: FC<OrderHistoryPageProps> = () => {
   const currentUser = useAppSelector((state) => state.auth.user)
   const [isShowPhoneNumber, setIsShowPhoneNumber] = useState(false)
   const [orderStatus, setOrderStatus] = useState(listOrderStatus[0])
-  const navigate = useNavigate()
 
   const { data: orders, isLoading } = useGetOrdersByStatus(currentUser?.id || 0, getKeyByValueStatus(orderStatus))
+  const { data: ordersAll, isLoading: isLoadingOrderAll } = useGetOrdersByStatus(currentUser?.id || 0, 'all')
+
+  const totalPay = useMemo(() => {
+    return ordersAll?.reduce((total, order) => {
+      if (order.status === 'delivered') {
+        return total + order.totalAmount
+      }
+      return total
+    }, 0)
+  }, [ordersAll])
 
   return (
     <div className='py-4'>
@@ -54,15 +64,22 @@ const OrderHistoryPage: FC<OrderHistoryPageProps> = () => {
         </div>
       </div>
 
-      <div className='flex items-center justify-between mt-3 p-3 text-black bg-white border rounded-lg h-[114px]'>
+      <div
+        className={classNames(
+          'flex items-center justify-between mt-3 p-3 text-black bg-white border rounded-lg h-[114px]',
+          {
+            'animate-pulse': isLoadingOrderAll
+          }
+        )}
+      >
         <div className='flex flex-col items-center justify-center flex-1 gap-y-4'>
-          <h1 className='text-3xl font-bold'>3</h1>
+          <h1 className='text-3xl font-bold'>{ordersAll?.length}</h1>
           <h5 className='text-[13px]'>đơn hàng</h5>
         </div>
         <div className='w-[1px] bg-black-2 h-20'></div>
         <div className='flex flex-col items-center justify-center flex-1 gap-y-4'>
-          <h1 className='text-3xl font-bold'>0đ</h1>
-          <h5 className='text-[13px]'>Tổng tiền tích lũy từ 1/1/2025</h5>
+          <h1 className='text-3xl font-bold'>{formatPrice(totalPay || 0)}</h1>
+          <h5 className='text-[13px]'>Tổng tiền tích lũy mua sắm</h5>
         </div>
       </div>
 

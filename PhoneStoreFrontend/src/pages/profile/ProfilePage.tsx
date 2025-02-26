@@ -5,9 +5,12 @@ import { maskPhoneNumber } from '@/utils/maskPhoneNumber'
 import { EyeFilled, EyeInvisibleFilled, UserOutlined } from '@ant-design/icons'
 import { Avatar, Tag } from 'antd'
 import { ChevronDown, ClipboardList, MapPinHouse, Ticket, UserRound } from 'lucide-react'
-import { FC, useState } from 'react'
+import { FC, useMemo, useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { RoleEnum } from '@/types/user.type'
+import { useGetOrdersByStatus } from '@/hooks/querys/order.query'
+import formatPrice from '@/utils/formatPrice'
+import classNames from 'classnames'
 
 interface ProfilePageProps {}
 
@@ -15,6 +18,17 @@ const ProfilePage: FC<ProfilePageProps> = () => {
   const [isShowPhoneNumber, setIsShowPhoneNumber] = useState(false)
   const navigate = useNavigate()
   const currentUser = useAppSelector((state) => state.auth.user)
+
+  const { data: ordersAll, isLoading: isLoadingOrderAll } = useGetOrdersByStatus(currentUser?.id || 0, 'all')
+
+  const totalPay = useMemo(() => {
+    return ordersAll?.reduce((total, order) => {
+      if (order.status === 'delivered') {
+        return total + order.totalAmount
+      }
+      return total
+    }, 0)
+  }, [ordersAll])
 
   if (!currentUser) {
     return <Navigate to='/signin' />
@@ -45,15 +59,22 @@ const ProfilePage: FC<ProfilePageProps> = () => {
       </div>
       <div className='flex mt-3 gap-x-3'>
         <div className='flex flex-col flex-1 gap-y-3'>
-          <div className='flex items-center justify-between p-3 text-black bg-white border rounded-lg h-[114px]'>
+          <div
+            className={classNames(
+              'flex items-center justify-between mt-3 p-3 text-black bg-white border rounded-lg h-[114px]',
+              {
+                'animate-pulse': isLoadingOrderAll
+              }
+            )}
+          >
             <div className='flex flex-col items-center justify-center flex-1 gap-y-4'>
-              <h1 className='text-3xl font-bold'>3</h1>
+              <h1 className='text-3xl font-bold'>{ordersAll?.length}</h1>
               <h5 className='text-[13px]'>đơn hàng</h5>
             </div>
             <div className='w-[1px] bg-black-2 h-20'></div>
             <div className='flex flex-col items-center justify-center flex-1 gap-y-4'>
-              <h1 className='text-3xl font-bold'>0đ</h1>
-              <h5 className='text-[13px]'>Tổng tiền tích lũy từ 1/1/2025</h5>
+              <h1 className='text-3xl font-bold'>{formatPrice(totalPay || 0)}</h1>
+              <h5 className='text-[13px]'>Tổng tiền tích lũy mua sắm</h5>
             </div>
           </div>
 

@@ -82,8 +82,11 @@ namespace PhoneStoreBackend.Controllers
                 }
                 catch (Exception ex)
                 {
-                    order.Status = OrderStatusEnum.cancel.ToString();
-                    await _orderRepository.UpdateOrderStatusAsync(order.OrderId, OrderStatusEnum.cancel.ToString());
+                    if(order.Status != OrderStatusEnum.pending.ToString())
+                    {
+                        order.Status = OrderStatusEnum.pending.ToString();
+                        await _orderRepository.UpdateOrderStatusAsync(order.OrderId, OrderStatusEnum.cancel.ToString()  );
+                    }
                 }
 
                 var response = Response<OrderDTO>.CreateSuccessResponse(order, "Thông tin đơn hàng");
@@ -340,33 +343,33 @@ namespace PhoneStoreBackend.Controllers
                 var createdPayment = await _paymentRepository.AddPaymentAsync(payment);
 
                 // Tạo đơn giao hàng GHN
-                var getSumQuantity = orderDetailsList.Sum(od => od.Quantity);
-                var ghnReq = new CreateOrderGHNRequest
-                {
-                    ClientOrderCode = newOrder.OrderId.ToString(),
-                    PaymentTypeId = 2,
-                    Height = (int)Math.Ceiling(getSumQuantity * 6m),
-                    Length = 30,
-                    Weight = (int)Math.Ceiling(getSumQuantity * 300m),
-                    Width = 30,
-                    RequiredNote = RequiredNoteGHNEnum.KHONGCHOXEMHANG.ToString(),
-                    ServiceTypeId = 2,
-                    ToProvinceName = addressReq.Province,
-                    ToDistrictName = addressReq.District,
-                    ToWardName = addressReq.Ward,
-                    ToAddress = addressReq.Street,
-                    ToName = newCus.Name,
-                    ToPhone = newCus.PhoneNumber,
-                    Items = orderDetailsList.Select(od => new ItemOrderGHNRequest
-                    {
-                        Name = productVariants.First(pv => pv.ProductVariantId == od.ProductVariantId).VariantName,
-                        Quantity = od.Quantity,
-                    }).ToList()
-                };
+                //var getSumQuantity = orderDetailsList.Sum(od => od.Quantity);
+                //var ghnReq = new CreateOrderGHNRequest
+                //{
+                //    ClientOrderCode = newOrder.OrderId.ToString(),
+                //    PaymentTypeId = 2,
+                //    Height = (int)Math.Ceiling(getSumQuantity * 6m),
+                //    Length = 30,
+                //    Weight = (int)Math.Ceiling(getSumQuantity * 300m),
+                //    Width = 30,
+                //    RequiredNote = RequiredNoteGHNEnum.KHONGCHOXEMHANG.ToString(),
+                //    ServiceTypeId = 2,
+                //    ToProvinceName = addressReq.Province,
+                //    ToDistrictName = addressReq.District,
+                //    ToWardName = addressReq.Ward,
+                //    ToAddress = addressReq.Street,
+                //    ToName = newCus.Name,
+                //    ToPhone = newCus.PhoneNumber,
+                //    Items = orderDetailsList.Select(od => new ItemOrderGHNRequest
+                //    {
+                //        Name = productVariants.First(pv => pv.ProductVariantId == od.ProductVariantId).VariantName,
+                //        Quantity = od.Quantity,
+                //    }).ToList()
+                //};
 
-                var createdGHNOrder = await _gHNRepository.CreateGHNOrder(ghnReq);
-                if (createdGHNOrder == null)
-                    throw new Exception("Không thể tạo đơn hàng GHN.");
+                //var createdGHNOrder = await _gHNRepository.CreateGHNOrder(ghnReq);
+                //if (createdGHNOrder == null)
+                //    throw new Exception("Không thể tạo đơn hàng GHN.");
 
                 await transaction.CommitAsync();
                 return Ok(Response<object>.CreateSuccessResponse(new
@@ -374,11 +377,11 @@ namespace PhoneStoreBackend.Controllers
                     Customer = createdCustomer,
                     Order = createdOrder,
                     Payment = createdPayment,
-                    GHNOrder = new {
-                        order_code = createdGHNOrder.OrderCode,
-                        total_fee = createdGHNOrder.TotalFee,
-                        expected_delivery_time = createdGHNOrder.ExpectedDeliveryTime,
-                    },
+                    //GHNOrder = new {
+                    //    order_code = createdGHNOrder.OrderCode,
+                    //    total_fee = createdGHNOrder.TotalFee,
+                    //    expected_delivery_time = createdGHNOrder.ExpectedDeliveryTime,
+                    //},
                 }, "Đơn hàng đã được thêm thành công"));
             }
             catch (Exception ex)

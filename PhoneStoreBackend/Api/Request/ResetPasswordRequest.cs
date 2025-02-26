@@ -2,17 +2,17 @@
 
 namespace PhoneStoreBackend.Api.Request
 {
-    public class ResetPasswordRequest
+    public class ChangePasswordRequest
     {
-        [Required(ErrorMessage = "Email is required.")]
-        [EmailAddress(ErrorMessage = "Invalid email address.")]
-        public string Email { get; set; }
+        [Required(ErrorMessage = "Mã người dùng là bắt buộc.")]
+        public int UserId { get; set; }
 
-        [Required(ErrorMessage = "New password is required.")]
-        [StringLength(100, MinimumLength = 6, ErrorMessage = "Password must be at least 6 characters long.")]
+        [Required(ErrorMessage = "Mật khẩu là bắt buộc.")]
+        public string OldPassword { get; set; }
+
+        [Required(ErrorMessage = "Mật khẩu mới là bắt buộc.")]
+        [StringLength(100, MinimumLength = 6, ErrorMessage = "Mật khẩu mới ngắn hơn 6 ký tự hoặc dài hơn 100 ký tự")]
         public string NewPassword { get; set; }
 
-        [Required(ErrorMessage = "Token is required.")]
-        public string Token { get; set; }
     }
 }

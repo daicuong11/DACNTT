@@ -9,6 +9,18 @@ class AuthAPI {
   registerAccount = async (registerRequest: RegisterRequestType): Promise<BaseResponse<AuthResponseType>> => {
     return await axiosInstance.post('auth/register', registerRequest)
   }
+
+  async changePassword({
+    userId,
+    oldPassword,
+    newPassword
+  }: {
+    userId: number
+    oldPassword: string
+    newPassword: string
+  }): Promise<BaseResponse<object>> {
+    return await axiosInstance.post('auth/change-password', { userId, oldPassword, newPassword })
+  }
 }
 
 export default new AuthAPI()

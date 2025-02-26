@@ -49,3 +49,18 @@ export const useRegisterAccount = () => {
 
   return mutation
 }
+
+export const useChangePassword = () => {
+  return useMutation({
+    mutationKey: ['changePassword'],
+    mutationFn: (data: { userId: number; oldPassword: string; newPassword: string }) => authApi.changePassword(data),
+
+    onSuccess: () => {
+      toast.success('Đổi mật khẩu thành công!')
+    },
+
+    onError: (error: any) => {
+      toast.error(error.response.data.message || 'Đổi mật khẩu thất bại!')
+    }
+  })
+}

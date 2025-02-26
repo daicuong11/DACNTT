@@ -71,5 +71,4 @@ export interface CreatedOrderResponseType {
   customer: CustomerType
   order: OrderType
   payment: PaymentType
-  ghnOrder: CreateOrderGHNResponse
 }

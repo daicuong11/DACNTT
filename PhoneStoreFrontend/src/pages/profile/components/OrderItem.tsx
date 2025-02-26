@@ -38,6 +38,7 @@ const OrderItem: FC<OrderItemProps> = ({ orderItem }) => {
               green: order?.status.toLowerCase() === 'delivered',
               purple: order?.status.toLowerCase() === 'delivering',
               default: order?.status.toLowerCase() === 'cancel',
+              red: order?.status.toLowerCase() === 'delivery_fail',
               processing: order?.status.toLowerCase() === 'ready_to_pick',
               volcano: order?.status.toLowerCase() === 'pending'
             })}
@@ -60,8 +61,11 @@ const OrderItem: FC<OrderItemProps> = ({ orderItem }) => {
       <div className='flex justify-between'>
         <div></div>
         <div className='flex flex-col p-3.5 gap-y-3'>
-          <div className='flex items-end text-sm font-medium leading-none text-gray-700 gap-x-2'>
-            {order?.orderDetails.reduce((sum, order) => sum + order.quantity, 0)} mặt hàng:
+          <div className='flex items-end gap-x-3 leading-none'>
+            <span className='font-medium leading-none text-base items-center text-gray-700 gap-x-1 flex '>
+              {order?.orderDetails.reduce((sum, order) => sum + order.quantity, 0)}
+              <span className='text-sm text-gray-500 leading-none font-normal'>mặt hàng:</span>
+            </span>
             <div className='text-base font-bold leading-none text-primary'>{formatPrice(orderItem.totalAmount)}</div>
           </div>
           <div className='flex justify-end'>

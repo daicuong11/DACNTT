@@ -21,6 +21,7 @@ import VnpayPaymentResultPage from '@/pages/payment_result/VnpayPaymentResultPag
 import { ProductDetailPage } from '@/pages/products'
 import {
   AddressInfoPage,
+  ChangePasswordPage,
   OrderDetailPage,
   OrderHistoryPage,
   ProfilePage,
@@ -146,6 +147,10 @@ const MyRoutes = () => {
         {
           path: 'user-info',
           element: <UserInfoPage />
+        },
+        {
+          path: 'user-info/change-password',
+          element: <ChangePasswordPage />
         },
         {
           path: 'support',

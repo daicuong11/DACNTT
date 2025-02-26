@@ -17,5 +17,7 @@ namespace PhoneStoreBackend.Repository
         Task<string> ForgotPasswordAsync(string email);
 
         Task<string> ResetPasswordAsync(string email, string newPassword, string token);
+
+        Task<bool> ChangePasswordAsync(int userId,string oldPassword, string newPassword);
     }
 }

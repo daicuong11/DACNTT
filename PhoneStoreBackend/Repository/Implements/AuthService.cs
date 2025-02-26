@@ -218,5 +218,29 @@ namespace PhoneStoreBackend.Repository.Implements
 
             //return "Đặt lại mật khẩu thành công.";
         }
+
+        public async Task<bool> ChangePasswordAsync(int userId, string oldPassword, string newPassword)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null)
+            {
+                throw new Exception("Người dùng không tồn tại.");
+            }
+
+            // Kiểm tra mật khẩu cũ
+            if (!BCrypt.Net.BCrypt.Verify(oldPassword, user.Password))
+            {
+                throw new Exception("Mật khẩu cũ không chính xác.");
+            }
+
+            // Băm mật khẩu mới
+            string hashedNewPassword = BCrypt.Net.BCrypt.HashPassword(newPassword, BCrypt.Net.BCrypt.GenerateSalt(12));
+
+            user.Password = hashedNewPassword;
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
     }
 }
