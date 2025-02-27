@@ -1,8 +1,7 @@
+import { AppleOutlined, DashboardOutlined, ProductOutlined, UngroupOutlined } from '@ant-design/icons';
 import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import SidebarLinkGroup from './SidebarLinkGroup';
-import Logo from '../../../../assets/images/logo/logo.svg';
-import { AppleOutlined, ProductOutlined, UngroupOutlined } from '@ant-design/icons';
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -59,14 +58,13 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   return (
     <aside
       ref={sidebar}
-      className={`absolute z-50 left-0 top-0 flex h-screen w-72.5 flex-col overflow-y-hidden bg-white duration-300 ease-linear lg:static lg:translate-x-0 ${
-        sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-      }`}
+      className={`absolute z-50 left-0 top-0 flex h-screen w-72.5 flex-col overflow-y-hidden bg-white duration-300 ease-linear lg:static lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
     >
       {/* <!-- SIDEBAR HEADER --> */}
       <div className="flex items-center justify-between gap-2 px-6 py-4">
         <NavLink to="/">
-        <img className='ml-4 object-cover w-40 h-[55px]' src={'/logo3.png'} alt="Logo" />
+          <img className='ml-4 object-cover w-40 h-[55px]' src={'/logo3.png'} alt="Logo" />
         </NavLink>
 
         <button
@@ -103,47 +101,58 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             </h3>
 
             <ul className="mb-6 flex flex-col gap-1.5">
+              {/* <!--Start Menu Item Dashboard --> */}
+              <li>
+                <NavLink
+                  to="/admin/dashboard"
+                  className={`capitalize group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${pathname.includes('dashboard') &&
+                    'bg-gray-200'
+                    }`}
+                >
+                  <DashboardOutlined />
+                  Dashboard
+                </NavLink>
+              </li>
+              {/* <!--End Menu Item Dashboard --> */}
+
               {/* <!-- Menu Item Product --> */}
               <li>
                 <NavLink
                   to="/admin/products"
-                  className={`capitalize group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${
-                    pathname.includes('product') &&
+                  className={`capitalize group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${pathname.includes('product') &&
                     'bg-gray-200'
-                  }`}
+                    }`}
                 >
                   <ProductOutlined />
                   Quản lý sản phẩm
                 </NavLink>
               </li>
-              
+
               {/* <!-- Menu Item Product --> */}
 
               {/* <!-- Menu Item Brand --> */}
               <li>
                 <NavLink
                   to="/admin/brands"
-                  className={`capitalize group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${
-                    pathname.includes('brand') &&
+                  className={`capitalize group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${pathname.includes('brand') &&
                     'bg-gray-200'
-                  }`}
+                    }`}
                 >
-                 <AppleOutlined />
+                  <AppleOutlined />
                   Quản lý thương hiệu
                 </NavLink>
               </li>
               {/* <!-- Menu Item Brand --> */}
 
-               {/* <!-- Menu Item Category --> */}
-               <li>
+              {/* <!-- Menu Item Category --> */}
+              <li>
                 <NavLink
                   to="/admin/categories"
-                  className={`capitalize group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${
-                    pathname.includes('categories') &&
+                  className={`capitalize group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${pathname.includes('categories') &&
                     'bg-gray-200'
-                  }`}
+                    }`}
                 >
-                 <UngroupOutlined />
+                  <UngroupOutlined />
                   Quản lý danh mục
                 </NavLink>
               </li>
@@ -153,9 +162,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <NavLink
                   to="/profile"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${
-                    pathname.includes('profile') && 'bg-gray-200'
-                  }`}
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${pathname.includes('profile') && 'bg-gray-200'
+                    }`}
                 >
                   <svg
                     className="fill-current"
@@ -190,11 +198,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     <React.Fragment>
                       <NavLink
                         to="#"
-                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${
-                          (pathname === '/forms' ||
+                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${(pathname === '/forms' ||
                             pathname.includes('forms')) &&
                           'bg-gray-200'
-                        }`}
+                          }`}
                         onClick={(e) => {
                           e.preventDefault();
                           sidebarExpanded
@@ -233,9 +240,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         </svg>
                         Forms
                         <svg
-                          className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
-                            open && 'rotate-180'
-                          }`}
+                          className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${open && 'rotate-180'
+                            }`}
                           width="20"
                           height="20"
                           viewBox="0 0 20 20"
@@ -252,9 +258,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                       </NavLink>
                       {/* <!-- Dropdown Menu Start --> */}
                       <div
-                        className={`translate transform overflow-hidden ${
-                          !open && 'hidden'
-                        }`}
+                        className={`translate transform overflow-hidden ${!open && 'hidden'
+                          }`}
                       >
                         <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
                           <li>
@@ -292,9 +297,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <NavLink
                   to="/tables"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${
-                    pathname.includes('tables') && 'bg-gray-200'
-                  }`}
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${pathname.includes('tables') && 'bg-gray-200'
+                    }`}
                 >
                   <svg
                     className="fill-current"
@@ -330,10 +334,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <NavLink
                   to="/settings"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${
-                    pathname.includes('settings') &&
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${pathname.includes('settings') &&
                     'bg-gray-200'
-                  }`}
+                    }`}
                 >
                   <svg
                     className="fill-current"
@@ -382,9 +385,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <NavLink
                   to="/chart"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${
-                    pathname.includes('chart') && 'bg-gray-200'
-                  }`}
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${pathname.includes('chart') && 'bg-gray-200'
+                    }`}
                 >
                   <svg
                     className="fill-current"
@@ -429,10 +431,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     <React.Fragment>
                       <NavLink
                         to="#"
-                        className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${
-                          (pathname === '/ui' || pathname.includes('ui')) &&
+                        className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${(pathname === '/ui' || pathname.includes('ui')) &&
                           'bg-gray-200'
-                        }`}
+                          }`}
                         onClick={(e) => {
                           e.preventDefault();
                           sidebarExpanded
@@ -475,9 +476,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         </svg>
                         UI Elements
                         <svg
-                          className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
-                            open && 'rotate-180'
-                          }`}
+                          className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${open && 'rotate-180'
+                            }`}
                           width="20"
                           height="20"
                           viewBox="0 0 20 20"
@@ -494,9 +494,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                       </NavLink>
                       {/* <!-- Dropdown Menu Start --> */}
                       <div
-                        className={`translate transform overflow-hidden ${
-                          !open && 'hidden'
-                        }`}
+                        className={`translate transform overflow-hidden ${!open && 'hidden'
+                          }`}
                       >
                         <ul className="mb-5.5 mt-4 flex flex-col gap-2.5 pl-6">
                           <li>
@@ -541,10 +540,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     <React.Fragment>
                       <NavLink
                         to="#"
-                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${
-                          (pathname === '/auth' || pathname.includes('auth')) &&
+                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${(pathname === '/auth' || pathname.includes('auth')) &&
                           'bg-gray-200'
-                        }`}
+                          }`}
                         onClick={(e) => {
                           e.preventDefault();
                           sidebarExpanded
@@ -583,9 +581,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         </svg>
                         Authentication
                         <svg
-                          className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
-                            open && 'rotate-180'
-                          }`}
+                          className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${open && 'rotate-180'
+                            }`}
                           width="20"
                           height="20"
                           viewBox="0 0 20 20"
@@ -602,9 +599,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                       </NavLink>
                       {/* <!-- Dropdown Menu Start --> */}
                       <div
-                        className={`translate transform overflow-hidden ${
-                          !open && 'hidden'
-                        }`}
+                        className={`translate transform overflow-hidden ${!open && 'hidden'
+                          }`}
                       >
                         <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
                           <li>
