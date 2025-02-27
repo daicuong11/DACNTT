@@ -43,15 +43,21 @@ namespace PhoneStoreBackend.Repository.Implements
 
         // Thêm địa chỉ mới
         public async Task<AddressDTO> AddAddressAsync(Address address)
-
         {
-            
+            bool hasAnyAddress = await _context.Addresses.AnyAsync(a => a.UserId == address.UserId);
+
+            if (!hasAnyAddress)
+            {
+                address.IsDefault = true;
+            }
+
             var newAddress = await _context.Addresses.AddAsync(address);
             await _context.SaveChangesAsync();
+
             return _mapper.Map<AddressDTO>(newAddress.Entity);
         }
 
-        // Cập nhật thông tin địa chỉ
+
         public async Task<bool> UpdateAddressAsync(int addressId, Address address)
         {
             var existingAddress = await _context.Addresses.FindAsync(addressId);
@@ -63,13 +69,23 @@ namespace PhoneStoreBackend.Repository.Implements
             existingAddress.Street = address.Street;
             existingAddress.Province = address.Province;
             existingAddress.Ward = address.Ward;
-            existingAddress.Street = address.Street;
             existingAddress.District = address.District;
+
+            if (address.IsDefault)
+            {
+                var otherAddresses = await _context.Addresses
+                    .Where(a => a.UserId == existingAddress.UserId && a.AddressId != addressId)
+                    .ToListAsync();
+
+                foreach (var addr in otherAddresses)
+                {
+                    addr.IsDefault = false;
+                }
+            }
+
             existingAddress.IsDefault = address.IsDefault;
 
-            _context.Addresses.Update(existingAddress);
             await _context.SaveChangesAsync();
-
             return true;
         }
 
@@ -87,5 +103,30 @@ namespace PhoneStoreBackend.Repository.Implements
 
             return true;
         }
+
+        public async Task<bool> SetToDefaultAddress(int addressId)
+        {
+            var address = await _context.Addresses.FindAsync(addressId);
+            if (address == null)
+            {
+                return false; 
+            }
+
+            var userAddresses = await _context.Addresses
+                .Where(a => a.UserId == address.UserId)
+                .ToListAsync();
+
+            foreach (var addr in userAddresses)
+            {
+                addr.IsDefault = false;
+            }
+
+            address.IsDefault = true;
+
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
     }
 }

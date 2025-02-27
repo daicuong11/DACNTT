@@ -11,5 +11,7 @@ namespace PhoneStoreBackend.Repository
         Task<AddressDTO> AddAddressAsync(Address address);
         Task<bool> UpdateAddressAsync(int addressId, Address address);
         Task<bool> DeleteAddressAsync(int addressId);
+
+        Task<bool> SetToDefaultAddress(int addressId);
     }
 }

@@ -21,7 +21,7 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpGet("user/{userId}")]
-        [Authorize]  
+        //[Authorize]  
         public async Task<IActionResult> GetAddressesByUserId(int userId)
         {
             try
@@ -38,7 +38,7 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpGet("{addressId}")]
-        [Authorize]  
+        //[Authorize]  
         public async Task<IActionResult> GetAddressById(int addressId)
         {
             try
@@ -55,7 +55,7 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpPost]
-        [Authorize]  
+        //[Authorize]  
         public async Task<IActionResult> AddAddress([FromBody] AddressRequest address)
         {
             try
@@ -84,8 +84,37 @@ namespace PhoneStoreBackend.Controllers
             }
         }
 
+        [HttpPut("set-default/{addressId}")]
+        //[Authorize] 
+        public async Task<IActionResult> SetDefaultAddress(int addressId)
+        {
+            try
+            {
+                var responseError = ModelStateHelper.CheckModelState(ModelState);
+                if (responseError != null)
+                    return BadRequest(responseError);
+
+                var result = await _addressRepository.SetToDefaultAddress(addressId);
+                if (result)
+                {
+                    var response = Response<object>.CreateSuccessResponse(null, "Địa chỉ đã chỉnh mặc định");
+                    return Ok(response);
+                }
+                else
+                {
+                    var errorResponse = Response<object>.CreateErrorResponse("Không tìm thấy địa chỉ");
+                    return NotFound(errorResponse);
+                }
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = Response<object>.CreateErrorResponse($"Đã xảy ra lỗi: {ex.Message}");
+                return BadRequest(errorResponse);
+            }
+        }
+
         [HttpPut("{addressId}")]
-        [Authorize] 
+        //[Authorize] 
         public async Task<IActionResult> UpdateAddress(int addressId, [FromBody] AddressRequest address)
         {
             try
@@ -96,7 +125,6 @@ namespace PhoneStoreBackend.Controllers
 
                 var createAddress = new Address
                 {
-                    UserId = address.UserId,
                     Province = address.Province,
                     District = address.District,
                     Ward = address.Ward,
@@ -123,7 +151,7 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpDelete("{addressId}")]
-        [Authorize]  
+        //[Authorize]  
         public async Task<IActionResult> DeleteAddress(int addressId)
         {
             try
