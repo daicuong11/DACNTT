@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector, useModal } from '@/hooks'
 import getAddressString from '@/utils/getAddressString'
 import { useGetAllProvince, useGetDistrictByProvince, useGetWardByDistrict } from '@/hooks/querys/GHN.query'
 import { InfoCustomerType } from '../PaymentInfoPage'
+import { useGetAddressByUserId } from '@/hooks/querys/address.query'
 
 export type CodeAddressType = {
   province?: number
@@ -31,6 +32,17 @@ const FormCustomerInfo: FC<FormCustomerInfoProps> = ({ infoCustomer, setInfoCust
   const { data: wards } = useGetWardByDistrict(
     districts?.find((d) => d.DistrictName === infoCustomer.district)?.DistrictID || 0
   )
+
+  const { data: listAddressOfUser, isLoading: isLoadingAddress } = useGetAddressByUserId(currentUser?.id || 0)
+
+  useEffect(() => {
+    if (listAddressOfUser && listAddressOfUser.length > 0) {
+      const findAddress = listAddressOfUser.find((address) => address.isDefault) || listAddressOfUser[0]
+      if (orderSlice.shippingAddress == null) {
+        setSelectedAddress(findAddress)
+      }
+    }
+  }, [listAddressOfUser])
 
   useEffect(() => {
     if (selectedAddress) {
@@ -84,8 +96,9 @@ const FormCustomerInfo: FC<FormCustomerInfoProps> = ({ infoCustomer, setInfoCust
 
   return (
     <div className='mt-6 space-y-3'>
-      {isProvinceLoading && <LoadingOpacity />}
+      {isProvinceLoading || (isLoadingAddress && <LoadingOpacity />)}
       <SelectAddressModal
+        dataSources={listAddressOfUser || []}
         isOpen={isOpen}
         onClose={closeModal}
         onFinishedSelectAddress={(address) => setSelectedAddress(address)}
@@ -205,7 +218,7 @@ const FormCustomerInfo: FC<FormCustomerInfoProps> = ({ infoCustomer, setInfoCust
                 />
               </div>
             )}
-            {selectedAddress && [].length > 1 && (
+            {selectedAddress && (
               <div className='col-span-2'>
                 <div className='flex items-start cursor-pointer gap-x-1'>
                   <div className='flex items-start justify-between w-full gap-x-4'>
@@ -224,7 +237,7 @@ const FormCustomerInfo: FC<FormCustomerInfoProps> = ({ infoCustomer, setInfoCust
                 </div>
               </div>
             )}
-            {[].length > 1 && (
+            {listAddressOfUser && listAddressOfUser.length > 0 && (
               <div className='col-span-2'>
                 <div
                   onClick={selectedAddress ? () => handleOpenNewForm() : openModal}

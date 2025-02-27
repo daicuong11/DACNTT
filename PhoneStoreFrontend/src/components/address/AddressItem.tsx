@@ -24,14 +24,6 @@ const AddressItem: FC<AddressProps> = ({ selectedAddress, address, onSelect }) =
             </div>
           )}
         </div>
-        <div
-          onClick={(e) => {
-            e.stopPropagation()
-          }}
-          className='flex items-end justify-center py-1 border border-gray-100 rounded-md btn btn-light'
-        >
-          <EditFilled className='text-sm' />
-        </div>
       </div>
     </div>
   )

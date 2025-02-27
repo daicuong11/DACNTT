@@ -20,6 +20,7 @@ import PaymentResultPage from '@/pages/payment_result/PaymentResultPage'
 import VnpayPaymentResultPage from '@/pages/payment_result/VnpayPaymentResultPage'
 import { ProductDetailPage } from '@/pages/products'
 import {
+  AddAddressPage,
   AddressInfoPage,
   ChangePasswordPage,
   OrderDetailPage,
@@ -28,6 +29,7 @@ import {
   SupportPage,
   UserInfoPage
 } from '@/pages/profile'
+import EditAddressPage from '@/pages/profile/EditAddressPage'
 import { RegisterPage } from '@/pages/register'
 import { SearchResultPage } from '@/pages/search'
 import { RoleEnum } from '@/types/user.type'
@@ -143,6 +145,14 @@ const MyRoutes = () => {
         {
           path: 'user-info/address-info',
           element: <AddressInfoPage />
+        },
+        {
+          path: 'user-info/address-info/add',
+          element: <AddAddressPage />
+        },
+        {
+          path: 'user-info/address-info/edit/:addressId',
+          element: <EditAddressPage />
         },
         {
           path: 'user-info',

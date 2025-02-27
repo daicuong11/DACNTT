@@ -24,3 +24,12 @@ export interface AddressFormType {
   street: string
   isDefault: boolean
 }
+
+export interface AddressRequestType {
+  userId: number
+  province: string
+  district: string
+  ward: string
+  street: string
+  isDefault: boolean
+}

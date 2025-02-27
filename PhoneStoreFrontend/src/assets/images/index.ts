@@ -25,6 +25,8 @@ import cart_empty from './cart_empty.png'
 import cart_empty_removebg from './cart_empty-removebg.png'
 import cart_full_1 from './cart_full_1.png'
 import cart_full_2 from './cart_full_2.png'
+import house_img from './house.png'
+import no_address_img from './no-address.png'
 
 export * from './payment_methods'
 
@@ -57,7 +59,9 @@ export {
   cart_empty,
   cart_empty_removebg,
   cart_full_1,
-  cart_full_2
+  cart_full_2,
+  house_img,
+  no_address_img
 }
 
 export const rightBannerImages = [
