@@ -32,7 +32,7 @@ namespace PhoneStoreBackend.Controllers
             _context = context;
             _customerRepository = customerRepository;
             _paymentRepository = paymentRepository;
-            _gHNRepository = gHNRepository; 
+            _gHNRepository = gHNRepository;
             _productVariantRepository = productVariantRepository;
         }
 
@@ -80,12 +80,12 @@ namespace PhoneStoreBackend.Controllers
                         await _orderRepository.UpdateOrderStatusAsync(order.OrderId, getStatusOrder.Status);
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    if(order.Status != OrderStatusEnum.pending.ToString())
+                    if (order.Status != OrderStatusEnum.pending.ToString())
                     {
                         order.Status = OrderStatusEnum.pending.ToString();
-                        await _orderRepository.UpdateOrderStatusAsync(order.OrderId, OrderStatusEnum.cancel.ToString()  );
+                        await _orderRepository.UpdateOrderStatusAsync(order.OrderId, OrderStatusEnum.cancel.ToString());
                     }
                 }
 
@@ -209,7 +209,7 @@ namespace PhoneStoreBackend.Controllers
                 var newOrder = new Order
                 {
                     UserId = orderReq.UserId,
-                    CouponId = orderReq.CouponId ?? 1,
+                    CouponId = orderReq.CouponId ?? null,
                     CustomerId = createdCustomer.CustomerId,
                     OrderDate = DateTime.Now,
                     ShippingFee = orderReq.ShippingFee,
@@ -310,7 +310,7 @@ namespace PhoneStoreBackend.Controllers
                 var newOrder = new Order
                 {
                     UserId = orderReq.UserId,
-                    CouponId = orderReq.CouponId ?? 1,
+                    CouponId = orderReq.CouponId ?? null,
                     CustomerId = createdCustomer.CustomerId,
                     OrderDate = DateTime.Now,
                     ShippingFee = orderReq.ShippingFee,

@@ -6,6 +6,7 @@ import { ProfileLayout } from '@/layouts/profile'
 import CategoryWatch from '@/middlewares/CategoryWatch'
 import BrandList from '@/pages/admin/brands/BrandList'
 import CategoryList from '@/pages/admin/categories/CategoryList'
+import Dashboard from '@/pages/admin/dashboard'
 import AddProduct from '@/pages/admin/products/AddProduct'
 import Details from '@/pages/admin/products/Details'
 import ProductList from '@/pages/admin/products/ProductList'
@@ -81,13 +82,14 @@ const MyRoutes = () => {
         {
           path: 'result/:orderId',
           element: <PaymentResultPage />
-        }
+        },
+        {
+          path: 'vnpay-result',
+          element: <VnpayPaymentResultPage />
+        },
       ]
     },
-    {
-      path: 'payment-result',
-      element: <VnpayPaymentResultPage />
-    },
+
     {
       path: 'not-found',
       element: <NotFoundPage />
@@ -183,6 +185,10 @@ const MyRoutes = () => {
       path: '/admin',
       element: <AdminLayout />,
       children: [
+        {
+          path: 'dashboard',
+          element: <Dashboard />
+        },
         {
           path: 'products',
           children: [
