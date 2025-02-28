@@ -21,7 +21,7 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> GetAllWishlists()
         {
             try
@@ -38,7 +38,7 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> GetWishlistById(int id)
         {
             try
@@ -61,13 +61,37 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpGet("user/{userId}")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> GetWishlistByUserId(int userId)
         {
             try
             {
-                var wishlist = await _wishlistRepository.GetWishlistByUserIdAsync(userId);
-                var response = Response<WishlistDTO>.CreateSuccessResponse(wishlist, "Thông tin danh sách yêu thích của người dùng");
+                var wishlists = await _wishlistRepository.GetWishlistByUserIdAsync(userId);
+                var response = Response<ICollection<WishlistDTO>>.CreateSuccessResponse(wishlists, "Thông tin danh sách yêu thích của người dùng");
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = Response<object>.CreateErrorResponse($"Đã xảy ra lỗi: {ex.Message}");
+                return BadRequest(errorResponse);
+            }
+        }
+
+        [HttpGet("user/{userId}/variant/{variantId}")]
+        //[Authorize]
+        public async Task<IActionResult> AddWishlist(int userId, int variantId)
+        {
+            try
+            {
+                if (userId == null || variantId == null)
+                {
+                    var responseError = Response<object>.CreateErrorResponse($"Vui lòng điền đủ thông tin");
+
+                    return BadRequest(responseError);
+                }
+
+                var createdWishlist = await _wishlistRepository.GetWishlistByUserIdAndProductVariantIdAsync(userId, variantId);
+                var response = Response<WishlistDTO>.CreateSuccessResponse(createdWishlist, "Sản phẩm đã được yêu thích");
                 return Ok(response);
             }
             catch (Exception ex)
@@ -78,7 +102,7 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> AddWishlist([FromBody] WishlistRequest wishlist)
         {
             try
@@ -90,10 +114,11 @@ namespace PhoneStoreBackend.Controllers
                 var createWishlist = new Wishlist
                 {
                     UserId = wishlist.UserId,
+                    ProductVariantId = wishlist.ProductVariantId,
                 };
                 var createdWishlist = await _wishlistRepository.AddWishlistAsync(createWishlist);
-                var response = Response<WishlistDTO>.CreateSuccessResponse(createdWishlist, "Danh sách yêu thích đã được tạo thành công");
-                return CreatedAtAction(nameof(GetWishlistById), new { id = createdWishlist.WishlistId }, response);
+                var response = Response<WishlistDTO>.CreateSuccessResponse(createdWishlist, "Sản phẩm đã được yêu thích");
+                return Ok(response);
             }
             catch (Exception ex)
             {
@@ -103,7 +128,7 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> DeleteWishlist(int id)
         {
             try

@@ -7,7 +7,8 @@ namespace PhoneStoreBackend.Repository
     {
         Task<ICollection<WishlistDTO>> GetAllWishlistsAsync();
         Task<WishlistDTO> GetWishlistByIdAsync(int wishlistId);
-        Task<WishlistDTO> GetWishlistByUserIdAsync(int userId);
+        Task<ICollection<WishlistDTO>> GetWishlistByUserIdAsync(int userId);
+        Task<WishlistDTO?> GetWishlistByUserIdAndProductVariantIdAsync(int userId, int variantId);
         Task<WishlistDTO> AddWishlistAsync(Wishlist wishlist);
         Task<bool> DeleteWishlistAsync(int wishlistId);
     }

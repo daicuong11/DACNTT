@@ -1,4 +1,4 @@
-import { FC, HTMLAttributes, useState } from 'react'
+import { FC, HTMLAttributes, useMemo, useState } from 'react'
 import { ConfigProvider, Flex, Rate, Tag } from 'antd'
 import FavoriteButton from '../buttons/FavoriteButton'
 import classNames from 'classnames'
@@ -8,24 +8,66 @@ import formatPrice from '../../utils/formatPrice'
 import { getProductFullName } from '@/utils/getProductFullName'
 import { ProductResponse } from '@/types/product.type'
 import getPriceAfterDiscount from '@/utils/getPriceAfterDiscount'
+import { useQueryClient } from '@tanstack/react-query'
+import { useAddProductToWishlist, useGetMyWishlist } from '@/hooks/querys/wishlist.query'
+import { useAppSelector, useModal } from '@/hooks'
+import LoginOfRegisterModal from '../modals/LoginOrRegisterModal'
+import { WishListRequestType } from '@/types/wishlist.type'
+import { toast } from 'react-toastify'
 
 interface ProductCardType extends HTMLAttributes<HTMLDivElement> {
   product: ProductResponse
 }
 
 const ProductCard: FC<ProductCardType> = ({ product, ...props }) => {
+  const queryClient = useQueryClient()
+  const currentUser = useAppSelector((state) => state.auth.user)
+  const { data: wishlist, isLoading, isError } = useGetMyWishlist(currentUser?.id || 0)
+  const { mutate: addProductToWishlist, isPending } = useAddProductToWishlist()
   const navigate = useNavigate()
   const variantFirst = product.productVariants[0]
+  const { isOpen, closeModal, openModal } = useModal()
+
+  const isLove = useMemo(() => {
+    if (wishlist) {
+      return wishlist?.some((item) => item.productVariantId === variantFirst.variantId)
+    }
+    return false
+  }, [wishlist, variantFirst.variantId])
 
   const handleProductClick = (product: ProductResponse) => {
     navigate(getProductRoute(product.category.name, variantFirst.slug))
   }
+
+  const handleLoveClick = async () => {
+    if (!currentUser) {
+      openModal()
+    } else {
+      const addToWishlistReq: WishListRequestType = {
+        userId: currentUser.id,
+        productVariantId: variantFirst.variantId
+      }
+      addProductToWishlist(addToWishlistReq, {
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: ['getMyWishlist', currentUser.id]
+          })
+          toast('Đã thêm vào danh sách yêu thích')
+        },
+        onError: (error) => {
+          toast.error('Thêm vào danh sách yêu thích thất bại')
+        }
+      })
+    }
+  }
+
   return (
     <div
       {...props}
       onClick={() => handleProductClick(product)}
       className='relative h-[392px] md:min-w-[224px] cursor-pointer rounded-xl bg-white p-[10px] flex flex-col drop-shadow-md shadow shadow-gray-300 border border-gray-100'
     >
+      <LoginOfRegisterModal isOpen={isOpen} onClose={closeModal} />
       <div className='flex-[5] flex items-center justify-center'>
         <img
           src={variantFirst.imageUrl}
@@ -79,9 +121,15 @@ const ProductCard: FC<ProductCardType> = ({ product, ...props }) => {
                 <Rate value={4.5} allowHalf disabled className='text-base' />
               </ConfigProvider>
             </div>
-            <div onClick={(e) => e.stopPropagation()} className='flex items-center'>
+            <div
+              onClick={(e) => {
+                e.stopPropagation()
+                handleLoveClick()
+              }}
+              className='flex items-center'
+            >
               <span className='text-xs text-gray-500'>Yêu thích</span>
-              <FavoriteButton isLove={true} />
+              <FavoriteButton isLove={isLove} />
             </div>
           </div>
         </div>

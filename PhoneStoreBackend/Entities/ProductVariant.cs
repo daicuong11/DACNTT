@@ -45,7 +45,7 @@ namespace PhoneStoreBackend.Entities
         [JsonIgnore]
         public ICollection<Review> Reviews { get; set; }
         [JsonIgnore]
-        public ICollection<WishlistItem> WishlistItems { get; set; }
+        public ICollection<Wishlist> Wishlists { get; set; }
         public ICollection<ProductSpecification> ProductSpecifications { get; set; }
     }
 }

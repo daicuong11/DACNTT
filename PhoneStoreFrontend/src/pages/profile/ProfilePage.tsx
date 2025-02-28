@@ -1,5 +1,5 @@
 import { rightBannerImages } from '@/assets/images'
-import { ProductCardSimple } from '@/components'
+import { LoadingItem, ProductCardSimple } from '@/components'
 import { useAppSelector } from '@/hooks'
 import { maskPhoneNumber } from '@/utils/maskPhoneNumber'
 import { EyeFilled, EyeInvisibleFilled, UserOutlined } from '@ant-design/icons'
@@ -11,6 +11,7 @@ import { RoleEnum } from '@/types/user.type'
 import { useGetOrdersByStatus } from '@/hooks/querys/order.query'
 import formatPrice from '@/utils/formatPrice'
 import classNames from 'classnames'
+import { useGetMyWishlist } from '@/hooks/querys/wishlist.query'
 
 interface ProfilePageProps {}
 
@@ -20,6 +21,7 @@ const ProfilePage: FC<ProfilePageProps> = () => {
   const currentUser = useAppSelector((state) => state.auth.user)
 
   const { data: ordersAll, isLoading: isLoadingOrderAll } = useGetOrdersByStatus(currentUser?.id || 0, 'all')
+  const { data: wishlist, isLoading: isLoadingWishlist } = useGetMyWishlist(currentUser?.id || 0)
 
   const totalPay = useMemo(() => {
     return ordersAll?.reduce((total, order) => {
@@ -135,18 +137,26 @@ const ProfilePage: FC<ProfilePageProps> = () => {
       <div className='mt-5'>
         <div className='mb-3 text-lg font-medium to-black-2'>Sản phẩm bạn yêu thích</div>
         <div className='grid gap-2.5 grid-cols-4'>
-          {/* {exampleProductVariant.slice(0, 8).map((productVariant, index) => (
-            <ProductCardSimple key={index} className='' productVariant={productVariant} />
-          ))} */}
+          {isLoadingWishlist ? (
+            <div className='flex items-center justify-center'>
+              <LoadingItem />
+            </div>
+          ) : (
+            wishlist?.map((productVariant, index) => (
+              <ProductCardSimple key={index} className='' productVariantId={productVariant.productVariantId} />
+            ))
+          )}
         </div>
-        <div className='mt-2.5'>
-          <button className='items-center font-roboto mx-auto text-[15px] w-min text-nowrap px-20 font-medium border border-gray-200 shadow-md btn btn-light hover:border-primary hover:text-primary hover:!bg-red-50 drop-shadow-sm'>
-            Xem thêm
-            <span>
-              <ChevronDown size={18} strokeWidth={2} />
-            </span>
-          </button>
-        </div>
+        {wishlist && wishlist?.length > 8 && (
+          <div className='mt-2.5'>
+            <button className='items-center font-roboto mx-auto text-[15px] w-min text-nowrap px-20 font-medium border border-gray-200 shadow-md btn btn-light hover:border-primary hover:text-primary hover:!bg-red-50 drop-shadow-sm'>
+              Xem thêm
+              <span>
+                <ChevronDown size={18} strokeWidth={2} />
+              </span>
+            </button>
+          </div>
+        )}
       </div>
     </div>
   )
