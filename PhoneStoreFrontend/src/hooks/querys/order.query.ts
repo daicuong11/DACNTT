@@ -56,3 +56,11 @@ export const useGetOrdersByStatus = (userId: number, status: string) => {
     refetchOnWindowFocus: true
   })
 }
+
+export const useUpdateOrderStatus = () => {
+  return useMutation({
+    mutationKey: ['changeOrderStatus'],
+    mutationFn: ({ orderId, status }: { orderId: number; status: string }) =>
+      orderAPI.updateOrderStatus(orderId, status)
+  })
+}

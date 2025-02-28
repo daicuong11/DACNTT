@@ -241,6 +241,10 @@ const MyRoutes = () => {
             {
               path: '',
               element: <Orders />
+            },
+            {
+              path: 'details/:orderId',
+              element: <OrderDetailPage />
             }
           ]
         }
