@@ -11,6 +11,10 @@
     @apply text-gray-800 bg-white hover:bg-gray-100;
   }
 
+  .btn.btn-success {
+    @apply bg-gradient-to-b from-[#2e7d32] to-[#1b5e20] text-white hover:!from-[#1b5e20] hover:!to-[#114e17];
+  }
+
   .btn.btn-danger {
     @apply bg-gradient-to-b from-[#f52f32] to-[#e11b1e] text-white hover:!from-[#e11b1e] hover:!to-[#c2181a];
   }

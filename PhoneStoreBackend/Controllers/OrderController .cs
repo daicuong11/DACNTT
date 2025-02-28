@@ -85,7 +85,7 @@ namespace PhoneStoreBackend.Controllers
                     if (order.Status != OrderStatusEnum.pending.ToString())
                     {
                         order.Status = OrderStatusEnum.pending.ToString();
-                        await _orderRepository.UpdateOrderStatusAsync(order.OrderId, OrderStatusEnum.cancel.ToString());
+                        await _orderRepository.UpdateOrderStatusAsync(order.OrderId, OrderStatusEnum.pending.ToString());
                     }
                 }
 

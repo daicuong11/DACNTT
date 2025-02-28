@@ -10,7 +10,7 @@ interface SelectAddressModalProps {
   dataSources: AddressType[]
 }
 const SelectAddressModal: FC<SelectAddressModalProps> = ({ isOpen, onClose, onFinishedSelectAddress, dataSources }) => {
-  const [selectedAddress, setSelectedAddress] = useState(dataSources[0].addressId)
+  const [selectedAddress, setSelectedAddress] = useState<number>()
 
   const onChangeSelectedAddress = (e: RadioChangeEvent) => {
     setSelectedAddress(e.target.value)
@@ -45,7 +45,12 @@ const SelectAddressModal: FC<SelectAddressModalProps> = ({ isOpen, onClose, onFi
       <div className='max-h-[60vh] h-[60vh] overflow-y-scroll scrollbar-hide flex flex-col gap-y-4'>
         <Radio.Group value={selectedAddress} onChange={onChangeSelectedAddress} className='flex flex-col gap-y-4'>
           {dataSources.map((address, index) => (
-            <AddressItem selectedAddress={selectedAddress} address={address} key={index} onSelect={onSelect} />
+            <AddressItem
+              isSelected={address.addressId === selectedAddress}
+              address={address}
+              key={index}
+              onSelect={onSelect}
+            />
           ))}
         </Radio.Group>
       </div>

@@ -86,7 +86,7 @@ const CarouselProductImages: FC<CarouselProductImagesProps> = ({ dataSources, pr
                       preview={{ maskClassName: '!hidden' }}
                       width={'100%'}
                       className='object-contain cursor-pointer rounded-xl'
-                      src={dataSources[0].imageUrl}
+                      src={dataSources[0]?.imageUrl || ''}
                     />
                   </div>
                 </div>

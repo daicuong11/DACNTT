@@ -17,6 +17,15 @@ export const useCreateOrderCOD = () => {
   return mutation
 }
 
+export const useGetAllOrders = () => {
+  return useQuery({
+    queryKey: ['getAllOrders'],
+    queryFn: orderAPI.getAllOrders,
+    staleTime: 1000 * 60,
+    refetchOnWindowFocus: true
+  })
+}
+
 export const useGetOrderById = (orderId: string) => {
   const query = useQuery({
     queryKey: ['getOrderById', orderId],
