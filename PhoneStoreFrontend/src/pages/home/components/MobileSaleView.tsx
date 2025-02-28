@@ -26,7 +26,7 @@ const MobileSaleView: FC<MobileSaleView> = () => {
           <button className='btn btn-light  border border-gray-100 !text-slate-600 !text-xs'>Google</button>
         </div>
       </div>
-      {isLoading ? <LoadingItem /> : <CarouselProduct dataSource={products!} />}
+      {isLoading ? <LoadingItem /> : <CarouselProduct dataSource={products!} row={2} autoPlay={false} />}
     </div>
   )
 }

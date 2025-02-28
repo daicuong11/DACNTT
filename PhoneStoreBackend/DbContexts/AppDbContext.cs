@@ -26,7 +26,6 @@ namespace PhoneStoreBackend.DbContexts
         public DbSet<ProductSpecificationGroup> ProductSpecificationGroups { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Wishlist> Wishlists { get; set; }
-        public DbSet<WishlistItem> WishlistItems { get; set; }
         public DbSet<ActivityLog> ActivityLogs { get; set; }
         public DbSet<Notification> Notifications { get; set; }
 

@@ -1,4 +1,6 @@
+import axiosInstance from '@/configs/http'
 import axiosGHN from '@/configs/httpGHN'
+import { BaseResponse } from '@/types/auth.type'
 import {
   CreateOrderGHNRequest,
   CreateOrderGHNResponse,
@@ -52,10 +54,9 @@ class GHNApi {
     }
   }
 
-  createGHNOrder = async (orderRequest: CreateOrderGHNRequest): Promise<CreateOrderGHNResponse> => {
+  createGHNOrder = async (orderRequest: CreateOrderGHNRequest): Promise<BaseResponse<CreateOrderGHNResponse>> => {
     try {
-      const res = await axiosGHN.post('v2/shipping-order/create', orderRequest)
-      return res.data
+      return await axiosInstance.post('ghn', orderRequest)
     } catch (error: any) {
       throw new Error(error.message || 'Failed to create order')
     }

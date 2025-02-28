@@ -17,6 +17,15 @@ export const useCreateOrderCOD = () => {
   return mutation
 }
 
+export const useGetAllOrders = () => {
+  return useQuery({
+    queryKey: ['getAllOrders'],
+    queryFn: orderAPI.getAllOrders,
+    staleTime: 1000 * 60,
+    refetchOnWindowFocus: true
+  })
+}
+
 export const useGetOrderById = (orderId: string) => {
   const query = useQuery({
     queryKey: ['getOrderById', orderId],
@@ -45,5 +54,13 @@ export const useGetOrdersByStatus = (userId: number, status: string) => {
     staleTime: 1000 * 60,
     enabled: !!userId,
     refetchOnWindowFocus: true
+  })
+}
+
+export const useUpdateOrderStatus = () => {
+  return useMutation({
+    mutationKey: ['changeOrderStatus'],
+    mutationFn: ({ orderId, status }: { orderId: number; status: string }) =>
+      orderAPI.updateOrderStatus(orderId, status)
   })
 }

@@ -3,7 +3,12 @@ import { ProductVariantType } from './product_variant.type'
 export interface WishlistType {
   wishListId: number
   userId: number
-  wishListItems: WishListItemType[]
+  productVariantId: number
+}
+
+export interface WishListRequestType {
+  userId: number
+  productVariantId: number
 }
 
 export interface WishListItemType {

@@ -24,6 +24,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var orders = await _context.Orders
                 .Include(o => o.Payment)
                 .Include(o => o.Customer)
+                .OrderByDescending(o => o.OrderDate)
                 .ToListAsync();
             return _mapper.Map<ICollection<OrderDTO>>(orders);
         }

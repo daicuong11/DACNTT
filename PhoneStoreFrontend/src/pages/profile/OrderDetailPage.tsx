@@ -82,6 +82,25 @@ const OrderDetailPage = () => {
             <span className=''>Phí vận chuyển:</span>
             <span className='font-medium text-gray-500'>{formatPrice(order?.shippingFee || 0)}</span>
           </div>
+          <div className='flex text-[15px] text-gray-500 justify-between gap-x-4 font-medium'>
+            <span className=''>Phương thức thanh toán:</span>
+            <span className='font-medium text-gray-500'>
+              {order?.payment.paymentMethod === 'COD' ? 'Thanh toán khi nhận hàng' : order?.payment.paymentMethod}
+            </span>
+          </div>
+          {order?.payment.paymentMethod !== 'COD' && (
+            <div className='flex text-[15px] text-gray-500 justify-between gap-x-4 font-medium'>
+              <span className=''>Trạng thái thanh toán:</span>
+              <span className='text-gray-500 '>
+                <Tag
+                  color={order?.payment.paymentStatus.toLocaleLowerCase() === 'success' ? 'green' : 'red'}
+                  className='m-0'
+                >
+                  {order?.payment.paymentStatus.toLocaleLowerCase() === 'success' ? 'Đã thanh toán' : 'Chưa thanh toán'}
+                </Tag>
+              </span>
+            </div>
+          )}
           <MyDivider />
           <div className='flex text-[15px] text-gray-500 justify-between gap-x-4 font-medium'>
             <span className=''>Phải thanh toán:</span>

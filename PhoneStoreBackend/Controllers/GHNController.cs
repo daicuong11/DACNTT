@@ -24,32 +24,48 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateGHNOrder ([FromBody] AddGHNOrderRequest orderReq)
+        public async Task<IActionResult> CreateGHNOrder([FromBody] AddGHNOrderRequest orderReq)
         {
             var responseError = ModelStateHelper.CheckModelState(ModelState);
             if (responseError != null)
                 return BadRequest(responseError);
 
-            try {
+            try
+            {
                 var orderId = orderReq.OrderId;
                 var findOrder = await _context.Orders
                     .Include(o => o.Customer)
                     .Include(o => o.OrderDetails)
                         .ThenInclude(od => od.ProductVariant)
                     .FirstOrDefaultAsync(o => o.OrderId == orderId);
+
                 if (findOrder == null)
                 {
-                    return BadRequest(Response<object>.CreateErrorResponse("Không tìm thấy đơn hàng với id = " + orderId));
+                    return BadRequest(Response<object>.CreateErrorResponse($"Không tìm thấy đơn hàng với id = {orderId}"));
                 }
+
+                if (string.IsNullOrWhiteSpace(findOrder.ShippingAddress))
+                {
+                    return BadRequest(Response<object>.CreateErrorResponse("Địa chỉ giao hàng không được để trống"));
+                }
+
+                var getListAdress = findOrder.ShippingAddress.Split(',')
+                    .Select(x => x.Trim())
+                    .ToArray();
+
+                if (getListAdress.Length != 4)
+                {
+                    return BadRequest(Response<object>.CreateErrorResponse("Địa chỉ giao hàng không hợp lệ. Định dạng phải là: Số nhà, Phường/Xã, Quận/Huyện, Tỉnh/Thành phố."));
+                }
+
+                var (address, ward, district, province) = (getListAdress[0], getListAdress[1], getListAdress[2], getListAdress[3]);
+
                 var getSumQuantity = findOrder.OrderDetails.Sum(od => od.Quantity);
-                var getListAdress = findOrder.ShippingAddress.Split(", ");
-                if(getListAdress.Length != 4) { 
-                    return BadRequest(Response<object>.CreateErrorResponse("Địa chỉ giao hàng không hợp lệ"));
+                if (getSumQuantity <= 0)
+                {
+                    return BadRequest(Response<object>.CreateErrorResponse("Số lượng sản phẩm trong đơn hàng không hợp lệ."));
                 }
-                var address = getListAdress[0].Trim();
-                var wad = getListAdress[1].Trim();
-                var district = getListAdress[2].Trim();
-                var province = getListAdress[3].Trim();
+
                 var ghnReq = new CreateOrderGHNRequest
                 {
                     ClientOrderCode = findOrder.OrderId.ToString(),
@@ -62,33 +78,38 @@ namespace PhoneStoreBackend.Controllers
                     ServiceTypeId = 2,
                     ToProvinceName = province,
                     ToDistrictName = district,
-                    ToWardName = wad,
+                    ToWardName = ward,
                     ToAddress = address,
                     ToName = findOrder.Customer.Name,
                     ToPhone = findOrder.Customer.PhoneNumber,
                     Items = findOrder.OrderDetails.Select(od => new ItemOrderGHNRequest
                     {
-                        Name =od.ProductVariant.VariantName,
+                        Name = od.ProductVariant.VariantName,
                         Quantity = od.Quantity,
                     }).ToList()
                 };
 
                 var createdGHNOrder = await _gHNRepository.CreateGHNOrder(ghnReq);
-                if (createdGHNOrder == null)
-                    throw new Exception("Không thể tạo đơn hàng GHN.");
+                if (createdGHNOrder == null || string.IsNullOrEmpty(createdGHNOrder.OrderCode))
+                {
+                    return BadRequest(Response<object>.CreateErrorResponse("Không thể tạo đơn hàng GHN. Vui lòng thử lại sau."));
+                }
+
+                findOrder.Status = OrderStatusEnum.ready_to_pick.ToString();
+                await _context.SaveChangesAsync();
 
                 return Ok(Response<object>.CreateSuccessResponse(new
                 {
-                        order_code = createdGHNOrder.OrderCode,
-                        total_fee = createdGHNOrder.TotalFee,
-                        expected_delivery_time = createdGHNOrder.ExpectedDeliveryTime,
+                    order_code = createdGHNOrder.OrderCode,
+                    total_fee = createdGHNOrder.TotalFee,
+                    expected_delivery_time = createdGHNOrder.ExpectedDeliveryTime,
                 }, "Đơn hàng đã được thêm thành công"));
             }
             catch (Exception ex)
             {
-                return BadRequest(Response<object>.CreateErrorResponse($"Đã xảy ra lỗi: {ex.Message}"));
-
+                return BadRequest(Response<object>.CreateErrorResponse("Đã xảy ra lỗi trong quá trình xử lý. Vui lòng thử lại sau."));
             }
         }
+
     }
 }

@@ -95,15 +95,17 @@ const CartItem: FC<CartItemProps> = ({ cartItem, checked, handleSelect }) => {
               </div>
               <div onClick={(e) => e.stopPropagation()} className='flex gap-x-0.5 justify-end'>
                 <button
+                  disabled={cartItem.quantity == 1}
                   onClick={handleDownQuality}
-                  className='flex items-center justify-center p-2 bg-gray-100 rounded hover:bg-gray-200'
+                  className='flex items-center justify-center p-2 bg-gray-100 rounded hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed'
                 >
                   <Minus size={14} strokeWidth={2} />
                 </button>
                 <div className='w-[30px] h-[30px] flex items-center justify-center'>{cartItem.quantity}</div>
                 <button
+                  disabled={cartItem.quantity >= cartItem.productVariant.stock}
                   onClick={handleUpQuality}
-                  className='flex items-center justify-center p-2 bg-gray-100 rounded hover:bg-gray-200'
+                  className='flex items-center justify-center p-2 bg-gray-100 rounded hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed'
                 >
                   <Plus size={14} strokeWidth={2} />
                 </button>

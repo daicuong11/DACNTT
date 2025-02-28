@@ -1,4 +1,5 @@
 import axiosInstance from '@/configs/http'
+import { BaseResponse } from '@/types/auth.type'
 import { CreatedOrderResponseType, CreateOrderRequest, OrderRequestType, OrderResponseType } from '@/types/order.type'
 
 class OrderAPI {
@@ -9,6 +10,11 @@ class OrderAPI {
 
   async createCODOrder(orderReq: CreateOrderRequest): Promise<CreatedOrderResponseType> {
     const res = await axiosInstance.post('orders/cod', orderReq)
+    return res.data
+  }
+
+  async getAllOrders(): Promise<OrderResponseType[]> {
+    const res = await axiosInstance.get('orders')
     return res.data
   }
 
@@ -25,6 +31,10 @@ class OrderAPI {
   async getOrdersByStatus(userId: number, status: string): Promise<OrderResponseType[]> {
     const res = await axiosInstance.get(`orders/user/${userId}?status=${status}`)
     return res.data
+  }
+
+  async updateOrderStatus(orderId: number, status: string): Promise<BaseResponse<object>> {
+    return await axiosInstance.patch(`orders/${orderId}/status`, { status })
   }
 }
 

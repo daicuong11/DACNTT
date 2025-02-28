@@ -12,8 +12,8 @@ using PhoneStoreBackend.DbContexts;
 namespace PhoneStoreBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250222073025_initDB")]
-    partial class initDB
+    [Migration("20250228180417_initdb")]
+    partial class initdb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -248,17 +248,12 @@ namespace PhoneStoreBackend.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("int");
-
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
                     b.HasKey("CustomerId");
-
-                    b.HasIndex("OrderId");
 
                     b.ToTable("Customers");
                 });
@@ -723,37 +718,19 @@ namespace PhoneStoreBackend.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WishlistId"), 1L, 1);
 
+                    b.Property<int>("ProductVariantId")
+                        .HasColumnType("int");
+
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("WishlistId");
 
+                    b.HasIndex("ProductVariantId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Wishlists");
-                });
-
-            modelBuilder.Entity("PhoneStoreBackend.Entities.WishlistItem", b =>
-                {
-                    b.Property<int>("WishlistItemId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WishlistItemId"), 1L, 1);
-
-                    b.Property<int>("ProductVariantId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WishlistId")
-                        .HasColumnType("int");
-
-                    b.HasKey("WishlistItemId");
-
-                    b.HasIndex("ProductVariantId");
-
-                    b.HasIndex("WishlistId");
-
-                    b.ToTable("WishlistItems");
                 });
 
             modelBuilder.Entity("Coupon", b =>
@@ -815,13 +792,6 @@ namespace PhoneStoreBackend.Migrations
                     b.Navigation("Cart");
 
                     b.Navigation("ProductVariant");
-                });
-
-            modelBuilder.Entity("PhoneStoreBackend.Entities.Customer", b =>
-                {
-                    b.HasOne("PhoneStoreBackend.Entities.Order", null)
-                        .WithMany("Customers")
-                        .HasForeignKey("OrderId");
                 });
 
             modelBuilder.Entity("PhoneStoreBackend.Entities.Notification", b =>
@@ -994,32 +964,21 @@ namespace PhoneStoreBackend.Migrations
 
             modelBuilder.Entity("PhoneStoreBackend.Entities.Wishlist", b =>
                 {
+                    b.HasOne("PhoneStoreBackend.Entities.ProductVariant", "ProductVariant")
+                        .WithMany("Wishlists")
+                        .HasForeignKey("ProductVariantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("PhoneStoreBackend.Entities.User", "User")
                         .WithMany("Wishlists")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("PhoneStoreBackend.Entities.WishlistItem", b =>
-                {
-                    b.HasOne("PhoneStoreBackend.Entities.ProductVariant", "ProductVariant")
-                        .WithMany("WishlistItems")
-                        .HasForeignKey("ProductVariantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PhoneStoreBackend.Entities.Wishlist", "Wishlist")
-                        .WithMany("WishlistItems")
-                        .HasForeignKey("WishlistId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("ProductVariant");
 
-                    b.Navigation("Wishlist");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Coupon", b =>
@@ -1056,8 +1015,6 @@ namespace PhoneStoreBackend.Migrations
 
             modelBuilder.Entity("PhoneStoreBackend.Entities.Order", b =>
                 {
-                    b.Navigation("Customers");
-
                     b.Navigation("OrderDetails");
 
                     b.Navigation("Payment");
@@ -1083,7 +1040,7 @@ namespace PhoneStoreBackend.Migrations
 
                     b.Navigation("Reviews");
 
-                    b.Navigation("WishlistItems");
+                    b.Navigation("Wishlists");
                 });
 
             modelBuilder.Entity("PhoneStoreBackend.Entities.User", b =>
@@ -1103,11 +1060,6 @@ namespace PhoneStoreBackend.Migrations
                     b.Navigation("SentNotifications");
 
                     b.Navigation("Wishlists");
-                });
-
-            modelBuilder.Entity("PhoneStoreBackend.Entities.Wishlist", b =>
-                {
-                    b.Navigation("WishlistItems");
                 });
 #pragma warning restore 612, 618
         }

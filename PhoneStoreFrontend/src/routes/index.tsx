@@ -7,6 +7,7 @@ import CategoryWatch from '@/middlewares/CategoryWatch'
 import BrandList from '@/pages/admin/brands/BrandList'
 import CategoryList from '@/pages/admin/categories/CategoryList'
 import Dashboard from '@/pages/admin/dashboard'
+import Orders from '@/pages/admin/orders'
 import AddProduct from '@/pages/admin/products/AddProduct'
 import Details from '@/pages/admin/products/Details'
 import ProductList from '@/pages/admin/products/ProductList'
@@ -88,7 +89,7 @@ const MyRoutes = () => {
         {
           path: 'vnpay-result',
           element: <VnpayPaymentResultPage />
-        },
+        }
       ]
     },
 
@@ -231,6 +232,19 @@ const MyRoutes = () => {
             {
               path: '',
               element: <CategoryList />
+            }
+          ]
+        },
+        {
+          path: 'orders',
+          children: [
+            {
+              path: '',
+              element: <Orders />
+            },
+            {
+              path: 'details/:orderId',
+              element: <OrderDetailPage />
             }
           ]
         }

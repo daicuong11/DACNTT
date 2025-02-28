@@ -20,8 +20,7 @@ namespace PhoneStoreBackend.Api.Request
         [StringLength(500, ErrorMessage = "Ghi chú không được vượt quá 500 ký tự.")]
         public string Note { get; set; }
 
-        [Required(ErrorMessage = "Tổng số tiền là bắt buộc.")]
-        [Range(0.01, double.MaxValue, ErrorMessage = "Tổng số tiền phải lớn hơn 0.")]
+        [Required(ErrorMessage = "Phí vận chuyển tiền là bắt buộc.")]
         public decimal ShippingFee { get; set; }
 
         [Required(ErrorMessage = "Tổng số tiền là bắt buộc.")]

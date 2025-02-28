@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 using PhoneStoreBackend.Api.Request;
 using PhoneStoreBackend.Api.Request.GHN;
 using PhoneStoreBackend.Api.Response;
@@ -82,10 +83,10 @@ namespace PhoneStoreBackend.Controllers
                 }
                 catch (Exception)
                 {
-                    if (order.Status != OrderStatusEnum.pending.ToString())
+                    if (order.Status != OrderStatusEnum.pending.ToString() && order.Status != OrderStatusEnum.cancel.ToString())
                     {
                         order.Status = OrderStatusEnum.pending.ToString();
-                        await _orderRepository.UpdateOrderStatusAsync(order.OrderId, OrderStatusEnum.cancel.ToString());
+                        await _orderRepository.UpdateOrderStatusAsync(order.OrderId, OrderStatusEnum.pending.ToString());
                     }
                 }
 
@@ -455,31 +456,30 @@ namespace PhoneStoreBackend.Controllers
             }
         }
 
+
         [HttpPatch("{id}/status")]
-        [Authorize(Roles = "ADMIN")]
-        public async Task<IActionResult> UpdateOrderStatus(int id, [FromBody] string status)
+        public async Task<IActionResult> UpdateOrderStatus(int id, [FromBody] UpdateStatusOrderRequest status)
         {
             try
             {
-                var responseError = ModelStateHelper.CheckModelState(ModelState);
-                if (responseError != null)
-                    return BadRequest(responseError);
-
-                var isUpdated = await _orderRepository.UpdateOrderStatusAsync(id, status);
-                if (!isUpdated)
+                if (string.IsNullOrEmpty(status.Status))
                 {
-                    var notFoundResponse = Response<object>.CreateErrorResponse("Không tìm thấy đơn hàng để cập nhật trạng thái.");
-                    return NotFound(notFoundResponse);
+                    return BadRequest(Response<object>.CreateErrorResponse("Thiếu trạng thái đơn hàng."));
                 }
 
-                var response = Response<object>.CreateSuccessResponse(null, "Trạng thái đơn hàng đã được cập nhật thành công");
-                return Ok(response);
+                var isUpdated = await _orderRepository.UpdateOrderStatusAsync(id, status.Status);
+                if (!isUpdated)
+                {
+                    return NotFound(Response<object>.CreateErrorResponse("Không tìm thấy đơn hàng để cập nhật trạng thái."));
+                }
+
+                return Ok(Response<object>.CreateSuccessResponse(null, "Trạng thái đơn hàng đã được cập nhật thành công"));
             }
             catch (Exception ex)
             {
-                var errorResponse = Response<object>.CreateErrorResponse($"Đã xảy ra lỗi: {ex.Message}");
-                return BadRequest(errorResponse);
+                return BadRequest(Response<object>.CreateErrorResponse($"Đã xảy ra lỗi: {ex.Message}"));
             }
         }
+
     }
 }
