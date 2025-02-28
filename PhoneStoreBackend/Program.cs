@@ -122,10 +122,10 @@ builder.Services.AddSingleton<IVnpay, Vnpay>();
 //    options.UseSqlServer(connectionString));
 
 //Database configuration của Cuong
-builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Connection1")));
+//builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Connection1")));
 
 //Database configuration của Bien
-//builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Connection2")));
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Connection2")));
 
 
 // JWT and Google OAuth2 configuration
@@ -188,16 +188,27 @@ builder.Services.AddHttpClient();
 builder.Services.AddAutoMapper(typeof(Program));
 
 // Thêm CORS policy 
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("FrontendPolicy", policy =>
-    {
-        policy.WithOrigins("http://localhost:3000", "https://biendev.io.vn") // Thêm domain mới
-              .AllowAnyMethod()  // Cho phép tất cả HTTP methods
-              .AllowAnyHeader()  // Cho phép tất cả headers
-              .AllowCredentials(); // Hỗ trợ cookie, token
-    });
-});
+//builder.Services.AddCors(options =>
+//{
+//    options.AddPolicy("FrontendPolicy", policy =>
+//    {
+//        policy.WithOrigins("http://localhost:3000", "https://biendev.io.vn") // Thêm domain mới
+//              .AllowAnyMethod()  // Cho phép tất cả HTTP methods
+//              .AllowAnyHeader()  // Cho phép tất cả headers
+//              .AllowCredentials(); // Hỗ trợ cookie, token
+//    });
+//});
+
+//builder.Services.AddCors(options =>
+//{
+//    options.AddPolicy("FrontendPolicy", policy =>
+//    {
+//        policy.AllowAnyOrigin()  // Cho phép tất cả origin
+//              .AllowAnyMethod()   // Cho phép tất cả HTTP methods
+//              .AllowAnyHeader();  // Cho phép tất cả headers
+//    });
+//});
+
 
 
 // Build application
@@ -217,7 +228,7 @@ app.UseStatusCodePages("text/plain", "Status code: {0}");
 
 app.UseHttpsRedirection();
 
-app.UseCors("FrontendPolicy");
+//app.UseCors("FrontendPolicy");
 
 app.Use(async (context, next) =>
 {

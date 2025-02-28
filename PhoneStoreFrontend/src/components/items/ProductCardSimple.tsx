@@ -18,15 +18,11 @@ const ProductCardSimple: FC<ProductCardSimpleType> = ({ productVariantId, ...pro
   const navigate = useNavigate()
   const { data: productVariant, isLoading } = useGetProductVariantById(productVariantId)
 
-<<<<<<< HEAD
-  const handleProductClick = (variant: ProductVariantType) => {
-    navigate(getProductRoute(variant.product.category.name, variant.slug))
-=======
+
   const handleProductClick = () => {
     if (productVariant) {
       navigate(getProductRoute(productVariant.category.name, productVariant.slug))
     }
->>>>>>> d6b1f7820f12a7b5fe08548e5748989e94ed77c5
   }
 
   return isLoading ? (

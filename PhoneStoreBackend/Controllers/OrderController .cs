@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json.Linq;
 using PhoneStoreBackend.Api.Request;
 using PhoneStoreBackend.Api.Request.GHN;
 using PhoneStoreBackend.Api.Response;
@@ -215,7 +214,7 @@ namespace PhoneStoreBackend.Controllers
                     OrderDate = DateTime.Now,
                     ShippingFee = orderReq.ShippingFee,
                     TotalAmount = totalAmount,
-                    Status = OrderStatusEnum.ready_to_pick.ToString(),
+                    Status = OrderStatusEnum.pending.ToString(),
                     ShippingAddress = orderReq.ShippingAddress,
                     Note = orderReq.Note,
                     CreatedAt = DateTime.Now,
@@ -316,7 +315,7 @@ namespace PhoneStoreBackend.Controllers
                     OrderDate = DateTime.Now,
                     ShippingFee = orderReq.ShippingFee,
                     TotalAmount = totalAmount,
-                    Status = OrderStatusEnum.ready_to_pick.ToString(),
+                    Status = OrderStatusEnum.pending.ToString(),
                     ShippingAddress = orderReq.ShippingAddress,
                     Note = orderReq.Note,
                     CreatedAt = DateTime.Now,

@@ -134,8 +134,9 @@ namespace PhoneStoreBackend.Repository.Implements
                     .Select(date => (date.Year, date.Month))
                     .ToList();
 
+                var nowUtc = DateTime.UtcNow; // Đảm bảo dùng UTC để phù hợp với database
                 var orders = await _context.Orders
-                    .Where(o => o.OrderDate >= now.AddMonths(-11).Date)
+                    .Where(o => o.OrderDate >= nowUtc.AddMonths(-11)) // Sử dụng nowUtc
                     .GroupBy(o => new { o.OrderDate.Year, o.OrderDate.Month })
                     .Select(g => new OrderStatisticsDto
                     {
