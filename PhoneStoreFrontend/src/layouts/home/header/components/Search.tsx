@@ -1,17 +1,20 @@
-import { FC, useState, useEffect, useRef } from 'react'
-import { useDebounce, useModal } from '../../../../hooks'
-import { Input } from 'antd'
-import { SearchOutlined } from '@ant-design/icons'
-import classNames from 'classnames'
-import { Clock, Trash2 } from 'lucide-react'
 import { flame_img } from '@/assets/images'
 import { iphone1 } from '@/assets/images/iphone'
 import formatPrice from '@/utils/formatPrice'
-import { useNavigate } from 'react-router-dom'
+import { SearchOutlined } from '@ant-design/icons'
+import { Input } from 'antd'
+import classNames from 'classnames'
+import { Clock, Trash2 } from 'lucide-react'
+import { FC, useEffect, useRef, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { useDebounce, useModal } from '../../../../hooks'
+import { useSearchProducts } from '@/hooks/querys/product.query'
+import { getProductRoute } from '@/utils/getProductRoute'
+import getPriceAfterDiscount from '@/utils/getPriceAfterDiscount'
 
-interface SearchProps {}
+interface SearchProps { }
 
-const Search: FC<SearchProps> = ({}) => {
+const Search: FC<SearchProps> = ({ }) => {
   const [query, setQuery] = useState('')
   const { isOpen, openModal, closeModal } = useModal()
 
@@ -20,6 +23,8 @@ const Search: FC<SearchProps> = ({}) => {
   const navigate = useNavigate()
 
   const debouncedQuery = useDebounce(query, 400)
+
+  const { data, isLoading, error } = useSearchProducts(debouncedQuery);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -57,6 +62,12 @@ const Search: FC<SearchProps> = ({}) => {
     navigate(`/catalogsearch/result/?q=${searchQuery}`)
     closeModal()
   }
+
+  const handleProductClick = (categoryName: string, slug: string) => {
+    navigate(getProductRoute(categoryName || '', slug));
+    handleClear()
+    closeModal()
+  };
 
   return (
     <div ref={searchRef} className='w-full relative max-w-[420px] h-full group'>
@@ -104,90 +115,22 @@ const Search: FC<SearchProps> = ({}) => {
             <div className='mt-3'>
               <div className='px-4 mb-2 font-medium text-gray-800'>Sản phẩm</div>
               <div className='flex flex-col'>
-                <div className='flex items-center p-2 rounded-md cursor-pointer gap-x-2 hover:bg-gray-100'>
-                  <img className='object-contain w-14 h-14' src={iphone1} alt='' />
-                  <div className='flex flex-col gap-y-0.5'>
-                    <div className='text-sm font-medium text-black'>Iphone 16 Series</div>
-                    <div className='flex items-end'>
-                      <div className='text-sm font-bold font-roboto text-primary'>
-                        {formatPrice(30000000).replace('đ', '')}
-                      </div>
-                      <div className='text-xs text-gray-500 line-through font-roboto'>
-                        {formatPrice(30000000).replace('đ', '')}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className='flex items-center p-2 rounded-md cursor-pointer gap-x-2 hover:bg-gray-100'>
-                  <img className='object-contain w-14 h-14' src={iphone1} alt='' />
-                  <div className='flex flex-col gap-y-0.5'>
-                    <div className='text-sm font-medium text-black'>Iphone 16 Pro</div>
-                    <div className='flex items-end'>
-                      <div className='text-sm font-bold font-roboto text-primary'>
-                        {formatPrice(25000000).replace('đ', '')}
-                      </div>
-                      <div className='text-xs text-gray-500 line-through font-roboto'>
-                        {formatPrice(27000000).replace('đ', '')}
+                {data && data.filter((p) => p.productVariants?.length > 0).map((p) => (
+                  <div onClick={() => handleProductClick(p.category.name, p.productVariants[0].slug)} className='flex items-center p-2 rounded-md cursor-pointer gap-x-2 hover:bg-gray-100'>
+                    <img className='object-contain w-14 h-14' src={p.productVariants[0].imageUrl} alt='' />
+                    <div className='flex flex-col gap-y-0.5'>
+                      <div className='text-sm font-medium text-black'>{p.productVariants[0].variantName}</div>
+                      <div className='flex items-end'>
+                        <div className='text-sm font-bold font-roboto text-primary'>
+                          {formatPrice(getPriceAfterDiscount(p.productVariants[0].price, p.productVariants[0].discountPercentage)).replace('đ', '')}
+                        </div>
+                        <div className='text-xs text-gray-500 line-through font-roboto'>
+                          {formatPrice(p.productVariants[0].price).replace('đ', '')}
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <div className='flex items-center p-2 rounded-md cursor-pointer gap-x-2 hover:bg-gray-100'>
-                  <img className='object-contain w-14 h-14' src={iphone1} alt='' />
-                  <div className='flex flex-col gap-y-0.5'>
-                    <div className='text-sm font-medium text-black'>Iphone 16</div>
-                    <div className='flex items-end'>
-                      <div className='text-sm font-bold font-roboto text-primary'>
-                        {formatPrice(20000000).replace('đ', '')}
-                      </div>
-                      <div className='text-xs text-gray-500 line-through font-roboto'>
-                        {formatPrice(22000000).replace('đ', '')}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className='flex items-center p-2 rounded-md cursor-pointer gap-x-2 hover:bg-gray-100'>
-                  <img className='object-contain w-14 h-14' src={iphone1} alt='' />
-                  <div className='flex flex-col gap-y-0.5'>
-                    <div className='text-sm font-medium text-black'>Iphone 16 Pro Max</div>
-                    <div className='flex items-end'>
-                      <div className='text-sm font-bold font-roboto text-primary'>
-                        {formatPrice(35000000).replace('đ', '')}
-                      </div>
-                      <div className='text-xs text-gray-500 line-through font-roboto'>
-                        {formatPrice(37000000).replace('đ', '')}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className='flex items-center p-2 rounded-md cursor-pointer gap-x-2 hover:bg-gray-100'>
-                  <img className='object-contain w-14 h-14' src={iphone1} alt='' />
-                  <div className='flex flex-col gap-y-0.5'>
-                    <div className='text-sm font-medium text-black'>Iphone 16 Mini</div>
-                    <div className='flex items-end'>
-                      <div className='text-sm font-bold font-roboto text-primary'>
-                        {formatPrice(18000000).replace('đ', '')}
-                      </div>
-                      <div className='text-xs text-gray-500 line-through font-roboto'>
-                        {formatPrice(20000000).replace('đ', '')}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className='flex items-center p-2 rounded-md cursor-pointer gap-x-2 hover:bg-gray-100'>
-                  <img className='object-contain w-14 h-14' src={iphone1} alt='' />
-                  <div className='flex flex-col gap-y-0.5'>
-                    <div className='text-sm font-medium text-black'>Iphone 16 Plus</div>
-                    <div className='flex items-end'>
-                      <div className='text-sm font-bold font-roboto text-primary'>
-                        {formatPrice(28000000).replace('đ', '')}
-                      </div>
-                      <div className='text-xs text-gray-500 line-through font-roboto'>
-                        {formatPrice(30000000).replace('đ', '')}
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>

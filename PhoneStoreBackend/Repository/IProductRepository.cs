@@ -15,7 +15,8 @@ namespace PhoneStoreBackend.Repository
         Task<ProductDTO> AddProductAsync(Product product);
         Task<bool> UpdateProductAsync(int id, Product updatedProduct);
         Task<bool> DeleteProductAsync(int id);
-        Task<ICollection<ProductDTO>> SearchProductsAsync(string keyword);
+        Task<ICollection<ProductResponse>> SearchProductsAsync(string keyword);
         Task<ICollection<ProductVariantDTO>> GetProductVariantsAsync(int productId);
+
     }
 }

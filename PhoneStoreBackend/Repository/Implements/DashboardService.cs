@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using PhoneStoreBackend.DbContexts;
 using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Enums;
+using System.Globalization;
 
 namespace PhoneStoreBackend.Repository.Implements
 {
@@ -18,40 +19,149 @@ namespace PhoneStoreBackend.Repository.Implements
             _mapper = mapper;
         }
 
-        public async Task<List<OrderStatisticsDto>> GetOrdersStatistics()
+        public async Task<List<OrderStatisticsDto>> GetOrdersStatistics(string type)
         {
-            var last12Months = Enumerable.Range(0, 12)
-            .Select(i => DateTime.UtcNow.AddMonths(-i))
-            .Select(date => new { Year = date.Year, Month = date.Month })
-            .ToList();
+            DateTime now = DateTime.UtcNow;
 
-            var orders = await _context.Orders
-                .Where(o => o.OrderDate >= DateTime.UtcNow.AddMonths(-11).Date)
-                .GroupBy(o => new { o.OrderDate.Year, o.OrderDate.Month })
-                .Select(g => new OrderStatisticsDto
-                {
-                    Year = g.Key.Year,
-                    Month = g.Key.Month,
-                    TotalOrders = g.Count(),
-                    TotalRevenue = g.Sum(o => o.TotalAmount)
-                })
-                .ToListAsync();
+            if (type == "day")
+            {
+                // Lấy dữ liệu 30 ngày gần nhất
+                var last30Days = Enumerable.Range(0, 30)
+                    .Select(i => now.Date.AddDays(-i))
+                    .Select(date => (date.Year, date.Month, date.Day))
+                    .ToList();
 
-            var result = last12Months
-                .GroupJoin(orders,
-                    date => new { date.Year, date.Month },
-                    order => new { order.Year, order.Month },
-                    (date, order) => new OrderStatisticsDto
+                var orders = await _context.Orders
+                    .Where(o => o.OrderDate >= now.AddDays(-29).Date)
+                    .GroupBy(o => new { o.OrderDate.Year, o.OrderDate.Month, o.OrderDate.Day })
+                    .Select(g => new OrderStatisticsDto
                     {
-                        Year = date.Year,
-                        Month = date.Month,
-                        TotalOrders = order.FirstOrDefault()?.TotalOrders ?? 0,
-                        TotalRevenue = order.FirstOrDefault()?.TotalRevenue ?? 0
+                        Year = g.Key.Year,
+                        Month = g.Key.Month,
+                        Day = g.Key.Day,
+                        TotalOrders = g.Count(),
+                        TotalRevenue = g.Sum(o => o.TotalAmount)
                     })
-                .OrderBy(o => o.Year).ThenBy(o => o.Month)
-                .ToList();
+                    .ToListAsync();
 
-            return result;
+                var result = last30Days
+                    .GroupJoin(orders,
+                        date => (date.Year, date.Month, date.Day),
+                        order => (order.Year, order.Month, order.Day),
+                        (date, orderGroup) => new OrderStatisticsDto
+                        {
+                            Year = date.Year,
+                            Month = date.Month,
+                            Day = date.Day,
+                            TotalOrders = orderGroup.FirstOrDefault()?.TotalOrders ?? 0,
+                            TotalRevenue = orderGroup.FirstOrDefault()?.TotalRevenue ?? 0
+                        })
+                    .OrderBy(o => o.Year).ThenBy(o => o.Month).ThenBy(o => o.Day)
+                    .ToList();
+
+                return result;
+            }
+            else if (type == "week")
+            {
+                var calendar = CultureInfo.InvariantCulture.Calendar;
+
+                // Lấy danh sách 12 tuần gần nhất, sử dụng chuẩn ISO-8601
+                var last12Weeks = Enumerable.Range(0, 12)
+                    .Select(i =>
+                    {
+                        var startOfWeek = now.Date.AddDays(-((int)now.DayOfWeek) - (i * 7) + 1); // Bắt đầu từ thứ Hai
+                        return new
+                        {
+                            Year = startOfWeek.Year,
+                            WeekNumber = calendar.GetWeekOfYear(startOfWeek, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday), // ISO-8601
+                            StartOfWeek = startOfWeek
+                        };
+                    })
+                    .OrderBy(x => x.Year).ThenBy(x => x.WeekNumber)
+                    .ToList();
+
+                // Lấy ngày bắt đầu của tuần sớm nhất trong danh sách last12Weeks
+                DateTime firstWeekStart = last12Weeks.Min(x => x.StartOfWeek);
+
+                // Truy vấn đơn hàng theo khoảng thời gian từ firstWeekStart trở đi
+                var orders = await _context.Orders
+                    .Where(o => o.OrderDate >= firstWeekStart)
+                    .ToListAsync(); // Lấy toàn bộ dữ liệu trước khi xử lý tại C#
+
+                // Nhóm đơn hàng theo tuần và tính tổng số lượng + tổng doanh thu
+                var groupedOrders = orders
+                    .GroupBy(o =>
+                    {
+                        var startOfWeek = o.OrderDate.Date.AddDays(-(int)o.OrderDate.DayOfWeek + 1); // Bắt đầu từ thứ Hai
+                        return new
+                        {
+                            Year = startOfWeek.Year,
+                            WeekNumber = calendar.GetWeekOfYear(startOfWeek, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday) // ISO-8601
+                        };
+                    })
+                    .Select(g => new OrderStatisticsDto
+                    {
+                        Year = g.Key.Year,
+                        Week = g.Key.WeekNumber,
+                        TotalOrders = g.Count(),
+                        TotalRevenue = g.Sum(o => o.TotalAmount)
+                    })
+                    .ToList();
+
+                // Ghép dữ liệu tuần với dữ liệu đơn hàng
+                var result = last12Weeks
+                    .GroupJoin(
+                        groupedOrders,
+                        week => (week.WeekNumber, week.Year),
+                        order => (order.Week ?? 0, order.Year), // Xử lý nullable
+                        (week, orderGroup) => new OrderStatisticsDto
+                        {
+                            Year = week.Year,
+                            Week = week.WeekNumber,
+                            TotalOrders = orderGroup.FirstOrDefault()?.TotalOrders ?? 0,
+                            TotalRevenue = orderGroup.FirstOrDefault()?.TotalRevenue ?? 0
+                        }
+                    )
+                    .OrderBy(o => o.Year).ThenBy(o => o.Week)
+                    .ToList();
+
+                return result;
+            }
+            else // Mặc định là thống kê theo tháng
+            {
+                var last12Months = Enumerable.Range(0, 12)
+                    .Select(i => now.AddMonths(-i))
+                    .Select(date => (date.Year, date.Month))
+                    .ToList();
+
+                var orders = await _context.Orders
+                    .Where(o => o.OrderDate >= now.AddMonths(-11).Date)
+                    .GroupBy(o => new { o.OrderDate.Year, o.OrderDate.Month })
+                    .Select(g => new OrderStatisticsDto
+                    {
+                        Year = g.Key.Year,
+                        Month = g.Key.Month,
+                        TotalOrders = g.Count(),
+                        TotalRevenue = g.Sum(o => o.TotalAmount)
+                    })
+                    .ToListAsync();
+
+                var result = last12Months
+                    .GroupJoin(orders,
+                        date => (date.Year, date.Month),
+                        order => (order.Year, order.Month),
+                        (date, orderGroup) => new OrderStatisticsDto
+                        {
+                            Year = date.Year,
+                            Month = date.Month,
+                            TotalOrders = orderGroup.FirstOrDefault()?.TotalOrders ?? 0,
+                            TotalRevenue = orderGroup.FirstOrDefault()?.TotalRevenue ?? 0
+                        })
+                    .OrderBy(o => o.Year).ThenBy(o => o.Month)
+                    .ToList();
+
+                return result;
+            }
         }
 
         public async Task<int> TotalOrders()

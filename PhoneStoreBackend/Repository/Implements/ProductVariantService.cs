@@ -77,8 +77,8 @@ namespace PhoneStoreBackend.Repository.Implements
                 ProductVariantId = findProductVariant.ProductVariantId,
                 FullNameVariant = findProductVariant.VariantName,
                 ProductId = findProductVariant.ProductId,
-                Brand = findProductVariant.Product.Brand, 
-                Category = findProductVariant.Product.Category,  
+                Brand = findProductVariant.Product.Brand,
+                Category = findProductVariant.Product.Category,
                 Color = findProductVariant.Color,
                 DiscountPercentage = findProductVariant.Discount?.Percentage ?? 0,
                 ImageUrl = findProductVariant.ImageUrl,
@@ -148,7 +148,7 @@ namespace PhoneStoreBackend.Repository.Implements
                 .Include(pv => pv.Discount)
                 .Include(v => v.ProductImages)
                 .Include(v => v.ProductSpecifications)
-                .Where(v => v.Product.Category.Name == categoryMobile.Name.Trim()) 
+                .Where(v => v.Product.Category.Name == categoryMobile.Name.Trim())
                 .ToListAsync();
 
             return _mapper.Map<ICollection<ProductVariantDTO>>(listProductVariants);
@@ -174,7 +174,7 @@ namespace PhoneStoreBackend.Repository.Implements
                 .Include(pv => pv.Discount)
                 .Include(v => v.ProductImages)
                 .Include(v => v.ProductSpecifications)
-                .Where(v => v.Product.CategoryId == categoryMobile.CategoryId) 
+                .Where(v => v.Product.CategoryId == categoryMobile.CategoryId)
                 .ToListAsync();
 
             return _mapper.Map<ICollection<ProductVariantDTO>>(listProductVariants);

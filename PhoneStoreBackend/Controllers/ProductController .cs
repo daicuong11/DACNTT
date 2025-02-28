@@ -231,7 +231,7 @@ namespace PhoneStoreBackend.Controllers
                         Stock = variantReq.Stock,
                     };
 
-                    if(variantReq.DiscountId >= 0)
+                    if (variantReq.DiscountId >= 0)
                     {
                         newVariant.DiscountId = variantReq.DiscountId;
                     }
@@ -340,7 +340,7 @@ namespace PhoneStoreBackend.Controllers
             try
             {
                 var products = await _productRepository.SearchProductsAsync(keyword);
-                var response = Response<ICollection<ProductDTO>>.CreateSuccessResponse(products, "Kết quả tìm kiếm sản phẩm");
+                var response = Response<ICollection<ProductResponse>>.CreateSuccessResponse(products, "Kết quả tìm kiếm sản phẩm");
                 return Ok(response);
             }
             catch (Exception ex)

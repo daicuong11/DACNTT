@@ -11,6 +11,6 @@ namespace PhoneStoreBackend.Repository
         Task<int> TotalProducts();
         Task<int> TotalOrders();
 
-        Task<List<OrderStatisticsDto>> GetOrdersStatistics();
+        Task<List<OrderStatisticsDto>> GetOrdersStatistics(string type);
     }
 }

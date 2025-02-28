@@ -1,37 +1,32 @@
 import { useGetOrdersStatistics } from '@/hooks/querys/dashboard.query';
-import { OrderStatisticsType } from '@/types/Statistics.type';
+import { OrderStatisticsType } from '@/types/statistics.type';
 import { ApexOptions } from 'apexcharts';
 import React, { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 
 const OrderStatisticsChart: React.FC = () => {
-  const { data } = useGetOrdersStatistics();
+  const [viewMode, setViewMode] = useState<"day" | "week" | "month">("month");
+  const { data } = useGetOrdersStatistics(viewMode);
+
+
   const [chartData, setChartData] = useState<{ categories: string[]; series: number[] }>({
     categories: [],
     series: [],
   });
-
-  // const [state, setState] = useState<ChartOneState>({
-  //   series: [
-  //     {
-  //       name: 'Product One',
-  //       data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30, 45],
-  //     },
-  //   ],
-  // });
-
   useEffect(() => {
     if (data) {
-      // Chuyển đổi dữ liệu API thành dữ liệu biểu đồ
       const categories = data.map((item: OrderStatisticsType) =>
-        new Date(item.year, item.month - 1).toLocaleString("vi-VN", { month: "short" })
+        viewMode === "week"
+          ? `Tuần ${item.week} - ${item.year}`
+          : viewMode === "day"
+            ? `${item.day}/${item.month}/${item.year}`
+            : new Date(item.year, (item.month ?? 1) - 1).toLocaleString("vi-VN", { month: "short" })
       );
+
       const series = data.map((item: OrderStatisticsType) => item.totalOrders);
-      console.log('categories', categories);
-      console.log('series', series);
       setChartData({ categories, series });
     }
-  }, [data]);
+  }, [data, viewMode]);
 
   const options: ApexOptions = {
     legend: {
@@ -99,14 +94,14 @@ const OrderStatisticsChart: React.FC = () => {
       colors: '#fff',
       strokeColors: ['#3056D3', '#80CAEE'],
       strokeWidth: 3,
-      // strokeOpacity: 0.9,
-      // strokeDashArray: 0,
-      // fillOpacity: 1,
-      // discrete: [],
-      // hover: {
-      //   size: undefined,
-      //   sizeOffset: 5,
-      // },
+      strokeOpacity: 0.9,
+      strokeDashArray: 0,
+      fillOpacity: 1,
+      discrete: [],
+      hover: {
+        size: undefined,
+        sizeOffset: 5,
+      },
     },
     xaxis: {
       type: 'category',
@@ -127,15 +122,18 @@ const OrderStatisticsChart: React.FC = () => {
       min: 0,
       // max: 100,
     },
+    tooltip: {
+      enabled: true,
+      intersect: false,
+      y: {
+        formatter: (value: number, { dataPointIndex }) => {
+          // Lấy doanh thu tương ứng với điểm đang hover
+          const revenue = data ? data[dataPointIndex]?.totalRevenue ?? 0 : 0;
+          return `${value} - Doanh thu: ${revenue.toLocaleString()} VNĐ`;
+        },
+      },
+    },
   };
-
-
-  // const handleReset = () => {
-  //   setState((prevState) => ({
-  //     ...prevState,
-  //   }));
-  // };
-  // handleReset;
 
   return (
     <div className="col-span-12 rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-8">
@@ -147,26 +145,21 @@ const OrderStatisticsChart: React.FC = () => {
             </span>
             <div className="w-full">
               <p className="font-semibold text-primary2">Đơn Hàng</p>
-              <p className="text-sm font-medium">
-                {data && chartData.categories.length > 0
-                  ? `${chartData.categories[0].replace('Tháng','')}/${data[0].year} - ${chartData.categories[chartData.categories.length - 1].replace('Tháng','')}/${data[data.length - 1].year}`
-                  : "Đang tải..."}
-              </p>
-
             </div>
           </div>
         </div>
         <div className="flex w-full max-w-45 justify-end">
           <div className="inline-flex items-center rounded-md bg-whiter p-1.5 dark:bg-meta-4">
-            <button className="rounded py-1 px-3 text-xs font-medium text-black hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark">
-              Ngày
-            </button>
-            <button className="rounded py-1 px-3 text-xs font-medium text-black hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark">
-              Tuần
-            </button>
-            <button className="rounded bg-white py-1 px-3 text-xs font-medium text-black shadow-card hover:bg-white hover:shadow-card dark:bg-boxdark dark:text-white dark:hover:bg-boxdark">
-              Tháng
-            </button>
+            {(["day", "week", "month"] as const).map((mode) => (
+              <button
+                key={mode}
+                onClick={() => setViewMode(mode)}
+                className={`rounded py-1 px-3 text-xs font-medium hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark 
+          ${viewMode === mode ? "bg-white text-black shadow-card dark:bg-boxdark dark:text-white" : "text-black dark:text-white"}`}
+              >
+                {mode === "day" ? "Ngày" : mode === "week" ? "Tuần" : "Tháng"}
+              </button>
+            ))}
           </div>
         </div>
       </div>
@@ -175,8 +168,11 @@ const OrderStatisticsChart: React.FC = () => {
         <div id="chartOne" className="-ml-5">
           <ReactApexChart
             options={options}
-            // series={state.series}
             series={[{ name: "Đơn hàng", data: chartData.series }]}
+            // series={[
+            //   { name: "Đơn hàng", data: chartData.series.orders },
+            //   { name: "Doanh thu", data: chartData.series.revenue },
+            // ]}
             type="area"
             height={350}
           />

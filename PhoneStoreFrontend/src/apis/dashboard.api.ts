@@ -1,5 +1,5 @@
 import axiosInstance from '@/configs/http'
-import { OrderStatisticsType } from '@/types/Statistics.type'
+import { OrderStatisticsType } from '@/types/statistics.type'
 
 class DashboardAPI {
   async totalUsers(): Promise<number> {
@@ -19,8 +19,8 @@ class DashboardAPI {
     return req.data
   }
 
-  async getOrdersStatistics(): Promise<OrderStatisticsType[]> {
-    const req = await axiosInstance.get('dashboard/orders-statistics')
+  async getOrdersStatistics(viewMode: 'day' | 'week' | 'month'): Promise<OrderStatisticsType[]> {
+    const req = await axiosInstance.get(`dashboard/orders-statistics?type=${viewMode}`)
     return req.data
   }
 }

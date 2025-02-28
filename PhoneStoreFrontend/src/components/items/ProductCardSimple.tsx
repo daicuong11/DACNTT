@@ -14,8 +14,8 @@ interface ProductCardSimpleType extends HTMLAttributes<HTMLDivElement> {
 const ProductCardSimple: FC<ProductCardSimpleType> = ({ productVariant, ...props }) => {
   const navigate = useNavigate()
 
-  const handleProductClick = (product: ProductVariantType) => {
-    navigate(getProductRoute(product))
+  const handleProductClick = (variant: ProductVariantType) => {
+    navigate(getProductRoute(variant.product.category.name, variant.slug))
   }
 
   return (

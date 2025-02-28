@@ -1,10 +1,12 @@
+import { RootState } from '@/store';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import ClickOutside from '../ClickOutside';
-import { UserOne } from '../../../../assets/images/user';
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const user = useSelector((state: RootState) => state.auth.user)
 
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
@@ -15,13 +17,17 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            Biên Văn
+            {user?.name}
           </span>
-          <span className="block text-xs">Devloper</span>
+          <span className="block text-xs">{user?.role}</span>
         </span>
 
-        <span className="h-12 w-12 rounded-full">
-          <img src={UserOne} alt="User" />
+        <span className="h-12 w-12 rounded-full overflow-hidden">
+          <img
+            src={user?.profilePicture}
+            alt="User"
+            className="h-full w-full object-cover"
+          />
         </span>
 
         <svg

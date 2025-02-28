@@ -106,14 +106,13 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpGet("orders-statistics")]
-        public async Task<IActionResult> GetOrdersStatistics()
+        public async Task<IActionResult> GetOrdersStatistics([FromQuery] string type = "month")
         {
-
             try
             {
-                var data = await _dashboardRepository.GetOrdersStatistics();
+                var data = await _dashboardRepository.GetOrdersStatistics(type);
 
-                var response = Response<ICollection<OrderStatisticsDto>>.CreateSuccessResponse(data, "Thống kê đơn hàng theo năm");
+                var response = Response<ICollection<OrderStatisticsDto>>.CreateSuccessResponse(data, $"Thống kê đơn hàng theo {type}");
                 return Ok(response);
             }
             catch (Exception ex)
@@ -122,6 +121,7 @@ namespace PhoneStoreBackend.Controllers
                 return BadRequest(errorResponse);
             }
         }
+
 
     }
 }

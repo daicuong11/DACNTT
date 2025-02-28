@@ -1,12 +1,10 @@
 import { useGetTotalOrders, useGetTotalProducts, useGetTotalRevenue, useGetTotalUsers } from '@/hooks/querys/dashboard.query';
+import formatPrice from '@/utils/formatPrice';
 import React from 'react';
 import CardDataStats from './components/CardDataStats';
-import ChartOne from './components/Charts/ChartOne';
 import ChartThree from './components/Charts/ChartThree';
 import ChartTwo from './components/Charts/ChartTwo';
-import formatPrice from '@/utils/formatPrice';
 import OrderStatisticsChart from './components/Charts/OrderStatisticsChart';
-import RevenueStatisticsChart from './components/Charts/RevenueStatisticsChart';
 
 const Dashboard: React.FC = () => {
     const { data: totalUsers } = useGetTotalUsers();
@@ -106,9 +104,8 @@ const Dashboard: React.FC = () => {
 
             <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
                 <OrderStatisticsChart />
-                <RevenueStatisticsChart/>   
-                <ChartTwo />
-                <ChartThree />
+                {/* <ChartTwo /> */}
+                {/* <ChartThree /> */}
             </div>
         </>
     );

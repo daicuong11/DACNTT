@@ -29,9 +29,10 @@ export const useGetTotalRevenue = () => {
   })
 }
 
-export const useGetOrdersStatistics = () => {
+export const useGetOrdersStatistics = (viewMode: "day" | "week" | "month") => {
   return useQuery({
-    queryKey: ['getOrdersStatistics'],
-    queryFn: dashboardApi.getOrdersStatistics
-  })
-}
+    queryKey: ["getOrdersStatistics", viewMode],
+    queryFn: () => dashboardApi.getOrdersStatistics(viewMode),
+  });
+};
+

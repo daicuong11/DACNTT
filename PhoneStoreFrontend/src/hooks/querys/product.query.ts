@@ -7,6 +7,7 @@ import {
   getAllProductOfMobile,
   getProductById,
   getProductVariants,
+  searchProducts,
   updateProduct
 } from '@/apis/product.api'
 import { ProductRequestType } from '@/types/product.type'
@@ -114,3 +115,11 @@ export const useGet15ProductSimilar = (id: number) => {
     enabled: !!id
   })
 }
+
+export const useSearchProducts = (name: string) => {
+  return useQuery({
+    queryKey: ['searchProducts', name], // Query key có name để caching đúng
+    queryFn: () => searchProducts(name), // Truyền name vào API
+    enabled: !!name, // Chỉ chạy query nếu name không rỗng
+  });
+};

@@ -90,7 +90,7 @@ namespace PhoneStoreBackend.Repository.Implements
             }
 
             var list = await _context.Products
-                .Where(p => p.CategoryId == categoryLaptop.CategoryId) 
+                .Where(p => p.CategoryId == categoryLaptop.CategoryId)
                 .Take(15)
                 .Include(p => p.Category)
                 .Include(p => p.Brand)
@@ -341,14 +341,36 @@ namespace PhoneStoreBackend.Repository.Implements
         }
 
         // Tìm kiếm sản phẩm theo tên
-        public async Task<ICollection<ProductDTO>> SearchProductsAsync(string keyword)
+        public async Task<ICollection<ProductResponse>> SearchProductsAsync(string keyword)
         {
             var products = await _context.Products
-                .Where(p => p.Name.Contains(keyword))
-                .Include(p => p.Category)
+                .Where(p => p.Name.ToLower().Contains(keyword.ToLower()))
+                .Include(p => p.Category) // Include bảng Category
+                .Include(p => p.ProductVariants)
+                .ThenInclude(v => v.Discount)
+                .Select(p => new ProductResponse
+                {
+                    ProductId = p.ProductId,
+                    Name = p.Name,
+                    Category = new CategoryRespone
+                    {
+                        CategoryId = p.CategoryId,
+                        Name = p.Category.Name,
+                    },
+                    ProductVariants = p.ProductVariants.Select(v => new ProductVariantResponse
+                    {
+                        VariantId = v.ProductVariantId,
+                        DiscountPercentage = v.Discount != null ? v.Discount.Percentage : 0,
+                        Slug = v.Slug,
+                        VariantName = v.VariantName,
+                        Price = v.Price,
+                        Color = v.Color,
+                        ImageUrl = v.ImageUrl,
+                    }).ToList(),
+                })
                 .ToListAsync();
 
-            return products.Select(p => _mapper.Map<ProductDTO>(p)).ToList();
+            return products.Select(p => _mapper.Map<ProductResponse>(p)).ToList();
         }
 
         // Get variant list
@@ -360,7 +382,5 @@ namespace PhoneStoreBackend.Repository.Implements
 
             return variants.Select(p => _mapper.Map<ProductVariantDTO>(p)).ToList();
         }
-
-
     }
 }

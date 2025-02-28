@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import { ContainerPanel, MyDivider } from '../../../components'
 import { ProductType } from '../../../types/product.type'
 import TextArea from 'antd/es/input/TextArea'
@@ -6,6 +6,7 @@ import { robot_img } from '../../../assets/images'
 import { ChevronDown, SendHorizonal } from 'lucide-react'
 import CommentItem, { CommentType } from './CommentItem'
 import { ProductVariantType } from '@/types/product_variant.type'
+import { useQueryClient } from '@tanstack/react-query'
 
 const commentsEx: CommentType[] = [
   {
@@ -71,6 +72,7 @@ interface ProductCommentsProps {
 }
 
 const ProductComments: FC<ProductCommentsProps> = ({ productVariant }) => {
+
   return (
     <ContainerPanel className='' titleClassName='text-xl' title='Hỏi và đáp'>
       <div className='relative flex flex-1 w-full p-2 border border-gray-200 rounded-lg shadow-md pb-11'>

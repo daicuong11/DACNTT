@@ -188,15 +188,15 @@ builder.Services.AddHttpClient();
 // Configure AutoMapper
 builder.Services.AddAutoMapper(typeof(Program));
 
-// Thêm CORS policy
+// Thêm CORS policy 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("FrontendPolicy", builder =>
+    options.AddPolicy("FrontendPolicy", policy =>
     {
-        builder.WithOrigins("http://localhost:3000") // Địa chỉ frontend
-               .AllowAnyMethod() // Cho phép mọi HTTP method
-               .AllowAnyHeader() // Cho phép mọi HTTP header
-               .AllowCredentials(); // Nếu cần sử dụng cookie
+        policy.WithOrigins("http://localhost:3000", "https://biendev.io.vn") // Thêm domain mới
+              .AllowAnyMethod()  // Cho phép tất cả HTTP methods
+              .AllowAnyHeader()  // Cho phép tất cả headers
+              .AllowCredentials(); // Hỗ trợ cookie, token
     });
 });
 
@@ -251,5 +251,5 @@ app.Use(async (context, next) =>
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-//app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 app.Run();

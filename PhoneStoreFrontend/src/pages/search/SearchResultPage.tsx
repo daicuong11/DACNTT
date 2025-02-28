@@ -1,27 +1,34 @@
-import { ProductCard } from '@/components'
+import VariantCard from '@/components/items/VariantCard'
 import { useQueryString } from '@/hooks'
+import { useSearchProducts } from '@/hooks/querys/product.query'
 import useSetDocTitle from '@/hooks/useSetDocTitle'
 import classNames from 'classnames'
 import { ArrowDownNarrowWide, ArrowDownWideNarrow, ChevronDown, Sparkles } from 'lucide-react'
-import React, { FC, useState } from 'react'
+import { FC, useMemo, useState } from 'react'
 import CarouselProduct from '../home/components/CarouselProduct'
-import { useGetAllProducts } from '@/hooks/querys/product.query'
 
 const sortTypes = ['relative', 'price-asc', 'price-desc']
 
-interface SearchResultPageProps {}
+interface SearchResultPageProps { }
 
 const SearchResultPage: FC<SearchResultPageProps> = () => {
   const [sortType, setSortType] = useState(sortTypes[0])
   const queryString = useQueryString()
   useSetDocTitle(`Kết quả tìm kiếm cho: ${queryString.q}`)
 
-  const { data: products, isLoading } = useGetAllProducts()
+  const { data: products, isLoading } = useSearchProducts(queryString.q)
+  const result = useMemo(() => 
+    (products || []) // Nếu products là undefined/null, dùng mảng rỗng để tránh lỗi
+      .filter((p) => p.productVariants?.length > 0)
+      .flatMap((p) => p.productVariants),
+    [products] // Chỉ chạy lại khi products thay đổi
+  );
+  
 
   return (
     <div className='py-4 mb-10'>
       <div className='text-sm font-medium text-center text-gray-600 font-roboto'>
-        Tìm thấy <span className='font-semibold text-gray-700'>{products ? products.length : 0}</span> sản phẩm cho từ
+        Tìm thấy <span className='font-semibold text-gray-700'>{products ? result.length : 0}</span> sản phẩm cho từ
         khóa '<span className='font-semibold text-gray-700'>{queryString.q}</span>'
       </div>
       <div className='mt-3 text-lg font-semibold text-gray-800 font-roboto'>Sắp xếp theo</div>
@@ -63,7 +70,16 @@ const SearchResultPage: FC<SearchResultPageProps> = () => {
         </span>
       </div>
       <div className='grid gap-2.5 grid-cols-5'>
-        {products && products.map((product, index) => <ProductCard key={index} product={product} />)}
+        {products?.length
+          ? products
+            .filter((p) => p.productVariants?.length > 0)
+            .flatMap((p) =>
+              p.productVariants.map((variant) => (
+                <VariantCard key={variant.variantId} category={p.category.name} variant={variant} />
+              ))
+            )
+          : null}
+
       </div>
       {products && products.length !== 0 && (
         <div className='mt-2.5'>
