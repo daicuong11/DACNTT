@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using PhoneStoreBackend.Api.Response;
 using PhoneStoreBackend.DTOs;
-using PhoneStoreBackend.Entities;
 using PhoneStoreBackend.Repository;
 
 namespace PhoneStoreBackend.Controllers
@@ -20,7 +19,7 @@ namespace PhoneStoreBackend.Controllers
 
         // Lấy tất cả người dùng
         [HttpGet]
-        //[Authorize]  // Chỉ cho phép Admin truy cập
+        [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> GetAllUsers()
         {
             try
@@ -157,5 +156,27 @@ namespace PhoneStoreBackend.Controllers
                 return BadRequest(errorResponse);
             }
         }
+
+        // Cập nhật khóa or mở khóa tài khoản
+        [HttpPut("{id}/status")]
+        [Authorize(Roles = "ADMIN")]
+        public async Task<IActionResult> UpdateUserStatus(int id)
+        {
+            try
+            {
+                var user = await _userRepository.UpdateUserStatusAsync(id);
+                if (user == null)
+                {
+                    return NotFound(Response<object>.CreateErrorResponse("Không tìm thấy người dùng"));
+                }
+
+                return Ok(Response<object>.CreateSuccessResponse(null, $"Tài khoản đã được {(user.Active ? "mở khóa" : "khóa")}"));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(Response<object>.CreateErrorResponse($"Đã xảy ra lỗi: {ex.Message}"));
+            }
+        }
+
     }
 }

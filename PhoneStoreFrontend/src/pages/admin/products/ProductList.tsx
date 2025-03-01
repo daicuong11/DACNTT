@@ -1,8 +1,7 @@
 import { ProductResponse } from '@/types/product.type'
-import { Table } from 'antd'
+import { Card, Table } from 'antd'
 import { ColumnsType } from 'antd/es/table'
 import { Link } from 'react-router-dom'
-import Card from '../components/Card'
 import { useGetAllProducts } from '@/hooks/querys/product.query'
 
 const columns: ColumnsType<ProductResponse> = [
@@ -42,7 +41,7 @@ export default function ProductList() {
   return (
     <Card
       title='Danh Sách Sản Phẩm'
-      button={
+      extra={
         <Link to='/admin/products/add' className='btn btn-primary'>
           Thêm Sản Phẩm
         </Link>

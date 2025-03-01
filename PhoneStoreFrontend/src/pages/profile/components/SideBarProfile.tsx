@@ -19,7 +19,7 @@ const SideBarProfile: FC<SideBarProfileProps> = ({ children }) => {
 
   const dispatch = useAppDispatch()
 
-  const handleLogout = () => {
+  const handleLogout = (): void => {
     dispatch(clearAuth())
     dispatch(clearCart())
   }

@@ -28,5 +28,8 @@ namespace PhoneStoreBackend.Repository
 
         // Xóa người dùng theo ID
         Task<bool> DeleteUserAsync(int id);
+
+        Task<UserDTO> UpdateUserStatusAsync(int id);
+
     }
 }

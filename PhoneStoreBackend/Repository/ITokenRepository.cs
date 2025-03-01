@@ -1,5 +1,4 @@
-﻿using PhoneStoreBackend.DTOs;
-using PhoneStoreBackend.Entities;
+﻿using PhoneStoreBackend.Entities;
 using System.Security.Claims;
 
 namespace PhoneStoreBackend.Repository

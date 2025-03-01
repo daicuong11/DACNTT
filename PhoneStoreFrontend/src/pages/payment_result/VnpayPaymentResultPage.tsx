@@ -5,6 +5,9 @@ import { useGetOrderById } from '@/hooks/querys/order.query'
 import { useCheckPayment } from '@/hooks/querys/vnpay.query'
 import { FixedBottomLayout } from '@/layouts'
 import formatPrice from '@/utils/formatPrice'
+import getPriceAfterDiscount from '@/utils/getPriceAfterDiscount'
+import { Tag } from 'antd'
+import { useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
 const VnpayPaymentResultPage = () => {
@@ -20,21 +23,26 @@ const VnpayPaymentResultPage = () => {
   return (
     <FixedBottomLayout
       navigateTo={() => navigate('/')}
-      title='Hoàn tất đơn hàng'
+      title={`Hoàn tất đơn hàng`}
       body={
         isError ? (
           <div className='py-10 text-center text-primary'>Lỗi tải đơn hàng</div>
         ) : (
           <div className='flex flex-col pb-28'>
             {isLoading && <LoadingOpacity title={'Đang tải đơn hàng...'} />}
-            <div className='flex items-center py-3 !bg-white rounded-md bg-opacity-30'>
+            <div className={`flex items-center py-3 rounded-md bg-opacity-30 ${data1?.isSuccess?"!bg-white":"bg-red-200"}`}>
               <div className='w-2/5'>
-                <video src={payment_success_video} className='ml-10 w-28 h-28' autoPlay loop />
+                { data1 && data1?.isSuccess
+                ?
+                (<video src={payment_success_video} className='ml-10 w-28 h-28' autoPlay loop />)
+                :(<img src={'https://static-cart.cellphones.com.vn/cart/_nuxt/img/cart-error.e04728c.svg'} className='w-28 h-28' />)
+                }
+
               </div>
               <div className='flex flex-col items-start justify-center text-center gap-y-1'>
-                <div className='text-xl font-medium text-green-500 uppercase'>Đặt hàng thành công</div>
+                <div className={`text-xl font-medium ${data1?.isSuccess?"text-green-500 uppercase":"text-red-500 uppercase"}`}>{data1?.isSuccess?"Đặt hàng thành công":"Đặt hàng không thành công"}</div>
                 <div className='text-sm font-normal text-gray-500'>
-                  Vào tra cứu đơn hàng để xem thông tin vận chuyển
+                  {data1?.isSuccess?"Vào tra cứu đơn hàng để xem thông tin vận chuyển":"Vui lòng kiểm tra lại thông tin đặt hàng & thanh toán"}
                 </div>
               </div>
             </div>
@@ -126,15 +134,66 @@ const VnpayPaymentResultPage = () => {
                 )}
               </div>
             </div>
+
+            <div className='mt-6 space-y-3'>
+              <div className='uppercase'>Danh sách sản phẩm</div>
+                {data?.orderDetails.map((item, index) => (
+              <div className='p-5 space-y-4 bg-white border text-gray-900 border-gray-300 rounded-lg text-[15px]'>
+                  <div className='flex gap-x-4'>
+                  <div className='w-[100px] h-[100px] flex-shrink-0'>
+                    <img src={item.productVariant.imageUrl} className='object-contain w-full h-full' />
+                  </div>
+                  <div className='flex flex-col w-full gap-y-2'>
+                  {item.productVariant.variantName}
+                    <div className='flex flex-col'>
+                      <div className=''>
+                        <Tag color='default' className='text-[10px] md:text-[12px] text-gray-500 font-medium'>
+                        {item.productVariant.color}
+                        </Tag>
+                      </div>
+                      <div className='flex flex-col justify-between w-full gap-2 sm:items-end sm:flex-row'>
+                        <div className='flex items-end gap-x-2'>
+                          <span className='text-lg font-medium leading-none text-primary'>
+                            {formatPrice(
+                              getPriceAfterDiscount(item.productVariant.price, item.discount ?? 0)
+                            )}
+                          </span>
+                          <span className='font-medium text-[#707070] text-sm leading-none line-through'>
+                            {formatPrice(item.productVariant.price)}
+                          </span>
+                        </div>
+                        <div className='flex gap-x-0.5 justify-end'>
+                          Số lượng: 
+                          <div className='text-red-600'>{item.quantity}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+                ))}
+            </div>
+
           </div>
         )
       }
       footer={
-        <div className='flex flex-col gap-y-3'>
-          <button onClick={() => navigate('/')} className='btn btn-danger'>
-            Tiếp tục mua hàng
-          </button>
-        </div>
+        data1 && data1.isSuccess?
+          (<div className='flex flex-col gap-y-3'>
+            <button onClick={() => navigate('/')} className='btn btn-danger'>
+              Tiếp tục mua hàng
+            </button>
+          </div>)
+          :
+          (<div className='flex flex-row gap-x-3'>
+            <button onClick={() => navigate('/')} className='btn btn-outline flex-1'>
+              Xem sản phẩm khác
+            </button>
+            <button onClick={() => navigate('/cart')} className='btn btn-danger flex-1'>
+              Mua lại
+            </button>
+          </div>)
+        
       }
     />
   )

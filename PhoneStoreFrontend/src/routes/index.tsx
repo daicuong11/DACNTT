@@ -11,6 +11,7 @@ import Orders from '@/pages/admin/orders'
 import AddProduct from '@/pages/admin/products/AddProduct'
 import Details from '@/pages/admin/products/Details'
 import ProductList from '@/pages/admin/products/ProductList'
+import UserList from '@/pages/admin/users/UserList'
 import { CartPage } from '@/pages/cart'
 import { CategoryPage } from '@/pages/category'
 import { HomePage } from '@/pages/home'
@@ -247,7 +248,16 @@ const MyRoutes = () => {
               element: <OrderDetailPage />
             }
           ]
-        }
+        },
+        {
+          path: 'users',
+          children: [
+            {
+              path: '',
+              element: <UserList />
+            },
+          ]
+        },
       ]
     }
   ]

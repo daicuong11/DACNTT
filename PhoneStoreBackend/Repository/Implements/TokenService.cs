@@ -1,7 +1,5 @@
 ﻿using Microsoft.IdentityModel.Tokens;
-using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
-using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -54,7 +52,7 @@ namespace PhoneStoreBackend.Repository.Implements
                 issuer: _configuration["JwtRefresh:Issuer"],
                 audience: _configuration["JwtRefresh:Audience"],
                 claims: claims,
-                expires: DateTime.UtcNow.AddDays(7), 
+                expires: DateTime.UtcNow.AddDays(7),
                 signingCredentials: creds
             );
 

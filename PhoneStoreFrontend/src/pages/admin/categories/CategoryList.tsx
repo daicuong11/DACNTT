@@ -1,10 +1,9 @@
 import { useGetCategories } from '@/hooks/querys/category.query'
 import { CategoryRequestType, CategoryType } from '@/types/category.type'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
-import { Button, Image, Popconfirm, Table } from 'antd'
+import { Button, Card, Image, Popconfirm, Table } from 'antd'
 import { ColumnsType } from 'antd/es/table'
 import { useState } from 'react'
-import Card from '../components/Card'
 import AddCategoryModal from './AddCategoryModal'
 import EditCategoryModal from './EditCategoryModal'
 
@@ -74,7 +73,7 @@ export default function CategoryList() {
       <EditCategoryModal isOpen={isEditModal} onClose={handleCloseEdit} category={selectedCategory || undefined} />
       <Card
         title='Danh Sách Danh Mục'
-        button={
+        extra={
           <div onClick={handleOpen} className='btn btn-primary capitalize'>
             Thêm Danh Mục
           </div>

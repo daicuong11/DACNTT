@@ -1,5 +1,7 @@
 // utils/axiosInstance.ts
-import { setTokens as setAuth, clearAuth } from '@/features/auth/auth.slice'
+import { clearAuth, setTokens as setAuth } from '@/features/auth/auth.slice'
+import { navigate } from '@/utils/navigation'
+import { Modal } from 'antd'
 import axios from 'axios'
 
 const API_BASE_URL: string = import.meta.env.VITE_API_BASE_URL || ''
@@ -86,14 +88,28 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => response.data,
   async (error) => {
-    const originalRequest = error.config
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true
-      const newAccessToken = await refreshToken()
-      if (newAccessToken) {
-        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`
-        return axiosInstance(originalRequest)
-      }
+    // const originalRequest = error.config
+    // if (error.response?.status === 401 && !originalRequest._retry) {
+    //   originalRequest._retry = true
+    //   const newAccessToken = await refreshToken()
+    //   if (newAccessToken) {
+    //     originalRequest.headers.Authorization = `Bearer ${newAccessToken}`
+    //     return axiosInstance(originalRequest)
+    //   }
+    // }
+    console.log('Error:', error)
+    if (error.response?.status === 401) {
+      Modal.confirm({
+        title: 'Phiên đăng nhập đã hết hạn',
+        content: 'Bạn có muốn đăng nhập lại không?',
+        okText: 'Đăng nhập lại',
+        cancelText: 'Hủy',
+        onOk: () => {
+          store.dispatch(clearAuth()) // Xóa Redux state
+          // navigate('/signin') // Chuyển về trang đăng nhập
+          window.location.href = '/signin' // Chuyển về trang đăng nhập
+        }
+      })
     }
     return Promise.reject(error)
   }

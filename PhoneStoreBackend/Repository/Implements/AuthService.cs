@@ -6,7 +6,6 @@ using PhoneStoreBackend.DbContexts;
 using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
 using PhoneStoreBackend.Enums;
-using System.IdentityModel.Tokens.Jwt;
 
 namespace PhoneStoreBackend.Repository.Implements
 {
