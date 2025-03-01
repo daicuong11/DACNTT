@@ -2,9 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PhoneStoreBackend.Api.Response;
 using PhoneStoreBackend.DbContexts;
-using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
-using PhoneStoreBackend.Repository;
 
 namespace PhoneStoreBackend.Repository.Implements
 {
@@ -59,7 +57,7 @@ namespace PhoneStoreBackend.Repository.Implements
                     ProductVariant = new VariantBasicResponse
                     {
                         ProductVariantId = ci.ProductVariantId,
-                        FullNameVariant = ci.ProductVariant.Product.Name + " " + ci.ProductVariant.VariantName,
+                        FullNameVariant = ci.ProductVariant.VariantName,
                         Color = ci.ProductVariant.Color,
                         DiscountPercentage = ci.ProductVariant.Discount?.Percentage ?? 0,
                         ImageUrl = ci.ProductVariant.ProductImages.FirstOrDefault()?.ImageUrl ?? "",

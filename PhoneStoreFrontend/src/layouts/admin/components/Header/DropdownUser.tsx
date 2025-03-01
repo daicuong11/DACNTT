@@ -1,12 +1,23 @@
 import { RootState } from '@/store';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import ClickOutside from '../ClickOutside';
+import { clearAuth } from '@/features/auth/auth.slice';
+import { clearCart } from '@/features/cart/cart.slice';
+import { useAppSelector, useAppDispatch } from '@/hooks';
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const user = useSelector((state: RootState) => state.auth.user)
+
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate() 
+
+  const handleLogout = () => {
+    dispatch(clearAuth())
+    dispatch(clearCart())
+  }
 
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
@@ -125,7 +136,7 @@ const DropdownUser = () => {
               </Link>
             </li>
           </ul>
-          <button className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
+          <button onClick={handleLogout} className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
             <svg
               className="fill-current"
               width="22"

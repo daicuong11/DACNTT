@@ -4,6 +4,8 @@ import { PaymentStatusEnum } from '@/enums'
 import { useGetOrderById } from '@/hooks/querys/order.query'
 import { FixedBottomLayout } from '@/layouts'
 import formatPrice from '@/utils/formatPrice'
+import getPriceAfterDiscount from '@/utils/getPriceAfterDiscount'
+import { Tag } from 'antd'
 import { useNavigate, useParams } from 'react-router-dom'
 
 const PaymentResultPage = () => {
@@ -122,6 +124,46 @@ const PaymentResultPage = () => {
                 )}
               </div>
             </div>
+
+            <div className='mt-6 space-y-3'>
+              <div className='uppercase'>Danh sách sản phẩm</div>
+              {data?.orderDetails.map((item, index) => (
+                <div className='p-5 space-y-4 bg-white border text-gray-900 border-gray-300 rounded-lg text-[15px]'>
+                  <div className='flex gap-x-4'>
+                    <div className='w-[100px] h-[100px] flex-shrink-0'>
+                      <img src={item.productVariant.imageUrl} className='object-contain w-full h-full' />
+                    </div>
+                    <div className='flex flex-col w-full gap-y-2'>
+                      {item.productVariant.variantName}
+                      <div className='flex flex-col'>
+                        <div className=''>
+                          <Tag color='default' className='text-[10px] md:text-[12px] text-gray-500 font-medium'>
+                            {item.productVariant.color}
+                          </Tag>
+                        </div>
+                        <div className='flex flex-col justify-between w-full gap-2 sm:items-end sm:flex-row'>
+                          <div className='flex items-end gap-x-2'>
+                            <span className='text-lg font-medium leading-none text-primary'>
+                              {formatPrice(
+                                getPriceAfterDiscount(item.productVariant.price, item.discount ?? 0)
+                              )}
+                            </span>
+                            <span className='font-medium text-[#707070] text-sm leading-none line-through'>
+                              {formatPrice(item.productVariant.price)}
+                            </span>
+                          </div>
+                          <div className='flex gap-x-0.5 justify-end'>
+                            Số lượng:
+                            <div className='text-red-600'>{item.quantity}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
           </div>
         )
       }

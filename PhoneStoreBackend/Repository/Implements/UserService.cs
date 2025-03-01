@@ -105,5 +105,18 @@ namespace PhoneStoreBackend.Repository.Implements
             return true;
         }
 
+        public async Task<UserDTO> UpdateUserStatusAsync(int id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+            {
+                throw new KeyNotFoundException("User not found.");
+            }
+
+            user.Active = !user.Active;
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+            return _mapper.Map<UserDTO>(user);
+        }
     }
 }

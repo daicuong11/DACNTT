@@ -64,7 +64,7 @@ namespace PhoneStoreBackend.Controllers
                     Money = Convert.ToDouble(order.TotalAmount),
                     Description = $"orderId_{order.OrderId}",
                     IpAddress = ipAddress,
-                    BankCode = BankCode.VNBANK, // Tùy chọn. Mặc định là tất cả phương thức giao dịch
+                    BankCode = BankCode.ANY, // Tùy chọn. Mặc định là tất cả phương thức giao dịch
                     CreatedDate = DateTime.Now, // Tùy chọn. Mặc định là thời điểm hiện tại
                     Currency = Currency.VND, // Tùy chọn. Mặc định là VND (Việt Nam đồng)
                     Language = DisplayLanguage.Vietnamese // Tùy chọn. Mặc định là tiếng Việt

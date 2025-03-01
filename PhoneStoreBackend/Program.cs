@@ -155,6 +155,7 @@ builder.Services.AddAuthentication(options =>
         ValidIssuer = jwtIssuer,
         ValidAudience = jwtAudience,
         IssuerSigningKey = signingKey,
+        ClockSkew = TimeSpan.Zero
     };
 })
 .AddCookie()
@@ -188,16 +189,16 @@ builder.Services.AddHttpClient();
 builder.Services.AddAutoMapper(typeof(Program));
 
 // Thêm CORS policy 
-//builder.Services.AddCors(options =>
-//{
-//    options.AddPolicy("FrontendPolicy", policy =>
-//    {
-//        policy.WithOrigins("http://localhost:3000", "https://biendev.io.vn") // Thêm domain mới
-//              .AllowAnyMethod()  // Cho phép tất cả HTTP methods
-//              .AllowAnyHeader()  // Cho phép tất cả headers
-//              .AllowCredentials(); // Hỗ trợ cookie, token
-//    });
-//});
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("FrontendPolicy", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000", "https://biendev.io.vn") // Thêm domain mới
+              .AllowAnyMethod()  // Cho phép tất cả HTTP methods
+              .AllowAnyHeader()  // Cho phép tất cả headers
+              .AllowCredentials(); // Hỗ trợ cookie, token
+    });
+});
 
 //builder.Services.AddCors(options =>
 //{
@@ -215,7 +216,7 @@ builder.Services.AddAutoMapper(typeof(Program));
 var app = builder.Build();
 
 // Middleware configuration
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || true)
 {
     app.UseSwagger();
     app.UseSwaggerUI(options =>
@@ -228,7 +229,7 @@ app.UseStatusCodePages("text/plain", "Status code: {0}");
 
 app.UseHttpsRedirection();
 
-//app.UseCors("FrontendPolicy");
+app.UseCors("FrontendPolicy");
 
 app.Use(async (context, next) =>
 {
@@ -261,5 +262,5 @@ app.Use(async (context, next) =>
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+//app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 app.Run();

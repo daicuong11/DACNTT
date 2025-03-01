@@ -1,4 +1,4 @@
-import { AppleOutlined, DashboardOutlined, ProductOutlined, UngroupOutlined } from '@ant-design/icons'
+import { AppleOutlined, DashboardOutlined, ProductOutlined, ShoppingCartOutlined, UngroupOutlined } from '@ant-design/icons'
 import React, { useEffect, useRef, useState } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import SidebarLinkGroup from './SidebarLinkGroup'
@@ -53,9 +53,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   return (
     <aside
       ref={sidebar}
-      className={`absolute z-50 left-0 top-0 flex h-screen w-72.5 flex-col overflow-y-hidden bg-white duration-300 ease-linear lg:static lg:translate-x-0 ${
-        sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-      }`}
+      className={`absolute z-50 left-0 top-0 flex h-screen w-72.5 flex-col overflow-y-hidden bg-white duration-300 ease-linear lg:static lg:translate-x-0 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
     >
       {/* <!-- SIDEBAR HEADER --> */}
       <div className='flex items-center justify-between gap-2 px-6 py-4'>
@@ -99,9 +98,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <NavLink
                   to='/admin/dashboard'
-                  className={`capitalize group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${
-                    pathname.includes('dashboard') && 'bg-gray-200'
-                  }`}
+                  className={`capitalize group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${pathname.includes('dashboard') && 'bg-gray-200'
+                    }`}
                 >
                   <DashboardOutlined />
                   Dashboard
@@ -113,9 +111,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <NavLink
                   to='/admin/products'
-                  className={`capitalize group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${
-                    pathname.includes('product') && 'bg-gray-200'
-                  }`}
+                  className={`capitalize group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${pathname.includes('product') && 'bg-gray-200'
+                    }`}
                 >
                   <ProductOutlined />
                   Quản lý sản phẩm
@@ -128,9 +125,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <NavLink
                   to='/admin/brands'
-                  className={`capitalize group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${
-                    pathname.includes('brand') && 'bg-gray-200'
-                  }`}
+                  className={`capitalize group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${pathname.includes('brand') && 'bg-gray-200'
+                    }`}
                 >
                   <AppleOutlined />
                   Quản lý thương hiệu
@@ -142,9 +138,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <NavLink
                   to='/admin/categories'
-                  className={`capitalize group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${
-                    pathname.includes('categories') && 'bg-gray-200'
-                  }`}
+                  className={`capitalize group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${pathname.includes('categories') && 'bg-gray-200'
+                    }`}
                 >
                   <UngroupOutlined />
                   Quản lý danh mục
@@ -156,9 +151,21 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <NavLink
                   to='/admin/orders'
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${
-                    pathname.includes('profile') && 'bg-gray-200'
-                  }`}
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${pathname.includes('order') && 'bg-gray-200'
+                    }`}
+                >
+                  <ShoppingCartOutlined />
+                  Quản Lý Đơn Hàng
+                </NavLink>
+              </li>
+              {/* <!-- Menu Item Profile --> */}
+
+              {/* <!-- End Menu Item User --> */}
+              <li>
+                <NavLink
+                  to='/admin/users'
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${pathname.includes('user') && 'bg-gray-200'
+                    }`}
                 >
                   <svg
                     className='fill-current'
@@ -177,10 +184,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                       fill=''
                     />
                   </svg>
-                  Quản Lý Đơn Hàng
+                  Quản Lý Người Dùng
                 </NavLink>
               </li>
-              {/* <!-- Menu Item Profile --> */}
+              {/* <!-- End Menu Item User --> */}
 
               {/* <!-- Menu Item Forms --> */}
               <SidebarLinkGroup activeCondition={pathname === '/forms' || pathname.includes('forms')}>
@@ -189,9 +196,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     <React.Fragment>
                       <NavLink
                         to='#'
-                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${
-                          (pathname === '/forms' || pathname.includes('forms')) && 'bg-gray-200'
-                        }`}
+                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${(pathname === '/forms' || pathname.includes('forms')) && 'bg-gray-200'
+                          }`}
                         onClick={(e) => {
                           e.preventDefault()
                           sidebarExpanded ? handleClick() : setSidebarExpanded(true)
@@ -281,9 +287,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <NavLink
                   to='/tables'
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${
-                    pathname.includes('tables') && 'bg-gray-200'
-                  }`}
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${pathname.includes('tables') && 'bg-gray-200'
+                    }`}
                 >
                   <svg
                     className='fill-current'
@@ -314,9 +319,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <NavLink
                   to='/settings'
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${
-                    pathname.includes('settings') && 'bg-gray-200'
-                  }`}
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${pathname.includes('settings') && 'bg-gray-200'
+                    }`}
                 >
                   <svg
                     className='fill-current'
@@ -358,9 +362,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <NavLink
                   to='/chart'
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${
-                    pathname.includes('chart') && 'bg-gray-200'
-                  }`}
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${pathname.includes('chart') && 'bg-gray-200'
+                    }`}
                 >
                   <svg
                     className='fill-current'
@@ -398,9 +401,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     <React.Fragment>
                       <NavLink
                         to='#'
-                        className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${
-                          (pathname === '/ui' || pathname.includes('ui')) && 'bg-gray-200'
-                        }`}
+                        className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${(pathname === '/ui' || pathname.includes('ui')) && 'bg-gray-200'
+                          }`}
                         onClick={(e) => {
                           e.preventDefault()
                           sidebarExpanded ? handleClick() : setSidebarExpanded(true)
@@ -492,9 +494,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     <React.Fragment>
                       <NavLink
                         to='#'
-                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${
-                          (pathname === '/auth' || pathname.includes('auth')) && 'bg-gray-200'
-                        }`}
+                        className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${(pathname === '/auth' || pathname.includes('auth')) && 'bg-gray-200'
+                          }`}
                         onClick={(e) => {
                           e.preventDefault()
                           sidebarExpanded ? handleClick() : setSidebarExpanded(true)

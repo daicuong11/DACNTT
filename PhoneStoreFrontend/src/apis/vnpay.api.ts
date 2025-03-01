@@ -18,20 +18,44 @@ class VnpayAPI {
       throw new Error('Không thể tạo link thanh toán')
     }
   }
+  // async checkPayment(searchParams: URLSearchParams): Promise<PaymentResult> {
+  //   try {
+  //     const response = await axiosInstance.get<PaymentResult>(`Vnpay/Callback`, {
+  //       params: Object.fromEntries(searchParams.entries())
+  //     })
+  //     console.log('Kết quả thanh toán:', response)
+  //     if (!response) {
+  //       throw new Error("Không nhận được kết quả thanh toán từ API");
+  //     }
+  //     return response as unknown as PaymentResult
+  //   } catch (error) {
+  //     console.error('Lỗi khi kiểm tra thanh toán:', error)
+  //     throw new Error('Không thể kiểm tra than')
+  //   }
+  // }
+
   async checkPayment(searchParams: URLSearchParams): Promise<PaymentResult> {
     try {
-      const response = await axiosInstance.get<PaymentResult>(`Vnpay/Callback`, {
-        params: Object.fromEntries(searchParams.entries())
-      })
-      console.log('Kết quả thanh toán:', response)
-      if (!response) {
-        throw new Error("Không nhận được kết quả thanh toán từ API");
+        const data: PaymentResult = await axiosInstance.get('Vnpay/Callback', {
+            params: Object.fromEntries(searchParams.entries())
+        });
+
+        if (!data) throw new Error("Không nhận được kết quả thanh toán từ API");
+
+        return data;
+    } catch (error: any) {
+      if (error.response) {
+          const { status, data } = error.response;
+          if (status === 400) {
+              console.error('Lỗi 400 Bad Request:', data);
+              // throw new Error(data.message || 'Yêu cầu không hợp lệ.');
+              return data;
+          }
       }
-      return response as unknown as PaymentResult
-    } catch (error) {
-      console.error('Lỗi khi kiểm tra thanh toán:', error)
-      throw new Error('Không thể kiểm tra than')
-    }
+
+      console.error('Lỗi khi kiểm tra thanh toán:', error);
+      throw new Error('Không thể kiểm tra thanh toán. Vui lòng thử lại sau.');
   }
+}
 }
 export default new VnpayAPI()

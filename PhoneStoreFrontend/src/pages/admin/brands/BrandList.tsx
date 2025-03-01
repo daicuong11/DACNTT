@@ -1,8 +1,7 @@
 import { useGetBrands } from '@/hooks/querys/brand.query'
 import { BrandType } from '@/types/brand.type'
-import { Button, Image, Popconfirm, Table } from 'antd'
+import { Button, Image, Popconfirm, Table , Card} from 'antd'
 import { useState } from 'react'
-import Card from '../components/Card'
 import AddBrandModal from './AddBrandModal'
 import EditBrandModal from './EditBrandModal'
 import { ColumnsType } from 'antd/es/table'
@@ -75,7 +74,7 @@ export default function BrandList() {
 
       <Card
         title='Danh Sách Thương Hiệu'
-        button={
+        extra={
           <div onClick={handleOpen} className='btn btn-primary capitalize'>
             Thêm Thương Hiệu
           </div>
