@@ -28,6 +28,8 @@ namespace PhoneStoreBackend.DbContexts
         public DbSet<Wishlist> Wishlists { get; set; }
         public DbSet<ActivityLog> ActivityLogs { get; set; }
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Reply> Replies { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -68,6 +70,12 @@ namespace PhoneStoreBackend.DbContexts
                 .WithMany(psg => psg.ProductSpecifications)
                 .HasForeignKey(ps => ps.ProductSpecificationGroupId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Reply>()
+                .HasOne(r => r.Comment)
+                .WithMany(c => c.Replies)
+                .HasForeignKey(r => r.CommentId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             //DatabaseSeeder.Seed(modelBuilder); // migration add SeedData -> update-database
         }

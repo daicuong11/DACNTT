@@ -107,7 +107,7 @@ namespace PhoneStoreBackend.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(Response<object>.CreateErrorResponse("Đã xảy ra lỗi trong quá trình xử lý. Vui lòng thử lại sau."));
+                return BadRequest(Response<object>.CreateErrorResponse("Đã xảy ra lỗi: " + ex.Message));
             }
         }
 

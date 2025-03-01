@@ -83,7 +83,7 @@ namespace PhoneStoreBackend.Controllers
         {
             try
             {
-                if (userId == null || variantId == null)
+                if (userId < 0 || variantId < 0)
                 {
                     var responseError = Response<object>.CreateErrorResponse($"Vui lòng điền đủ thông tin");
 

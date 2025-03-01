@@ -1,6 +1,7 @@
 ﻿using PhoneStoreBackend.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace PhoneStoreBackend.Entities
 {
@@ -34,19 +35,33 @@ namespace PhoneStoreBackend.Entities
 
         public bool IsGoogleAccount { get; set; } = false;
 
-        public string? RefreshToken { get; set; } 
-        public DateTime? RefreshTokenExpiryTime { get; set; } 
+        [JsonIgnore]
+        public string? RefreshToken { get; set; }
+        [JsonIgnore]
+        public DateTime? RefreshTokenExpiryTime { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
-
+        [JsonIgnore]
         public ICollection<Cart> Carts { get; set; }
+        [JsonIgnore]
         public ICollection<Review> Reviews { get; set; }
+        [JsonIgnore]
         public ICollection<Order> Orders { get; set; }
+        [JsonIgnore]
         public ICollection<Coupon> Coupons { get; set; }
+        [JsonIgnore]
         public ICollection<Address> Addresses { get; set; }
+        [JsonIgnore]
         public ICollection<Wishlist> Wishlists { get; set; }
-        public ICollection<Notification> Notifications { get; set; } 
-        public ICollection<Notification> SentNotifications { get; set; } 
+        [JsonIgnore]
+        public ICollection<Notification> Notifications { get; set; }
+        [JsonIgnore]
+        public ICollection<Notification> SentNotifications { get; set; }
+        [JsonIgnore] 
+        
+        public ICollection<Comment> Comments { get; set; }
+        [JsonIgnore]
+        public ICollection<Reply> Replies { get; set; }
     }
 }
