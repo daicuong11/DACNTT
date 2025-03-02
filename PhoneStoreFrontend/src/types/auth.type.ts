@@ -1,10 +1,15 @@
-import { UserAuthType, UserType } from './user.type'
-
 // response
 export interface BaseResponse<T> {
   success: boolean
   message: string
   data: T
+}
+
+export interface BaseResponsePaginate<T> extends BaseResponse<T> {
+  currentPage: number
+  totalPages: number
+  pageSize: number
+  totalItems: number
 }
 
 export interface AuthResponseType {

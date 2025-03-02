@@ -19,10 +19,10 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpGet("product/{variantId}")]
-        public async Task<IActionResult> GetComments(int variantId)
+        public async Task<IActionResult> GetComments(int variantId, [FromQuery] int page = 1, [FromQuery] int pageSize = 5)
         {
-            var comments = await _commentRepository.GetCommentByVariantId(variantId);
-            return Ok(Response<ICollection<Comment>>.CreateSuccessResponse(comments, "Danh sách bình luận"));
+            var res = await _commentRepository.GetCommentByVariantId(variantId, page, pageSize);
+            return Ok(res);
         }
 
 

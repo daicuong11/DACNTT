@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PhoneStoreBackend.Api.Response;
 using PhoneStoreBackend.DbContexts;
 using PhoneStoreBackend.Entities;
 
@@ -18,16 +19,25 @@ namespace PhoneStoreBackend.Repository.Implements
             return entities.Entity;
         }
 
-        public async Task<ICollection<Comment>> GetCommentByVariantId(int variantId)
+        public async Task<PagedResponse<ICollection<Comment>>> GetCommentByVariantId(int variantId, int page, int pageSize)
         {
-            return await _context.Comments
+            var query = _context.Comments
                 .Where(c => c.ProductVariantId == variantId)
                 .Include(c => c.User)
-                .Include(c => c.Replies) 
+                .Include(c => c.Replies)
                 .ThenInclude(r => r.User)
-                .OrderByDescending(c => c.CreatedAt)
+                .OrderByDescending(c => c.CreatedAt); 
+
+            int totalItems = await query.CountAsync(); 
+
+            var comments = await query
+                .Skip((page - 1) * pageSize) 
+                .Take(pageSize) 
                 .ToListAsync();
+
+            return PagedResponse<ICollection<Comment>>.CreatePagedResponse(comments, page, pageSize, totalItems, "Danh sách bình luận");
         }
+
 
         public async Task<Reply> ReplyAsync(Reply reply)
         {

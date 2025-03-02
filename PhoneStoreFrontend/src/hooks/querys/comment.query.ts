@@ -1,12 +1,13 @@
 import commentAPI from '@/apis/comment.api'
-import { keepPreviousData, useMutation, useQuery } from '@tanstack/react-query'
+import { useInfiniteQuery, useMutation } from '@tanstack/react-query'
 
-export const useGetCommentsByVariantId = (variantId: number) => {
-  return useQuery({
+export const useGetCommentsByVariantId = (variantId: number, pageSize: number = 4) => {
+  return useInfiniteQuery({
     queryKey: ['getCommentByVariantId', variantId],
-    queryFn: () => commentAPI.getCommentsByVariantId(variantId),
+    queryFn: ({ pageParam }) => commentAPI.getCommentsByVariantId(variantId, pageParam, pageSize),
+    getNextPageParam: (lastPage) => (lastPage.currentPage < lastPage.totalPages ? lastPage.currentPage + 1 : undefined),
     enabled: !!variantId,
-    placeholderData: keepPreviousData
+    initialPageParam: 1
   })
 }
 

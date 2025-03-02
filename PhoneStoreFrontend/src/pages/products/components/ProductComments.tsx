@@ -10,6 +10,7 @@ import { useCreateComment, useGetCommentsByVariantId } from '@/hooks/querys/comm
 import classNames from 'classnames'
 import { CommentRequestType } from '@/types/comment.type'
 import { toast } from 'react-toastify'
+import { motion } from 'framer-motion'
 
 interface ProductCommentsProps {
   productVariant: ProductVariantType
@@ -17,7 +18,9 @@ interface ProductCommentsProps {
 
 const ProductComments: FC<ProductCommentsProps> = ({ productVariant }) => {
   const queryClient = useQueryClient()
-  const { data: comments, isLoading, isError } = useGetCommentsByVariantId(productVariant.productVariantId)
+  const { data, isError, hasNextPage, fetchNextPage, isFetching, isFetchingNextPage } = useGetCommentsByVariantId(
+    productVariant.productVariantId
+  )
   const { mutate: createComment, isPending: isPendingCreateComment } = useCreateComment()
   const [commentInput, setCommentInput] = useState<string>('')
 
@@ -46,7 +49,7 @@ const ProductComments: FC<ProductCommentsProps> = ({ productVariant }) => {
   return isError ? null : (
     <ContainerPanel
       className={classNames({
-        'animate-pulse': isLoading
+        'animate-pulse': isFetching
       })}
       titleClassName='text-xl'
       title='Hỏi và đáp'
@@ -72,29 +75,40 @@ const ProductComments: FC<ProductCommentsProps> = ({ productVariant }) => {
           <SendHorizonal size={20} />
         </button>
       </div>
-      {comments && comments?.length > 0 && <MyDivider />}
-      {comments && (
-        <div className='flex flex-col text-black gap-y-2'>
-          {comments?.map((comment, index) => (
-            <CommentItem
-              key={comment.commentId}
-              isShowReply={index < 5}
-              comment={comment}
-              productVariantId={productVariant.productVariantId}
-            />
-          ))}
-        </div>
-      )}
-      {comments && comments.length > 4 && (
-        <div className='my-2'>
-          <button className='items-center font-roboto mx-auto text-[15px] w-min text-nowrap px-20 font-medium border border-gray-200 shadow-md btn btn-light hover:border-primary hover:text-primary hover:!bg-red-50 drop-shadow-sm'>
-            Xem thêm
-            <span>
-              <ChevronDown size={18} strokeWidth={2} />
-            </span>
-          </button>
-        </div>
-      )}
+      {data && data?.pages.length > 0 && <MyDivider />}
+      <div className='flex flex-col text-black gap-y-2'>
+        {data?.pages.map((group, i) => (
+          <React.Fragment key={i}>
+            {group.data?.map((comment, index) => (
+              <motion.div
+                key={comment.commentId}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <CommentItem
+                  isShowReply={i == 0}
+                  comment={comment}
+                  productVariantId={productVariant.productVariantId}
+                />
+              </motion.div>
+            ))}
+          </React.Fragment>
+        ))}
+      </div>
+
+      <div className={classNames('my-2', { hidden: !hasNextPage })}>
+        <button
+          disabled={!hasNextPage || isFetching || isFetchingNextPage}
+          onClick={() => fetchNextPage()}
+          className='items-center font-roboto mx-auto text-[15px] w-min text-nowrap px-20 font-medium border border-gray-200 shadow-md btn btn-light hover:border-primary hover:text-primary hover:!bg-red-50 drop-shadow-sm'
+        >
+          {isFetchingNextPage ? 'Đang tải...' : 'Xem thêm'}
+          <span>
+            <ChevronDown size={18} strokeWidth={2} />
+          </span>
+        </button>
+      </div>
     </ContainerPanel>
   )
 }

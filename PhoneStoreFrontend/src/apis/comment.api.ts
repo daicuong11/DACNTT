@@ -1,11 +1,14 @@
 import axiosInstance from '@/configs/http'
-import { BaseResponse } from '@/types/auth.type'
+import { BaseResponse, BaseResponsePaginate } from '@/types/auth.type'
 import { CommentRequestType, CommentType, ReplyRequestType, ReplyType } from '@/types/comment.type'
 
 class CommentAPI {
-  async getCommentsByVariantId(variantId: number): Promise<CommentType[]> {
-    const response = await axiosInstance.get(`comments/product/${variantId}`)
-    return response.data
+  async getCommentsByVariantId(
+    variantId: number,
+    page: number = 1,
+    pageSize: number = 2
+  ): Promise<BaseResponsePaginate<CommentType[]>> {
+    return await axiosInstance.get(`comments/product/${variantId}?page=${page}&pageSize=${pageSize}`)
   }
 
   async createComment(createCommentReq: CommentRequestType): Promise<CommentType> {

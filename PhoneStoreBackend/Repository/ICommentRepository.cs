@@ -1,4 +1,5 @@
-﻿using PhoneStoreBackend.Entities;
+﻿using PhoneStoreBackend.Api.Response;
+using PhoneStoreBackend.Entities;
 
 namespace PhoneStoreBackend.Repository
 {
@@ -8,6 +9,6 @@ namespace PhoneStoreBackend.Repository
 
         Task<Reply> ReplyAsync(Reply reply);
 
-        Task<ICollection<Comment>> GetCommentByVariantId (int  variantId);
+        Task<PagedResponse<ICollection<Comment>>> GetCommentByVariantId (int  variantId, int page, int pageSize);
     }
 }
