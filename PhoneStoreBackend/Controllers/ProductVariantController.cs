@@ -221,6 +221,5 @@ namespace PhoneStoreBackend.Controllers
                 return BadRequest(errorResponse);
             }
         }
-
     }
 }

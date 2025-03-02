@@ -1,7 +1,8 @@
 import VariantCard from '@/components/items/VariantCard'
 import { useQueryString } from '@/hooks'
-import { useSearchProducts } from '@/hooks/querys/product.query'
+import { useGetAllProducts, useSearchProducts } from '@/hooks/querys/product.query'
 import useSetDocTitle from '@/hooks/useSetDocTitle'
+import { Spin } from 'antd'
 import classNames from 'classnames'
 import { ArrowDownNarrowWide, ArrowDownWideNarrow, ChevronDown, Sparkles } from 'lucide-react'
 import { FC, useMemo, useState } from 'react'
@@ -16,19 +17,24 @@ const SearchResultPage: FC<SearchResultPageProps> = () => {
   const queryString = useQueryString()
   useSetDocTitle(`Kết quả tìm kiếm cho: ${queryString.q}`)
 
-  const { data: products, isLoading } = useSearchProducts(queryString.q)
-  const result = useMemo(() => 
-    (products || []) // Nếu products là undefined/null, dùng mảng rỗng để tránh lỗi
-      .filter((p) => p.productVariants?.length > 0)
-      .flatMap((p) => p.productVariants),
-    [products] // Chỉ chạy lại khi products thay đổi
-  );
-  
+  const { data: variants, isLoading: isLoadingSearch } = useSearchProducts(queryString.q)
+  const { data: pros, isLoading: isLoading2 } = useGetAllProducts()
+
+  // Hàm sắp xếp sản phẩm
+  const sortedProducts = useMemo(() => {
+    if (!variants) return [];
+    console.log('variants', variants)
+    return [...variants].sort((a, b) => {
+      if (sortType === sortTypes[1]) return a.price - b.price;
+      if (sortType === sortTypes[2]) return b.price - a.price;
+      return 0; // Mặc định giữ nguyên
+    });
+  }, [sortType, variants]);
 
   return (
     <div className='py-4 mb-10'>
       <div className='text-sm font-medium text-center text-gray-600 font-roboto'>
-        Tìm thấy <span className='font-semibold text-gray-700'>{products ? result.length : 0}</span> sản phẩm cho từ
+        Tìm thấy <span className='font-semibold text-gray-700'>{variants ? variants.length : 0}</span> sản phẩm cho từ
         khóa '<span className='font-semibold text-gray-700'>{queryString.q}</span>'
       </div>
       <div className='mt-3 text-lg font-semibold text-gray-800 font-roboto'>Sắp xếp theo</div>
@@ -70,18 +76,18 @@ const SearchResultPage: FC<SearchResultPageProps> = () => {
         </span>
       </div>
       <div className='grid gap-2.5 grid-cols-5'>
-        {products?.length
-          ? products
-            .filter((p) => p.productVariants?.length > 0)
-            .flatMap((p) =>
-              p.productVariants.map((variant) => (
-                <VariantCard key={variant.variantId} category={p.category.name} variant={variant} />
-              ))
-            )
-          : null}
+        {isLoadingSearch ? (
+          <div className="flex justify-center items-center py-10">
+            <Spin size="large" />
+          </div>
+        ) : (
+          sortedProducts.map((variant) => (
+            <VariantCard key={variant.variantId} category={variant.categoryName} variant={variant} />
+          ))
+        )}
 
       </div>
-      {products && products.length !== 0 && (
+      {variants && variants.length !== 0 && (
         <div className='mt-2.5'>
           <button className='items-center font-roboto mx-auto text-[15px] w-min text-nowrap px-20 font-medium border border-gray-200 shadow-md btn btn-light hover:border-primary hover:text-primary hover:!bg-red-50 drop-shadow-sm'>
             Xem thêm
@@ -99,7 +105,12 @@ const SearchResultPage: FC<SearchResultPageProps> = () => {
           <span className='text-[24px] font-bold uppercase mr-4'>Sản phẩm nổi bật</span>
         </div>
 
-        <CarouselProduct autoPlay={false} dataSource={products || []} />
+        {isLoading2 ? (
+          <div className="flex justify-center items-center py-10">
+            <Spin size="large" />
+          </div>
+        ) : (<CarouselProduct autoPlay={false} dataSource={pros || []} />)
+        }
       </div>
     </div>
   )

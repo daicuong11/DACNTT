@@ -366,6 +366,7 @@ namespace PhoneStoreBackend.Repository.Implements
                         Price = v.Price,
                         Color = v.Color,
                         ImageUrl = v.ImageUrl,
+                        CategoryName = p.Category.Name,
                     }).ToList(),
                 })
                 .ToListAsync();

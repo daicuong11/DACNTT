@@ -6,7 +6,7 @@ import {
   ProductResponse,
   ProductType
 } from '@/types/product.type'
-import { ProductVariantType } from '@/types/product_variant.type'
+import { ProductVariantResponse, ProductVariantType } from '@/types/product_variant.type'
 
 // method get
 export const getAllProduct = async (): Promise<ProductResponse[]> => {
@@ -58,7 +58,7 @@ export const updateProduct = async (productId: number, formData: FormData) => {
 
 // method patch
 
-export async function searchProducts(name: string): Promise<ProductResponse[]> {
+export async function searchProducts(name: string): Promise<ProductVariantResponse[]> {
   if (!name.trim()) return Promise.resolve([]); // Trả về Promise rỗng nếu name trống
 
   const res = await axiosInstance.get(`products/search?keyword=${encodeURIComponent(name)}`);
