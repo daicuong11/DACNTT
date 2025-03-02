@@ -11,6 +11,7 @@ import { formatTime } from '@/utils/fomatTime'
 import { useCreateReply } from '@/hooks/querys/comment.query'
 import { toast } from 'react-toastify'
 import { useQueryClient } from '@tanstack/react-query'
+import { motion } from 'framer-motion'
 
 interface CommentItemProps {
   comment: CommentType
@@ -106,7 +107,16 @@ const CommentItem: FC<CommentItemProps> = ({ comment, isReply, productVariantId,
       </div>
       {showReply && comment.replies && comment.replies.length > 0 && (
         <div className='pl-11'>
-          {comment.replies?.map((reply) => <ReplyItem key={reply.replyId} isReply reply={reply} />)}
+          {comment.replies?.map((reply) => (
+            <motion.div
+              key={reply.replyId}
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <ReplyItem isReply reply={reply} />
+            </motion.div>
+          ))}
         </div>
       )}
       <div className='pl-11'>

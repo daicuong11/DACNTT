@@ -5,6 +5,7 @@ import Loader from './components/Loader.tsx'
 import MyRoutes from './routes'
 import ScrollToTop from './utils/ScrollToTop.tsx'
 import CartWatcher from './middlewares/CartWatcher.tsx'
+import { LoadingOpacity } from './components/index.ts'
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true)
@@ -14,10 +15,9 @@ function App() {
     setLoading(false)
   }, [])
 
-  return loading ? (
-    <Loader />
-  ) : (
+  return (
     <>
+      {loading && <LoadingOpacity />}
       <BrowserRouter>
         <ScrollToTop />
         <CartWatcher />
