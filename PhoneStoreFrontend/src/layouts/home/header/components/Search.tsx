@@ -115,17 +115,17 @@ const Search: FC<SearchProps> = ({ }) => {
             <div className='mt-3'>
               <div className='px-4 mb-2 font-medium text-gray-800'>Sản phẩm</div>
               <div className='flex flex-col'>
-                {data && data.filter((p) => p.productVariants?.length > 0).map((p) => (
-                  <div onClick={() => handleProductClick(p.category.name, p.productVariants[0].slug)} className='flex items-center p-2 rounded-md cursor-pointer gap-x-2 hover:bg-gray-100'>
-                    <img className='object-contain w-14 h-14' src={p.productVariants[0].imageUrl} alt='' />
+                {data && data.map((p) => (
+                  <div onClick={() => handleProductClick(p.categoryName, p.slug)} className='flex items-center p-2 rounded-md cursor-pointer gap-x-2 hover:bg-gray-100'>
+                    <img className='object-contain w-14 h-14' src={p.imageUrl} alt='' />
                     <div className='flex flex-col gap-y-0.5'>
-                      <div className='text-sm font-medium text-black'>{p.productVariants[0].variantName}</div>
+                      <div className='text-sm font-medium text-black'>{p.variantName}</div>
                       <div className='flex items-end'>
                         <div className='text-sm font-bold font-roboto text-primary'>
-                          {formatPrice(getPriceAfterDiscount(p.productVariants[0].price, p.productVariants[0].discountPercentage)).replace('đ', '')}
+                          {formatPrice(getPriceAfterDiscount(p.price, p.discountPercentage)).replace('đ', '')}
                         </div>
                         <div className='text-xs text-gray-500 line-through font-roboto'>
-                          {formatPrice(p.productVariants[0].price).replace('đ', '')}
+                          {formatPrice(p.price).replace('đ', '')}
                         </div>
                       </div>
                     </div>

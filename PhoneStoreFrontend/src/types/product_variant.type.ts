@@ -52,3 +52,21 @@ export interface VariantBasicResponse {
   stock: number
   imageUrl: string
 }
+
+export interface ProductVariantResponse {
+  variantId: number;
+  slug: string;
+  variantName: string;
+  
+  screenSize: string;
+  ram: string;
+  storage: string;
+  
+  color: string;
+  
+  imageUrl: string;
+  
+  price: number;
+  discountPercentage: number;
+  categoryName: string;
+}

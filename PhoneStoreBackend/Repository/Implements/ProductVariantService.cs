@@ -211,5 +211,10 @@ namespace PhoneStoreBackend.Repository.Implements
                 .Include(pv => pv.Discount)
                 .ToListAsync();
         }
+
+        public Task<ICollection<ProductVariantDTO>> SearchVariants(string keywork)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

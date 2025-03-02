@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using PhoneStoreBackend.Api.Request;
 using PhoneStoreBackend.Api.Response;
 using PhoneStoreBackend.DbContexts;
@@ -340,7 +341,16 @@ namespace PhoneStoreBackend.Controllers
             try
             {
                 var products = await _productRepository.SearchProductsAsync(keyword);
-                var response = Response<ICollection<ProductResponse>>.CreateSuccessResponse(products, "Kết quả tìm kiếm sản phẩm");
+                List<ProductVariantResponse> variantsResponse = new List<ProductVariantResponse>();
+                foreach (var product in products)
+                {
+                    if (product != null && !product.ProductVariants.IsNullOrEmpty())
+                    {
+                        variantsResponse.AddRange(product.ProductVariants);
+                    }
+                }
+
+                var response = Response<ICollection<ProductVariantResponse>>.CreateSuccessResponse(variantsResponse, "Kết quả tìm kiếm sản phẩm");
                 return Ok(response);
             }
             catch (Exception ex)

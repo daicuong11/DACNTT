@@ -18,5 +18,6 @@ namespace PhoneStoreBackend.Repository
         Task<bool> UpdateProductVariantAsync(int id, ProductVariant productVariant);
         Task<bool> DeleteProductVariantAsync(int id);
         Task<bool> AnySlugExistsAsync(string slug);
+        Task<ICollection<ProductVariantDTO>> SearchVariants(string keywork);
     }
 }
