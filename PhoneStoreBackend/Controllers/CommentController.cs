@@ -38,7 +38,7 @@ namespace PhoneStoreBackend.Controllers
                 var userId = int.Parse(User.FindFirst("userId")?.Value);
 
                 if(userId < 1) {
-                    return BadRequest(Response<object>.CreateErrorResponse("Người dùng chưa đăng nhập"));
+                    return Unauthorized(Response<object>.CreateErrorResponse("Người dùng chưa đăng nhập"));
                 }
 
                 var newComment = new Comment
@@ -46,7 +46,7 @@ namespace PhoneStoreBackend.Controllers
                     UserId = userId,
                     ProductVariantId = request.ProductVariantId,
                     Content = request.Content,
-                    CreatedAt = DateTime.UtcNow
+                    CreatedAt = DateTime.Now
                 };
 
                 var createdComment = await _commentRepository.AddCommentAsync(newComment);
@@ -79,7 +79,7 @@ namespace PhoneStoreBackend.Controllers
                     UserId = userId,
                     CommentId = request.CommentId, 
                     Content = request.Content,
-                    CreatedAt = DateTime.UtcNow
+                    CreatedAt = DateTime.Now
                 };
 
                 var createdReply = await _commentRepository.ReplyAsync(newReply);

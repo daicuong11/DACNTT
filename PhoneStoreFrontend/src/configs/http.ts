@@ -88,31 +88,33 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => response.data,
   async (error) => {
-    // const originalRequest = error.config
-    // if (error.response?.status === 401 && !originalRequest._retry) {
-    //   originalRequest._retry = true
-    //   const newAccessToken = await refreshToken()
-    //   if (newAccessToken) {
-    //     originalRequest.headers.Authorization = `Bearer ${newAccessToken}`
-    //     return axiosInstance(originalRequest)
-    //   }
-    // }
-    console.log('Error:', error)
-    if (error.response?.status === 401) {
-      Modal.confirm({
-        title: 'Phiên đăng nhập đã hết hạn',
-        content: 'Bạn có muốn đăng nhập lại không?',
-        okText: 'Đăng nhập lại',
-        cancelText: 'Hủy',
-        onOk: () => {
-          store.dispatch(clearAuth()) // Xóa Redux state
-          // navigate('/signin') // Chuyển về trang đăng nhập
-          window.location.href = '/signin' // Chuyển về trang đăng nhập
-        }
-      })
+    const originalRequest = error.config
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true
+      const newAccessToken = await refreshToken()
+      if (newAccessToken) {
+        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`
+        return axiosInstance(originalRequest)
+      }
     }
+
     return Promise.reject(error)
   }
 )
 
 export default axiosInstance
+
+// console.log('Error:', error)
+// if (error.response?.status === 401) {
+//   Modal.confirm({
+//     title: 'Phiên đăng nhập đã hết hạn',
+//     content: 'Bạn có muốn đăng nhập lại không?',
+//     okText: 'Đăng nhập lại',
+//     cancelText: 'Hủy',
+//     onOk: () => {
+//       store.dispatch(clearAuth()) // Xóa Redux state
+//       // navigate('/signin') // Chuyển về trang đăng nhập
+//       window.location.href = '/signin' // Chuyển về trang đăng nhập
+//     }
+//   })
+// }

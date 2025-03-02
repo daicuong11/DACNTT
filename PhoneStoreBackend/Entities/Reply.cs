@@ -12,7 +12,6 @@ namespace PhoneStoreBackend.Entities
 
         [Required]
         public int UserId { get; set; }
-        [ForeignKey("UserId")]
 
         [Required]
         public int CommentId { get; set; }
@@ -22,8 +21,13 @@ namespace PhoneStoreBackend.Entities
 
         [Required]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
+
+        // Navigation properties
         [JsonIgnore]
+        [ForeignKey("CommentId")]
         public Comment Comment { get; set; }
+
+        [ForeignKey("UserId")]
         public User User { get; set; }
     }
 }

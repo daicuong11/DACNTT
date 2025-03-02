@@ -75,7 +75,14 @@ namespace PhoneStoreBackend.DbContexts
                 .HasOne(r => r.Comment)
                 .WithMany(c => c.Replies)
                 .HasForeignKey(r => r.CommentId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Cascade); 
+
+            modelBuilder.Entity<Reply>()
+                .HasOne(r => r.User)
+                .WithMany()
+                .HasForeignKey(r => r.UserId)
+                .OnDelete(DeleteBehavior.NoAction); 
+
 
             //DatabaseSeeder.Seed(modelBuilder); // migration add SeedData -> update-database
         }

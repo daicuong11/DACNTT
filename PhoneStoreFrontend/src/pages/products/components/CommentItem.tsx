@@ -1,28 +1,54 @@
+import { CommentType, ReplyRequestType } from '@/types/comment.type'
+import { formatterDay } from '@/utils/formatterDay'
 import { UserOutlined } from '@ant-design/icons'
-import { Avatar } from 'antd'
+import { Avatar, Tag } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
 import classNames from 'classnames'
 import { SendHorizonal } from 'lucide-react'
-import React, { FC, useEffect, useRef } from 'react'
-
-export interface CommentType {
-  id: number
-  author: string
-  content: string
-  time: string
-  replies?: CommentType[]
-}
+import React, { FC, useEffect, useRef, useState } from 'react'
+import ReplyItem from './ReplyItem'
+import { formatTime } from '@/utils/fomatTime'
+import { useCreateReply } from '@/hooks/querys/comment.query'
+import { toast } from 'react-toastify'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface CommentItemProps {
   comment: CommentType
   isReply?: boolean
+  productVariantId: number
+  isShowReply: boolean
 }
 
-const CommentItem: FC<CommentItemProps> = ({ comment, isReply }) => {
-  const [showReply, setShowReply] = React.useState<boolean>(false)
-  const [rep, setRep] = React.useState<boolean>(false)
-  const [commentReply, setCommentReply] = React.useState<string>('')
+const CommentItem: FC<CommentItemProps> = ({ comment, isReply, productVariantId, isShowReply = false }) => {
+  const queryClient = useQueryClient()
+
+  const [showReply, setShowReply] = useState<boolean>(isShowReply && comment.replies.length > 0)
+  const [rep, setRep] = useState<boolean>(false)
+  const [commentReply, setCommentReply] = useState<string>('')
   const commentInputRef = useRef<HTMLDivElement>(null)
+  const { mutate: createReply, isPending: isPendingCreateRely } = useCreateReply()
+
+  const handleCommentSubmit = () => {
+    if (!commentReply.trim()) {
+      toast.error('Vui lòng nhập nội dung phản hồi')
+      return
+    }
+    const createReplyReq: ReplyRequestType = {
+      commentId: comment.commentId,
+      content: commentReply
+    }
+    createReply(createReplyReq, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ['getCommentByVariantId', productVariantId]
+        })
+        setCommentReply('')
+      },
+      onError: () => {
+        toast.error('Đã có lỗi xảy ra, vui lòng thử lại sau')
+      }
+    })
+  }
 
   const handleScrollToCommentInput = () => {
     if (commentInputRef.current) {
@@ -40,21 +66,37 @@ const CommentItem: FC<CommentItemProps> = ({ comment, isReply }) => {
   return (
     <div className='pt-1.5 relative'>
       <div className='relative flex gap-x-2'>
+        {rep && !showReply && !isReply && (
+          <div
+            className={classNames('w-[1.5px] bg-gray-300 z-50 absolute rounded-full', {
+              hidden: !rep,
+              'top-9 left-[16.5px]': rep,
+              'h-full': rep
+            })}
+          ></div>
+        )}
         <Avatar className='flex-shrink-0' size={isReply ? 'small' : 'default'} icon={<UserOutlined />} />
         <div className='flex flex-col'>
-          <div className='flex flex-col px-3 py-2 bg-gray-200 gap-y-1 rounded-xl'>
-            <div className='text-xs font-medium'>{comment.author}</div>
+          <div className='flex flex-col px-3 py-2 bg-gray-200 rounded-xl'>
+            <div className='flex items-center gap-x-2'>
+              <div className='text-xs font-medium'>{comment.user.name}</div>
+              {comment.user.role.toLocaleLowerCase() !== 'customer' && (
+                <Tag className='text-white bg-primary'>
+                  {comment.user.role == 'ADMIN' ? 'Quản trị viên' : 'Nhân viên'}
+                </Tag>
+              )}
+            </div>
             <p className='text-sm'>{comment.content}</p>
           </div>
           <div className='flex items-center text-xs text-gray-700 gap-x-2'>
-            <button className='py-1 px-1.5 font-medium'>{comment.time}</button>
+            <button className='py-1 px-1.5 font-medium'>{formatTime(comment.createdAt)}</button>
             <button onClick={handleRepCommentClick} className='py-1 px-1.5 font-medium hover:underline'>
               Phản hồi
             </button>
           </div>
           <div
             className={classNames('w-0.5 bg-gray-300 absolute rounded-full', {
-              hidden: isReply,
+              hidden: isReply || comment.replies.length === 0,
               'top-9 left-4': !isReply,
               'h-full': showReply,
               'h-2/3': !showReply
@@ -64,7 +106,7 @@ const CommentItem: FC<CommentItemProps> = ({ comment, isReply }) => {
       </div>
       {showReply && comment.replies && comment.replies.length > 0 && (
         <div className='pl-11'>
-          {comment.replies?.map((reply, index) => <CommentItem key={'' + reply.id + index} isReply comment={reply} />)}
+          {comment.replies?.map((reply) => <ReplyItem key={reply.replyId} isReply reply={reply} />)}
         </div>
       )}
       <div className='pl-11'>
@@ -78,7 +120,11 @@ const CommentItem: FC<CommentItemProps> = ({ comment, isReply }) => {
               autoSize={{ minRows: 1, maxRows: 20 }}
               placeholder='Trả lời bình luận'
             />
-            <button className='absolute flex items-center justify-center p-1.5 rounded-full bottom-1 right-4 hover:bg-primary/15 text-primary'>
+            <button
+              disabled={isPendingCreateRely || !commentReply.trim()}
+              onClick={handleCommentSubmit}
+              className='absolute disabled:opacity-50 disabled:bg-transparent disabled:cursor-not-allowed flex items-center justify-center p-1.5 rounded-full bottom-1 right-4 hover:bg-primary/15 text-primary'
+            >
               <SendHorizonal size={18} />
             </button>
             <div
@@ -89,7 +135,7 @@ const CommentItem: FC<CommentItemProps> = ({ comment, isReply }) => {
             ></div>
           </div>
         )}
-        {!showReply && !isReply && (
+        {!showReply && !isReply && comment.replies.length > 0 && (
           <div
             onClick={() => setShowReply(true)}
             className='relative py-1 text-sm font-medium text-gray-500 cursor-pointer'
@@ -111,12 +157,18 @@ const CommentItem: FC<CommentItemProps> = ({ comment, isReply }) => {
             className='relative flex flex-1 w-full p-2 pb-8 mt-2 border border-gray-200 rounded-lg shadow-md'
           >
             <TextArea
+              value={commentReply}
+              onChange={(e) => setCommentReply(e.target.value)}
               className='!border-none !outline-none focus:!outline-none focus:!border-none focus:!shadow-none'
               rows={1}
               autoSize={{ minRows: 1, maxRows: 20 }}
               placeholder='Trả lời bình luận'
             />
-            <button className='absolute flex items-center justify-center p-1.5 rounded-full bottom-1 right-4 hover:bg-primary/15 text-primary'>
+            <button
+              disabled={isPendingCreateRely || !commentReply.trim()}
+              onClick={handleCommentSubmit}
+              className='absolute disabled:opacity-50 disabled:bg-transparent disabled:cursor-not-allowed flex items-center justify-center p-1.5 rounded-full bottom-1 right-4 hover:bg-primary/15 text-primary'
+            >
               <SendHorizonal size={18} />
             </button>
             <div

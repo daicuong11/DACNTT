@@ -18,7 +18,7 @@ namespace PhoneStoreBackend.Entities
         [Required]
         [EmailAddress]
         public string Email { get; set; }
-
+        [JsonIgnore]
         public string Password { get; set; }
         [Required]
         public string PhoneNumber { get; set; } 
@@ -59,7 +59,6 @@ namespace PhoneStoreBackend.Entities
         [JsonIgnore]
         public ICollection<Notification> SentNotifications { get; set; }
         [JsonIgnore] 
-        
         public ICollection<Comment> Comments { get; set; }
         [JsonIgnore]
         public ICollection<Reply> Replies { get; set; }

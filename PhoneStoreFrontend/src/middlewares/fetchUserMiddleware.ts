@@ -1,6 +1,6 @@
 import { Middleware } from '@reduxjs/toolkit'
 import { RootState } from '../store'
-import { setTokens, setUser } from '@/features/auth/auth.slice'
+import { clearAuth, setTokens, setUser } from '@/features/auth/auth.slice'
 import { BaseResponse } from '@/types/auth.type'
 import { UserType } from '@/types/user.type'
 import axiosInstance from '@/configs/http'
@@ -12,9 +12,11 @@ const fetchUser = async (dispatch: any) => {
       dispatch(setUser(response.data))
     } else {
       console.error('Failed to fetch user')
+      dispatch(clearAuth())
     }
   } catch (error) {
     console.error('Error fetching user:', error)
+    dispatch(clearAuth())
   }
 }
 

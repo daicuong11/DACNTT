@@ -22,6 +22,7 @@ namespace PhoneStoreBackend.Repository.Implements
         {
             return await _context.Comments
                 .Where(c => c.ProductVariantId == variantId)
+                .Include(c => c.User)
                 .Include(c => c.Replies) 
                 .ThenInclude(r => r.User)
                 .OrderByDescending(c => c.CreatedAt)
