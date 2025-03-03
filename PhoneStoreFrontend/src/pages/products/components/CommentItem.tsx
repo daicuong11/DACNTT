@@ -44,6 +44,7 @@ const CommentItem: FC<CommentItemProps> = ({ comment, isReply, productVariantId,
           queryKey: ['getCommentByVariantId', productVariantId]
         })
         setCommentReply('')
+        setShowReply(true)
       },
       onError: () => {
         toast.error('Đã có lỗi xảy ra, vui lòng thử lại sau')

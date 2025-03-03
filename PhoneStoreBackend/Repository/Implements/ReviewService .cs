@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using PhoneStoreBackend.Api.Response;
 using PhoneStoreBackend.DbContexts;
 using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
+using PhoneStoreBackend.Enums;
 using PhoneStoreBackend.Repository;
 
 namespace PhoneStoreBackend.Repository.Implements
@@ -19,44 +21,61 @@ namespace PhoneStoreBackend.Repository.Implements
         }
 
         // Lấy tất cả các đánh giá
-        public async Task<ICollection<ReviewDTO>> GetAllReviewsAsync()
+        public async Task<ICollection<Review>> GetAllReviewsAsync()
         {
-            var reviews = await _context.Reviews.ToListAsync();
-            return reviews.Select(r => _mapper.Map<ReviewDTO>(r)).ToList();
+            return await _context.Reviews.ToListAsync();
         }
 
         // Lấy đánh giá theo ReviewId
-        public async Task<ReviewDTO> GetReviewByIdAsync(int reviewId)
+        public async Task<Review> GetReviewByIdAsync(int reviewId)
         {
             var review = await _context.Reviews.FirstOrDefaultAsync(r => r.ReviewId == reviewId);
             if (review == null)
             {
                 throw new KeyNotFoundException("Review not found.");
             }
-            return _mapper.Map<ReviewDTO>(review);
+            return review;
         }
 
-        // Lấy các đánh giá của sản phẩm theo ProductId
-        public async Task<ICollection<ReviewDTO>> GetReviewsByProductIdAsync(int productVariantId)
+        public async Task<PagedResponse<ICollection<Review>>> GetReviewsByProductIdAsync(int productVariantId, int page, int pageSize)
         {
-            var reviews = await _context.Reviews.Where(r => r.ProductVariantId == productVariantId).ToListAsync();
-            return reviews.Select(r => _mapper.Map<ReviewDTO>(r)).ToList();
+            var query = _context.Reviews
+                .Where(r => r.ProductVariantId == productVariantId)
+                .Include(r => r.User);
+
+            int totalRecords = await query.CountAsync();
+            int totalPages = (int)Math.Ceiling(totalRecords / (double)pageSize); 
+
+            var reviews = await query
+                .OrderByDescending(r => r.CreatedAt)
+                .Skip((page - 1) * pageSize) 
+                .Take(pageSize) 
+                .ToListAsync();
+
+            return PagedResponse<ICollection<Review>>.CreatePagedResponse(reviews, page, pageSize, totalRecords, "Danh sách đánh giá của sản phẩm");
         }
+
 
         // Lấy các đánh giá của người dùng theo UserId
-        public async Task<ICollection<ReviewDTO>> GetReviewsByUserIdAsync(int userId)
+        public async Task<ICollection<Review>> GetReviewsByUserIdAsync(int userId)
         {
-            var reviews = await _context.Reviews.Where(r => r.UserId == userId).ToListAsync();
-            return reviews.Select(r => _mapper.Map<ReviewDTO>(r)).ToList();
+            return await _context.Reviews.Where(r => r.UserId == userId).ToListAsync();
         }
 
-        // Thêm đánh giá cho sản phẩm
-        public async Task<ReviewDTO> AddReviewAsync(Review review)
+        public async Task<Review> AddReviewAsync(Review review)
         {
+            bool isVerifiedPurchase = await _context.Orders
+                .Where(o => o.UserId == review.UserId && o.Status == OrderStatusEnum.delivered.ToString()) 
+                .AnyAsync(o => o.OrderDetails.Any(od => od.ProductVariantId == review.ProductVariantId));
+
+            review.VerifiedPurchase = isVerifiedPurchase;
+
             var newReview = await _context.Reviews.AddAsync(review);
             await _context.SaveChangesAsync();
-            return _mapper.Map<ReviewDTO>(newReview.Entity);
+
+            return newReview.Entity;
         }
+
 
         // Cập nhật đánh giá
         public async Task<bool> UpdateReviewAsync(int reviewId, Review review)

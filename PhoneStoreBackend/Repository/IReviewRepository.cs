@@ -1,15 +1,16 @@
-﻿using PhoneStoreBackend.DTOs;
+﻿using PhoneStoreBackend.Api.Response;
+using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
 
 namespace PhoneStoreBackend.Repository
 {
     public interface IReviewRepository
     {
-        Task<ICollection<ReviewDTO>> GetAllReviewsAsync();
-        Task<ReviewDTO> GetReviewByIdAsync(int reviewId);
-        Task<ICollection<ReviewDTO>> GetReviewsByProductIdAsync(int productId);
-        Task<ICollection<ReviewDTO>> GetReviewsByUserIdAsync(int userId);
-        Task<ReviewDTO> AddReviewAsync(Review review);
+        Task<ICollection<Review>> GetAllReviewsAsync();
+        Task<Review> GetReviewByIdAsync(int reviewId);
+        Task<PagedResponse<ICollection<Review>>> GetReviewsByProductIdAsync(int productVariantId, int page, int pageSize);
+        Task<ICollection<Review>> GetReviewsByUserIdAsync(int userId);
+        Task<Review> AddReviewAsync(Review review);
         Task<bool> UpdateReviewAsync(int reviewId, Review review);
         Task<bool> DeleteReviewAsync(int reviewId);
     }

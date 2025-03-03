@@ -32,6 +32,8 @@ namespace PhoneStoreBackend.Entities
 
         public bool VerifiedPurchase { get; set; } = false;
 
+        public bool IsReply { get; set; } = false;
+
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public DateTime? UpdatedAt { get; set; }

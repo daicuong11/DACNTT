@@ -6,9 +6,14 @@ import { useNavigate } from 'react-router-dom'
 interface LoginOfRegisterModal {
   isOpen: boolean
   onClose: () => void
+  title?: string
 }
 
-const LoginOfRegisterModal: FC<LoginOfRegisterModal> = ({ isOpen, onClose }) => {
+const LoginOfRegisterModal: FC<LoginOfRegisterModal> = ({
+  isOpen,
+  onClose,
+  title = 'Vui lòng đăng nhập tài khoản để xem ưu đãi và thanh toán dễ dàng hơn.'
+}) => {
   const navigate = useNavigate()
   return (
     <Modal
@@ -43,9 +48,7 @@ const LoginOfRegisterModal: FC<LoginOfRegisterModal> = ({ isOpen, onClose }) => 
     >
       <div className='flex flex-col items-center justify-center py-5 gap-y-3'>
         <img className='w-[80px] object-contain' src={robot_hello} />
-        <div className='text-sm font-medium text-center'>
-          Vui lòng đăng nhập tài khoản để xem ưu đãi và thanh toán dễ dàng hơn.
-        </div>
+        <div className='text-sm font-medium text-center'>{title}</div>
       </div>
     </Modal>
   )

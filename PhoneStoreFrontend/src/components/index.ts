@@ -1,3 +1,5 @@
+import exp from 'constants'
+
 export * from './sekeletons'
 export * from './modals'
 export * from './buttons'
@@ -6,3 +8,4 @@ export * from './containers'
 export * from './checkboxs'
 export * from './dividers'
 export * from './loadings'
+export * from './avatars'
