@@ -5,13 +5,14 @@ import { SearchOutlined } from '@ant-design/icons'
 import { Input } from 'antd'
 import classNames from 'classnames'
 import { Clock, Loader, Trash2 } from 'lucide-react'
-import { FC, useEffect, useRef, useState } from 'react'
+import React, { FC, useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAppDispatch, useAppSelector, useDebounce, useModal } from '../../../../hooks'
 import { useGetAllProductOfMobile, useSearchProducts } from '@/hooks/querys/product.query'
 import { getProductRoute } from '@/utils/getProductRoute'
 import getPriceAfterDiscount from '@/utils/getPriceAfterDiscount'
 import { addSearchTerm, clearSearchHistory } from '@/features/search/search_history.slice'
+import { motion } from 'framer-motion'
 
 interface SearchProps {}
 
@@ -27,7 +28,7 @@ const Search: FC<SearchProps> = ({}) => {
 
   const debouncedQuery = useDebounce(query, 400)
 
-  const { data, isLoading, error } = useSearchProducts(debouncedQuery)
+  const { data, isLoading, hasNextPage } = useSearchProducts(debouncedQuery)
   const { data: products } = useGetAllProductOfMobile()
 
   useEffect(() => {
@@ -51,17 +52,8 @@ const Search: FC<SearchProps> = ({}) => {
     setQuery('')
   }
 
-  const handleSearch = (searchQuery: string) => {
-    console.log('Searching for:', searchQuery)
-  }
-
-  useEffect(() => {
-    if (debouncedQuery) {
-      handleSearch(debouncedQuery)
-    }
-  }, [debouncedQuery])
-
   const handleOnClickHistory = (searchQuery: string) => {
+    if (searchQuery.trim() === '') return
     setQuery(searchQuery)
     dispatch(addSearchTerm(searchQuery))
     navigate(`/catalogsearch/result/?q=${searchQuery}`)
@@ -103,7 +95,7 @@ const Search: FC<SearchProps> = ({}) => {
       />
       <div
         className={classNames(
-          'absolute top-full left-1/2 -translate-x-1/2 text-base w-full min-w-[392px] max-h-[80vh] overflow-auto transition-all duration-300 ease-in-out bg-white border border-gray-100 shadow-md z-10 shadow-black/20 rounded-xl',
+          'absolute top-full left-1/2 scrollbar-hide -translate-x-1/2 text-base w-full min-w-[392px] max-h-[80vh] overflow-auto transition-all duration-300 ease-in-out bg-white border border-gray-100 shadow-md z-10 shadow-black/20 rounded-xl',
           {
             'opacity-0 invisible -translate-y-6 scale-95': !isOpen,
             'opacity-100 visible translate-y-0 scale-100 delay-150': isOpen
@@ -115,32 +107,58 @@ const Search: FC<SearchProps> = ({}) => {
           <div className='py-4'>
             <div className='flex items-center gap-x-1.5 text-sm text-gray-500 px-4'>
               {isLoading ? <Loader strokeWidth={1.6} size={16} className='animate-spin' /> : <SearchOutlined />}
-              {data && data.length > 0 ? `Kết quả cho '${query}'` : "Không tìm thấy kết quả cho '" + query + "'"}
+              {data && data.pages[0].totalItems > 0
+                ? `Kết quả cho '${query}'`
+                : "Không tìm thấy kết quả cho '" + query + "'"}
             </div>
-            {data && data.length > 0 && (
+            {data && data.pages[0].totalItems > 0 && (
               <div className='mt-3'>
                 <div className='px-4 mb-2 font-medium text-gray-800'>Sản phẩm</div>
                 <div className='flex flex-col'>
-                  {data.map((p) => (
-                    <div
-                      onClick={() => handleProductClick(p.categoryName, p.brandName, p.slug)}
-                      className='flex items-center p-2 rounded-md cursor-pointer gap-x-2 hover:bg-gray-100'
-                    >
-                      <img className='object-contain w-14 h-14' src={p.imageUrl} alt='' />
-                      <div className='flex flex-col gap-y-0.5'>
-                        <div className='text-sm font-medium text-black'>{p.variantName}</div>
-                        <div className='flex items-end'>
-                          <div className='text-sm font-bold font-roboto text-primary'>
-                            {formatPrice(getPriceAfterDiscount(p.price, p.discountPercentage)).replace('đ', '')}
+                  {data.pages.map((group, index) => (
+                    <React.Fragment key={index}>
+                      {group?.data.map((variant) => (
+                        <motion.div
+                          key={variant.variantId}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <div
+                            onClick={() => handleProductClick(variant.categoryName, variant.brandName, variant.slug)}
+                            className='flex items-center p-2 rounded-md cursor-pointer gap-x-2 hover:bg-gray-100'
+                          >
+                            <img className='object-contain w-14 h-14' src={variant.imageUrl} alt='' />
+                            <div className='flex flex-col gap-y-0.5'>
+                              <div className='text-sm font-medium text-black'>{variant.variantName}</div>
+                              <div className='flex items-end'>
+                                <div className='text-sm font-bold font-roboto text-primary'>
+                                  {formatPrice(
+                                    getPriceAfterDiscount(variant.price, variant.discountPercentage)
+                                  ).replace('đ', '')}
+                                </div>
+                                <div className='text-xs text-gray-500 line-through font-roboto'>
+                                  {formatPrice(variant.price).replace('đ', '')}
+                                </div>
+                              </div>
+                            </div>
                           </div>
-                          <div className='text-xs text-gray-500 line-through font-roboto'>
-                            {formatPrice(p.price).replace('đ', '')}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                        </motion.div>
+                      ))}
+                    </React.Fragment>
                   ))}
                 </div>
+              </div>
+            )}
+
+            {hasNextPage && (
+              <div className='mt-2.5'>
+                <button
+                  onClick={() => handleOnClickHistory(debouncedQuery)}
+                  className='disabled:opacity-50 border-none shadow-none hover:!bg-white w-full disabled:cursor-not-allowed text-[15px] text-nowrap font-medium btn btn-light hover:underline'
+                >
+                  Xem tất cả
+                </button>
               </div>
             )}
           </div>

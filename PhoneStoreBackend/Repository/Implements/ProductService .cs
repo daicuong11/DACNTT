@@ -341,39 +341,87 @@ namespace PhoneStoreBackend.Repository.Implements
         }
 
         // Tìm kiếm sản phẩm theo tên
-        public async Task<ICollection<ProductResponse>> SearchProductsAsync(string keyword)
+        public async Task<PagedResponse<ICollection<ProductVariantResponse>>> SearchProductsAsync(
+            string keyword,
+            int page,
+            int pageSize,
+            string? sort,
+            Dictionary<string, string>? filters
+            )
         {
-            var products = await _context.Products
-                .Where(p => p.Name.ToLower().Contains(keyword.ToLower()))
-                .Include(p => p.Category) // Include bảng Category
-                .Include(p => p.ProductVariants)
-                .ThenInclude(v => v.Discount)
-                .Select(p => new ProductResponse
+            var query = _context.ProductVariants
+                .Where(pv => pv.VariantName.ToLower().Contains(keyword.ToLower()))
+                .Include(pv => pv.Product)
+                .Include(pv => pv.Discount)
+                .Include(pv => pv.ProductSpecifications)
+                .AsQueryable(); // Chuyển về IQueryable để áp dụng filter/sort
+
+            if (filters != null)
+            {
+                foreach (var filter in filters)
                 {
-                    ProductId = p.ProductId,
-                    Name = p.Name,
-                    Category = new CategoryRespone
-                    {
-                        CategoryId = p.CategoryId,
-                        Name = p.Category.Name,
-                    },
-                    ProductVariants = p.ProductVariants.Select(v => new ProductVariantResponse
-                    {
-                        VariantId = v.ProductVariantId,
-                        DiscountPercentage = v.Discount != null ? v.Discount.Percentage : 0,
-                        Slug = v.Slug,
-                        VariantName = v.VariantName,
-                        Price = v.Price,
-                        Color = v.Color,
-                        ImageUrl = v.ImageUrl,
-                        CategoryName = p.Category.Name,
-                        BrandName = p.Brand.Name
-                    }).ToList(),
+                    var key = filter.Key.ToLower();
+                    var value = filter.Value.ToLower();
+
+                    if (key == "brand")
+                        query = query.Where(pv => pv.Product.Brand.Name.ToLower().Contains(value)); // So sánh gần đúng
+
+                    if (key == "ram")
+                        query = query.Where(pv => pv.ProductSpecifications
+                            .Any(spec => spec.Key.ToLower() == "dung lượng ram" && spec.Value.ToLower().Contains(value))); // So sánh gần đúng
+
+                    if (key == "storage")
+                        query = query.Where(pv => pv.ProductSpecifications
+                            .Any(spec => (spec.Key.ToLower() == "ổ cứng" || spec.Key.ToLower() == "bộ nhớ trong")
+                                         && spec.Value.ToLower().Contains(value))); // So sánh gần đúng
+                }
+            }
+
+
+            query = sort switch
+            {
+                "price_asc" => query.OrderBy(pv => pv.Price * (1 - pv.Discount.Percentage / 100)),
+                "price_desc" => query.OrderByDescending(pv => pv.Price * (1 - pv.Discount.Percentage / 100)),
+                "name_asc" => query.OrderBy(pv => pv.VariantName),
+                "name_desc" => query.OrderByDescending(pv => pv.VariantName),
+                _ => query
+            };
+
+
+            // ✅ Phân trang
+            var totalItems = await query.CountAsync();
+            var items = await query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .Select(v => new ProductVariantResponse
+                {
+                    VariantId = v.ProductVariantId,
+                    Slug = v.Slug,
+                    VariantName = v.VariantName,
+                    DiscountPercentage = v.Discount != null ? v.Discount.Percentage : 0,
+                    Price = v.Price,
+                    Color = v.Color,
+                    ImageUrl = v.ImageUrl,
+                    RAM = v.ProductSpecifications
+                            .Where(spec => spec.Key.ToLower() == "dung lượng ram")
+                            .Select(spec => spec.Value)
+                            .FirstOrDefault() ?? "",
+                    ScreenSize = v.ProductSpecifications
+                            .Where(spec => spec.Key.ToLower() == "kích thước màn hình")
+                            .Select(spec => spec.Value)
+                            .FirstOrDefault() ?? "",
+                    Storage = v.ProductSpecifications
+                            .Where(spec => spec.Key.ToLower() == "ổ cứng" ||
+                                           spec.Key.ToLower() == "bộ nhớ trong")
+                            .Select(spec => spec.Value)
+                            .FirstOrDefault() ?? ""
                 })
                 .ToListAsync();
 
-            return products.Select(p => _mapper.Map<ProductResponse>(p)).ToList();
+            return PagedResponse<ICollection<ProductVariantResponse>>.CreatePagedResponse(items, page, pageSize, totalItems, "Danh sách tìm kiếm");
         }
+
+
 
         // Get variant list
         public async Task<ICollection<ProductVariantDTO>> GetProductVariantsAsync(int productId)

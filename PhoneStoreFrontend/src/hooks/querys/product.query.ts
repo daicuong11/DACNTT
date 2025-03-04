@@ -11,21 +11,25 @@ import {
   updateProduct
 } from '@/apis/product.api'
 import { ProductRequestType } from '@/types/product.type'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { keepPreviousData, useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 
 export const useGetAllProducts = () => {
   return useQuery({
     queryKey: ['getAllProducts'],
-    queryFn: getAllProduct
+    queryFn: getAllProduct,
+    staleTime: 1000 * 60 * 15,
+    placeholderData: keepPreviousData
   })
 }
 
 export const useGetProductVariants = (productId: number | undefined) => {
   return useQuery({
-    queryKey: ['productVariants', productId], // Cache riêng theo productId
-    queryFn: () => getProductVariants(productId!), // Dùng ! để đảm bảo không null (có thể check trước)
-    enabled: !!productId // Chỉ chạy nếu productId tồn tại
+    queryKey: ['productVariants', productId],
+    queryFn: () => getProductVariants(productId!),
+    enabled: !!productId,
+    staleTime: 1000 * 60 * 5,
+    placeholderData: keepPreviousData
   })
 }
 
@@ -90,21 +94,26 @@ export const useGetProductById = (productId: number) => {
   return useQuery({
     queryKey: ['getProductById', productId],
     queryFn: () => getProductById(productId),
-    enabled: !!productId // Chỉ chạy nếu productId tồn tại
+    enabled: !!productId,
+    staleTime: 1000 * 60 * 5,
+    placeholderData: keepPreviousData
   })
 }
 
 export const useGetAllProductOfMobile = () => {
   return useQuery({
     queryKey: ['getAllProductOfMobile'],
-    queryFn: getAllProductOfMobile
+    queryFn: getAllProductOfMobile,
+    staleTime: 1000 * 60 * 5,
+    placeholderData: keepPreviousData
   })
 }
 
 export const useGetAllProductOfLaptop = () => {
   return useQuery({
     queryKey: ['getAllProductOfLaptop'],
-    queryFn: getAllProductOfLaptop
+    queryFn: getAllProductOfLaptop,
+    staleTime: 1000 * 60 * 15
   })
 }
 
@@ -112,14 +121,24 @@ export const useGet15ProductSimilar = (id: number) => {
   return useQuery({
     queryKey: ['get15ProductSimilar', id],
     queryFn: () => get15ProductSimilar(id),
-    enabled: !!id
+    enabled: !!id,
+    staleTime: 1000 * 60 * 15
   })
 }
 
-export const useSearchProducts = (name: string) => {
-  return useQuery({
-    queryKey: ['searchProducts', name], // Query key có name để caching đúng
-    queryFn: () => searchProducts(name), // Truyền name vào API
-    enabled: !!name, // Chỉ chạy query nếu name không rỗng
-  });
-};
+export const useSearchProducts = (
+  name: string,
+  pageSize: number = 10,
+  sort?: string,
+  filters?: Record<string, string | number>
+) => {
+  return useInfiniteQuery({
+    queryKey: ['searchProducts', name, sort, filters],
+    queryFn: ({ pageParam }) => searchProducts(name, pageParam, pageSize, sort, filters),
+    enabled: !!name,
+    getNextPageParam: (lastPage) => (lastPage.currentPage < lastPage.totalPages ? lastPage.currentPage + 1 : undefined),
+    initialPageParam: 1,
+    placeholderData: keepPreviousData,
+    staleTime: 1000 * 60 * 15
+  })
+}

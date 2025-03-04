@@ -19,12 +19,12 @@ const listSidebarItems = [
     title: 'Lịch sử mua hàng',
     icon: <ClipboardList size={24} strokeWidth={1.6} />
   },
-  {
-    id: 3,
-    href: '/profile/coupon',
-    title: 'Mã giảm giá',
-    icon: <Ticket size={24} strokeWidth={1.6} />
-  },
+  // {
+  //   id: 3,
+  //   href: '/profile/coupon',
+  //   title: 'Mã giảm giá',
+  //   icon: <Ticket size={24} strokeWidth={1.6} />
+  // },
   {
     id: 4,
     href: '/profile/user-info/address-info',

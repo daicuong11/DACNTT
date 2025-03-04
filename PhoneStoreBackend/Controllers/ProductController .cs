@@ -336,21 +336,17 @@ namespace PhoneStoreBackend.Controllers
         }
 
         [HttpGet("search")]
-        public async Task<IActionResult> SearchProducts([FromQuery] string keyword)
+        public async Task<IActionResult> SearchProducts(
+            [FromQuery] string keyword, 
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 10,
+            [FromQuery] string? sort = null, 
+            [FromQuery] Dictionary<string, string>? filters = null 
+            )
         {
             try
             {
-                var products = await _productRepository.SearchProductsAsync(keyword);
-                List<ProductVariantResponse> variantsResponse = new List<ProductVariantResponse>();
-                foreach (var product in products)
-                {
-                    if (product != null && !product.ProductVariants.IsNullOrEmpty())
-                    {
-                        variantsResponse.AddRange(product.ProductVariants);
-                    }
-                }
-
-                var response = Response<ICollection<ProductVariantResponse>>.CreateSuccessResponse(variantsResponse, "Kết quả tìm kiếm sản phẩm");
+                var response = await _productRepository.SearchProductsAsync(keyword, page, pageSize, sort, filters);
                 return Ok(response);
             }
             catch (Exception ex)

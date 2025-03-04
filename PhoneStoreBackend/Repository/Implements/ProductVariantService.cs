@@ -96,6 +96,8 @@ namespace PhoneStoreBackend.Repository.Implements
             var findProductVariant = await _context.ProductVariants
                 .Include(pv => pv.Product)
                     .ThenInclude(p => p.Category)
+                .Include(pv => pv.Product)
+                    .ThenInclude(p => p.Brand)
                 .Include(pv => pv.Discount)
                 .Include(v => v.ProductImages)
                 .FirstOrDefaultAsync(p => p.Slug == slug);

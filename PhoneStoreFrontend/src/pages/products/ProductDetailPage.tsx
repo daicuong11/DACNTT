@@ -156,8 +156,8 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
                       onClick={() =>
                         navigate(
                           getProductRoute(
-                            productVariant?.product.category.name || '',
-                            productVariant?.product.brand.name || '',
+                            productVariant?.product?.category.name || '',
+                            productVariant?.product?.brand.name || '',
                             variant.slug
                           )
                         )

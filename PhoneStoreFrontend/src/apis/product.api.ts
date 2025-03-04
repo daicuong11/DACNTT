@@ -1,10 +1,11 @@
 import axiosInstance from '@/configs/http'
-import { BaseResponse } from '@/types/auth.type'
+import { BaseResponse, BaseResponsePaginate } from '@/types/auth.type'
 import {
   AddProductWithVariantsRequestType,
   ProductRequestType,
   ProductResponse,
-  ProductType
+  ProductType,
+  VariantResponse
 } from '@/types/product.type'
 import { ProductVariantResponse, ProductVariantType } from '@/types/product_variant.type'
 
@@ -58,9 +59,26 @@ export const updateProduct = async (productId: number, formData: FormData) => {
 
 // method patch
 
-export async function searchProducts(name: string): Promise<ProductVariantResponse[]> {
-  if (!name.trim()) return Promise.resolve([]); // Trả về Promise rỗng nếu name trống
+export async function searchProducts(
+  name: string,
+  page: number = 1,
+  pageSize: number = 10,
+  sort?: string,
+  filters?: Record<string, string | number>
+): Promise<BaseResponsePaginate<ProductVariantResponse[]>> {
+  const params = new URLSearchParams()
 
-  const res = await axiosInstance.get(`products/search?keyword=${encodeURIComponent(name)}`);
-  return res.data;
+  params.append('keyword', name)
+  params.append('page', page.toString())
+  params.append('pageSize', pageSize.toString())
+
+  if (sort) params.append('sort', sort)
+
+  if (filters) {
+    Object.entries(filters).forEach(([key, value]) => {
+      params.append(key, value.toString())
+    })
+  }
+
+  return await axiosInstance.get(`products/search?${params.toString()}`)
 }

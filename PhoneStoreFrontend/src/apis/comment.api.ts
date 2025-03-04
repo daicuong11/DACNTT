@@ -1,5 +1,5 @@
 import axiosInstance from '@/configs/http'
-import { BaseResponse, BaseResponsePaginate } from '@/types/auth.type'
+import { BaseResponsePaginate } from '@/types/auth.type'
 import { CommentRequestType, CommentType, ReplyRequestType, ReplyType } from '@/types/comment.type'
 
 class CommentAPI {
