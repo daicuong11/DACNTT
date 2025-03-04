@@ -9,7 +9,7 @@ const Breadcrumbs = () => {
   const { productSlug } = useParams<{ productSlug: string }>()
   const { data: product } = useGetVariantBySlug(productSlug || '')
 
-  const breadcrumbs = useBreadcrumbs(product ? product?.product.name + ' ' + product?.variantName : productSlug)
+  const breadcrumbs = useBreadcrumbs(productSlug ? product?.variantName : productSlug)
   const navigate = useNavigate()
 
   return (

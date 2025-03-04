@@ -68,8 +68,8 @@ const Search: FC<SearchProps> = ({}) => {
     closeModal()
   }
 
-  const handleProductClick = (categoryName: string, slug: string) => {
-    navigate(getProductRoute(categoryName || '', slug))
+  const handleProductClick = (categoryName: string, brandName: string, slug: string) => {
+    navigate(getProductRoute(categoryName || '', brandName, slug))
     handleClear()
     closeModal()
   }
@@ -123,7 +123,7 @@ const Search: FC<SearchProps> = ({}) => {
                 <div className='flex flex-col'>
                   {data.map((p) => (
                     <div
-                      onClick={() => handleProductClick(p.categoryName, p.slug)}
+                      onClick={() => handleProductClick(p.categoryName, p.brandName, p.slug)}
                       className='flex items-center p-2 rounded-md cursor-pointer gap-x-2 hover:bg-gray-100'
                     >
                       <img className='object-contain w-14 h-14' src={p.imageUrl} alt='' />
@@ -186,7 +186,7 @@ const Search: FC<SearchProps> = ({}) => {
                   products.slice(0, 8).map((p) => (
                     <button
                       key={p.productId}
-                      onClick={() => getProductRoute(p.category.name, p.productVariants[0].slug)}
+                      onClick={() => handleProductClick(p.category.name, p.brand.name, p.productVariants[0].slug)}
                       className='flex items-center cursor-pointer gap-x-2 hover:bg-gray-100 p-1 rounded-md'
                     >
                       <img

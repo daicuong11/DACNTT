@@ -6,25 +6,6 @@ import { useGetAddressByUserId } from '@/hooks/querys/address.query'
 import { no_address_img } from '@/assets/images'
 import { LoadingOpacity } from '@/components'
 
-const exampleAddress: AddressType[] = [
-  {
-    addressId: 1,
-    province: 'Hồ Chí Minh',
-    district: 'Quận 1',
-    ward: 'Phường Bến Nghé',
-    street: 'Số 1 Đại Cương',
-    isDefault: true
-  },
-  {
-    addressId: 2,
-    province: 'Hồ Chí Minh',
-    district: 'Quận 2',
-    ward: 'Phường Thảo Điền',
-    street: 'Số 2 Đại Cương',
-    isDefault: false
-  }
-]
-
 const AddressInfoPage = () => {
   const currentUser = useAppSelector((state) => state.auth.user)
   const navigate = useNavigate()

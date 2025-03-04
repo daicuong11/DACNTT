@@ -1,24 +1,25 @@
-import { FC, HTMLAttributes, useState } from 'react'
+import { FC, HTMLAttributes } from 'react'
 import { ConfigProvider, Flex, Rate, Tag } from 'antd'
 import FavoriteButton from '../buttons/FavoriteButton'
 import classNames from 'classnames'
 import { useNavigate } from 'react-router-dom'
 import { getProductRoute } from '../../utils/getProductRoute'
 import formatPrice from '../../utils/formatPrice'
-import { getProductFullName } from '@/utils/getProductFullName'
-import { ProductResponse, VariantResponse } from '@/types/product.type'
+import { VariantResponse } from '@/types/product.type'
 import getPriceAfterDiscount from '@/utils/getPriceAfterDiscount'
+import { ProductVariantResponse } from '@/types/product_variant.type'
 
 interface VariantCardType extends HTMLAttributes<HTMLDivElement> {
-  variant: VariantResponse
+  variant: ProductVariantResponse
   category: string
+  brand: string
 }
 
-const VariantCard: FC<VariantCardType> = ({ variant, category, ...props }) => {
+const VariantCard: FC<VariantCardType> = ({ variant, category, brand, ...props }) => {
   const navigate = useNavigate()
 
   const handleProductClick = () => {
-    navigate(getProductRoute(category, variant.slug))
+    navigate(getProductRoute(category, brand, variant.slug))
   }
 
   return (
@@ -28,25 +29,17 @@ const VariantCard: FC<VariantCardType> = ({ variant, category, ...props }) => {
       className='relative h-[392px] md:min-w-[224px] cursor-pointer rounded-xl bg-white p-[10px] flex flex-col drop-shadow-md shadow shadow-gray-300 border border-gray-100'
     >
       <div className='flex-[5] flex items-center justify-center'>
-        <img
-          src={variant.imageUrl}
-          alt={variant.variantName}
-          className='w-[160px] h-[160px] object-contain mt-3'
-        />
+        <img src={variant.imageUrl} alt={variant.variantName} className='w-[160px] h-[160px] object-contain mt-3' />
       </div>
       <div className='flex-[6] flex flex-col'>
         <div className='flex flex-col gap-3 mt-3.5'>
-          <h2 className='h-[60px] text-xs sm:text-sm font-bold text-black/80 line-clamp-3'>
-            {variant.variantName}
-          </h2>
+          <h2 className='h-[60px] text-xs sm:text-sm font-bold text-black/80 line-clamp-3'>{variant.variantName}</h2>
           <div className='flex items-end gap-1 font-sans text-sm font-bold md:text-base'>
             <span className='leading-none text-primary'>
               {formatPrice(getPriceAfterDiscount(variant.price, variant.discountPercentage || 0))}
             </span>
             {variant.discountPercentage > 0 && (
-              <span className='text-sm leading-none line-through text-slate-600'>
-                {formatPrice(variant.price)}
-              </span>
+              <span className='text-sm leading-none line-through text-slate-600'>{formatPrice(variant.price)}</span>
             )}
           </div>
           <Flex className='mt-2' gap='4px 0' wrap>

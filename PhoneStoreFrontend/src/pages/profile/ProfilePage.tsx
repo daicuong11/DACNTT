@@ -1,5 +1,5 @@
 import { rightBannerImages } from '@/assets/images'
-import { LoadingItem, ProductCardSimple } from '@/components'
+import { AvatarCustom, LoadingItem, ProductCardSimple } from '@/components'
 import { useAppSelector } from '@/hooks'
 import { maskPhoneNumber } from '@/utils/maskPhoneNumber'
 import { EyeFilled, EyeInvisibleFilled, UserOutlined } from '@ant-design/icons'
@@ -39,7 +39,7 @@ const ProfilePage: FC<ProfilePageProps> = () => {
   return (
     <div className='py-4'>
       <div className='flex px-2 gap-x-2'>
-        <Avatar size={72} icon={<UserOutlined />} />
+        <AvatarCustom size={72} name={currentUser.name} role={currentUser.role} />
         <div className='flex flex-col gap-y-0.5'>
           <h1 className='text-[19px] font-semibold text-pink-600 uppercase leading-none'>{currentUser.name}</h1>
           <div className='flex items-center text-sm font-medium text-gray-500 gap-x-2'>
@@ -59,28 +59,28 @@ const ProfilePage: FC<ProfilePageProps> = () => {
           </span>
         </div>
       </div>
-      <div className='flex mt-3 gap-x-3'>
-        <div className='flex flex-col flex-1 gap-y-3'>
+      <div className='grid grid-cols-10 mt-6 gap-x-3'>
+        <div className='flex flex-col col-span-full lg:col-span-7 xl:col-span-8 gap-y-3'>
           <div
             className={classNames(
-              'flex items-center justify-between mt-3 p-3 text-black bg-white border rounded-lg h-[114px]',
+              'flex items-center flex-1 justify-between p-3 text-black bg-white border rounded-lg',
               {
                 'animate-pulse': isLoadingOrderAll
               }
             )}
           >
             <div className='flex flex-col items-center justify-center flex-1 gap-y-4'>
-              <h1 className='text-3xl font-bold'>{ordersAll?.length}</h1>
-              <h5 className='text-[13px]'>đơn hàng</h5>
+              <h1 className='text-xl sm:text-3xl font-bold'>{ordersAll?.length}</h1>
+              <h5 className='text-[11px] sm:text-[13px]'>đơn hàng</h5>
             </div>
             <div className='w-[1px] bg-black-2 h-20'></div>
             <div className='flex flex-col items-center justify-center flex-1 gap-y-4'>
-              <h1 className='text-3xl font-bold'>{formatPrice(totalPay || 0)}</h1>
-              <h5 className='text-[13px]'>Tổng tiền tích lũy mua sắm</h5>
+              <h1 className='text-xl sm:text-3xl font-bold'>{formatPrice(totalPay || 0)}</h1>
+              <h5 className='text-[11px] sm:text-[13px]'>Tổng tiền tích lũy mua sắm</h5>
             </div>
           </div>
 
-          <div className='flex items-center justify-around text-black bg-white border rounded-lg gap-x-4 h-[114px]'>
+          <div className='grid grid-cols-2 flex-1 p-3 gap-2.5 sm:grid-cols-3 lg:grid-cols-4 text-black bg-white border rounded-lg'>
             <div
               onClick={() => navigate('coupon')}
               className='flex flex-col items-center justify-center px-2 cursor-pointer gap-y-1'
@@ -88,7 +88,7 @@ const ProfilePage: FC<ProfilePageProps> = () => {
               <span className='flex items-center justify-center w-12 h-12 rounded-full bg-blue-100/60'>
                 <Ticket size={24} strokeWidth={1.6} />
               </span>
-              <span className='w-20 text-sm font-medium leading-4 text-center font-roboto text-wrap text-black-2'>
+              <span className='text-xs sm:text-sm font-medium leading-4 text-center font-roboto text-nowrap text-black-2'>
                 Mã giảm giá
               </span>
             </div>
@@ -99,7 +99,7 @@ const ProfilePage: FC<ProfilePageProps> = () => {
               <span className='flex items-center justify-center w-12 h-12 rounded-full bg-blue-100/60'>
                 <ClipboardList size={24} strokeWidth={1.6} />
               </span>
-              <span className='w-20 text-sm font-medium leading-4 text-center font-roboto text-wrap text-black-2'>
+              <span className='text-xs sm:text-sm font-medium leading-4 text-center font-roboto text-nowrap text-black-2'>
                 Lịch sử mua hàng
               </span>
             </div>
@@ -110,7 +110,7 @@ const ProfilePage: FC<ProfilePageProps> = () => {
               <span className='flex items-center justify-center w-12 h-12 rounded-full bg-blue-100/60'>
                 <MapPinHouse size={24} strokeWidth={1.6} />
               </span>
-              <span className='w-20 text-sm font-medium leading-4 text-center font-roboto text-wrap text-black-2'>
+              <span className='text-xs sm:text-sm font-medium leading-4 text-center font-roboto text-nowrap text-black-2'>
                 Sổ địa chỉ
               </span>
             </div>
@@ -121,22 +121,22 @@ const ProfilePage: FC<ProfilePageProps> = () => {
               <span className='flex items-center justify-center w-12 h-12 rounded-full bg-blue-100/60'>
                 <UserRound size={24} strokeWidth={1.6} />
               </span>
-              <span className='w-20 text-sm font-medium leading-4 text-center font-roboto text-wrap text-black-2'>
+              <span className='text-xs sm:text-sm font-medium leading-4 text-center font-roboto text-nowrap text-black-2'>
                 Cập nhật thông tin
               </span>
             </div>
           </div>
         </div>
-        <div className='w-[220px] grid grid-rows-2 gap-y-3'>
+        <div className='xl:col-span-2 hidden lg:flex col-span-3 flex-col gap-y-3 '>
           {rightBannerImages.map((image, index) => (
-            <img key={index} src={image.image} className='object-cover border rounded-lg h-[114px]' />
+            <img key={index} src={image.image} className='object-cover border rounded-lg flex-1 min-h-[105.6px]' />
           ))}
         </div>
       </div>
 
       <div className='mt-5'>
         <div className='mb-3 text-lg font-medium to-black-2'>Sản phẩm bạn yêu thích</div>
-        <div className='grid gap-2.5 grid-cols-4'>
+        <div className='grid gap-2.5 grid-cols-2 min-[600px]:grid-cols-3 md:grid-cols-2 min-[1000px]:grid-cols-3 min-[1220px]:grid-cols-4'>
           {isLoadingWishlist ? (
             <div className='flex items-center justify-center'>
               <LoadingItem />

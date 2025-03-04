@@ -27,6 +27,7 @@ import cart_full_1 from './cart_full_1.png'
 import cart_full_2 from './cart_full_2.png'
 import house_img from './house.png'
 import no_address_img from './no-address.png'
+export { default as supportImages } from './supports'
 
 export * from './payment_methods'
 

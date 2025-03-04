@@ -20,7 +20,7 @@ const MobileSaleView: FC<MobileSaleView> = () => {
             brandRes.data &&
             brandRes.data?.map((brand) => (
               <button
-                onClick={() => navigate(`/${brand.name}`)}
+                onClick={() => navigate(`/mobile/${brand.name}`)}
                 key={brand.brandId}
                 className='btn btn-light rounded-md lg:rounded-lg border border-gray-100 !text-slate-600 text-[10px] py-1 lg:py-1.5 lg:!text-xs text-nowrap'
               >

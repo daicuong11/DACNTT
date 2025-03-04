@@ -36,7 +36,7 @@ const ProductCard: FC<ProductCardType> = ({ product, ...props }) => {
   }, [wishlist, variantFirst.variantId])
 
   const handleProductClick = (product: ProductResponse) => {
-    navigate(getProductRoute(product.category.name, variantFirst.slug))
+    navigate(getProductRoute(product.category.name, product.brand.name, variantFirst.slug))
   }
 
   const handleLoveClick = async () => {

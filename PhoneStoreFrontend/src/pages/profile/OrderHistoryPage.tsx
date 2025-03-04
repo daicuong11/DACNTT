@@ -66,20 +66,20 @@ const OrderHistoryPage: FC<OrderHistoryPageProps> = () => {
 
       <div
         className={classNames(
-          'flex items-center justify-between mt-3 p-3 text-black bg-white border rounded-lg h-[114px]',
+          'flex items-center flex-1 justify-between mt-6 p-3 text-black bg-white border rounded-lg',
           {
             'animate-pulse': isLoadingOrderAll
           }
         )}
       >
         <div className='flex flex-col items-center justify-center flex-1 gap-y-4'>
-          <h1 className='text-3xl font-bold'>{ordersAll?.length}</h1>
-          <h5 className='text-[13px]'>đơn hàng</h5>
+          <h1 className='text-xl sm:text-3xl font-bold'>{ordersAll?.length}</h1>
+          <h5 className='text-[11px] sm:text-[13px]'>đơn hàng</h5>
         </div>
         <div className='w-[1px] bg-black-2 h-20'></div>
         <div className='flex flex-col items-center justify-center flex-1 gap-y-4'>
-          <h1 className='text-3xl font-bold'>{formatPrice(totalPay || 0)}</h1>
-          <h5 className='text-[13px]'>Tổng tiền tích lũy mua sắm</h5>
+          <h1 className='text-xl sm:text-3xl font-bold'>{formatPrice(totalPay || 0)}</h1>
+          <h5 className='text-[11px] sm:text-[13px]'>Tổng tiền tích lũy mua sắm</h5>
         </div>
       </div>
 
@@ -90,7 +90,7 @@ const OrderHistoryPage: FC<OrderHistoryPageProps> = () => {
           format={'DD/MM/YYYY'}
         />
       </div> */}
-      <div className='sticky flex mt-3 gap-x-3 top-[84px] z-10'>
+      <div className='sticky flex mt-3 gap-x-2 sm:gap-x-3 top-[84px] z-10 overflow-x-auto text-sm sm:text-base'>
         {listOrderStatus.map((status) => (
           <button
             key={status}

@@ -112,7 +112,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
         </div>
         <div className='w-full h-[1px] bg-slate-200'></div>
         <div className='flex flex-col md:grid w-full grid-cols-12 lg:grid-cols-10 gap-6'>
-          <div className='col-span-5 lg:col-span-6 md:sticky top-[108px] h-max'>
+          <div className='col-span-5 lg:col-span-6 md:sticky md:top-[108px] h-max'>
             {productVariant && (
               <CarouselProductImages
                 productVariantId={productVariant.productVariantId}
@@ -145,7 +145,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
               </ContainerPanel>
             </div>
           </div>
-          <div className='flex flex-col col-span-7 lg:col-span-4 md:sticky top-[80px] h-max gap-y-3'>
+          <div className='flex flex-col col-span-7 lg:col-span-4 md:sticky md:top-[80px] h-max gap-y-3'>
             <div className='grid grid-cols-3 gap-2.5'>
               {listVariants &&
                 listVariants
@@ -154,7 +154,13 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
                     <PriceButton
                       disabled={isPlaceholderData}
                       onClick={() =>
-                        navigate(getProductRoute(productVariant?.product.category.name || '', variant.slug))
+                        navigate(
+                          getProductRoute(
+                            productVariant?.product.category.name || '',
+                            productVariant?.product.brand.name || '',
+                            variant.slug
+                          )
+                        )
                       }
                       isActive={variant.storage === selectedStorage}
                       key={variant.slug}
@@ -172,7 +178,13 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
                   .map((variant) => (
                     <ColorPriceButton
                       onClick={() =>
-                        navigate(getProductRoute(productVariant.product.category.name || '', variant.slug))
+                        navigate(
+                          getProductRoute(
+                            productVariant.product.category.name || '',
+                            productVariant.product.brand.name || '',
+                            variant.slug
+                          )
+                        )
                       }
                       key={variant.slug}
                       isActive={variant.slug === productVariant.slug}

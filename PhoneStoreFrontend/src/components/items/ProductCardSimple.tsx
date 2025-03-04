@@ -18,10 +18,9 @@ const ProductCardSimple: FC<ProductCardSimpleType> = ({ productVariantId, ...pro
   const navigate = useNavigate()
   const { data: productVariant, isLoading } = useGetProductVariantById(productVariantId)
 
-
   const handleProductClick = () => {
     if (productVariant) {
-      navigate(getProductRoute(productVariant.category.name, productVariant.slug))
+      navigate(getProductRoute(productVariant.category.name, productVariant.brand.name, productVariant.slug))
     }
   }
 
@@ -31,21 +30,23 @@ const ProductCardSimple: FC<ProductCardSimpleType> = ({ productVariantId, ...pro
     <div
       {...props}
       onClick={() => handleProductClick()}
-      className='h-[328px] min-w-[224px] cursor-pointer rounded-xl bg-white p-[10px] flex flex-col drop-shadow-md border border-gray-100'
+      className='h-[292px] md:h-[328px] min-w-[172px] md:min-w-[224px] cursor-pointer rounded-xl bg-white p-[10px] flex flex-col drop-shadow-md border border-gray-100'
     >
       <div className='flex-[5] flex items-center justify-center'>
         <img
           src={productVariant?.imageUrl}
           alt={productVariant?.fullNameVariant}
-          className='w-[160px] h-[160px] object-contain mt-3'
+          className='w-[120px] h-[120px] md:w-[160px] md:h-[160px] object-contain mt-3'
         />
       </div>
       <div className='flex-[6] flex flex-col'>
         <div className='flex flex-col gap-3 mt-2'>
-          <h2 className='h-[60px] text-sm font-bold text-black/80 line-clamp-3'>{productVariant?.fullNameVariant}</h2>
-          <div className='flex items-end gap-1 font-sans font-bold'>
+          <h2 className='h-[60px] text-xs sm:text-sm font-bold text-black/80 line-clamp-3'>
+            {productVariant?.fullNameVariant}
+          </h2>
+          <div className='flex text-sm sm:text-base items-end gap-1 font-sans font-bold flex-wrap'>
             <span className='leading-none text-primary'>{formatPrice(productVariant?.price || 0)}</span>
-            <span className='text-sm leading-none line-through text-slate-600'>
+            <span className='text-xs sm:text-sm !leading-none line-through text-slate-600'>
               {formatPrice(getPriceAfterDiscount(productVariant?.price || 0, productVariant?.discountPercentage || 0))}
             </span>
           </div>

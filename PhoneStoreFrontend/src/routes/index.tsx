@@ -3,6 +3,7 @@ import { CartLayout, HomeLayout } from '@/layouts'
 import AdminLayout from '@/layouts/admin/AdminLayout'
 import { AuthLayout } from '@/layouts/auth'
 import { ProfileLayout } from '@/layouts/profile'
+import { BrandWatch } from '@/middlewares'
 import CategoryWatch from '@/middlewares/CategoryWatch'
 import BrandList from '@/pages/admin/brands/BrandList'
 import CategoryList from '@/pages/admin/categories/CategoryList'
@@ -12,6 +13,7 @@ import AddProduct from '@/pages/admin/products/AddProduct'
 import Details from '@/pages/admin/products/Details'
 import ProductList from '@/pages/admin/products/ProductList'
 import UserList from '@/pages/admin/users/UserList'
+import BrandPage from '@/pages/brand/BrandPage'
 import { CartPage } from '@/pages/cart'
 import { CategoryPage } from '@/pages/category'
 import { HomePage } from '@/pages/home'
@@ -115,8 +117,18 @@ const MyRoutes = () => {
               element: <CategoryPage />
             },
             {
-              path: ':productSlug',
-              element: <ProductDetailPage />
+              path: ':brand',
+              element: <BrandWatch />,
+              children: [
+                {
+                  path: '',
+                  element: <BrandPage />
+                },
+                {
+                  path: ':productSlug',
+                  element: <ProductDetailPage />
+                }
+              ]
             }
           ]
         }
@@ -255,9 +267,9 @@ const MyRoutes = () => {
             {
               path: '',
               element: <UserList />
-            },
+            }
           ]
-        },
+        }
       ]
     }
   ]
@@ -271,7 +283,7 @@ const MyRoutes = () => {
 
   const routesLogout: RouteObject[] = [
     {
-      path: '/profile',
+      path: '/profile/:something',
       element: <Navigate to='/signin' />
     }
   ]

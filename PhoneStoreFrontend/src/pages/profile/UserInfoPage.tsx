@@ -47,12 +47,12 @@ const UserInfoPage = () => {
   return (
     <div className='flex flex-col gap-y-4 bg-white mt-1 rounded-md min-h-screen'>
       {isLoading && <LoadingOpacity />}
-      <div className='flex justify-center py-10 mt-5 flex-col items-center gap-y-2'>
+      <div className='flex justify-center py-5 md:py-10 mt-5 flex-col items-center gap-y-2'>
         <img className='w-20 object-contain' src={robot_hello} alt='User Profile' />
         <div className='font-semibold text-lg text-center'>{user?.name || currentUser.name}</div>
       </div>
       {user && (
-        <div className='flex flex-col gap-y-5 w-[600px] mx-auto'>
+        <div className='flex flex-col gap-y-5 w-full max-w-[600px] mx-auto px-2.5 md:px-0'>
           <CustomInput
             value={name}
             onChange={(value) => setName(value)}

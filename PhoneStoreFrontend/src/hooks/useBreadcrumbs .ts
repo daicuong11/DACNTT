@@ -1,36 +1,46 @@
+import { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 
-// Map tĩnh cho category
-const categoryMap: Record<string, string> = {
+// Mặc định map category sang tên dễ đọc
+const defaultCategoryMap: Record<string, string> = {
   mobile: 'Điện thoại',
   laptop: 'Laptop'
 }
 
-const useBreadcrumbs = (slugTitle?: string) => {
+const useBreadcrumbs = (slugTitle?: string, customMap?: Record<string, string>) => {
   const location = useLocation()
-  const pathnames = location.pathname.split('/').filter((x) => x)
-  const searchParams = new URLSearchParams(location.search)
+  const [breadcrumbs, setBreadcrumbs] = useState<{ href: string; title: string }[]>([])
 
-  // Kiểm tra nếu là trang tìm kiếm
-  if (location.pathname.startsWith('/catalogsearch/result')) {
-    const query = searchParams.get('q') || 'Không xác định'
-    return [
-      { href: '/', title: 'Trang chủ' },
-      { href: location.pathname + location.search, title: `Kết quả tìm kiếm cho: '${decodeURIComponent(query)}'` }
-    ]
-  }
+  useEffect(() => {
+    const pathnames = location.pathname.split('/').filter((x) => x)
+    const searchParams = new URLSearchParams(location.search)
 
-  // Xử lý breadcrumb cho các trang thông thường
-  const breadcrumbs = pathnames.map((segment, index) => {
-    const href = `/${pathnames.slice(0, index + 1).join('/')}`
+    let newBreadcrumbs: { href: string; title: string }[] = [{ href: '/', title: 'Trang chủ' }]
 
-    // Nếu là category, dùng map để lấy tên đẹp hơn
-    const title = categoryMap[segment] || slugTitle || segment
+    // Nếu là trang tìm kiếm
+    if (location.pathname.startsWith('/catalogsearch/result')) {
+      const query = searchParams.get('q') || 'Không xác định'
+      newBreadcrumbs.push({
+        href: location.pathname + location.search,
+        title: `Kết quả tìm kiếm cho: '${decodeURIComponent(query)}'`
+      })
+    } else {
+      // Lặp qua từng segment trong URL để tạo breadcrumbs
+      pathnames.forEach((segment, index) => {
+        const href = `/${pathnames.slice(0, index + 1).join('/')}`
+        const title =
+          customMap?.[segment] ||
+          defaultCategoryMap[segment] ||
+          (slugTitle && index === pathnames.length - 1 ? slugTitle : segment)
 
-    return { href, title }
-  })
+        newBreadcrumbs.push({ href, title })
+      })
+    }
 
-  return [{ href: '/', title: 'Trang chủ' }, ...breadcrumbs]
+    setBreadcrumbs(newBreadcrumbs)
+  }, [location.pathname, location.search, slugTitle, customMap]) // Cập nhật khi URL hoặc slug thay đổi
+
+  return breadcrumbs
 }
 
 export default useBreadcrumbs

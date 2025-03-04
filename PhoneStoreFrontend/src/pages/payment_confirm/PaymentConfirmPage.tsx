@@ -369,8 +369,12 @@ const PaymentConfirmPage = () => {
               )}
             </div>
           </div>
-          <div className='my-6'>
-            <AppCheckBox value={isCheckTerms} onChange={() => setIsCheckTerms(!isCheckTerms)}>
+          <div className='my-4'>
+            <AppCheckBox
+              className='text-xs sm:text-sm'
+              value={isCheckTerms}
+              onChange={() => setIsCheckTerms(!isCheckTerms)}
+            >
               Bằng việc Đặt hàng, bạn đồng ý với Điều khoản sử dụng của BC Mobile.
             </AppCheckBox>
           </div>

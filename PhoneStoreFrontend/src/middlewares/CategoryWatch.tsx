@@ -1,6 +1,5 @@
 import React, { FC } from 'react'
 import { Navigate, Outlet, useParams } from 'react-router-dom'
-import { toast } from 'react-toastify'
 
 const validCategories = ['mobile', 'laptop', 'tivi']
 

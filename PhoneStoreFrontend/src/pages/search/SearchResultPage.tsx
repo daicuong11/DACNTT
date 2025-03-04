@@ -10,7 +10,7 @@ import CarouselProduct from '../home/components/CarouselProduct'
 
 const sortTypes = ['relative', 'price-asc', 'price-desc']
 
-interface SearchResultPageProps { }
+interface SearchResultPageProps {}
 
 const SearchResultPage: FC<SearchResultPageProps> = () => {
   const [sortType, setSortType] = useState(sortTypes[0])
@@ -22,14 +22,14 @@ const SearchResultPage: FC<SearchResultPageProps> = () => {
 
   // Hàm sắp xếp sản phẩm
   const sortedProducts = useMemo(() => {
-    if (!variants) return [];
+    if (!variants) return []
     console.log('variants', variants)
     return [...variants].sort((a, b) => {
-      if (sortType === sortTypes[1]) return a.price - b.price;
-      if (sortType === sortTypes[2]) return b.price - a.price;
-      return 0; // Mặc định giữ nguyên
-    });
-  }, [sortType, variants]);
+      if (sortType === sortTypes[1]) return a.price - b.price
+      if (sortType === sortTypes[2]) return b.price - a.price
+      return 0 // Mặc định giữ nguyên
+    })
+  }, [sortType, variants])
 
   return (
     <div className='py-4 mb-10'>
@@ -77,15 +77,19 @@ const SearchResultPage: FC<SearchResultPageProps> = () => {
       </div>
       <div className='grid gap-2.5 grid-cols-5'>
         {isLoadingSearch ? (
-          <div className="flex justify-center items-center py-10">
-            <Spin size="large" />
+          <div className='flex justify-center items-center py-10'>
+            <Spin size='large' />
           </div>
         ) : (
           sortedProducts.map((variant) => (
-            <VariantCard key={variant.variantId} category={variant.categoryName} variant={variant} />
+            <VariantCard
+              key={variant.variantId}
+              category={variant.categoryName}
+              variant={variant}
+              brand={variant.brandName}
+            />
           ))
         )}
-
       </div>
       {variants && variants.length !== 0 && (
         <div className='mt-2.5'>
@@ -106,11 +110,12 @@ const SearchResultPage: FC<SearchResultPageProps> = () => {
         </div>
 
         {isLoading2 ? (
-          <div className="flex justify-center items-center py-10">
-            <Spin size="large" />
+          <div className='flex justify-center items-center py-10'>
+            <Spin size='large' />
           </div>
-        ) : (<CarouselProduct autoPlay={false} dataSource={pros || []} />)
-        }
+        ) : (
+          <CarouselProduct autoPlay={false} dataSource={pros || []} />
+        )}
       </div>
     </div>
   )

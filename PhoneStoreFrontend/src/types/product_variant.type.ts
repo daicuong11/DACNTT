@@ -54,19 +54,20 @@ export interface VariantBasicResponse {
 }
 
 export interface ProductVariantResponse {
-  variantId: number;
-  slug: string;
-  variantName: string;
-  
-  screenSize: string;
-  ram: string;
-  storage: string;
-  
-  color: string;
-  
-  imageUrl: string;
-  
-  price: number;
-  discountPercentage: number;
-  categoryName: string;
+  variantId: number
+  slug: string
+  variantName: string
+
+  screenSize: string
+  ram: string
+  storage: string
+
+  color: string
+
+  imageUrl: string
+
+  price: number
+  discountPercentage: number
+  categoryName: string
+  brandName: string
 }

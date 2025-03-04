@@ -34,10 +34,10 @@ const ReviewCartItemModal: FC<ReviewCartItemModalProps> = ({ isOpen, onClose }) 
             })}
           >
             <div className='flex gap-x-4'>
-              <div className='w-[100px] h-[100px] flex-shrink-0'>
+              <div className='w-[60px] h-[60px] md:w-[100px] md:h-[100px] flex-shrink-0'>
                 <img src={iphone1} className='object-contain w-full h-full' />
               </div>
-              <div className='flex flex-col w-full gap-y-2'>
+              <div className='flex flex-col w-full gap-y-2 text-sm md:text-base'>
                 <div className='w-[70%] line-clamp-2 text-[#3a3a3a] text-[16px] font-medium'>
                   {cartItem.productVariant.fullNameVariant}
                 </div>
@@ -47,7 +47,7 @@ const ReviewCartItemModal: FC<ReviewCartItemModalProps> = ({ isOpen, onClose }) 
                       {cartItem.productVariant.color}
                     </Tag>
                   </div>
-                  <div className='flex items-end justify-between w-full font-roboto gap-x-2'>
+                  <div className='flex flex-col md:flex-row items-start sm:items-end justify-between w-full font-roboto gap-2'>
                     <div className='flex items-end gap-x-2'>
                       <span className='text-base font-semibold leading-none sm:text-lg text-primary'>
                         {formatPrice(
