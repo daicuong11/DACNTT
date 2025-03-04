@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PhoneStoreBackend.DbContexts;
 using PhoneStoreBackend.Entities;
 using PhoneStoreBackend.Enums;
 using PhoneStoreBackend.Repository;
@@ -19,15 +18,15 @@ namespace PhoneStoreBackend.Controllers
         private readonly IConfiguration _configuration;
         private readonly IOrderRepository _orderRepository;
         private readonly IPaymentRepository _paymentRepository;
-        private readonly AppDbContext _dbContext;
+        private readonly IWebHostEnvironment _env;
 
-        public VnpayController(IVnpay vnPayservice, IConfiguration configuration, IOrderRepository orderRepository, IPaymentRepository paymentRepository, AppDbContext dbContext)
+        public VnpayController(IVnpay vnPayservice, IConfiguration configuration, IOrderRepository orderRepository, IPaymentRepository paymentRepository, IWebHostEnvironment env)
         {
             _vnpay = vnPayservice;
             _configuration = configuration;
             _orderRepository = orderRepository;
             _paymentRepository = paymentRepository;
-            _dbContext = dbContext;
+            _env = env;
 
             _vnpay.Initialize(_configuration["Vnpay:TmnCode"], _configuration["Vnpay:HashSecret"], _configuration["Vnpay:BaseUrl"], _configuration["Vnpay:CallbackUrl"]);
         }
@@ -120,7 +119,7 @@ namespace PhoneStoreBackend.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("IpnAction")]
-        public IActionResult IpnAction()
+        public async Task<IActionResult> IpnAction()
         {
             if (Request.QueryString.HasValue)
             {
@@ -133,6 +132,21 @@ namespace PhoneStoreBackend.Controllers
                     if (paymentResult.IsSuccess)
                     {
                         // Thực hiện hành động nếu thanh toán thành công tại đây. Ví dụ: Cập nhật trạng thái đơn hàng trong cơ sở dữ liệu.
+                        int orderId = int.Parse(paymentResult.Description.Replace("orderId_", ""));
+                        var payment = await _paymentRepository.GetPaymentByOrderIdAsync(orderId);
+
+                        var updatePayment = new Payment
+                        {
+                            TransactionId = payment.TransactionId,
+                            OrderId = payment.OrderId,
+                            PaymentMethod = payment.PaymentMethod,
+                            PaymentStatus = PaymentStatusEnum.Success.ToString(),
+                            Amount = payment.Amount,
+                            PaymentDate = payment.PaymentDate,
+                        };
+
+                        await _paymentRepository.UpdatePaymentAsync(payment.PaymentId, updatePayment);
+
                         return Ok();
                     }
 
@@ -164,8 +178,10 @@ namespace PhoneStoreBackend.Controllers
                     Console.WriteLine(Request.QueryString.Value);
                     Console.WriteLine("End--------Callback--------");
                     Console.WriteLine(JsonSerializer.Serialize(paymentResult, new JsonSerializerOptions { WriteIndented = true }));
-                    if (paymentResult.IsSuccess)
+
+                    if (_env.IsDevelopment())
                     {
+                        Console.WriteLine("Đang chạy môi trường Development");
                         int orderId = int.Parse(paymentResult.Description.Replace("orderId_", ""));
                         var payment = await _paymentRepository.GetPaymentByOrderIdAsync(orderId);
 
@@ -180,7 +196,10 @@ namespace PhoneStoreBackend.Controllers
                         };
 
                         await _paymentRepository.UpdatePaymentAsync(payment.PaymentId, updatePayment);
+                    }
 
+                    if (paymentResult.IsSuccess)
+                    {
                         return Ok(paymentResult);
                     }
 
