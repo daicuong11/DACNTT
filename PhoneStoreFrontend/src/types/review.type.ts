@@ -21,3 +21,13 @@ export interface ReviewRequestType {
   comment: string
   images: File[]
 }
+
+export interface ReviewDetailResponse {
+  totalReview: number
+  total5Rate: number
+  total4Rate: number
+  total3Rate: number
+  total2Rate: number
+  total1Rate: number
+  rateAverage: number
+}

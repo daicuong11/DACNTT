@@ -56,6 +56,7 @@ export interface VariantResponse {
   price: number
   discountPercentage: number
   stock: number
+  reviewRate: number
 }
 
 export interface ProductResponse {

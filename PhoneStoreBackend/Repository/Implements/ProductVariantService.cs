@@ -100,6 +100,7 @@ namespace PhoneStoreBackend.Repository.Implements
                     .ThenInclude(p => p.Brand)
                 .Include(pv => pv.Discount)
                 .Include(v => v.ProductImages)
+                .Include(v => v.Reviews)
                 .FirstOrDefaultAsync(p => p.Slug == slug);
 
             if (findProductVariant == null)
@@ -113,9 +114,10 @@ namespace PhoneStoreBackend.Repository.Implements
         public async Task<ICollection<ProductVariantResponse>> GetProductVariantByProductId(int id)
         {
             var listProductVariants = await _context.ProductVariants
+                .Where(v => v.ProductId == id)
                 .Include(pv => pv.Discount)
                 .Include(v => v.ProductImages)
-                .Where(v => v.ProductId == id)
+                .Include(v => v.Reviews)
                 .Select(v => new ProductVariantResponse
                 {
                     VariantId = v.ProductVariantId,
@@ -127,6 +129,7 @@ namespace PhoneStoreBackend.Repository.Implements
                     ImageUrl = v.ImageUrl,
                     Storage = v.Storage,
                     Stock = v.Stock,
+                    ReviewRate = v.Reviews.Any() ? v.Reviews.Average(r => (double?)r.Rating) ?? 5 : 5,
                 })
                 .ToListAsync();
             return listProductVariants;

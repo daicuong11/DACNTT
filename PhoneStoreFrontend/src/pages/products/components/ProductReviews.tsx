@@ -6,7 +6,7 @@ import ReviewComment from './ReviewComment'
 import { ChevronDown } from 'lucide-react'
 import ReviewRatingItem from './ReviewItem'
 import { ProductVariantType } from '@/types/product_variant.type'
-import { useGetReview } from '@/hooks/querys/review.query'
+import { useGetReview, useGetReviewDetail } from '@/hooks/querys/review.query'
 import { motion } from 'framer-motion'
 import classNames from 'classnames'
 import { useAppSelector, useModal } from '@/hooks'
@@ -22,13 +22,24 @@ const initialFilterRating: string = ''
 
 const ProductReviews: FC<ProductReviewsProps> = ({ productVariant }) => {
   const currentUser = useAppSelector((state) => state.auth.user)
-  const { isOpen: isOpentLogin, openModal: openLoginModal, closeModal: closeLoginModal } = useModal()
+  const { isOpen: isOpenLogin, openModal: openLoginModal, closeModal: closeLoginModal } = useModal()
   const { isOpen, openModal, closeModal } = useModal()
-  const { data, isFetching, isFetchingNextPage, hasNextPage, fetchNextPage, isError } = useGetReview(
-    productVariant.productVariantId
-  )
   const [activeFilter, setActiveFilter] = useState<string[]>(initialFilter)
   const [activeFilterRating, setActiveFilterRating] = useState<string>(initialFilterRating)
+
+  const filters = {
+    ...(activeFilter.includes('hasimages') && { hasimages: true }),
+    ...(activeFilter.includes('verifiedpurchase') && { verifiedpurchase: true }),
+    ...(activeFilterRating && { rating: activeFilterRating })
+  }
+
+  const { data, isFetching, isFetchingNextPage, hasNextPage, fetchNextPage, isError } = useGetReview(
+    productVariant.productVariantId,
+    5,
+    filters
+  )
+
+  const { data: totalReview, isLoading } = useGetReviewDetail(productVariant.productVariantId)
 
   const handleFilterClick = (filter: string) => {
     setActiveFilter((prevFilters) =>
@@ -61,7 +72,7 @@ const ProductReviews: FC<ProductReviewsProps> = ({ productVariant }) => {
 
   return (
     <ContainerPanel title={'Đánh giá & nhận xét ' + productVariant.product.name}>
-      <LoginOfRegisterModal title='Vui lòng đăng nhập để đánh giá' isOpen={isOpentLogin} onClose={closeLoginModal} />
+      <LoginOfRegisterModal title='Vui lòng đăng nhập để đánh giá' isOpen={isOpenLogin} onClose={closeLoginModal} />
       <CreateReviewModal isOpen={isOpen} closeModal={closeModal} productVariant={productVariant} />
       <div
         className={classNames('grid grid-cols-10 gap-4 py-4', {
@@ -69,7 +80,7 @@ const ProductReviews: FC<ProductReviewsProps> = ({ productVariant }) => {
         })}
       >
         <div className='flex flex-col items-center justify-center col-span-4 gap-1 border-r border-gray-300'>
-          <h1 className='text-2xl font-semibold text-black'>5.0/5</h1>
+          <h1 className='text-2xl font-semibold text-black'>{Number(totalReview?.rateAverage.toFixed(1))}/5</h1>
           <ConfigProvider
             theme={{
               token: {
@@ -77,14 +88,36 @@ const ProductReviews: FC<ProductReviewsProps> = ({ productVariant }) => {
               }
             }}
           >
-            <Rate value={5} allowHalf disabled className='text-base' />
+            <Rate value={totalReview?.rateAverage} allowHalf disabled className='text-base' />
           </ConfigProvider>
-          <div className='text-xs font-semibold'>10 đánh giá</div>
+          <div className='text-xs font-semibold'>{totalReview?.totalReview || 0} đánh giá</div>
         </div>
-        <div className='flex flex-col col-span-6 px-6 gap-y-1.5'>
-          {Array.from({ length: 5 }).map((_, index) => (
-            <ReviewRatingItem key={index} rating={5 - index} productVariantId={productVariant.productVariantId} />
-          ))}
+        <div className='flex flex-col col-span-6 px-6 gap-y-1.5 '>
+          <ReviewRatingItem
+            percent={totalReview ? (totalReview.total5Rate / totalReview.totalReview) * 100 : 0}
+            rating={5}
+            totalReview={totalReview?.total5Rate || 0}
+          />
+          <ReviewRatingItem
+            percent={totalReview ? (totalReview.total4Rate / totalReview.totalReview) * 100 : 0}
+            rating={4}
+            totalReview={totalReview?.total4Rate || 0}
+          />
+          <ReviewRatingItem
+            percent={totalReview ? (totalReview.total3Rate / totalReview.totalReview) * 100 : 0}
+            rating={3}
+            totalReview={totalReview?.total3Rate || 0}
+          />
+          <ReviewRatingItem
+            percent={totalReview ? (totalReview.total2Rate / totalReview.totalReview) * 100 : 0}
+            rating={2}
+            totalReview={totalReview?.total2Rate || 0}
+          />
+          <ReviewRatingItem
+            percent={totalReview ? (totalReview.total1Rate / totalReview.totalReview) * 100 : 0}
+            rating={1}
+            totalReview={totalReview?.total1Rate || 0}
+          />
         </div>
       </div>
 
@@ -109,15 +142,15 @@ const ProductReviews: FC<ProductReviewsProps> = ({ productVariant }) => {
         </FilterButton>
         <FilterButton
           isShowCloseIcon
-          isActive={activeFilter.includes('Có hình ảnh')}
-          onClick={() => handleFilterClick('Có hình ảnh')}
+          isActive={activeFilter.includes('hasimages')}
+          onClick={() => handleFilterClick('hasimages')}
         >
           Có hình ảnh
         </FilterButton>
         <FilterButton
           isShowCloseIcon
-          isActive={activeFilter.includes('Đã mua hàng')}
-          onClick={() => handleFilterClick('Đã mua hàng')}
+          isActive={activeFilter.includes('verifiedpurchase')}
+          onClick={() => handleFilterClick('verifiedpurchase')}
         >
           Đã mua hàng
         </FilterButton>
@@ -140,6 +173,7 @@ const ProductReviews: FC<ProductReviewsProps> = ({ productVariant }) => {
         })}
       </div>
       <div className='flex flex-col items-start mt-4 gap-y-4'>
+        {data && data.pages[0].data.length === 0 && <div className='text-center w-full'>Không có đánh giá nào.</div>}
         {data?.pages.map((page, index) => (
           <React.Fragment key={index}>
             {page.data.map((review) => (

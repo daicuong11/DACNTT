@@ -122,7 +122,7 @@ const ProductCard: FC<ProductCardType> = ({ product, ...props }) => {
                   }
                 }}
               >
-                <Rate value={4.5} allowHalf disabled className='text-base' />
+                <Rate value={variantFirst.reviewRate} allowHalf disabled className='text-base' />
               </ConfigProvider>
             </div>
             <div

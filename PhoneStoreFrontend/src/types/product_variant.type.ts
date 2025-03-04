@@ -3,6 +3,7 @@ import { CategoryType } from './category.type'
 import { DiscountType } from './discount.type'
 import { ProductType } from './product.type'
 import { ProductImageType } from './product_image.type'
+import { ReviewType } from './review.type'
 import { SpecificationType } from './specification.type'
 
 export interface ProductVariantType {
@@ -22,6 +23,7 @@ export interface ProductVariantType {
 
   productImages: ProductImageType[]
   productSpecifications: SpecificationType[]
+  reviews: ReviewType[]
 }
 
 export interface ProductVariantRequestType {
@@ -51,6 +53,7 @@ export interface VariantBasicResponse {
   importPrice: number
   stock: number
   imageUrl: string
+  reviewRate: number
 }
 
 export interface ProductVariantResponse {
@@ -67,4 +70,5 @@ export interface ProductVariantResponse {
   categoryName: string
   brandName: string
   stock: number
+  reviews: ReviewType[]
 }

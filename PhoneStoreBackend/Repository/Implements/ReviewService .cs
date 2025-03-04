@@ -37,23 +37,54 @@ namespace PhoneStoreBackend.Repository.Implements
             return review;
         }
 
-        public async Task<PagedResponse<ICollection<Review>>> GetReviewsByProductIdAsync(int productVariantId, int page, int pageSize)
+        public async Task<PagedResponse<ICollection<Review>>> GetReviewsByProductIdAsync(
+    int productVariantId,
+    int page,
+    int pageSize,
+    Dictionary<string, string>? filters)
         {
             var query = _context.Reviews
                 .Where(r => r.ProductVariantId == productVariantId)
-                .Include(r => r.User);
+                .Include(r => r.User)
+                .AsQueryable(); // Chuyển thành IQueryable để áp dụng filter
+
+            // ✅ Áp dụng bộ lọc nếu có
+            if (filters != null)
+            {
+                foreach (var filter in filters)
+                {
+                    switch (filter.Key.ToLower())
+                    {
+                        case "hasimages":
+                            if (bool.TryParse(filter.Value, out bool hasImages))
+                                query = query.Where(r => r.HasImages == hasImages);
+                            break;
+
+                        case "verifiedpurchase":
+                            if (bool.TryParse(filter.Value, out bool verifiedPurchase))
+                                query = query.Where(r => r.VerifiedPurchase == verifiedPurchase);
+                            break;
+
+                        case "rating":
+                            if (int.TryParse(filter.Value, out int rating) && rating >= 1 && rating <= 5)
+                                query = query.Where(r => r.Rating == rating);
+                            break;
+                    }
+                }
+            }
 
             int totalRecords = await query.CountAsync();
-            int totalPages = (int)Math.Ceiling(totalRecords / (double)pageSize); 
+            int totalPages = (int)Math.Ceiling(totalRecords / (double)pageSize);
 
             var reviews = await query
                 .OrderByDescending(r => r.CreatedAt)
-                .Skip((page - 1) * pageSize) 
-                .Take(pageSize) 
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
                 .ToListAsync();
 
             return PagedResponse<ICollection<Review>>.CreatePagedResponse(reviews, page, pageSize, totalRecords, "Danh sách đánh giá của sản phẩm");
         }
+
 
 
         // Lấy các đánh giá của người dùng theo UserId
@@ -109,5 +140,46 @@ namespace PhoneStoreBackend.Repository.Implements
 
             return true;
         }
+
+        public async Task<ReviewResponse> GetReviewDetailOfVariant(int variantId)
+        {
+            var reviews = await _context.Reviews
+                .Where(r => r.ProductVariantId == variantId)
+                .ToListAsync();
+
+            if (reviews.Count == 0)
+            {
+                return new ReviewResponse
+                {
+                    TotalReview = 0,
+                    Total5Rate = 0,
+                    Total4Rate = 0,
+                    Total3Rate = 0,
+                    Total2Rate = 0,
+                    Total1Rate = 0,
+                    RateAverage = 0.0
+                };
+            }
+
+            var total = reviews.Count;
+            var total5 = reviews.Count(r => r.Rating == 5);
+            var total4 = reviews.Count(r => r.Rating == 4);
+            var total3 = reviews.Count(r => r.Rating == 3);
+            var total2 = reviews.Count(r => r.Rating == 2);
+            var total1 = reviews.Count(r => r.Rating == 1);
+            var average = reviews.Average(r => r.Rating); 
+
+            return new ReviewResponse
+            {
+                TotalReview = total,
+                Total5Rate = total5,
+                Total4Rate = total4,
+                Total3Rate = total3,
+                Total2Rate = total2,
+                Total1Rate = total1,
+                RateAverage = average
+            };
+        }
+
     }
 }

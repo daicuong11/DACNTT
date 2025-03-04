@@ -19,5 +19,7 @@
         public string CategoryName { get; set; }
         public string BrandName { get; set; }
         public int Stock {  get; set; }
+
+        public double ReviewRate { get; set; }
     }
 }

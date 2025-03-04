@@ -44,6 +44,25 @@ namespace PhoneStoreBackend.Controllers
             }
         }
 
+
+
+        [HttpGet("total/{variantId}")]
+        //[Authorize]
+        public async Task<IActionResult> GetReviewDetailByVariantId(int variantId)
+        {
+            try
+            {
+                var total = await _reviewRepository.GetReviewDetailOfVariant(variantId);
+                var response = Response<ReviewResponse>.CreateSuccessResponse(total, "Thông tin đánh giá");
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = Response<object>.CreateErrorResponse($"Đã xảy ra lỗi: {ex.Message}");
+                return BadRequest(errorResponse);
+            }
+        }
+
         [HttpGet("{id}")]
         //[Authorize]
         public async Task<IActionResult> GetReviewById(int id)
@@ -69,11 +88,14 @@ namespace PhoneStoreBackend.Controllers
 
         [HttpGet("product/{productId}")]
         //[Authorize]
-        public async Task<IActionResult> GetReviewsByProductId(int productId, [FromQuery] int page = 1, [FromQuery] int pageSize = 5)
+        public async Task<IActionResult> GetReviewsByProductId(int productId, 
+            [FromQuery] int page = 1, 
+            [FromQuery] int pageSize = 5, 
+            [FromQuery] Dictionary<string, string>? filters = null)
         {
             try
             {
-                var response = await _reviewRepository.GetReviewsByProductIdAsync(productId, page, pageSize);
+                var response = await _reviewRepository.GetReviewsByProductIdAsync(productId, page, pageSize, filters);
                 return Ok(response);
             }
             catch (Exception ex)

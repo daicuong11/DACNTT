@@ -99,9 +99,19 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
                 }
               }}
             >
-              <Rate value={5} allowHalf disabled className='text-base text-yellow-500' />
+              <Rate
+                value={
+                  productVariant && productVariant?.reviews.length > 0
+                    ? productVariant?.reviews.reduce((sum, review) => sum + review.rating, 0) /
+                      productVariant?.reviews.length
+                    : 5
+                }
+                allowHalf
+                disabled
+                className='text-base text-yellow-500'
+              />
             </ConfigProvider>
-            <div className='text-sm text-gray-500'>10 đánh giá</div>
+            <div className='text-sm text-gray-500'>{productVariant?.reviews.length} đánh giá</div>
             <button className='py-1 text-sm btn btn-outline'>
               <span>
                 <Plus size={16} />

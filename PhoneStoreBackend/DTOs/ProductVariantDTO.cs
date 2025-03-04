@@ -22,6 +22,7 @@ namespace PhoneStoreBackend.DTOs
         public int Stock { get; set; }
         public ICollection<ProductImageDTO> ProductImages { get; set; }
         public ICollection<ProductSpecification> ProductSpecifications { get; set; }
+        public ICollection<Review> Reviews { get; set; }
 
     }
 }

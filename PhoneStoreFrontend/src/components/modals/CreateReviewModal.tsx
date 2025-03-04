@@ -98,6 +98,9 @@ const CreateReviewModal: FC<CreateReviewModalProps> = ({ isOpen, closeModal, pro
         queryClient.invalidateQueries({
           queryKey: ['getReview', productVariant.productVariantId]
         })
+        queryClient.invalidateQueries({
+          queryKey: ['getReviewDetail', productVariant.productVariantId]
+        })
         setComment('')
         setRate(5)
         setImages([])

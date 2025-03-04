@@ -20,19 +20,14 @@ namespace PhoneStoreBackend.Repository.Implements
         public async Task<ICollection<ProductResponse>> GetAllAsync()
         {
             var list = await _context.Products
-                .Include(p => p.Category) // Include bảng Category
-                .Include(p => p.Brand) // Include bảng Brand
-
-                // Include ProductVariants và liên kết với các bảng con
-                .Include(p => p.ProductVariants)
-                    .ThenInclude(v => v.ProductImages)
-
+                .Include(p => p.Category)
+                .Include(p => p.Brand)
                 .Include(p => p.ProductVariants)
                     .ThenInclude(v => v.Discount)
-
                 .Include(p => p.ProductVariants)
                     .ThenInclude(v => v.ProductSpecifications)
-
+                .Include(p => p.ProductVariants)
+                    .ThenInclude(v => v.Reviews)
                 .Select(p => new ProductResponse
                 {
                     ProductId = p.ProductId,
@@ -56,6 +51,8 @@ namespace PhoneStoreBackend.Repository.Implements
                         Price = v.Price,
                         Color = v.Color,
                         ImageUrl = v.ImageUrl,
+
+                        ReviewRate = v.Reviews.Any() ? v.Reviews.Average(r => (double?)r.Rating) ?? 5 : 5,
 
                         RAM = v.ProductSpecifications
                             .Where(spec => spec.Key.ToLower() == "dung lượng ram")
@@ -74,10 +71,11 @@ namespace PhoneStoreBackend.Repository.Implements
                             .FirstOrDefault() ?? ""
                     }).ToList(),
                 })
-                .ToListAsync();
+                .ToListAsync(); // Chỉ gọi ToListAsync() một lần duy nhất
 
             return list;
         }
+
 
         public async Task<ICollection<ProductResponse>> GetAllProductOfLaptop()
         {
@@ -95,7 +93,7 @@ namespace PhoneStoreBackend.Repository.Implements
                 .Include(p => p.Category)
                 .Include(p => p.Brand)
                 .Include(p => p.ProductVariants)
-                    .ThenInclude(v => v.ProductImages)
+                    .ThenInclude(v => v.Reviews)
                 .Include(p => p.ProductVariants)
                     .ThenInclude(v => v.Discount)
                 .Include(p => p.ProductVariants)
@@ -123,7 +121,7 @@ namespace PhoneStoreBackend.Repository.Implements
                         Price = v.Price,
                         Color = v.Color,
                         ImageUrl = v.ImageUrl,
-
+                        ReviewRate = v.Reviews.Any() ? v.Reviews.Average(r => (double?)r.Rating) ?? 5 : 5,
                         RAM = v.ProductSpecifications
                             .Where(spec => spec.Key.ToLower() == "dung lượng ram")
                             .Select(spec => spec.Value)
@@ -166,11 +164,12 @@ namespace PhoneStoreBackend.Repository.Implements
                 .Include(p => p.Category)
                 .Include(p => p.Brand)
                 .Include(p => p.ProductVariants)
-                    .ThenInclude(v => v.ProductImages)
+                    .ThenInclude(v => v.Reviews)
                 .Include(p => p.ProductVariants)
                     .ThenInclude(v => v.Discount)
                 .Include(p => p.ProductVariants)
                     .ThenInclude(v => v.ProductSpecifications)
+                
                 .Select(p => new ProductResponse
                 {
                     ProductId = p.ProductId,
@@ -194,7 +193,7 @@ namespace PhoneStoreBackend.Repository.Implements
                         Price = v.Price,
                         Color = v.Color,
                         ImageUrl = v.ImageUrl,
-
+                        ReviewRate = v.Reviews.Any() ? v.Reviews.Average(r => (double?)r.Rating) ?? 5 : 5,
                         RAM = v.ProductSpecifications
                             .Where(spec => spec.Key.ToLower() == "dung lượng ram")
                             .Select(spec => spec.Value)
@@ -247,7 +246,7 @@ namespace PhoneStoreBackend.Repository.Implements
                 .Include(p => p.Category)
                 .Include(p => p.Brand)
                 .Include(p => p.ProductVariants)
-                    .ThenInclude(v => v.ProductImages)
+                    .ThenInclude(v => v.Reviews)
                 .Include(p => p.ProductVariants)
                     .ThenInclude(v => v.Discount)
                 .Include(p => p.ProductVariants)
@@ -275,7 +274,7 @@ namespace PhoneStoreBackend.Repository.Implements
                         Price = v.Price,
                         Color = v.Color,
                         ImageUrl = v.ImageUrl,
-
+                        ReviewRate = v.Reviews.Any() ? v.Reviews.Average(r => (double?)r.Rating) ?? 5 : 5,
                         RAM = v.ProductSpecifications
                             .Where(spec => spec.Key.ToLower() == "dung lượng ram")
                             .Select(spec => spec.Value)
@@ -354,6 +353,7 @@ namespace PhoneStoreBackend.Repository.Implements
                 .Include(pv => pv.Product)
                 .Include(pv => pv.Discount)
                 .Include(pv => pv.ProductSpecifications)
+                .Include(pv => pv.Reviews)
                 .AsQueryable(); // Chuyển về IQueryable để áp dụng filter/sort
 
             if (filters != null)
@@ -402,6 +402,7 @@ namespace PhoneStoreBackend.Repository.Implements
                     Price = v.Price,
                     Color = v.Color,
                     ImageUrl = v.ImageUrl,
+                    ReviewRate = v.Reviews.Any() ? v.Reviews.Average(r => (double?)r.Rating) ?? 5 : 5,
                     RAM = v.ProductSpecifications
                             .Where(spec => spec.Key.ToLower() == "dung lượng ram")
                             .Select(spec => spec.Value)

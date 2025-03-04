@@ -17,9 +17,7 @@ import { toast } from 'react-toastify'
 export const useGetAllProducts = () => {
   return useQuery({
     queryKey: ['getAllProducts'],
-    queryFn: getAllProduct,
-    staleTime: 1000 * 60 * 15,
-    placeholderData: keepPreviousData
+    queryFn: getAllProduct
   })
 }
 
@@ -27,9 +25,7 @@ export const useGetProductVariants = (productId: number | undefined) => {
   return useQuery({
     queryKey: ['productVariants', productId],
     queryFn: () => getProductVariants(productId!),
-    enabled: !!productId,
-    staleTime: 1000 * 60 * 5,
-    placeholderData: keepPreviousData
+    enabled: !!productId
   })
 }
 
@@ -94,26 +90,21 @@ export const useGetProductById = (productId: number) => {
   return useQuery({
     queryKey: ['getProductById', productId],
     queryFn: () => getProductById(productId),
-    enabled: !!productId,
-    staleTime: 1000 * 60 * 5,
-    placeholderData: keepPreviousData
+    enabled: !!productId
   })
 }
 
 export const useGetAllProductOfMobile = () => {
   return useQuery({
     queryKey: ['getAllProductOfMobile'],
-    queryFn: getAllProductOfMobile,
-    staleTime: 1000 * 60 * 5,
-    placeholderData: keepPreviousData
+    queryFn: getAllProductOfMobile
   })
 }
 
 export const useGetAllProductOfLaptop = () => {
   return useQuery({
     queryKey: ['getAllProductOfLaptop'],
-    queryFn: getAllProductOfLaptop,
-    staleTime: 1000 * 60 * 15
+    queryFn: getAllProductOfLaptop
   })
 }
 
@@ -121,8 +112,7 @@ export const useGet15ProductSimilar = (id: number) => {
   return useQuery({
     queryKey: ['get15ProductSimilar', id],
     queryFn: () => get15ProductSimilar(id),
-    enabled: !!id,
-    staleTime: 1000 * 60 * 15
+    enabled: !!id
   })
 }
 
@@ -139,6 +129,6 @@ export const useSearchProducts = (
     getNextPageParam: (lastPage) => (lastPage.currentPage < lastPage.totalPages ? lastPage.currentPage + 1 : undefined),
     initialPageParam: 1,
     placeholderData: keepPreviousData,
-    staleTime: 1000 * 60 * 15
+    staleTime: 1000 * 60 * 5
   })
 }
