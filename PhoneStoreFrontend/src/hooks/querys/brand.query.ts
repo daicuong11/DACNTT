@@ -2,10 +2,10 @@ import brandApi from '@/apis/brand.api'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 
-export const useGetBrands = () => {
+export const useGetBrands = (categoryName?: string) => {
   return useQuery({
-    queryKey: ['getBrands'],
-    queryFn: brandApi.getBrands
+    queryKey: ['getBrands', categoryName],
+    queryFn: () => brandApi.getBrands(categoryName)
   })
 }
 
@@ -56,4 +56,3 @@ export const useUpdateBrand = () => {
 
   return mutation
 }
-

@@ -6,14 +6,18 @@ import { FormGetVoucher } from './components'
 export default function Footer() {
   return (
     <footer className='w-full bg-[#181821] text-base text-[#a9b3bb]'>
-      <div className='w-[1200px] mx-auto py-4'>
+      <div className='max-w-[1200px] mx-auto py-4 px-2.5'>
         <div className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4'>
           <div className='flex flex-col gap-2'>
             <Link className='flex items-center h-9' to={'/'}>
-              <img className='object-cover h-[30px] cursor-pointer border bg-primary rounded' src={logo} alt='' />
+              <img
+                className='object-cover h-[30px] cursor-pointer border bg-primary rounded'
+                src={'/logo.png'}
+                alt=''
+              />
             </Link>
-            <div className='flex flex-col gap-y-1.5 text-sm'>
-              <div className='py-1 text-xl font-semibold text-white'>Tổng đài hỗ trợ miễn phí</div>
+            <div className='flex flex-col gap-y-1.5 text-xs md:text-sm'>
+              <div className='py-1 text-base md:text-xl font-semibold text-white'>Tổng đài hỗ trợ miễn phí</div>
               <div className='flex items-end gap-1'>
                 <div className='font-semibold'>Gọi mua hàng:</div>
                 <a href='tel:0366 288 457' className='font-semibold hover:underline'>
@@ -37,7 +41,7 @@ export default function Footer() {
               </div>
             </div>
             <div className='flex flex-col gap-y-1.5 text-sm'>
-              <div className='py-1 mt-2 text-xl font-semibold text-white'>Phương thức thanh toán</div>
+              <div className='py-1 mt-2 text-base md:text-xl font-semibold text-white'>Phương thức thanh toán</div>
               <div className='flex gap-2'>
                 <img
                   className='w-[48px] cursor-pointer h-[30px] border-[1px] border-gray-100 rounded-md object-cover'
@@ -49,8 +53,8 @@ export default function Footer() {
                 />
               </div>
             </div>
-            <div className='flex flex-col gap-y-1.5 text-sm'>
-              <div className='py-1 text-xl font-semibold text-white'>Kết nối với PhoneStore</div>
+            <div className='flex flex-col gap-y-1.5 text-xs md:text-sm'>
+              <div className='py-1 text-base md:text-xl font-semibold text-white'>Kết nối với BC Mobile</div>
               <div className='flex gap-2'>
                 {socialNetworkImages.map((item, index) => (
                   <img
@@ -64,8 +68,10 @@ export default function Footer() {
             </div>
           </div>
           <div className='flex flex-col'>
-            <div className='flex items-center gap-3 py-1 text-xl font-semibold text-white'>Về PhoneStore</div>
-            <div className='flex flex-col gap-2 mt-5 text-sm'>
+            <div className='flex items-center gap-3 py-1 text-base md:text-xl font-semibold text-white'>
+              Về BC Mobile
+            </div>
+            <div className='flex flex-col gap-2 mt-5 text-xs md:text-sm'>
               <Link to={''} className='font-semibold hover:text-white hover:underline'>
                 Mua hàng và thanh toán Online
               </Link>
@@ -96,10 +102,10 @@ export default function Footer() {
             </div>
           </div>
           <div className='flex flex-col'>
-            <div className='flex items-center gap-3 py-1 text-xl font-semibold text-white'>
+            <div className='flex items-center text-base gap-3 py-1 md:text-xl font-semibold text-white'>
               Dịch vụ và thông tin khác
             </div>
-            <div className='flex flex-col gap-2 mt-5 text-sm'>
+            <div className='flex flex-col gap-2 mt-5 text-xs md:text-sm'>
               <Link to={''} className='font-semibold hover:text-white hover:underline'>
                 Khách hàng doanh nghiệp (B2B)
               </Link>
@@ -127,8 +133,8 @@ export default function Footer() {
             </div>
           </div>
           <div className='flex flex-col'>
-            <div className='flex flex-col gap-y-1.5 text-sm'>
-              <div className='py-1 text-xl font-semibold text-white'>Đăng ký nhận tin khuyến mãi</div>
+            <div className='flex flex-col gap-y-1.5 text-xs md:text-sm'>
+              <div className='py-1 md:text-xl text-base font-semibold text-white'>Đăng ký nhận tin khuyến mãi</div>
               <div className='text-red-600'>(*) Nhận ngay voucher 10%</div>
               <div className=''>*Voucher sẽ được gửi sau 24h, chỉ áp dụng cho khách hàng mới</div>
               <div className='mt-4'>

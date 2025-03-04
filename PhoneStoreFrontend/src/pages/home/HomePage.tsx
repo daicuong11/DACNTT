@@ -17,7 +17,7 @@ const HomePage = () => {
         <div className='flex flex-1 w-[calc(100%-(472px))] h-[352px] bg-white shadow rounded-b-xl shadow-black/25'>
           <CarouselBanner />
         </div>
-        <div className='flex-shrink-0 bg-white w-[220px] h-[352px] text-xs'>
+        <div className='flex-shrink-0 bg-white w-[220px] h-[352px] text-xs lg:block hidden'>
           <RightBanner />
         </div>
       </div>

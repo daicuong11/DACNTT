@@ -83,11 +83,22 @@ const CarouselBanner = () => {
         <Swiper
           ref={swiperRef}
           initialSlide={0}
-          slidesPerView={5}
+          slidesPerView={3}
           slidesPerGroup={1}
           spaceBetween={0}
           freeMode={true}
           className='h-full mySwiper rounded-b-xl'
+          breakpoints={{
+            0: {
+              slidesPerView: 3
+            },
+            640: {
+              slidesPerView: 4
+            },
+            910: {
+              slidesPerView: 5
+            }
+          }}
         >
           {listBanner.map((item, index) => (
             <SwiperSlide key={index} className={classNames('h-full')} onClick={() => handleSwiperClick(index)}>

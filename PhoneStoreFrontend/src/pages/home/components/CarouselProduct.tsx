@@ -1,10 +1,9 @@
 import classNames from 'classnames'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { FC, useEffect, useRef, useState } from 'react'
+import { FC, useRef, useState } from 'react'
 import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react'
 import ProductCard from '../../../components/items/ProductCard'
 
-import { useElementWidth } from '@/hooks'
 import { ProductResponse } from '@/types/product.type'
 import { Autoplay, Grid } from 'swiper/modules'
 
@@ -13,60 +12,42 @@ interface CarouselProductType {
   autoPlay?: boolean
   dataSource: ProductResponse[]
 }
+
 const CarouselProduct: FC<CarouselProductType> = ({ row = 1, autoPlay = true, dataSource }) => {
   const swiperRef = useRef<SwiperRef>(null)
   const [currentSlide, setCurrentSlide] = useState<number>(0)
-  const [slidesPerView, setSlidesPerView] = useState<number>(5)
-  const [containerRef, width] = useElementWidth()
-
-  useEffect(() => {
-    if (width > 1170) {
-      setSlidesPerView(5)
-    } else if (width > 932) {
-      setSlidesPerView(4)
-    } else if (width > 712) {
-      setSlidesPerView(3)
-    } else {
-      setSlidesPerView(2)
-    }
-  }, [width])
 
   return (
-    <div ref={containerRef} className='relative w-full group'>
+    <div className='relative w-full group'>
       <Swiper
         ref={swiperRef}
         initialSlide={0}
         autoplay={autoPlay}
         loop={false}
-        onSlideChange={(swiper) => {
-          setCurrentSlide(swiper.realIndex)
-        }}
-        grid={{
-          rows: row
-        }}
-        slidesPerView={slidesPerView}
+        onSlideChange={(swiper) => setCurrentSlide(swiper.realIndex)}
+        grid={{ rows: row }}
         slidesPerGroup={1}
         spaceBetween={10}
         freeMode={true}
         modules={[Autoplay, Grid]}
-        style={{
-          padding: '10px'
+        breakpoints={{
+          0: { slidesPerView: 2, grid: { rows: row } }, // Dưới 712px hiển thị 2 sản phẩm
+          713: { slidesPerView: 3, grid: { rows: row } }, // Trên 712px hiển thị 3 sản phẩm
+          972: { slidesPerView: 4, grid: { rows: row } }, // Trên 932px hiển thị 4 sản phẩm
+          1220: { slidesPerView: 5, grid: { rows: row } } // Trên 1170px hiển thị 5 sản phẩm
         }}
-        className={classNames('mySwiper', {
-          'h-[814px] ': row !== 1
-        })}
+        style={{ padding: '10px' }}
+        className={classNames('mySwiper', { 'h-[814px] ': row !== 1 })}
       >
         {dataSource.map((item, index) => (
-          <SwiperSlide key={index} className={classNames('h-full')}>
+          <SwiperSlide key={index} className='h-full'>
             <ProductCard product={item} />
           </SwiperSlide>
         ))}
       </Swiper>
-      {currentSlide != 0 && (
+      {currentSlide !== 0 && (
         <button
-          onClick={() => {
-            swiperRef.current?.swiper.slidePrev()
-          }}
+          onClick={() => swiperRef.current?.swiper.slidePrev()}
           className={classNames(
             'absolute z-20 -translate-y-1/2 py-1 left-0 bg-gray-50 shadow-all shadow-slate-900/20 rounded-r-full bg-opacity-60 transition-all top-1/2 text-black/40',
             'hover:text-text hover:bg-gray-100 hover:bg-opacity-60 scale-75 group-hover:scale-100'
@@ -77,9 +58,7 @@ const CarouselProduct: FC<CarouselProductType> = ({ row = 1, autoPlay = true, da
       )}
       {!swiperRef.current?.swiper.isEnd && (
         <button
-          onClick={() => {
-            swiperRef.current?.swiper.slideNext()
-          }}
+          onClick={() => swiperRef.current?.swiper.slideNext()}
           className={classNames(
             'absolute z-20 -translate-y-1/2 py-1 right-0 bg-gray-50 shadow-all shadow-slate-400 rounded-l-full bg-opacity-60 transition-all top-1/2 text-black/40',
             'hover:text-text hover:bg-gray-100 hover:bg-opacity-60 scale-75 group-hover:scale-100'

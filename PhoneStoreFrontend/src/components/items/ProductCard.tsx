@@ -22,7 +22,7 @@ interface ProductCardType extends HTMLAttributes<HTMLDivElement> {
 const ProductCard: FC<ProductCardType> = ({ product, ...props }) => {
   const queryClient = useQueryClient()
   const currentUser = useAppSelector((state) => state.auth.user)
-  const { data: wishlist, isLoading, isError } = useGetMyWishlist(currentUser?.id || 0)
+  const { data: wishlist } = useGetMyWishlist(currentUser?.id || 0)
   const { mutate: addProductToWishlist, isPending } = useAddProductToWishlist()
   const navigate = useNavigate()
   const variantFirst = product.productVariants[0]
@@ -48,11 +48,15 @@ const ProductCard: FC<ProductCardType> = ({ product, ...props }) => {
         productVariantId: variantFirst.variantId
       }
       addProductToWishlist(addToWishlistReq, {
-        onSuccess: () => {
+        onSuccess: (data) => {
           queryClient.invalidateQueries({
             queryKey: ['getMyWishlist', currentUser.id]
           })
-          toast('Đã thêm vào danh sách yêu thích')
+          if (data) {
+            toast('Đã thêm vào danh sách yêu thích')
+          } else {
+            toast('Đã xóa khỏi danh sách yêu thích')
+          }
         },
         onError: (error) => {
           toast.error('Thêm vào danh sách yêu thích thất bại')
@@ -80,12 +84,12 @@ const ProductCard: FC<ProductCardType> = ({ product, ...props }) => {
           <h2 className='h-[60px] text-xs sm:text-sm font-bold text-black/80 line-clamp-3'>
             {variantFirst.variantName}
           </h2>
-          <div className='flex items-end gap-1 font-sans text-sm font-bold md:text-base'>
+          <div className='flex items-end gap-1.5 font-sans text-sm font-bold md:text-base'>
             <span className='leading-none text-primary'>
               {formatPrice(getPriceAfterDiscount(variantFirst.price, variantFirst.discountPercentage || 0))}
             </span>
             {variantFirst.discountPercentage > 0 && (
-              <span className='text-sm leading-none line-through text-slate-600'>
+              <span className='!leading-none line-through text-xs md:text-sm text-slate-600'>
                 {formatPrice(variantFirst.price)}
               </span>
             )}
@@ -135,8 +139,8 @@ const ProductCard: FC<ProductCardType> = ({ product, ...props }) => {
         </div>
       </div>
       {variantFirst.discountPercentage > 0 && (
-        <div className='absolute top-0 flex items-center justify-center w-20 py-1.5 rounded-r-full -left-1 bg-primary'>
-          <p className='text-xs font-bold text-white'>Giảm {variantFirst.discountPercentage}%</p>
+        <div className='absolute top-0 flex items-center justify-center w-20 py-1 md:py-1.5 rounded-r-full -left-1 bg-primary'>
+          <p className='text-[10px] md:text-xs font-bold text-white'>Giảm {variantFirst.discountPercentage}%</p>
           <div className='absolute left-0 flex items-center justify-center w-1 h-1 rounded-b-full -bottom-1 bg-[#c2181a]'></div>
         </div>
       )}

@@ -9,8 +9,9 @@ class BrandAPI {
     })
   }
 
-  getBrands = async (): Promise<BaseResponse<BrandType[]>> => {
-    return axiosInstance.get('brands')
+  getBrands = async (categoryName?: string): Promise<BaseResponse<BrandType[]>> => {
+    const url = categoryName ? `brands?categoryName=${categoryName}` : 'brands'
+    return axiosInstance.get(url)
   }
 
   updateBrand = async (brandId: number, formData: FormData): Promise<BaseResponse<BrandType>> => {

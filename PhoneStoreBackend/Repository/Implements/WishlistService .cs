@@ -65,7 +65,7 @@ namespace PhoneStoreBackend.Repository.Implements
             {
                 _context.Wishlists.Remove(existingWishlist);
                 await _context.SaveChangesAsync();
-                return _mapper.Map<WishlistDTO>(existingWishlist);
+                return null;
 
             }
 

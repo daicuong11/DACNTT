@@ -184,7 +184,7 @@ const listCategory: CategoryRenderType[] = [
 
 const CategoryContainer = () => {
   return (
-    <div className='relative flex-shrink-0 bg-white rounded-xl w-[220px] text-xs shadow shadow-slate-900/20'>
+    <div className='relative md:block hidden flex-shrink-0 bg-white rounded-xl w-[220px] text-xs shadow shadow-slate-900/20'>
       {listCategory.map((item, index) => (
         <CategoryItem isFirst={index === 0} isLast={index === listCategory.length - 1} key={index} data={item} />
       ))}

@@ -79,7 +79,7 @@ namespace PhoneStoreBackend.Controllers
 
         [HttpGet("user/{userId}/variant/{variantId}")]
         //[Authorize]
-        public async Task<IActionResult> AddWishlist(int userId, int variantId)
+        public async Task<IActionResult> GetWishlistByUserIdAndVariantId(int userId, int variantId)
         {
             try
             {

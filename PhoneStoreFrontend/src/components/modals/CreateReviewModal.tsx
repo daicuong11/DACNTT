@@ -115,7 +115,6 @@ const CreateReviewModal: FC<CreateReviewModalProps> = ({ isOpen, closeModal, pro
   return (
     <Modal
       open={isOpen}
-      className={isPending ? 'animate-pulse' : ''}
       onCancel={closeModal}
       title={<div className='text-lg font-semibold text-center'>Đánh giá & nhận xét</div>}
       width={600}
@@ -181,6 +180,7 @@ const CreateReviewModal: FC<CreateReviewModalProps> = ({ isOpen, closeModal, pro
             listType='picture-card'
             fileList={fileList}
             accept='image/*'
+            multiple
             onPreview={handlePreview}
             beforeUpload={handleUpload}
             onRemove={handleRemove}

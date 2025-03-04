@@ -12,6 +12,7 @@ import { useCreateReply } from '@/hooks/querys/comment.query'
 import { toast } from 'react-toastify'
 import { useQueryClient } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
+import { AvatarCustom } from '@/components'
 
 interface CommentItemProps {
   comment: CommentType
@@ -77,7 +78,7 @@ const CommentItem: FC<CommentItemProps> = ({ comment, isReply, productVariantId,
             })}
           ></div>
         )}
-        <Avatar className='flex-shrink-0' size={isReply ? 'small' : 'default'} icon={<UserOutlined />} />
+        <AvatarCustom name={comment.user.name} role={comment.user.role} />
         <div className='flex flex-col'>
           <div className='flex flex-col px-3 py-2 bg-gray-200 rounded-xl'>
             <div className='flex items-center gap-x-2'>

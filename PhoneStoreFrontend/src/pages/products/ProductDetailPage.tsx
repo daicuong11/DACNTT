@@ -174,7 +174,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
                       }
                       key={variant.slug}
                       isActive={variant.slug === productVariant.slug}
-                      disabled={isPlaceholderData}
+                      disabled={isPlaceholderData || variant.stock === 0}
                       title={variant.color}
                       price={getPriceAfterDiscount(variant.price, variant.discountPercentage)}
                       img={variant.imageUrl}
@@ -228,7 +228,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
                       3
                     </div>
                     <p className='text-sm font-normal text-gray-900 group-hover:underline'>
-                      Xem chính sách ưu đãi dành cho thành viên Smember
+                      Giảm ngay 10-20% cho mọi sản phẩm khi mua tại cửa hàng trong cuối tuần này!
                     </p>
                   </div>
                 </div>
@@ -264,43 +264,61 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
               </div>
               <div className='flex flex-col gap-4 p-3'>
                 <div className='flex items-start gap-2 cursor-pointer group'>
-                  <div className='flex items-center justify-center flex-shrink-0 w-4 h-4 overflow-hidden text-xs font-bold text-white bg-green-500 rounded-full'>
+                  <div className='flex items-center justify-center flex-shrink-0 w-4 h-4 mt-1 overflow-hidden text-xs font-bold text-white bg-green-500 rounded-full'>
                     <Check size={12} strokeWidth={2} />
                   </div>
                   <p className='text-sm font-normal text-gray-900 group-hover:underline'>
-                    Nhập mã VNPAY5 giảm từ 50,000đ đến 200,000đ (áp dụng tùy giá trị đơn hàng) khi thanh toán qua
-                    VNPAY-QR.
+                    <span className='font-medium'>Mua 1 tặng phụ kiện tại chỗ: </span> Mua bất kỳ sản phẩm nào tại cửa
+                    hàng, nhận ngay phụ kiện miễn phí (tai nghe, ốp lưng, sạc) trị giá X VNĐ
                   </p>
                 </div>
                 <div className='flex items-start gap-2 cursor-pointer group'>
-                  <div className='flex items-center justify-center flex-shrink-0 w-4 h-4 overflow-hidden text-xs font-bold text-white bg-green-500 rounded-full'>
+                  <div className='flex items-center justify-center flex-shrink-0 w-4 h-4 mt-1 overflow-hidden text-xs font-bold text-white bg-green-500 rounded-full'>
                     <Check size={12} strokeWidth={2} />
                   </div>
                   <p className='text-sm font-normal text-gray-900 group-hover:underline'>
-                    Nhập mã MOMO5 giảm từ 50,000đ đến 200,000đ (áp dụng tùy giá trị đơn hàng) khi thanh toán qua
-                    MOMO-QR.
+                    <span className='font-medium'>Combo giảm giá khi thanh toán: </span>Mua combo 2 sản phẩm bất kỳ tại
+                    cửa hàng (điện thoại + tai nghe, laptop + chuột, v.v.), giảm ngay 15% tổng hóa đơn
                   </p>
                 </div>
                 <div className='flex items-start gap-2 cursor-pointer group'>
-                  <div className='flex items-center justify-center flex-shrink-0 w-4 h-4 overflow-hidden text-xs font-bold text-white bg-green-500 rounded-full'>
+                  <div className='flex items-center justify-center flex-shrink-0 w-4 h-4 mt-1 overflow-hidden text-xs font-bold text-white bg-green-500 rounded-full'>
                     <Check size={12} strokeWidth={2} />
                   </div>
                   <p className='text-sm font-normal text-gray-900 group-hover:underline'>
-                    Nhập mã VNPAY5 giảm từ 50,000đ đến 200,000đ (áp dụng tùy giá trị đơn hàng) khi thanh toán qua
-                    VNPAY-QR.
+                    <span className='font-medium'>Ưu đãi giờ vàng: </span>Giảm giá sốc 15% cho tất cả sản phẩm khi mua
+                    từ 18:00 - 20:00 tại cửa hàng
                   </p>
                 </div>
                 <div className='flex items-start gap-2 cursor-pointer group'>
-                  <div className='flex items-center justify-center flex-shrink-0 w-4 h-4 overflow-hidden text-xs font-bold text-white bg-green-500 rounded-full'>
+                  <div className='flex items-center justify-center flex-shrink-0 w-4 h-4 mt-1 overflow-hidden text-xs font-bold text-white bg-green-500 rounded-full'>
                     <Check size={12} strokeWidth={2} />
                   </div>
                   <p className='text-sm font-normal text-gray-900 group-hover:underline'>
-                    Nhập mã MOMO5 giảm từ 50,000đ đến 200,000đ (áp dụng tùy giá trị đơn hàng) khi thanh toán qua
-                    MOMO-QR.
+                    <span className='font-medium'>Miễn phí kiểm tra thiết bị: </span>Mua bất kỳ sản phẩm nào tại cửa
+                    hàng, được kiểm tra và vệ sinh thiết bị miễn phí trong 6 tháng
                   </p>
                 </div>
                 <div className='flex items-start gap-2 cursor-pointer group'>
-                  <div className='flex items-center justify-center flex-shrink-0 w-4 h-4 overflow-hidden text-xs font-bold text-white bg-green-500 rounded-full'>
+                  <div className='flex items-center justify-center flex-shrink-0 w-4 h-4 mt-1 overflow-hidden text-xs font-bold text-white bg-green-500 rounded-full'>
+                    <Check size={12} strokeWidth={2} />
+                  </div>
+                  <p className='text-sm font-normal text-gray-900 group-hover:underline'>
+                    <span className='font-medium'>Trả góp tại quầy: </span>Hỗ trợ trả góp 0% lãi suất trực tiếp tại cửa
+                    hàng qua thẻ tín dụng cho mọi sản phẩm
+                  </p>
+                </div>
+                <div className='flex items-start gap-2 cursor-pointer group'>
+                  <div className='flex items-center justify-center flex-shrink-0 w-4 h-4 mt-1 overflow-hidden text-xs font-bold text-white bg-green-500 rounded-full'>
+                    <Check size={12} strokeWidth={2} />
+                  </div>
+                  <p className='text-sm font-normal text-gray-900 group-hover:underline'>
+                    <span className='font-medium'>Bảo hành tận nơi: </span>Mua sản phẩm tại cửa hàng, nhận thêm 6 tháng
+                    bảo hành tận nơi miễn phí
+                  </p>
+                </div>
+                <div className='flex items-start gap-2 cursor-pointer group'>
+                  <div className='flex items-center justify-center flex-shrink-0 w-4 h-4 mt-1 overflow-hidden text-xs font-bold text-white bg-green-500 rounded-full'>
                     <Check size={12} strokeWidth={2} />
                   </div>
                   <p className='text-sm font-normal text-gray-900 group-hover:underline'>
@@ -308,11 +326,11 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
                   </p>
                 </div>
                 <div className='flex items-start gap-2 cursor-pointer group'>
-                  <div className='flex items-center justify-center flex-shrink-0 w-4 h-4 overflow-hidden text-xs font-bold text-white bg-green-500 rounded-full'>
+                  <div className='flex items-center justify-center flex-shrink-0 w-4 h-4 mt-1 overflow-hidden text-xs font-bold text-white bg-green-500 rounded-full'>
                     <Check size={12} strokeWidth={2} />
                   </div>
                   <p className='text-sm font-normal text-gray-900 group-hover:underline'>
-                    Xem chính sách ưu đãi dành cho thành viên Smember
+                    Xem chính sách ưu đãi dành cho sinh viên
                   </p>
                 </div>
               </div>

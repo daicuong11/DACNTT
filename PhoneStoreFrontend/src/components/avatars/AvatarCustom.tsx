@@ -1,6 +1,11 @@
 import { Avatar } from 'antd'
+import { AvatarSize } from 'antd/es/avatar/AvatarContext'
 
-const AvatarCustom: React.FC<{ name: string }> = ({ name }) => {
+const AvatarCustom: React.FC<{ name: string; size?: AvatarSize; role?: string }> = ({
+  name,
+  size = 'default',
+  role
+}) => {
   // Hàm tạo màu nền random từ tên
   const getColor = (str: string) => {
     const colors = [
@@ -23,6 +28,7 @@ const AvatarCustom: React.FC<{ name: string }> = ({ name }) => {
       '#33ff57',
       '#ff33a1'
     ]
+    if (role && role.toLocaleLowerCase() === 'admin'.toLocaleLowerCase()) return '#d70018'
     const index = str.charCodeAt(0) % colors.length
     return colors[index]
   }
@@ -30,7 +36,11 @@ const AvatarCustom: React.FC<{ name: string }> = ({ name }) => {
   // Lấy chữ cái đầu tiên của tên
   const initials = name ? name.charAt(0).toUpperCase() : '?'
 
-  return <Avatar style={{ backgroundColor: getColor(name), verticalAlign: 'middle' }}>{initials}</Avatar>
+  return (
+    <Avatar size={size} gap={3} style={{ backgroundColor: getColor(name), verticalAlign: 'middle' }}>
+      {role && role.toLowerCase() === 'admin'.toLocaleLowerCase() ? 'Admin' : initials}
+    </Avatar>
+  )
 }
 
 export default AvatarCustom

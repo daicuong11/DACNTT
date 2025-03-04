@@ -1,3 +1,4 @@
+import { AvatarCustom } from '@/components'
 import { ReplyType } from '@/types/comment.type'
 import { formatTime } from '@/utils/fomatTime'
 import { formatterDay } from '@/utils/formatterDay'
@@ -14,27 +15,10 @@ interface ReplyItemProps {
 }
 
 const ReplyItem: FC<ReplyItemProps> = ({ reply, isReply }) => {
-  const [rep, setRep] = React.useState<boolean>(false)
-  const [commentReply, setCommentReply] = React.useState<string>('')
-  const commentInputRef = useRef<HTMLDivElement>(null)
-
-  const handleScrollToCommentInput = () => {
-    if (commentInputRef.current) {
-      const rect = commentInputRef.current.getBoundingClientRect()
-      const isFullyVisible = rect.top >= 0 && rect.bottom <= window.innerHeight
-      if (!isFullyVisible) commentInputRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' })
-    }
-  }
-
-  const handleRepCommentClick = () => {
-    setRep(true)
-    handleScrollToCommentInput()
-  }
-
   return (
     <div className='pt-1.5 relative'>
       <div className='relative flex gap-x-2'>
-        <Avatar className='flex-shrink-0' size={isReply ? 'small' : 'default'} icon={<UserOutlined />} />
+        <AvatarCustom size={'small'} name={reply.user.name} role={reply.user.role} />
         <div className='flex flex-col'>
           <div className='flex flex-col px-3 py-2 bg-gray-200 rounded-xl'>
             <div className='flex items-center gap-x-2'>

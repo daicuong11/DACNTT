@@ -1,32 +1,35 @@
 import { FC } from 'react'
 import CarouselProduct from './CarouselProduct'
-import { LoadingItem } from '@/components'
+import { SkeletonCarouselProduct } from '@/components'
 import { useGetAllProductOfMobile } from '@/hooks/querys/product.query'
+import { useGetBrands } from '@/hooks/querys/brand.query'
+import { useNavigate } from 'react-router-dom'
 
 interface MobileSaleView {}
 const MobileSaleView: FC<MobileSaleView> = () => {
+  const navigate = useNavigate()
   const { data: products, isLoading } = useGetAllProductOfMobile()
+  const { data: brandRes } = useGetBrands('điện thoại')
 
   return (
     <div className='w-full'>
-      <div className='flex items-center justify-between mb-2'>
-        <div className='text-xl font-bold uppercase text-black/70'>Điện thoại nổi bật nhất</div>
-        <div className='flex items-center gap-2.5'>
-          <button className='btn btn-light  border border-gray-100 !text-slate-600 !text-xs'>Apple</button>
-          <button className='btn btn-light  border border-gray-100 !text-slate-600 !text-xs'>Samsung</button>
-          <button className='btn btn-light  border border-gray-100 !text-slate-600 !text-xs'>Xiaomi</button>
-          <button className='btn btn-light  border border-gray-100 !text-slate-600 !text-xs'>Oppo</button>
-          <button className='btn btn-light  border border-gray-100 !text-slate-600 !text-xs'>Vivo</button>
-          <button className='btn btn-light  border border-gray-100 !text-slate-600 !text-xs'>Realme</button>
-          <button className='btn btn-light  border border-gray-100 !text-slate-600 !text-xs'>OnePlus</button>
-          <button className='btn btn-light  border border-gray-100 !text-slate-600 !text-xs'>Nokia</button>
-          <button className='btn btn-light  border border-gray-100 !text-slate-600 !text-xs'>Sony</button>
-          <button className='btn btn-light  border border-gray-100 !text-slate-600 !text-xs'>LG</button>
-          <button className='btn btn-light  border border-gray-100 !text-slate-600 !text-xs'>Asus</button>
-          <button className='btn btn-light  border border-gray-100 !text-slate-600 !text-xs'>Google</button>
+      <div className='flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between mb-2'>
+        <div className='text-base lg:text-xl font-bold uppercase text-black/70'>Điện thoại nổi bật nhất</div>
+        <div className='flex items-center gap-2.5 flex-wrap'>
+          {brandRes &&
+            brandRes.data &&
+            brandRes.data?.map((brand) => (
+              <button
+                onClick={() => navigate(`/${brand.name}`)}
+                key={brand.brandId}
+                className='btn btn-light rounded-md lg:rounded-lg border border-gray-100 !text-slate-600 text-[10px] py-1 lg:py-1.5 lg:!text-xs text-nowrap'
+              >
+                {brand.name}
+              </button>
+            ))}
         </div>
       </div>
-      {isLoading ? <LoadingItem /> : <CarouselProduct dataSource={products!} row={2} autoPlay={false} />}
+      {isLoading ? <SkeletonCarouselProduct /> : <CarouselProduct dataSource={products!} row={2} autoPlay={false} />}
     </div>
   )
 }

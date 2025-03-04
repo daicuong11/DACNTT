@@ -123,7 +123,8 @@ namespace PhoneStoreBackend.Repository.Implements
                     Price = v.Price,
                     Color = v.Color,
                     ImageUrl = v.ImageUrl,
-                    Storage = v.Storage
+                    Storage = v.Storage,
+                    Stock = v.Stock,
                 })
                 .ToListAsync();
             return listProductVariants;

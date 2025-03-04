@@ -48,18 +48,17 @@ const FlashSaleView: React.FC<FlashSaleViewProps> = ({}) => {
     <SkeletonFlashSaleView />
   ) : (
     <div className='bg-gradient-to-r-from-primary rounded-xl '>
-      <div className='flex items-center justify-between p-4'>
-        <div className='flex items-end text-white'>
-          <span className='mr-2 border-2 border-white rounded-full'>
-            <Flame size={34} strokeWidth={1.6} />
-          </span>
-          <span className='text-[38px] font-extrabold leading-[40px] uppercase mr-4'>
-            {/* Flash Sale */}
-            Deadline dacntt
-          </span>
+      <div className='flex flex-col gap-3 md:flex-row md:items-center md:justify-between p-4'>
+        <div className='text-white flex justify-between items-center md:items-end'>
+          <div className='flex items-center text-white'>
+            <span className='mr-2 border-2 border-white rounded-full'>
+              <Flame className='!text-lg lg:text-[34px]' strokeWidth={1.6} />
+            </span>
+            <span className='text-xl lg:text-[38px] font-extrabold leading-[40px] uppercase mr-4'>Flash Sale</span>
+          </div>
           <CountdownTimer
             startTime='2025-02-19T00:23:59'
-            endTime='2025-02-22T00:00:00'
+            endTime='2025-03-10T00:00:00'
             // onSaleStatusChange={handleSaleStatusChange}
           />
         </div>
@@ -69,7 +68,7 @@ const FlashSaleView: React.FC<FlashSaleViewProps> = ({}) => {
               key={index}
               disabled={category.categoryId === categoryActive}
               onClick={() => setCategoryActive(category.categoryId)}
-              className={classNames('text-sm font-semibold btn ', {
+              className={classNames(' rounded-md lg:rounded-lg font-semibold btn text-nowrap text-xs md:text-sm', {
                 'btn-light': category.categoryId !== categoryActive,
                 'btn-warning': category.categoryId === categoryActive
               })}

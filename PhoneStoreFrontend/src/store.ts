@@ -6,12 +6,14 @@ import authReducer from './features/auth/auth.slice'
 import orderReducer from './features/order/order.slice'
 import createProductReducer from './features/admin/create_product.slice'
 import { fetchUserMiddleware } from './middlewares/fetchUserMiddleware'
+import searchHistoryReducer from './features/search/search_history.slice'
 
 const rootReducer = combineReducers({
   auth: authReducer,
   order: orderReducer,
   createProduct: createProductReducer,
-  cart: cartReducer
+  cart: cartReducer,
+  search: searchHistoryReducer
 })
 
 export type RootState = ReturnType<typeof rootReducer>
@@ -19,7 +21,7 @@ export type RootState = ReturnType<typeof rootReducer>
 const persistConfig: PersistConfig<RootState> = {
   key: 'root',
   storage,
-  whitelist: ['auth', 'order', 'createProduct']
+  whitelist: ['auth', 'order', 'createProduct', 'search']
 }
 
 const persistedReducer = persistReducer<RootState>(persistConfig, rootReducer)

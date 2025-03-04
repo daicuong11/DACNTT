@@ -1,6 +1,6 @@
 import { useGetBrands } from '@/hooks/querys/brand.query'
 import { BrandType } from '@/types/brand.type'
-import { Button, Image, Popconfirm, Table , Card} from 'antd'
+import { Button, Image, Popconfirm, Table, Card } from 'antd'
 import { useState } from 'react'
 import AddBrandModal from './AddBrandModal'
 import EditBrandModal from './EditBrandModal'
@@ -81,6 +81,7 @@ export default function BrandList() {
         }
       >
         <Table
+          loading={isLoading}
           dataSource={data?.data || []}
           columns={columns}
           rowKey='brandId'

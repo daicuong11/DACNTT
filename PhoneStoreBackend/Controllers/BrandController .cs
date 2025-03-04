@@ -24,12 +24,20 @@ namespace PhoneStoreBackend.Controllers
 
         [HttpGet]
         //[Authorize(Roles = "ADMIN")]
-        public async Task<IActionResult> GetAllBrands()
+        public async Task<IActionResult> GetAllBrands([FromQuery] string categoryName)
         {
             try
             {
-                var brands = await _brandRepository.GetAllAsync();
-                var response = Response<ICollection<BrandDTO>>.CreateSuccessResponse(brands, "Danh sách thương hiệu");
+                ICollection<Brand> brands;
+                if (string.IsNullOrEmpty(categoryName))
+                {   
+                    brands = await _brandRepository.GetAllAsync();
+                }
+                else
+                {
+                    brands = await _brandRepository.GetAllByCategoryNameAsync(categoryName);
+                }
+                var response = Response<ICollection<Brand>>.CreateSuccessResponse(brands, "Danh sách thương hiệu");
                 return Ok(response);
             }
             catch (Exception ex)
@@ -60,6 +68,7 @@ namespace PhoneStoreBackend.Controllers
                 return BadRequest(errorResponse);
             }
         }
+
 
         [HttpPost]
         //[Authorize(Roles = "ADMIN")]

@@ -17,5 +17,6 @@
         public decimal Price { get; set; }
         public decimal DiscountPercentage { get; set; }
         public string CategoryName { get; set; }
+        public int Stock {  get; set; }
     }
 }

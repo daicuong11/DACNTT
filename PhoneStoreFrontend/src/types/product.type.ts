@@ -55,6 +55,7 @@ export interface VariantResponse {
   imageUrl: string
   price: number
   discountPercentage: number
+  stock: number
 }
 
 export interface ProductResponse {

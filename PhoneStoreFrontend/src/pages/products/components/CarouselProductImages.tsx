@@ -3,15 +3,20 @@ import { Swiper, SwiperRef, SwiperSlide } from 'swiper/react'
 
 import 'swiper/swiper-bundle.css'
 import classNames from 'classnames'
-import { FC, useEffect, useRef, useState } from 'react'
+import { FC, useEffect, useMemo, useRef, useState } from 'react'
 import { CarouselRef } from 'antd/es/carousel'
 import { ChevronLeft, ChevronRight, Star } from 'lucide-react'
 import getPreviewNumber from '../../../utils/getPreviewNumber'
-import { useElementWidth } from '../../../hooks'
+import { useAppSelector, useElementWidth, useModal } from '../../../hooks'
 import { FavoriteButton } from '../../../components'
 import { ProductImageType } from '@/types/product_image.type'
 import { useGetSpecificationIsSpecialByVariantId } from '@/hooks/querys/spec_group.query'
 import { SpecificationType } from '@/types/specification.type'
+import { useQueryClient } from '@tanstack/react-query'
+import { useAddProductToWishlist, useGetMyWishlist } from '@/hooks/querys/wishlist.query'
+import { toast } from 'react-toastify'
+import { WishListRequestType } from '@/types/wishlist.type'
+import LoginOfRegisterModal from '@/components/modals/LoginOrRegisterModal'
 
 const getListFeatures = (specifications: SpecificationType[]): string[] => {
   return specifications.map((spec) => {
@@ -42,12 +47,51 @@ interface CarouselProductImagesProps {
 
 const CarouselProductImages: FC<CarouselProductImagesProps> = ({ dataSources, productVariantId }) => {
   const { data: specs } = useGetSpecificationIsSpecialByVariantId(productVariantId)
+  const queryClient = useQueryClient()
+  const currentUser = useAppSelector((state) => state.auth.user)
+  const { data: wishlist } = useGetMyWishlist(currentUser?.id || 0)
+  const { mutate: addProductToWishlist, isPending } = useAddProductToWishlist()
+
+  const { isOpen, closeModal, openModal } = useModal()
 
   const [currentSlide, setCurrentSlide] = useState<number>(0)
   const carouselRef = useRef<CarouselRef>(null)
   const swiperRef = useRef<SwiperRef>(null)
 
+  const isLove = useMemo(() => {
+    if (wishlist) {
+      return wishlist?.some((item) => item.productVariantId === productVariantId)
+    }
+    return false
+  }, [wishlist, productVariantId])
+
   const [swiperContainerRef, containerWidth] = useElementWidth()
+
+  const handleLoveClick = async () => {
+    if (!currentUser) {
+      openModal()
+    } else {
+      const addToWishlistReq: WishListRequestType = {
+        userId: currentUser.id,
+        productVariantId: productVariantId
+      }
+      addProductToWishlist(addToWishlistReq, {
+        onSuccess: (data) => {
+          queryClient.invalidateQueries({
+            queryKey: ['getMyWishlist', currentUser.id]
+          })
+          if (data) {
+            toast('Đã thêm vào danh sách yêu thích')
+          } else {
+            toast('Đã xóa khỏi danh sách yêu thích')
+          }
+        },
+        onError: (error) => {
+          toast.error('Thêm vào danh sách yêu thích thất bại')
+        }
+      })
+    }
+  }
 
   const onChange = (slideNumber: number) => {
     if (swiperRef.current && currentSlide == 0) {
@@ -67,6 +111,8 @@ const CarouselProductImages: FC<CarouselProductImagesProps> = ({ dataSources, pr
 
   return (
     <div className='flex flex-col w-full gap-2.5'>
+      <LoginOfRegisterModal isOpen={isOpen} onClose={closeModal} />
+
       <div className='w-full h-[400px] border border-gray-400 rounded-xl overflow-hidden relative group'>
         <Image.PreviewGroup>
           <Carousel
@@ -138,7 +184,7 @@ const CarouselProductImages: FC<CarouselProductImagesProps> = ({ dataSources, pr
             <ChevronRight size={32} strokeWidth={1.6} />
           </button>
         )}
-        <FavoriteButton className='absolute top-1 left-1' />
+        <FavoriteButton onClick={handleLoveClick} isLove={isLove} className='absolute top-1 left-1' />
       </div>
 
       <div ref={swiperContainerRef} className='h-[50px]'>

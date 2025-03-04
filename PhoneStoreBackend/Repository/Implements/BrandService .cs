@@ -18,10 +18,10 @@ namespace PhoneStoreBackend.Repository.Implements
         }
 
         // Lấy tất cả thương hiệu
-        public async Task<ICollection<BrandDTO>> GetAllAsync()
+        public async Task<ICollection<Brand>> GetAllAsync()
         {
             var brands = await _context.Brands.ToListAsync();
-            return brands.Select(b => _mapper.Map<BrandDTO>(b)).ToList();
+            return brands;
         }
 
         // Lấy thương hiệu theo BrandId
@@ -77,6 +77,22 @@ namespace PhoneStoreBackend.Repository.Implements
             await _context.SaveChangesAsync();
 
             return true;
+        }
+
+        public async Task<ICollection<Brand>> GetAllByCategoryNameAsync(string categoryName)
+        {
+            if (string.IsNullOrEmpty(categoryName))
+            {
+                return new List<Brand>(); 
+            }
+
+            var brands = await _context.Products
+                .Where(p => p.Category.Name == categoryName) 
+                .Select(p => p.Brand)                        
+                .Distinct()                                  
+                .ToListAsync();                             
+
+            return brands; 
         }
     }
 }

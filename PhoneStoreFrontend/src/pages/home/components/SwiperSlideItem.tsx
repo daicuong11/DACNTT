@@ -18,7 +18,7 @@ const SwiperSlideItem: FC<SwiperSlideItemProps> = ({ item, active }) => {
         }
       )}
     >
-      <div className='uppercase'>{item.title}</div>
+      <div className='uppercase text-center'>{item.title}</div>
       <div className=''>{item.subTitle}</div>
     </div>
   )
