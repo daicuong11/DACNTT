@@ -113,7 +113,7 @@ const CarouselProductImages: FC<CarouselProductImagesProps> = ({ dataSources, pr
     <div className='flex flex-col w-full gap-2.5'>
       <LoginOfRegisterModal isOpen={isOpen} onClose={closeModal} />
 
-      <div className='w-full h-[400px] border border-gray-400 rounded-xl overflow-hidden relative group'>
+      <div className='w-full border border-gray-400 rounded-xl overflow-hidden relative group'>
         <Image.PreviewGroup>
           <Carousel
             ref={carouselRef}
@@ -124,7 +124,7 @@ const CarouselProductImages: FC<CarouselProductImagesProps> = ({ dataSources, pr
             dots={false}
             className=''
           >
-            <div className='w-full h-[400px] p-2.5 rounded-lg bg-gradient-to-r-from-primary'>
+            <div className='w-full h-[340px] lg:h-[400px] p-2.5 rounded-lg bg-gradient-to-r-from-primary'>
               <div className='flex w-full h-full gap-2.5'>
                 <div className='flex items-center justify-center flex-1'>
                   <div className='py-2 bg-white rounded-xl'>
@@ -137,15 +137,23 @@ const CarouselProductImages: FC<CarouselProductImagesProps> = ({ dataSources, pr
                   </div>
                 </div>
                 <div className='flex-[1.5] text-white py-16 cursor-default'>
-                  <div className='text-xl font-bold text-center uppercase'>Tính năng nổi bật</div>
+                  <div className='lg:text-xl text-sm font-bold text-center uppercase'>Tính năng nổi bật</div>
                   <ul className='pl-5 max-h-[200px] list-disc overflow-y-auto scrollbar-hide mt-2 pr-2 font-semibold space-y-2'>
-                    {specs && getListFeatures(specs).map((item, index) => item && <li key={index}>{item}</li>)}
+                    {specs &&
+                      getListFeatures(specs).map(
+                        (item, index) =>
+                          item && (
+                            <li className='text-xs lg:text-sm' key={index}>
+                              {item}
+                            </li>
+                          )
+                      )}
                   </ul>
                 </div>
               </div>
             </div>
             {dataSources.slice(1).map((item, index) => (
-              <div className='w-full h-[400px] pb-[1px] rounded-xl' key={index}>
+              <div className='w-full h-[340px] lg:h-[400px] pb-[1px] rounded-xl' key={index}>
                 <Image
                   preview={{ maskClassName: '!hidden' }}
                   width={'100%'}
@@ -187,7 +195,7 @@ const CarouselProductImages: FC<CarouselProductImagesProps> = ({ dataSources, pr
         <FavoriteButton onClick={handleLoveClick} isLove={isLove} className='absolute top-1 left-1' />
       </div>
 
-      <div ref={swiperContainerRef} className='h-[50px]'>
+      <div ref={swiperContainerRef} className=''>
         <Swiper
           ref={swiperRef}
           initialSlide={0}
@@ -198,7 +206,7 @@ const CarouselProductImages: FC<CarouselProductImagesProps> = ({ dataSources, pr
           className='h-full mySwiper'
         >
           <SwiperSlide
-            className={classNames('!w-[50px] !h-[50px] rounded-lg cursor-pointer', {
+            className={classNames('!w-[50px] !h-[50px] rounded-lg cursor-pointer overflow-hidden', {
               'border border-slate-300': currentSlide !== 0,
               'border-primary border': currentSlide === 0
             })}
@@ -216,7 +224,7 @@ const CarouselProductImages: FC<CarouselProductImagesProps> = ({ dataSources, pr
           {dataSources.slice(1).map((item, index) => (
             <SwiperSlide
               key={index + 1}
-              className={classNames('!w-[50px] !h-[50px] rounded-lg cursor-pointer', {
+              className={classNames('!w-[50px] !h-[50px] rounded-lg cursor-pointer overflow-hidden', {
                 'border border-slate-300': currentSlide !== index + 1,
                 'border-primary border': currentSlide === index + 1
               })}

@@ -89,28 +89,30 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
       <LoginOfRegisterModal isOpen={isOpen} onClose={closeModal} />
       {/* {isLoading && <LoadingOpacity />} */}
       <div className='flex flex-col gap-4'>
-        <div className='flex items-center gap-2'>
+        <div className='flex flex-col md:flex-row md:items-center gap-2 text-nowrap'>
           <div className='text-xl font-semibold'>{productVariant?.variantName}</div>
-          <ConfigProvider
-            theme={{
-              token: {
-                marginXS: 0
-              }
-            }}
-          >
-            <Rate value={5} allowHalf disabled className='text-base text-yellow-500' />
-          </ConfigProvider>
-          <div className='text-sm text-gray-500'>10 đánh giá</div>
-          <button className='py-1 text-sm btn btn-outline'>
-            <span>
-              <Plus size={16} />
-            </span>
-            So sánh
-          </button>
+          <div className='flex items-center gap-2'>
+            <ConfigProvider
+              theme={{
+                token: {
+                  marginXS: 0
+                }
+              }}
+            >
+              <Rate value={5} allowHalf disabled className='text-base text-yellow-500' />
+            </ConfigProvider>
+            <div className='text-sm text-gray-500'>10 đánh giá</div>
+            <button className='py-1 text-sm btn btn-outline'>
+              <span>
+                <Plus size={16} />
+              </span>
+              So sánh
+            </button>
+          </div>
         </div>
         <div className='w-full h-[1px] bg-slate-200'></div>
-        <div className='grid w-full grid-cols-10 gap-6'>
-          <div className='col-span-6 sticky top-[108px] h-max'>
+        <div className='flex flex-col md:grid w-full grid-cols-12 lg:grid-cols-10 gap-6'>
+          <div className='col-span-5 lg:col-span-6 md:sticky top-[108px] h-max'>
             {productVariant && (
               <CarouselProductImages
                 productVariantId={productVariant.productVariantId}
@@ -143,7 +145,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
               </ContainerPanel>
             </div>
           </div>
-          <div className='flex flex-col col-span-4 sticky top-[80px] h-max gap-y-3'>
+          <div className='flex flex-col col-span-7 lg:col-span-4 md:sticky top-[80px] h-max gap-y-3'>
             <div className='grid grid-cols-3 gap-2.5'>
               {listVariants &&
                 listVariants
@@ -343,15 +345,15 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
       <div className='flex flex-col gap-y-4'>
         {productVariant && <ListSimilarProducts productVariant={productVariant} />}
 
-        <div className='grid grid-cols-10 gap-x-2.5'>
+        <div className='flex flex-col md:grid grid-cols-10 gap-x-2.5'>
           {productVariant && (
-            <div className='flex flex-col col-span-7 gap-y-4'>
+            <div className='flex flex-col col-span-6 lg:col-span-7 gap-y-4'>
               <ProductFeatures productVariant={productVariant} />
               <ProductReviews productVariant={productVariant} />
               <ProductComments productVariant={productVariant} />
             </div>
           )}
-          <div className='col-span-3'>
+          <div className='hidden md:block col-span-4 lg:col-span-3'>
             {productVariant && <ProductSpecifications productVariantId={productVariant?.productVariantId} />}
           </div>
         </div>

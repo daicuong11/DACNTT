@@ -17,7 +17,7 @@ const Breadcrumbs = () => {
       <Breadcrumb
         separator={<RightOutlined style={{ fontSize: '10px', height: '100%' }} />}
         items={breadcrumbs}
-        className='text-[12px] w-[1200px] mx-auto'
+        className='text-[12px] max-w-[1200px] mx-auto'
         itemRender={(route, params, routes, paths) => {
           return (
             <div

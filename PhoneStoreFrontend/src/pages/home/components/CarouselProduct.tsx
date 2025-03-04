@@ -31,10 +31,10 @@ const CarouselProduct: FC<CarouselProductType> = ({ row = 1, autoPlay = true, da
         freeMode={true}
         modules={[Autoplay, Grid]}
         breakpoints={{
-          0: { slidesPerView: 2, grid: { rows: row } }, // Dưới 712px hiển thị 2 sản phẩm
-          713: { slidesPerView: 3, grid: { rows: row } }, // Trên 712px hiển thị 3 sản phẩm
-          972: { slidesPerView: 4, grid: { rows: row } }, // Trên 932px hiển thị 4 sản phẩm
-          1220: { slidesPerView: 5, grid: { rows: row } } // Trên 1170px hiển thị 5 sản phẩm
+          0: { slidesPerView: 2, grid: { rows: row } },
+          713: { slidesPerView: 3, grid: { rows: row } },
+          972: { slidesPerView: 4, grid: { rows: row } },
+          1220: { slidesPerView: 5, grid: { rows: row } }
         }}
         style={{ padding: '10px' }}
         className={classNames('mySwiper', { 'h-[814px] ': row !== 1 })}
