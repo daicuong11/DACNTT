@@ -29,6 +29,8 @@ namespace PhoneStoreBackend.Helpers
             CreateMap<Wishlist, WishlistDTO>().ReverseMap();
             CreateMap<ActivityLog, ActivityLogDTO>().ReverseMap();
             CreateMap<Notification, NotificationDTO>().ReverseMap();
+            CreateMap<Comment, CommentDTO>().ReverseMap();
+
         }
     }
 }

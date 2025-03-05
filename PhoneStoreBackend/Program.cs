@@ -7,6 +7,7 @@ using Microsoft.OpenApi.Models;
 using PhoneStoreBackend.Api.Response;
 using PhoneStoreBackend.DbContexts;
 using PhoneStoreBackend.Enums;
+using PhoneStoreBackend.Hubs;
 using PhoneStoreBackend.Repository;
 using PhoneStoreBackend.Repository.Implements;
 using System.Text;
@@ -211,7 +212,7 @@ builder.Services.AddCors(options =>
 //    });
 //});
 
-
+builder.Services.AddSignalR(); // Đăng ký SignalR
 
 // Build application
 var app = builder.Build();
@@ -260,8 +261,10 @@ app.Use(async (context, next) =>
     }
 });
 
+//app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-//app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+app.MapHub<CommentHub>("/commentHub"); // Định tuyến cho SignalR
 app.Run();

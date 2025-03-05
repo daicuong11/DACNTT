@@ -1,6 +1,6 @@
 import axiosInstance from '@/configs/http'
 import { BaseResponsePaginate } from '@/types/auth.type'
-import { CommentRequestType, CommentType, ReplyRequestType, ReplyType } from '@/types/comment.type'
+import { CommentRequestType, CommentResponse, CommentType, ReplyRequestType, ReplyType } from '@/types/comment.type'
 
 class CommentAPI {
   async getCommentsByVariantId(
@@ -24,6 +24,11 @@ class CommentAPI {
       commentId: createReplyReq.commentId,
       content: createReplyReq.content
     })
+    return response.data
+  }
+
+  async recentComments(page: number): Promise<CommentResponse[]> {
+    const response = await axiosInstance.get(`comments/recent-comments?page=${page}`)
     return response.data
   }
 }
