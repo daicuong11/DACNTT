@@ -8,6 +8,7 @@ import CategoryWatch from '@/middlewares/CategoryWatch'
 import BrandList from '@/pages/admin/brands/BrandList'
 import CategoryList from '@/pages/admin/categories/CategoryList'
 import Dashboard from '@/pages/admin/dashboard'
+import DiscountList from '@/pages/admin/discounts/DiscountList'
 import Orders from '@/pages/admin/orders'
 import AddProduct from '@/pages/admin/products/AddProduct'
 import Details from '@/pages/admin/products/Details'
@@ -204,6 +205,7 @@ const MyRoutes = () => {
     }
   ]
 
+  // admin routers
   const routesForAdmin: RouteObject[] = [
     {
       path: '/admin',
@@ -269,7 +271,16 @@ const MyRoutes = () => {
               element: <UserList />
             }
           ]
-        }
+        },
+        {
+          path: 'discounts',
+          children: [
+            {
+              path: '',
+              element: <DiscountList />
+            }
+          ]
+        },
       ]
     }
   ]

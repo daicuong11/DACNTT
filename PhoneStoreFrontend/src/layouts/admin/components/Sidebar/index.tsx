@@ -1,7 +1,13 @@
-import { AppleOutlined, DashboardOutlined, ProductOutlined, ShoppingCartOutlined, UngroupOutlined, UserOutlined } from '@ant-design/icons'
-import React, { useEffect, useRef, useState } from 'react'
-import { NavLink, useLocation } from 'react-router-dom'
-import SidebarLinkGroup from './SidebarLinkGroup'
+import { AppleOutlined, DashboardOutlined, FallOutlined, ProductOutlined, ShoppingCartOutlined, UngroupOutlined, UserOutlined } from '@ant-design/icons';
+import React, { useEffect, useRef, useState } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
+
+type MenuItem = {
+  key: string;
+  label: string;
+  icon: React.ReactNode;
+  path: string;
+};
 
 interface SidebarProps {
   sidebarOpen: boolean
@@ -15,10 +21,59 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const trigger = useRef<any>(null)
   const sidebar = useRef<any>(null)
 
+  const adminMenu1: MenuItem[] = [
+    {
+      key: 'dashboard',
+      label: 'Dashboard',
+      icon: <DashboardOutlined />,
+      path: '/admin/dashboard',
+    },
+    {
+      key: 'products',
+      label: 'Quản lý sản phẩm',
+      icon: <ProductOutlined />,
+      path: '/admin/products',
+    },
+    {
+      key: 'brands',
+      label: 'Quản lý thương hiệu',
+      icon: <AppleOutlined />,
+      path: '/admin/brands',
+    },
+    {
+      key: 'categories',
+      label: 'Quản lý danh mục',
+      icon: <UngroupOutlined />,
+      path: '/admin/categories',
+    },
+    {
+      key: 'orders',
+      label: 'Quản lý đơn hàng',
+      icon: <ShoppingCartOutlined />,
+      path: '/admin/orders',
+    },
+  ];
+
+  const adminMenu2: MenuItem[] = [
+    {
+      key: 'users',
+      label: 'Quản lý người dùng',
+      icon: <UserOutlined />,
+      path: '/admin/users',
+    },
+    {
+      key: 'discounts',
+      label: 'Quản lý khuyến mãi',
+      icon: <FallOutlined />,
+      path: '/admin/discounts',
+    },
+  ];
+
   const storedSidebarExpanded = localStorage.getItem('sidebar-expanded')
   const [sidebarExpanded, setSidebarExpanded] = useState(
     storedSidebarExpanded === null ? false : storedSidebarExpanded === 'true'
   )
+
 
   // close on click outside
   useEffect(() => {
@@ -94,71 +149,18 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             <h3 className='mb-4 ml-4 text-sm font-semibold uppercase'>Quản Lý Sản Phẩm</h3>
 
             <ul className='mb-6 flex flex-col gap-1.5'>
-              {/* <!--Start Menu Item Dashboard --> */}
-              <li>
-                <NavLink
-                  to='/admin/dashboard'
-                  className={`capitalize group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${pathname.includes('dashboard') && 'bg-gray-200'
-                    }`}
-                >
-                  <DashboardOutlined />
-                  Dashboard
-                </NavLink>
-              </li>
-              {/* <!--End Menu Item Dashboard --> */}
-
-              {/* <!-- Menu Item Product --> */}
-              <li>
-                <NavLink
-                  to='/admin/products'
-                  className={`capitalize group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${pathname.includes('product') && 'bg-gray-200'
-                    }`}
-                >
-                  <ProductOutlined />
-                  Quản lý sản phẩm
-                </NavLink>
-              </li>
-
-              {/* <!-- Menu Item Product --> */}
-
-              {/* <!-- Menu Item Brand --> */}
-              <li>
-                <NavLink
-                  to='/admin/brands'
-                  className={`capitalize group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${pathname.includes('brand') && 'bg-gray-200'
-                    }`}
-                >
-                  <AppleOutlined />
-                  Quản lý thương hiệu
-                </NavLink>
-              </li>
-              {/* <!-- Menu Item Brand --> */}
-
-              {/* <!-- Menu Item Category --> */}
-              <li>
-                <NavLink
-                  to='/admin/categories'
-                  className={`capitalize group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${pathname.includes('categories') && 'bg-gray-200'
-                    }`}
-                >
-                  <UngroupOutlined />
-                  Quản lý danh mục
-                </NavLink>
-              </li>
-              {/* <!-- Menu Item Category --> */}
-
-              {/* <!-- Menu Item Profile --> */}
-              <li>
-                <NavLink
-                  to='/admin/orders'
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${pathname.includes('order') && 'bg-gray-200'
-                    }`}
-                >
-                  <ShoppingCartOutlined />
-                  Quản Lý Đơn Hàng
-                </NavLink>
-              </li>
-              {/* <!-- Menu Item Profile --> */}
+              {adminMenu1.map((item) => (
+                <li key={item.key}>
+                  <NavLink
+                    to={item.path}
+                    className={`capitalize group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium duration-300 ease-in-out hover:bg-gray-200 ${pathname.includes(item.key) && 'bg-gray-200'
+                      }`}
+                  >
+                    {item.icon}
+                    {item.label}
+                  </NavLink>
+                </li>
+              ))}
 
             </ul>
           </div>
@@ -169,19 +171,18 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
             <ul className='mb-6 flex flex-col gap-1.5'>
 
-
-              {/* <!-- End Menu Item User --> */}
-              <li>
-                <NavLink
-                  to='/admin/users'
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium  duration-300 ease-in-out hover:bg-gray-200 ${pathname.includes('user') && 'bg-gray-200'
-                    }`}
-                >
-                  <UserOutlined/>
-                  Quản Lý Người Dùng
-                </NavLink>
-              </li>
-              {/* <!-- End Menu Item User --> */}
+            {adminMenu2.map((item) => (
+                <li key={item.key}>
+                  <NavLink
+                    to={item.path}
+                    className={`capitalize group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium duration-300 ease-in-out hover:bg-gray-200 ${pathname.includes(item.key) && 'bg-gray-200'
+                      }`}
+                  >
+                    {item.icon}
+                    {item.label}
+                  </NavLink>
+                </li>
+              ))}
 
             </ul>
           </div>

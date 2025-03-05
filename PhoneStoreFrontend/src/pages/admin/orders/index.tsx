@@ -14,7 +14,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { Check, Trash2 } from 'lucide-react'
 import { QuestionCircleOutlined } from '@ant-design/icons'
 
-export default function Order() {
+export default function Orders() {
   const queryClient = useQueryClient()
   const { data, isLoading } = useGetAllOrders()
   const { mutate: createGHNOrder, isPending: isCreating } = useCreateGHNOrder()
