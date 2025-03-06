@@ -1,12 +1,15 @@
 import {
   addProduct,
   addProductWithVariants,
+  get15ProductOfCategoryName,
   get15ProductSimilar,
   getAllProduct,
   getAllProductOfLaptop,
   getAllProductOfMobile,
   getProductById,
   getProductVariants,
+  getVariantByBrandName,
+  getVariantByCategoryName,
   searchProducts,
   updateProduct
 } from '@/apis/product.api'
@@ -94,6 +97,14 @@ export const useGetProductById = (productId: number) => {
   })
 }
 
+export const useGet15ProductOfCategoryName = (categoryName: string) => {
+  return useQuery({
+    queryKey: ['get15ProductOfCategoryName', categoryName],
+    queryFn: () => get15ProductOfCategoryName(categoryName),
+    enabled: !!categoryName
+  })
+}
+
 export const useGetAllProductOfMobile = () => {
   return useQuery({
     queryKey: ['getAllProductOfMobile'],
@@ -126,6 +137,42 @@ export const useSearchProducts = (
     queryKey: ['searchProducts', name, sort, filters],
     queryFn: ({ pageParam }) => searchProducts(name, pageParam, pageSize, sort, filters),
     enabled: !!name,
+    getNextPageParam: (lastPage) => (lastPage.currentPage < lastPage.totalPages ? lastPage.currentPage + 1 : undefined),
+    initialPageParam: 1,
+    placeholderData: keepPreviousData,
+    staleTime: 1000 * 60 * 5
+  })
+}
+
+export const useGetAllVariantByCategoryName = (
+  categoryName: string,
+  pageSize: number = 10,
+  sort?: string,
+  filters?: Record<string, string | number>
+) => {
+  return useInfiniteQuery({
+    queryKey: ['getAllVariantByCategoryName', categoryName, sort, filters],
+    queryFn: ({ pageParam }) =>
+      getVariantByCategoryName(categoryName, pageParam, pageSize, sort, filters?.price === 0 ? undefined : filters),
+    enabled: !!categoryName,
+    getNextPageParam: (lastPage) => (lastPage.currentPage < lastPage.totalPages ? lastPage.currentPage + 1 : undefined),
+    initialPageParam: 1,
+    placeholderData: keepPreviousData,
+    staleTime: 1000 * 60 * 5
+  })
+}
+
+export const useGetAllVariantByBrandName = (
+  brandName: string,
+  pageSize: number = 10,
+  sort?: string,
+  filters?: Record<string, string | number>
+) => {
+  return useInfiniteQuery({
+    queryKey: ['getAllVariantByBrandName', brandName, sort, filters],
+    queryFn: ({ pageParam }) =>
+      getVariantByBrandName(brandName, pageParam, pageSize, sort, filters?.price === 0 ? undefined : filters),
+    enabled: !!brandName,
     getNextPageParam: (lastPage) => (lastPage.currentPage < lastPage.totalPages ? lastPage.currentPage + 1 : undefined),
     initialPageParam: 1,
     placeholderData: keepPreviousData,

@@ -1,8 +1,9 @@
 import classNames from 'classnames'
 import { FC } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { CategoryRenderType } from '../../../types/category.type'
 import getUrlQuery from '../../../utils/getUrlQuery'
+import { categoriesUrlConfig } from '@/utils/getProductRoute'
 
 interface ICategoryItemProps {
   data: CategoryRenderType
@@ -11,8 +12,14 @@ interface ICategoryItemProps {
 }
 
 const CategoryItem: FC<ICategoryItemProps> = ({ isFirst, isLast, data }) => {
+  const navigate = useNavigate()
+  const handleOnClick = () => {
+    const url = categoriesUrlConfig[data.name]
+    navigate(`/${url}`)
+  }
   return (
     <div
+      onClick={handleOnClick}
       className={classNames(
         'flex items-center justify-between pl-3 pr-1.5 py-1 cursor-pointer hover:bg-slate-100 group',
         {
@@ -50,7 +57,7 @@ const CategoryItem: FC<ICategoryItemProps> = ({ isFirst, isLast, data }) => {
           )}
         >
           {data.options.map((item, index) => (
-            <div key={index} className='flex flex-col items-start gap-y-1'>
+            <div onClick={(e) => e.stopPropagation()} key={index} className='flex flex-col items-start gap-y-1'>
               <div className='text-sm font-bold text-black/80'>{item.title}</div>
               <div className='font-normal flex flex-col items-start text-[13px] text-gray-500'>
                 {item.listSelection.map((selection, index) => (

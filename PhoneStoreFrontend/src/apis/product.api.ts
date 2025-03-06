@@ -24,6 +24,11 @@ export const getProductById = async (productId: number): Promise<ProductType> =>
   return res.data
 }
 
+export const get15ProductOfCategoryName = async (categoryName: string): Promise<ProductResponse[]> => {
+  const res = await axiosInstance.get(`products/category/${encodeURIComponent(categoryName)}/15`)
+  return res.data
+}
+
 export const getAllProductOfMobile = async (): Promise<ProductResponse[]> => {
   const res = await axiosInstance.get('products/mobile')
   return res.data
@@ -81,4 +86,50 @@ export async function searchProducts(
   }
 
   return await axiosInstance.get(`products/search?${params.toString()}`)
+}
+
+export async function getVariantByCategoryName(
+  name: string,
+  page: number = 1,
+  pageSize: number = 10,
+  sort?: string,
+  filters?: Record<string, string | number>
+): Promise<BaseResponsePaginate<ProductVariantResponse[]>> {
+  const params = new URLSearchParams()
+
+  params.append('page', page.toString())
+  params.append('pageSize', pageSize.toString())
+
+  if (sort) params.append('sort', sort)
+
+  if (filters) {
+    Object.entries(filters).forEach(([key, value]) => {
+      params.append(key, value.toString())
+    })
+  }
+
+  return await axiosInstance.get(`products/category/${encodeURIComponent(name)}?${params.toString()}`)
+}
+
+export async function getVariantByBrandName(
+  name: string,
+  page: number = 1,
+  pageSize: number = 10,
+  sort?: string,
+  filters?: Record<string, string | number>
+): Promise<BaseResponsePaginate<ProductVariantResponse[]>> {
+  const params = new URLSearchParams()
+
+  params.append('page', page.toString())
+  params.append('pageSize', pageSize.toString())
+
+  if (sort) params.append('sort', sort)
+
+  if (filters) {
+    Object.entries(filters).forEach(([key, value]) => {
+      params.append(key, value.toString())
+    })
+  }
+
+  return await axiosInstance.get(`products/category/brand/${encodeURIComponent(name)}?${params.toString()}`)
 }

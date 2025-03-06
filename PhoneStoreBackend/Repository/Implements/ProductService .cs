@@ -76,6 +76,83 @@ namespace PhoneStoreBackend.Repository.Implements
             return list;
         }
 
+        public async Task<ICollection<ProductResponse>> Get15ProductOfCategoryName(string categoryName)
+        {
+            if (string.IsNullOrWhiteSpace(categoryName))
+            {
+                throw new ArgumentException("Category name cannot be null or empty.", nameof(categoryName));
+            }
+
+            const string RAM_KEY = "dung lượng ram";
+            const string SCREEN_SIZE_KEY = "kích thước màn hình";
+            const string STORAGE_KEY_1 = "ổ cứng";
+            const string STORAGE_KEY_2 = "bộ nhớ trong";
+
+            try
+            {
+                var findCategory = await _context.Categories
+                    .FirstOrDefaultAsync(c => c.Name.ToLower() == categoryName.ToLower());
+
+                if (findCategory == null)
+                {
+                    return new List<ProductResponse>();
+                }
+
+                var list = await _context.Products
+                    .Where(p => p.CategoryId == findCategory.CategoryId)
+                    .OrderBy(p => p.ProductId) // Thêm sắp xếp mặc định
+                    .Take(15)
+                    .Select(p => new ProductResponse
+                    {
+                        ProductId = p.ProductId,
+                        Name = p.Name,
+                        Category = new CategoryRespone
+                        {
+                            CategoryId = p.CategoryId,
+                            Name = p.Category.Name,
+                        },
+                        Brand = new BrandResponse
+                        {
+                            BrandId = p.BrandId,
+                            Name = p.Brand.Name,
+                        },
+                        ProductVariants = p.ProductVariants.Select(v => new ProductVariantResponse
+                        {
+                            VariantId = v.ProductVariantId,
+                            Slug = v.Slug,
+                            VariantName = v.VariantName,
+                            DiscountPercentage = v.Discount != null && v.Discount.IsActive ? v.Discount.Percentage : 0,
+                            Price = v.Price,
+                            Color = v.Color,
+                            ImageUrl = v.ImageUrl,
+                            CategoryName = p.Category.Name,
+                            BrandName = p.Brand.Name,
+                            ReviewRate = v.Reviews.Any() ? v.Reviews.Average(r => (double?)r.Rating) ?? 0 : 0, 
+                            RAM = v.ProductSpecifications
+                                .Where(spec => spec.Key.ToLower() == RAM_KEY)
+                                .Select(spec => spec.Value)
+                                .FirstOrDefault() ?? "",
+                            ScreenSize = v.ProductSpecifications
+                                .Where(spec => spec.Key.ToLower() == SCREEN_SIZE_KEY)
+                                .Select(spec => spec.Value)
+                                .FirstOrDefault() ?? "",
+                            Storage = v.ProductSpecifications
+                                .Where(spec => spec.Key.ToLower() == STORAGE_KEY_1 || spec.Key.ToLower() == STORAGE_KEY_2)
+                                .Select(spec => spec.Value)
+                                .FirstOrDefault() ?? ""
+                        }).Take(1).ToList() 
+                    })
+                    .ToListAsync();
+
+                return list;
+            }
+            catch (Exception ex)
+            {
+                // Log lỗi ở đây nếu có ILogger
+                throw new Exception($"Error retrieving products for category '{categoryName}': {ex.Message}", ex);
+            }
+        }
+
 
         public async Task<ICollection<ProductResponse>> GetAllProductOfLaptop()
         {
@@ -433,5 +510,247 @@ namespace PhoneStoreBackend.Repository.Implements
 
             return variants.Select(p => _mapper.Map<ProductVariantDTO>(p)).ToList();
         }
+
+        public async Task<PagedResponse<ICollection<ProductVariantResponse>>> GetAllProductOfCategoryName(
+            string categoryName,
+            int page = 1,
+            int pageSize = 15,
+            string? sort = null,
+            Dictionary<string, string>? filters = null)
+        {
+            if (string.IsNullOrWhiteSpace(categoryName))
+            {
+                throw new ArgumentException("Category name cannot be null or empty.", nameof(categoryName));
+            }
+
+            if (page < 1 || pageSize < 1)
+            {
+                throw new ArgumentException("Page and pageSize must be greater than 0.");
+            }
+
+            const string RAM_KEY = "dung lượng ram";
+            const string SCREEN_SIZE_KEY = "kích thước màn hình";
+            const string STORAGE_KEY_1 = "ổ cứng";
+            const string STORAGE_KEY_2 = "bộ nhớ trong";
+
+            try
+            {
+                // Cơ bản truy vấn
+                var query = _context.ProductVariants
+                    .Where(pv => pv.Product.Category.Name.ToLower() == categoryName.ToLower());
+
+                // Áp dụng bộ lọc (filters)
+                if (filters != null && filters.Any())
+                {
+                    foreach (var filter in filters)
+                    {
+                        switch (filter.Key.ToLower())
+                        {
+                            case "price":
+                                if (!string.IsNullOrEmpty(filter.Value))
+                                {
+                                    var priceRange = filter.Value.Split('-');
+                                    if (priceRange.Length == 2 &&
+                                        decimal.TryParse(priceRange[0], out var minPrice) &&
+                                        decimal.TryParse(priceRange[1], out var maxPrice))
+                                    {
+                                        query = query.Where(pv =>
+                                            (pv.Price * (1 - (pv.Discount != null && pv.Discount.IsActive ? pv.Discount.Percentage / 100m : 0)))
+                                            >= minPrice &&
+                                            (pv.Price * (1 - (pv.Discount != null && pv.Discount.IsActive ? pv.Discount.Percentage / 100m : 0)))
+                                            <= maxPrice);
+                                    }
+                                }
+                                break;
+                        }
+                    }
+                }
+
+
+                // Đếm tổng số bản ghi sau khi áp dụng bộ lọc
+                var totalItems = await query.CountAsync();
+
+                // Áp dụng sắp xếp (sort)
+                switch (sort?.ToLower())
+                {
+                    case "price_asc":
+                        query = query.OrderBy(pv => pv.Price * (1 - (pv.Discount != null && pv.Discount.IsActive ? pv.Discount.Percentage / 100m : 0)));
+                        break;
+                    case "price_desc":
+                        query = query.OrderByDescending(pv => pv.Price * (1 - (pv.Discount != null && pv.Discount.IsActive ? pv.Discount.Percentage / 100m : 0)));
+                        break;
+                    default:
+                        query = query.OrderBy(pv => pv.ProductVariantId);
+                        break;
+                }
+
+
+                // Áp dụng phân trang và ánh xạ kết quả
+                var result = await query
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                    .Select(v => new ProductVariantResponse
+                    {
+                        VariantId = v.ProductVariantId,
+                        Slug = v.Slug,
+                        VariantName = v.VariantName,
+                        DiscountPercentage = v.Discount != null && v.Discount.IsActive ? v.Discount.Percentage : 0,
+                        Price = v.Price,
+                        Color = v.Color,
+                        ImageUrl = v.ImageUrl,
+                        CategoryName = v.Product.Category.Name,
+                        BrandName = v.Product.Brand.Name,
+                        ImportPrice = v.ImportPrice,
+                        Stock = v.Stock,
+                        ReviewRate = v.Reviews.Any() ? v.Reviews.Average(r => (double?)r.Rating) ?? 0 : 0,
+                        RAM = v.ProductSpecifications
+                            .Where(spec => spec.Key.ToLower() == RAM_KEY)
+                            .Select(spec => spec.Value)
+                            .FirstOrDefault() ?? "",
+                        ScreenSize = v.ProductSpecifications
+                            .Where(spec => spec.Key.ToLower() == SCREEN_SIZE_KEY)
+                            .Select(spec => spec.Value)
+                            .FirstOrDefault() ?? "",
+                        Storage = v.ProductSpecifications
+                            .Where(spec => spec.Key.ToLower() == STORAGE_KEY_1 || spec.Key.ToLower() == STORAGE_KEY_2)
+                            .Select(spec => spec.Value)
+                            .FirstOrDefault() ?? ""
+                    })
+                    .ToListAsync();
+
+                // Tạo phản hồi phân trang
+                return PagedResponse<ICollection<ProductVariantResponse>>.CreatePagedResponse(
+                    data: result,
+                    currentPage: page,
+                    pageSize: pageSize,
+                    totalItems: totalItems,
+                    message: $"Danh sách sản phẩm của danh mục '{categoryName}'"
+                );
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error retrieving products for category '{categoryName}': {ex.Message}", ex);
+            }
+        }
+
+        public async Task<PagedResponse<ICollection<ProductVariantResponse>>> GetAllProductOfBrandName(
+            string brandName,
+            int page = 1,
+            int pageSize = 15,
+            string? sort = null,
+            Dictionary<string, string>? filters = null)
+        {
+            if (string.IsNullOrWhiteSpace(brandName))
+            {
+                throw new ArgumentException("Brand name cannot be null or empty.", nameof(brandName));
+            }
+
+            if (page < 1 || pageSize < 1)
+            {
+                throw new ArgumentException("Page and pageSize must be greater than 0.");
+            }
+
+            const string RAM_KEY = "dung lượng ram";
+            const string SCREEN_SIZE_KEY = "kích thước màn hình";
+            const string STORAGE_KEY_1 = "ổ cứng";
+            const string STORAGE_KEY_2 = "bộ nhớ trong";
+
+            try
+            {
+                // Cơ bản truy vấn
+                var query = _context.ProductVariants
+                    .Where(pv => pv.Product.Brand.Name.ToLower() == brandName.ToLower());
+
+                // Áp dụng bộ lọc (filters)
+                if (filters != null && filters.Any())
+                {
+                    foreach (var filter in filters)
+                    {
+                        switch (filter.Key.ToLower())
+                        {
+                            case "price":
+                                if (!string.IsNullOrEmpty(filter.Value))
+                                {
+                                    var priceRange = filter.Value.Split('-');
+                                    if (priceRange.Length == 2 &&
+                                        decimal.TryParse(priceRange[0], out var minPrice) &&
+                                        decimal.TryParse(priceRange[1], out var maxPrice))
+                                    {
+                                        query = query.Where(pv => pv.Price >= minPrice && pv.Price <= maxPrice);
+                                    }
+                                }
+                                break;
+
+                        }
+                    }
+                }
+
+                // Đếm tổng số bản ghi sau khi áp dụng bộ lọc
+                var totalItems = await query.CountAsync();
+
+                // Áp dụng sắp xếp (sort)
+                switch (sort?.ToLower())
+                {
+                    case "price_asc":
+                        query = query.OrderBy(pv => pv.Price * (1 - (pv.Discount != null && pv.Discount.IsActive ? pv.Discount.Percentage / 100m : 0)));
+                        break;
+                    case "price_desc":
+                        query = query.OrderByDescending(pv => pv.Price * (1 - (pv.Discount != null && pv.Discount.IsActive ? pv.Discount.Percentage / 100m : 0)));
+                        break;
+                    default:
+                        query = query.OrderBy(pv => pv.ProductVariantId);
+                        break;
+                }
+
+
+                // Áp dụng phân trang và ánh xạ kết quả
+                var result = await query
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                    .Select(v => new ProductVariantResponse
+                    {
+                        VariantId = v.ProductVariantId,
+                        Slug = v.Slug,
+                        VariantName = v.VariantName,
+                        DiscountPercentage = v.Discount != null && v.Discount.IsActive ? v.Discount.Percentage : 0,
+                        Price = v.Price,
+                        Color = v.Color,
+                        ImageUrl = v.ImageUrl,
+                        CategoryName = v.Product.Category.Name,
+                        BrandName = v.Product.Brand.Name,
+                        ImportPrice = v.ImportPrice,
+                        Stock = v.Stock,
+                        ReviewRate = v.Reviews.Any() ? v.Reviews.Average(r => (double?)r.Rating) ?? 0 : 0,
+                        RAM = v.ProductSpecifications
+                            .Where(spec => spec.Key.ToLower() == RAM_KEY)
+                            .Select(spec => spec.Value)
+                            .FirstOrDefault() ?? "",
+                        ScreenSize = v.ProductSpecifications
+                            .Where(spec => spec.Key.ToLower() == SCREEN_SIZE_KEY)
+                            .Select(spec => spec.Value)
+                            .FirstOrDefault() ?? "",
+                        Storage = v.ProductSpecifications
+                            .Where(spec => spec.Key.ToLower() == STORAGE_KEY_1 || spec.Key.ToLower() == STORAGE_KEY_2)
+                            .Select(spec => spec.Value)
+                            .FirstOrDefault() ?? ""
+                    })
+                    .ToListAsync();
+
+                // Tạo phản hồi phân trang
+                return PagedResponse<ICollection<ProductVariantResponse>>.CreatePagedResponse(
+                    data: result,
+                    currentPage: page,
+                    pageSize: pageSize,
+                    totalItems: totalItems,
+                    message: $"Danh sách sản phẩm của thương hiệu '{brandName}'"
+                );
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error retrieving products for brand '{brandName}': {ex.Message}", ex);
+            }
+        }
+
+        
     }
 }

@@ -2,9 +2,18 @@ import { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 
 // Mặc định map category sang tên dễ đọc
-const defaultCategoryMap: Record<string, string> = {
+export const categoryConfig: Record<string, string> = {
   mobile: 'Điện thoại',
-  laptop: 'Laptop'
+  laptop: 'Laptop',
+  tablet: 'Máy tính bảng',
+  audio: 'Âm thanh',
+  watch: 'Đồng hồ',
+  camera: 'Camera',
+  accessory: 'Phụ kiện',
+  tv: 'Tivi',
+  pc: 'PC',
+  monitor: 'Màn hình',
+  printer: 'Máy in'
 }
 
 const useBreadcrumbs = (slugTitle?: string, customMap?: Record<string, string>) => {
@@ -30,7 +39,7 @@ const useBreadcrumbs = (slugTitle?: string, customMap?: Record<string, string>) 
         const href = `/${pathnames.slice(0, index + 1).join('/')}`
         const title =
           customMap?.[segment] ||
-          defaultCategoryMap[segment] ||
+          categoryConfig[segment] ||
           (slugTitle && index === pathnames.length - 1 ? slugTitle : segment)
 
         newBreadcrumbs.push({ href, title })

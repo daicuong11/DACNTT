@@ -1,14 +1,14 @@
 import { FC } from 'react'
 import CarouselProduct from './CarouselProduct'
 import { SkeletonCarouselProduct } from '@/components'
-import { useGetAllProductOfMobile } from '@/hooks/querys/product.query'
+import { useGet15ProductOfCategoryName, useGetAllProductOfMobile } from '@/hooks/querys/product.query'
 import { useGetBrands } from '@/hooks/querys/brand.query'
 import { useNavigate } from 'react-router-dom'
 
 interface MobileSaleView {}
 const MobileSaleView: FC<MobileSaleView> = () => {
   const navigate = useNavigate()
-  const { data: products, isLoading } = useGetAllProductOfMobile()
+  const { data: products, isLoading } = useGet15ProductOfCategoryName('điện thoại')
   const { data: brandRes } = useGetBrands('điện thoại')
 
   return (

@@ -1,4 +1,5 @@
-﻿using PhoneStoreBackend.Api.Response;
+﻿using Microsoft.AspNetCore.Mvc;
+using PhoneStoreBackend.Api.Response;
 using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
 
@@ -7,6 +8,11 @@ namespace PhoneStoreBackend.Repository
     public interface IProductRepository
     {
         Task<ICollection<ProductResponse>> GetAllAsync();
+        Task<ICollection<ProductResponse>> Get15ProductOfCategoryName(string categoryName);
+
+        Task<PagedResponse<ICollection<ProductVariantResponse>>> GetAllProductOfCategoryName(string categoryName, int page = 1, int pageSize = 15, string? sort = null, Dictionary<string, string>? filters = null);
+        Task<PagedResponse<ICollection<ProductVariantResponse>>> GetAllProductOfBrandName(string brandName, int page = 1, int pageSize = 15, string? sort = null, Dictionary<string, string>? filters = null);
+
         Task<ICollection<ProductResponse>> GetAllProductOfMobile();
         Task<ICollection<ProductResponse>> GetAllProductOfLaptop();
 

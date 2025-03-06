@@ -1,7 +1,19 @@
 import React, { FC } from 'react'
 import { Navigate, Outlet, useParams } from 'react-router-dom'
 
-const validCategories = ['mobile', 'laptop', 'tivi']
+const validCategories = [
+  'mobile',
+  'laptop',
+  'tablet',
+  'audio',
+  'watch',
+  'camera',
+  'accessory',
+  'tv',
+  'pc',
+  'monitor',
+  'printer'
+]
 
 interface CategoryWatchProps {
   children?: React.ReactNode

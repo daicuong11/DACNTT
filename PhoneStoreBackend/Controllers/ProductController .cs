@@ -73,12 +73,54 @@ namespace PhoneStoreBackend.Controllers
             }
         }
 
-        [HttpGet("laptop")]
-        public async Task<IActionResult> GetAllProductOfLaptop()
+        [HttpGet("category/{categoryName}")]
+        public async Task<IActionResult> GetAllProductOfCategoryName(
+            [FromRoute] string categoryName,
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 15,
+            [FromQuery] string? sort = null,
+            [FromQuery] Dictionary<string, string>? filters = null
+            )
         {
             try
             {
-                var productVariants = await _productRepository.GetAllProductOfLaptop();
+                var response = await _productRepository.GetAllProductOfCategoryName(categoryName, page, pageSize, sort, filters);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = Response<object>.CreateErrorResponse($"Đã xảy ra lỗi: {ex.Message}");
+                return BadRequest(errorResponse);
+            }
+        }
+
+        [HttpGet("category/brand/{brandName}")]
+        public async Task<IActionResult> GetAllProductOfBrandName(
+            [FromRoute] string brandName,
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 15,
+            [FromQuery] string? sort = null,
+            [FromQuery] Dictionary<string, string>? filters = null
+            )
+        {
+            try
+            {
+                var response = await _productRepository.GetAllProductOfBrandName(brandName, page, pageSize, sort, filters);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = Response<object>.CreateErrorResponse($"Đã xảy ra lỗi: {ex.Message}");
+                return BadRequest(errorResponse);
+            }
+        }
+
+        [HttpGet("category/{categoryName}/15")]
+        public async Task<IActionResult> GetAllProductOfLaptop([FromRoute] string categoryName)
+        {
+            try
+            {
+                var productVariants = await _productRepository.Get15ProductOfCategoryName(categoryName);
                 var response = Response<ICollection<ProductResponse>>.CreateSuccessResponse(productVariants, "Danh sách sản phẩm: ");
                 return Ok(response);
             }

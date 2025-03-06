@@ -98,7 +98,8 @@ namespace PhoneStoreBackend.Repository.Implements
                     CategoryName = c.ProductVariant.Product.Category.Name,
                     BrandName = c.ProductVariant.Product.Brand.Name,
                     Content = c.Content,
-                    CreatedAt = c.CreatedAt
+                    CreatedAt = c.CreatedAt,
+                    Slug = c.ProductVariant.Slug
                 })
                 .ToListAsync();
         }

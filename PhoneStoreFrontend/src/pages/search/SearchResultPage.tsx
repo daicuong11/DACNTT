@@ -2,7 +2,7 @@ import VariantCard from '@/components/items/VariantCard'
 import { useQueryString } from '@/hooks'
 import { useGetAllProducts, useSearchProducts } from '@/hooks/querys/product.query'
 import useSetDocTitle from '@/hooks/useSetDocTitle'
-import { Spin } from 'antd'
+import { Empty, Spin } from 'antd'
 import classNames from 'classnames'
 import { ArrowDownNarrowWide, ArrowDownWideNarrow, ChevronDown, Sparkles } from 'lucide-react'
 import React, { FC, useState } from 'react'
@@ -74,8 +74,12 @@ const SearchResultPage: FC<SearchResultPageProps> = () => {
           Giá thấp
         </span>
       </div>
+      {variants?.pages[0].totalItems === 0 && (
+        <div className='flex items-center justify-center w-full py-20 text-center'>
+          <Empty description='Không tìm thấy sản phẩm nào.' />
+        </div>
+      )}
       <div className='grid gap-2.5 grid-cols-2 min-[610px]:grid-cols-3 min-[940px]:grid-cols-4 min-[1182px]:grid-cols-5'>
-        {isLoading && [...Array(10)].map((_, index) => <SkeletonProductCard key={index} />)}
         {variants?.pages.map((group, index) => (
           <React.Fragment key={index}>
             {group.data?.map((variant) => (
@@ -90,6 +94,7 @@ const SearchResultPage: FC<SearchResultPageProps> = () => {
             ))}
           </React.Fragment>
         ))}
+        {(isLoading || isFetchingNextPage) && [...Array(10)].map((_, index) => <SkeletonProductCard key={index} />)}
       </div>
       {hasNextPage && (
         <div className='mt-2.5'>
@@ -114,7 +119,7 @@ const SearchResultPage: FC<SearchResultPageProps> = () => {
         </div>
 
         {isLoading2 ? (
-          <div className='flex justify-center items-center py-10'>
+          <div className='flex items-center justify-center py-10'>
             <Spin size='large' />
           </div>
         ) : (
