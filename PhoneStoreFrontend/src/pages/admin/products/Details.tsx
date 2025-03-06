@@ -10,6 +10,7 @@ import { CircleArrowDown, Edit } from 'lucide-react'
 import getPriceAfterDiscount from '@/utils/getPriceAfterDiscount'
 import formatPrice from '@/utils/formatPrice'
 import { VariantResponse } from '@/types/product.type'
+import { getProductRoute } from '@/utils/getProductRoute'
 
 export default function Details() {
   const { productId } = useParams<{ productId: string }>()
@@ -77,7 +78,13 @@ export default function Details() {
       render: (_, record) => {
         return (
           <div className='flex flex-col gap-y-2'>
-            <button className='text-xs rounded-md btn btn-warning'>
+            <button
+              onClick={() => window.open(getProductRoute(record.categoryName, record.brandName, record.slug))}
+              className='text-xs rounded-md btn btn-option'
+            >
+              Chi tiết
+            </button>
+            {/* <button className='text-xs rounded-md btn btn-warning'>
               <Edit size={16} strokeWidth={1.6} />
               Chỉnh sửa
             </button>
@@ -95,7 +102,7 @@ export default function Details() {
                 <CircleArrowDown size={16} strokeWidth={1.6} />
                 Ngưng bán
               </button>
-            </Popconfirm>
+            </Popconfirm> */}
           </div>
         )
       }

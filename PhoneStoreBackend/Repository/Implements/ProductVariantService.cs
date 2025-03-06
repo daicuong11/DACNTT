@@ -125,9 +125,12 @@ namespace PhoneStoreBackend.Repository.Implements
                     VariantName = v.VariantName,
                     DiscountPercentage = v.Discount != null ? v.Discount.Percentage : 0,
                     Price = v.Price,
+                    ImportPrice = v.ImportPrice,
                     Color = v.Color,
                     ImageUrl = v.ImageUrl,
                     Storage = v.Storage,
+                    CategoryName = v.Product.Category.Name,
+                    BrandName = v.Product.Brand.Name,
                     Stock = v.Stock,
                     ReviewRate = v.Reviews.Any() ? v.Reviews.Average(r => (double?)r.Rating) ?? 5 : 5,
                 })

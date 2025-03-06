@@ -54,8 +54,10 @@ export interface VariantResponse {
   storage: string
   imageUrl: string
   price: number
-  discountPercentage: number
   stock: number
+  discountPercentage: number
+  categoryName: string
+  brandName: string
   reviewRate: number
 }
 
