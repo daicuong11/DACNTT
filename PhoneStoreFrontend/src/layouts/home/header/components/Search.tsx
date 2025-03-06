@@ -95,7 +95,7 @@ const Search: FC<SearchProps> = ({}) => {
       />
       <div
         className={classNames(
-          'absolute top-full left-1/2 scrollbar-hide -translate-x-1/2 text-base w-full min-w-[392px] max-h-[80vh] overflow-auto transition-all duration-300 ease-in-out bg-white border border-gray-100 shadow-md z-10 shadow-black/20 rounded-xl',
+          'absolute top-full -left-12 min-w-[340px] min-[480px]:left-1/2  scrollbar-hide min-[480px]:-translate-x-1/2 text-base w-full min-[480px]:min-w-[392px] max-h-[80vh] overflow-auto transition-all duration-300 ease-in-out bg-white border border-gray-100 shadow-md z-10 shadow-black/20 rounded-xl',
           {
             'opacity-0 invisible -translate-y-6 scale-95': !isOpen,
             'opacity-100 visible translate-y-0 scale-100 delay-150': isOpen
@@ -205,14 +205,14 @@ const Search: FC<SearchProps> = ({}) => {
                     <button
                       key={p.productId}
                       onClick={() => handleProductClick(p.category.name, p.brand.name, p.productVariants[0].slug)}
-                      className='flex items-center cursor-pointer gap-x-2 hover:bg-gray-100 p-1 rounded-md'
+                      className='flex items-center p-1 rounded-md cursor-pointer gap-x-2 hover:bg-gray-100'
                     >
                       <img
                         className='object-contain w-10 h-10'
                         src={p.productVariants[0].imageUrl}
                         alt='product image'
                       />
-                      <div className='text-sm text-start font-medium text-black'>
+                      <div className='text-sm font-medium text-black text-start'>
                         {p.productVariants[0].variantName}
                       </div>
                     </button>

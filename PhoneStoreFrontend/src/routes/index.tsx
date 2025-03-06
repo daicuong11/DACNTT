@@ -26,6 +26,7 @@ import PaymentResultPage from '@/pages/payment_result/PaymentResultPage'
 import VnpayPaymentResultPage from '@/pages/payment_result/VnpayPaymentResultPage'
 import { ProductDetailPage } from '@/pages/products'
 import {
+  AccountPage,
   AddAddressPage,
   AddressInfoPage,
   ChangePasswordPage,
@@ -182,6 +183,10 @@ const MyRoutes = () => {
         {
           path: 'support',
           element: <SupportPage />
+        },
+        {
+          path: 'account',
+          element: <AccountPage />
         }
       ]
     }
@@ -280,7 +285,7 @@ const MyRoutes = () => {
               element: <DiscountList />
             }
           ]
-        },
+        }
       ]
     }
   ]
@@ -294,8 +299,14 @@ const MyRoutes = () => {
 
   const routesLogout: RouteObject[] = [
     {
-      path: '/profile/:something',
-      element: <Navigate to='/signin' />
+      path: '/profile',
+      element: <Navigate to='/signin' />,
+      children: [
+        {
+          path: ':something',
+          element: <Navigate to='/signin' />
+        }
+      ]
     }
   ]
 

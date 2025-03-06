@@ -1,10 +1,12 @@
 import { Outlet } from 'react-router-dom'
 import { FC } from 'react'
 import Header from '../home/header'
-import { ClipboardList, Home, LogOut, MapPinHouse, Ticket, UserRound } from 'lucide-react'
+import { ClipboardList, Headset, Home, LogOut, MapPinHouse, Ticket, UserRound } from 'lucide-react'
 import SideBarProfile from '@/pages/profile/components/SideBarProfile'
 import SideBarItem from '@/pages/profile/components/SideBarItem'
 import { useLocation, useNavigate } from 'react-router-dom'
+import FooterMobile, { FooterMobileDataType } from '../home/footer/FooterMobile'
+import { useModal } from '@/hooks'
 
 const listSidebarItems = [
   {
@@ -39,9 +41,37 @@ const listSidebarItems = [
   }
 ]
 
+const listAction: FooterMobileDataType = [
+  {
+    isAuthenticated: true,
+    icon: <Home size={20} strokeWidth={1.5} />,
+    label: 'Trang chủ',
+    href: ''
+  },
+  {
+    isAuthenticated: true,
+    icon: <ClipboardList size={20} strokeWidth={1.5} />,
+    label: 'Lịch sử',
+    href: '/profile/order'
+  },
+  {
+    isAuthenticated: true,
+    icon: <MapPinHouse size={20} strokeWidth={1.5} />,
+    label: 'Địa chỉ',
+    href: '/profile/user-info/address-info'
+  },
+  {
+    isAuthenticated: true,
+    icon: <Headset size={20} strokeWidth={1.5} />,
+    label: 'Tài khoản',
+    href: '/profile/account'
+  }
+]
+
 const ProfileLayout: FC = () => {
   const pathName = useLocation().pathname
   const navigate = useNavigate()
+  const { isOpen, toggleModal, closeModal } = useModal()
 
   return (
     <div className=''>
@@ -66,6 +96,9 @@ const ProfileLayout: FC = () => {
             </div>
           </div>
         </div>
+      </div>
+      <div className='md:hidden'>
+        <FooterMobile dataSource={listAction} openModal={toggleModal} onClose={closeModal} />
       </div>
     </div>
   )

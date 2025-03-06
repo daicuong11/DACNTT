@@ -42,7 +42,7 @@ const CategoryItem: FC<ICategoryItemProps> = ({ isFirst, isLast, data }) => {
         <div
           className={classNames(
             'absolute left-[calc(100%+16px)] shadow shadow-slate-900/20 top-0 bottom-0 rounded-xl invisible transition-all z-10',
-            'bg-white w-[calc(1200px-(32px+440px))]',
+            'bg-white w-[calc(100vw-(272px))] lg:w-[calc(1200px-(32px+440px))]',
             `p-5 h-fit grid gap-4 grid-flow-col`,
             {
               'group-hover:visible': data.options.length

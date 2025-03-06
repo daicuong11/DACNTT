@@ -64,7 +64,7 @@ const Search: FC<SearchProps> = ({}) => {
       />
       <div
         className={classNames(
-          'absolute top-full left-0 text-base w-full min-w-[392px] max-h-[80vh] overflow-auto transition-all duration-300 ease-in-out bg-white border border-gray-100 shadow-md z-10 shadow-black/20 rounded-xl',
+          'absolute top-full left-0 text-base w-full xsm:min-w-[392px] max-h-[80vh] overflow-auto transition-all duration-300 ease-in-out bg-white border border-gray-100 shadow-md z-10 shadow-black/20 rounded-xl',
           {
             'opacity-0 invisible -translate-y-6 scale-95': !isOpen,
             'opacity-100 visible translate-y-0 scale-100 delay-150': isOpen

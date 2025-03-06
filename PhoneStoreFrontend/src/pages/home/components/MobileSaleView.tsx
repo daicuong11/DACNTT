@@ -13,8 +13,8 @@ const MobileSaleView: FC<MobileSaleView> = () => {
 
   return (
     <div className='w-full'>
-      <div className='flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between mb-2'>
-        <div className='text-base lg:text-xl font-bold uppercase text-black/70'>Điện thoại nổi bật nhất</div>
+      <div className='flex flex-col gap-3 mb-2 lg:flex-row lg:items-center lg:justify-between'>
+        <div className='text-base font-bold uppercase lg:text-xl text-black/70'>Điện thoại nổi bật nhất</div>
         <div className='flex items-center gap-2.5 flex-wrap'>
           {brandRes &&
             brandRes.data &&

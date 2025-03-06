@@ -9,7 +9,7 @@ import classNames from 'classnames'
 import OrderItem from './components/OrderItem'
 import { useAppSelector } from '@/hooks'
 import { useGetOrderByUserId, useGetOrdersByStatus } from '@/hooks/querys/order.query'
-import { LoadingOpacity } from '@/components'
+import { AvatarCustom, LoadingOpacity } from '@/components'
 import { OrderStatusEnum } from '@/enums'
 import formatPrice from '@/utils/formatPrice'
 
@@ -47,7 +47,8 @@ const OrderHistoryPage: FC<OrderHistoryPageProps> = () => {
     <div className='py-4'>
       {isLoading && <LoadingOpacity />}
       <div className='flex px-2 gap-x-2'>
-        <Avatar size={72} icon={<UserOutlined />} />
+        <AvatarCustom size={72} name={currentUser?.name || ''} role={currentUser?.role} />
+
         <div className='flex flex-col gap-y-0.5'>
           <h1 className='text-[19px] font-semibold text-pink-600 uppercase leading-none'>{currentUser?.name}</h1>
           <div className='flex items-center text-sm font-medium text-gray-500 gap-x-2'>
@@ -73,12 +74,12 @@ const OrderHistoryPage: FC<OrderHistoryPageProps> = () => {
         )}
       >
         <div className='flex flex-col items-center justify-center flex-1 gap-y-4'>
-          <h1 className='text-xl sm:text-3xl font-bold'>{ordersAll?.length}</h1>
+          <h1 className='text-xl font-bold sm:text-3xl'>{ordersAll?.length}</h1>
           <h5 className='text-[11px] sm:text-[13px]'>đơn hàng</h5>
         </div>
         <div className='w-[1px] bg-black-2 h-20'></div>
         <div className='flex flex-col items-center justify-center flex-1 gap-y-4'>
-          <h1 className='text-xl sm:text-3xl font-bold'>{formatPrice(totalPay || 0)}</h1>
+          <h1 className='text-xl font-bold sm:text-3xl'>{formatPrice(totalPay || 0)}</h1>
           <h5 className='text-[11px] sm:text-[13px]'>Tổng tiền tích lũy mua sắm</h5>
         </div>
       </div>
