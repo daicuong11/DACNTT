@@ -6,10 +6,11 @@ import '@/assets/css/style.css'
 import 'jsvectormap/dist/css/jsvectormap.css'
 import 'flatpickr/dist/flatpickr.min.css'
 import { Outlet } from 'react-router-dom'
+import { useCommentNotifications } from '@/hooks/useCommentNotifications'
 
 const AdminLayout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false)
-
+  useCommentNotifications(); // Kích hoạt lắng nghe SignalR
   return (
     <div className=''>
       {/* <!-- ===== Page Wrapper Start ===== --> */}

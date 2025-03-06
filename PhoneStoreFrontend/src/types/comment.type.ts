@@ -30,3 +30,16 @@ export type ReplyRequestType = {
   commentId: number
   content: string
 }
+
+export type CommentResponse = {
+  commentId: number;
+  userName: string;
+  productName: string;
+  variantName: string;
+  categoryName: string;
+  brandName: string;
+  content: string;
+  createdAt: string;
+  slug: string;
+}
+

@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using PhoneStoreBackend.Api.Request;
 using PhoneStoreBackend.Api.Response;
 using PhoneStoreBackend.Entities;
 using PhoneStoreBackend.Helpers;
+using PhoneStoreBackend.Hubs;
 using PhoneStoreBackend.Repository;
 
 namespace PhoneStoreBackend.Controllers
@@ -14,7 +15,8 @@ namespace PhoneStoreBackend.Controllers
     public class CommentController : ControllerBase
     {
         private readonly ICommentRepository _commentRepository;
-        public CommentController(ICommentRepository commentRepository) { 
+        public CommentController(ICommentRepository commentRepository)
+        {
             _commentRepository = commentRepository;
         }
 
@@ -25,10 +27,18 @@ namespace PhoneStoreBackend.Controllers
             return Ok(res);
         }
 
+        [HttpGet("recent-comments")]
+        public async Task<IActionResult> GetRecentComments([FromQuery] int page = 1, [FromQuery] int pageSize = 5)
+        {
+            List<CommentResponse> comments = await _commentRepository.GetRecentCommentsAsync(page, pageSize);
+            return Ok(Response<ICollection<CommentResponse>>.CreateSuccessResponse(comments, "Bình luận gần đây"));
+        }
+
+
 
         [HttpPost("add-comment")]
         [Authorize]
-        public async Task<IActionResult> AddComment([FromBody] CommentRequest request)
+        public async Task<IActionResult> AddComment([FromBody] CommentRequest request, [FromServices] IHubContext<CommentHub> hubContext)
         {
             var responseError = ModelStateHelper.CheckModelState(ModelState);
             if (responseError != null)
@@ -37,7 +47,8 @@ namespace PhoneStoreBackend.Controllers
             {
                 var userId = int.Parse(User.FindFirst("userId")?.Value);
 
-                if(userId < 1) {
+                if (userId < 1)
+                {
                     return Unauthorized(Response<object>.CreateErrorResponse("Người dùng chưa đăng nhập"));
                 }
 
@@ -50,6 +61,11 @@ namespace PhoneStoreBackend.Controllers
                 };
 
                 var createdComment = await _commentRepository.AddCommentAsync(newComment);
+
+                // Gửi sự kiện SignalR
+                await hubContext.Clients.All.SendAsync("ReceiveComment", createdComment.User.Name, createdComment.ProductVariant.VariantName);
+
+
                 return Ok(Response<Comment>.CreateSuccessResponse(createdComment, "Bình luận đã được thêm"));
             }
             catch (Exception ex)
@@ -77,7 +93,7 @@ namespace PhoneStoreBackend.Controllers
                 var newReply = new Reply
                 {
                     UserId = userId,
-                    CommentId = request.CommentId, 
+                    CommentId = request.CommentId,
                     Content = request.Content,
                     CreatedAt = DateTime.Now
                 };
