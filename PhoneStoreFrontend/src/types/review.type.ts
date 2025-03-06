@@ -1,8 +1,10 @@
+import { ProductVariantType } from './product_variant.type'
 import { UserType } from './user.type'
 
 export interface ReviewType {
   reviewId: number
   productVariantId: number
+  productVariant: ProductVariantType
   userId: number
   user: UserType
   rating: number

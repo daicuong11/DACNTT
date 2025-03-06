@@ -1,9 +1,9 @@
 import { useRecentComments } from '@/hooks/querys/comment.query';
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import ClickOutside from '../ClickOutside';
-import { CommentResponse } from '@/types/comment.type';
 import { getProductRoute } from '@/utils/getProductRoute';
+import { BellIcon } from 'lucide-react';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import ClickOutside from '../ClickOutside';
 
 const DropdownNotification = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -25,16 +25,7 @@ const DropdownNotification = () => {
             <span className="absolute -z-1 inline-flex h-full w-full animate-ping rounded-full bg-meta-1 opacity-75"></span>
           </span>
           {/* Icon Notification */}
-          <svg
-            className="fill-current duration-300 ease-in-out"
-            width="18"
-            height="18"
-            viewBox="0 0 18 18"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M16.1999 14.9343L15.6374 14.0624C..." fill="" />
-          </svg>
+          <BellIcon size={20} />
         </Link>
 
         {dropdownOpen && (

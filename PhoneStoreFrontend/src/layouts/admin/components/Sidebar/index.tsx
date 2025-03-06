@@ -1,4 +1,4 @@
-import { AppleOutlined, DashboardOutlined, FallOutlined, ProductOutlined, ShoppingCartOutlined, UngroupOutlined, UserOutlined } from '@ant-design/icons';
+import { AppleOutlined, DashboardOutlined, FallOutlined, FormOutlined, ProductOutlined, ShoppingCartOutlined, UngroupOutlined, UserOutlined } from '@ant-design/icons';
 import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 
@@ -67,6 +67,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       icon: <FallOutlined />,
       path: '/admin/discounts',
     },
+    {
+      key: 'reviews',
+      label: 'Quản lý đánh giá',
+      icon: <FormOutlined />,
+      path: '/admin/reviews',
+    },
   ];
 
   const storedSidebarExpanded = localStorage.getItem('sidebar-expanded')
@@ -114,9 +120,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       {/* <!-- SIDEBAR HEADER --> */}
       <div className='flex items-center justify-between gap-2 px-6 py-4'>
         <NavLink to='/'>
-          <img className='ml-4 object-cover w-40 h-[55px]' src={'/logo3.png'} alt='Logo' />
+          {/* <img className='ml-4 object-cover w-40 h-[55px]' src={'/logo3.png'} alt='Logo' /> */}
+          <h1 className="ml-4 text-3xl font-extrabold text-red-600">BC_Store</h1>
         </NavLink>
-
         <button
           ref={trigger}
           onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -171,7 +177,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
             <ul className='mb-6 flex flex-col gap-1.5'>
 
-            {adminMenu2.map((item) => (
+              {adminMenu2.map((item) => (
                 <li key={item.key}>
                   <NavLink
                     to={item.path}

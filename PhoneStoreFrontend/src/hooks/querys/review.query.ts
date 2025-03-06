@@ -1,5 +1,5 @@
 import reviewAPI from '@/apis/review.api'
-import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query'
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 export const useGetReview = (
   productVariantId: number,
@@ -29,3 +29,21 @@ export const useGetReviewDetail = (productVariantId: number) => {
     enabled: !!productVariantId
   })
 }
+
+export const useAllReviews = () => {
+  return useQuery({
+    queryKey: ['getAllReviews'],
+    queryFn: () => reviewAPI.getAllReviews(),
+  })
+}
+
+export const useUpdateReviewReply = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+      mutationFn: reviewAPI.updateReviewReply,
+      onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ["getAllReviews"] });
+        },
+  });
+};

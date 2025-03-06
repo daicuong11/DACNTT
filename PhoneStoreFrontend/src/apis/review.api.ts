@@ -47,7 +47,14 @@ class ReviewAPI {
     const res = await axiosInstance.get(`reviews/total/${productVariantId}`)
     return res.data
   }
-}
 
+  async getAllReviews(): Promise<ReviewType[]> {
+    return (await axiosInstance.get(`reviews`)).data
+  }
+
+  async updateReviewReply({ reviewId, isReply }: { reviewId: number; isReply: boolean }): Promise<ReviewResponseType> {
+    return (await axiosInstance.put(`reviews/${reviewId}/reply`, { isReply })).data
+  }
+}
 const reviewAPI = new ReviewAPI()
 export default reviewAPI

@@ -6,7 +6,7 @@ namespace PhoneStoreBackend.Repository
 {
     public interface IReviewRepository
     {
-        Task<ICollection<Review>> GetAllReviewsAsync();
+        Task<ICollection<ReviewDTO>> GetAllReviewsAsync();
         Task<Review> GetReviewByIdAsync(int reviewId);
         Task<PagedResponse<ICollection<Review>>> GetReviewsByProductIdAsync(int productVariantId, int page, int pageSize, Dictionary<string, string>? filters);
         Task<ICollection<Review>> GetReviewsByUserIdAsync(int userId);
@@ -15,5 +15,6 @@ namespace PhoneStoreBackend.Repository
         Task<bool> DeleteReviewAsync(int reviewId);
 
         Task<ReviewResponse> GetReviewDetailOfVariant(int variantId);
+        Task<Review> UpdateReviewReplyAsync(int reviewId, bool isReply);
     }
 }

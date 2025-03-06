@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PhoneStoreBackend.Api.Request;
 using PhoneStoreBackend.Api.Response;
 using PhoneStoreBackend.DbContexts;
@@ -34,7 +33,7 @@ namespace PhoneStoreBackend.Controllers
             try
             {
                 var reviews = await _reviewRepository.GetAllReviewsAsync();
-                var response = Response<ICollection<Review>>.CreateSuccessResponse(reviews, "Danh sách tất cả đánh giá");
+                var response = Response<ICollection<ReviewDTO>>.CreateSuccessResponse(reviews, "Danh sách tất cả đánh giá");
                 return Ok(response);
             }
             catch (Exception ex)
@@ -88,9 +87,9 @@ namespace PhoneStoreBackend.Controllers
 
         [HttpGet("product/{productId}")]
         //[Authorize]
-        public async Task<IActionResult> GetReviewsByProductId(int productId, 
-            [FromQuery] int page = 1, 
-            [FromQuery] int pageSize = 5, 
+        public async Task<IActionResult> GetReviewsByProductId(int productId,
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 5,
             [FromQuery] Dictionary<string, string>? filters = null)
         {
             try
@@ -233,6 +232,23 @@ namespace PhoneStoreBackend.Controllers
                 }
 
                 var response = Response<object>.CreateSuccessResponse(null, "Đánh giá đã được xóa thành công");
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = Response<object>.CreateErrorResponse($"Đã xảy ra lỗi: {ex.Message}");
+                return BadRequest(errorResponse);
+            }
+        }
+
+        [HttpPut("{reviewId}/reply")]
+        public async Task<IActionResult> UpdateReviewReply(int reviewId, [FromBody] Review request)
+        {
+            try
+            {
+                var updatedReview = await _reviewRepository.UpdateReviewReplyAsync(reviewId, request.IsReply);
+
+                var response = Response<object>.CreateSuccessResponse(updatedReview, "Chỉnh IsReply thành công");
                 return Ok(response);
             }
             catch (Exception ex)

@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace PhoneStoreBackend.Entities
+﻿namespace PhoneStoreBackend.Entities
 {
     using System;
     using System.ComponentModel.DataAnnotations;
@@ -37,8 +34,9 @@ namespace PhoneStoreBackend.Entities
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public DateTime? UpdatedAt { get; set; }
-
+        [ForeignKey("UserId")]
         public User User { get; set; }
+        [ForeignKey("ProductVariantId")]
         [JsonIgnore]
         public ProductVariant ProductVariant { get; set; }
     }

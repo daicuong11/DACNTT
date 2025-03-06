@@ -13,6 +13,7 @@ import Orders from '@/pages/admin/orders'
 import AddProduct from '@/pages/admin/products/AddProduct'
 import Details from '@/pages/admin/products/Details'
 import ProductList from '@/pages/admin/products/ProductList'
+import Reviews from '@/pages/admin/reviews'
 import UserList from '@/pages/admin/users/UserList'
 import BrandPage from '@/pages/brand/BrandPage'
 import { CartPage } from '@/pages/cart'
@@ -285,7 +286,16 @@ const MyRoutes = () => {
               element: <DiscountList />
             }
           ]
-        }
+        },
+        {
+          path: 'reviews',
+          children: [
+            {
+              path: '',
+              element: <Reviews />
+            }
+          ]
+        },
       ]
     }
   ]

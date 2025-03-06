@@ -22,7 +22,7 @@ const validateReview = (rate: number, comment: string): boolean => {
     return false
   }
   if (comment.length < 15) {
-    toast.error('Vui lòng nhập cảm nhận dài hơn')
+    toast.error('Vui lòng nhập ít nhất 15 ký tự')
     return false
   }
 

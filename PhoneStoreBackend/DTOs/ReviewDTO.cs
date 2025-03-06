@@ -1,8 +1,4 @@
-﻿using PhoneStoreBackend.Entities;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-
-namespace PhoneStoreBackend.DTOs
+﻿namespace PhoneStoreBackend.DTOs
 {
     public class ReviewDTO
     {
@@ -18,7 +14,7 @@ namespace PhoneStoreBackend.DTOs
 
         public bool HasImages { get; set; } = false;
 
-        public string? Images { get; set; } 
+        public string? Images { get; set; }
 
         public bool VerifiedPurchase { get; set; } = false;
 
@@ -27,5 +23,8 @@ namespace PhoneStoreBackend.DTOs
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public DateTime? UpdatedAt { get; set; }
+        public ProductVariantDTO ProductVariant { get; set; }
+        public UserDTO User { get; set; }
+
     }
 }

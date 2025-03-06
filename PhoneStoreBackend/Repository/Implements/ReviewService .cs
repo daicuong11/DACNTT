@@ -5,7 +5,6 @@ using PhoneStoreBackend.DbContexts;
 using PhoneStoreBackend.DTOs;
 using PhoneStoreBackend.Entities;
 using PhoneStoreBackend.Enums;
-using PhoneStoreBackend.Repository;
 
 namespace PhoneStoreBackend.Repository.Implements
 {
@@ -21,10 +20,22 @@ namespace PhoneStoreBackend.Repository.Implements
         }
 
         // Lấy tất cả các đánh giá
-        public async Task<ICollection<Review>> GetAllReviewsAsync()
+        public async Task<ICollection<ReviewDTO>> GetAllReviewsAsync()
         {
-            return await _context.Reviews.ToListAsync();
+            var list = await _context.Reviews
+                .Include(r => r.User) // Lấy thông tin User
+                .Include(r => r.ProductVariant)
+                    .ThenInclude(pv => pv.Product) // Lấy Product trong ProductVariant
+                        .ThenInclude(p => p.Category) // Lấy Category trong Product
+                .Include(r => r.ProductVariant)
+                    .ThenInclude(pv => pv.Product) // Lấy lại Product để thêm Brand
+                        .ThenInclude(p => p.Brand) // Lấy Brand trong Product
+                .ToListAsync();
+
+            return _mapper.Map<ICollection<ReviewDTO>>(list);
         }
+
+
 
         // Lấy đánh giá theo ReviewId
         public async Task<Review> GetReviewByIdAsync(int reviewId)
@@ -96,7 +107,7 @@ namespace PhoneStoreBackend.Repository.Implements
         public async Task<Review> AddReviewAsync(Review review)
         {
             bool isVerifiedPurchase = await _context.Orders
-                .Where(o => o.UserId == review.UserId && o.Status == OrderStatusEnum.delivered.ToString()) 
+                .Where(o => o.UserId == review.UserId && o.Status == OrderStatusEnum.delivered.ToString())
                 .AnyAsync(o => o.OrderDetails.Any(od => od.ProductVariantId == review.ProductVariantId));
 
             review.VerifiedPurchase = isVerifiedPurchase;
@@ -167,7 +178,7 @@ namespace PhoneStoreBackend.Repository.Implements
             var total3 = reviews.Count(r => r.Rating == 3);
             var total2 = reviews.Count(r => r.Rating == 2);
             var total1 = reviews.Count(r => r.Rating == 1);
-            var average = reviews.Average(r => r.Rating); 
+            var average = reviews.Average(r => r.Rating);
 
             return new ReviewResponse
             {
@@ -179,6 +190,21 @@ namespace PhoneStoreBackend.Repository.Implements
                 Total1Rate = total1,
                 RateAverage = average
             };
+        }
+        public async Task<Review> UpdateReviewReplyAsync(int reviewId, bool isReply)
+        {
+            var review = await _context.Reviews.FindAsync(reviewId);
+            if (review == null)
+            {
+                throw new KeyNotFoundException("Không tìm thấy đánh giá!");
+            }
+
+            review.IsReply = isReply;
+            review.UpdatedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+
+            return review;
         }
 
     }
