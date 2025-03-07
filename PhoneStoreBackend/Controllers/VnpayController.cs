@@ -179,27 +179,26 @@ namespace PhoneStoreBackend.Controllers
                     Console.WriteLine("End--------Callback--------");
                     Console.WriteLine(JsonSerializer.Serialize(paymentResult, new JsonSerializerOptions { WriteIndented = true }));
 
-                    if (_env.IsDevelopment())
-                    {
-                        Console.WriteLine("Đang chạy môi trường Development");
-                        int orderId = int.Parse(paymentResult.Description.Replace("orderId_", ""));
-                        var payment = await _paymentRepository.GetPaymentByOrderIdAsync(orderId);
-
-                        var updatePayment = new Payment
-                        {
-                            TransactionId = payment.TransactionId,
-                            OrderId = payment.OrderId,
-                            PaymentMethod = payment.PaymentMethod,
-                            PaymentStatus = PaymentStatusEnum.Success.ToString(),
-                            Amount = payment.Amount,
-                            PaymentDate = payment.PaymentDate,
-                        };
-
-                        await _paymentRepository.UpdatePaymentAsync(payment.PaymentId, updatePayment);
-                    }
-
                     if (paymentResult.IsSuccess)
                     {
+                        if (_env.IsDevelopment())
+                        {
+                            Console.WriteLine("Đang chạy môi trường Development");
+                            int orderId = int.Parse(paymentResult.Description.Replace("orderId_", ""));
+                            var payment = await _paymentRepository.GetPaymentByOrderIdAsync(orderId);
+
+                            var updatePayment = new Payment
+                            {
+                                TransactionId = payment.TransactionId,
+                                OrderId = payment.OrderId,
+                                PaymentMethod = payment.PaymentMethod,
+                                PaymentStatus = PaymentStatusEnum.Success.ToString(),
+                                Amount = payment.Amount,
+                                PaymentDate = payment.PaymentDate,
+                            };
+
+                            await _paymentRepository.UpdatePaymentAsync(payment.PaymentId, updatePayment);
+                        }
                         return Ok(paymentResult);
                     }
 
