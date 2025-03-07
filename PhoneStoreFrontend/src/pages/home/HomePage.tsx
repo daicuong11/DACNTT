@@ -6,6 +6,9 @@ import FlashSaleView from './components/FlashSaleView'
 import LaptopSaleView from './components/LaptopSaleView'
 import MobileSaleView from './components/MobileSaleView'
 import RightBanner from './components/RightBanner'
+import SaleView from './components/SaleView'
+
+const initPage = ['Máy tính bảng', 'Âm thanh', 'Đồng hồ', 'Camera', 'Phụ kiện', 'Tivi', 'PC', 'Màn hình', 'Máy in']
 
 const HomePage = () => {
   useSetDocTitle('BC Mobile')
@@ -26,6 +29,9 @@ const HomePage = () => {
         <FlashSaleView />
         <MobileSaleView />
         <LaptopSaleView />
+        {initPage.map((categoryName, index) => (
+          <SaleView key={index} categoryName={categoryName} />
+        ))}
         {/* {[
           'bg-gradient-luxury-2',
           'bg-gradient-gold',

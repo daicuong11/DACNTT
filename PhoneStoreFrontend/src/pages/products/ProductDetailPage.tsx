@@ -89,7 +89,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
       <LoginOfRegisterModal isOpen={isOpen} onClose={closeModal} />
       {/* {isLoading && <LoadingOpacity />} */}
       <div className='flex flex-col gap-4'>
-        <div className='flex flex-col md:flex-row md:items-center gap-2 text-nowrap'>
+        <div className='flex flex-col gap-2 md:flex-row md:items-center text-nowrap'>
           <div className='text-xl font-semibold'>{productVariant?.variantName}</div>
           <div className='flex items-center gap-2'>
             <ConfigProvider
@@ -104,7 +104,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
                   productVariant && productVariant?.reviews.length > 0
                     ? productVariant?.reviews.reduce((sum, review) => sum + review.rating, 0) /
                       productVariant?.reviews.length
-                    : 5
+                    : 0
                 }
                 allowHalf
                 disabled
@@ -121,7 +121,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
           </div>
         </div>
         <div className='w-full h-[1px] bg-slate-200'></div>
-        <div className='flex flex-col md:grid w-full grid-cols-12 lg:grid-cols-10 gap-6'>
+        <div className='flex flex-col w-full grid-cols-12 gap-6 md:grid lg:grid-cols-10'>
           <div className='col-span-5 lg:col-span-6 md:sticky md:top-[108px] h-max'>
             {productVariant && (
               <CarouselProductImages
@@ -375,7 +375,7 @@ const ProductDetailPage: FC<ProductDetailPageProps> = () => {
               <ProductComments productVariant={productVariant} />
             </div>
           )}
-          <div className='hidden md:block col-span-4 lg:col-span-3'>
+          <div className='hidden col-span-4 md:block lg:col-span-3'>
             {productVariant && <ProductSpecifications productVariantId={productVariant?.productVariantId} />}
           </div>
         </div>

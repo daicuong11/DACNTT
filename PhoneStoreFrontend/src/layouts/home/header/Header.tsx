@@ -84,7 +84,11 @@ const Header: FC<HeaderProps> = ({ showBreadcrumb = true }) => {
             <Search />
           </div>
           <div className='flex items-center justify-end gap-x-3 '>
-            <ButtonHeader className='hidden min-[850px]:flex' icon={GiaoHangIcon}>
+            <ButtonHeader
+              onClick={() => navigate('/profile/order')}
+              className='hidden min-[850px]:flex'
+              icon={GiaoHangIcon}
+            >
               <div className='flex flex-col gap-y-1'>
                 <span className='text-wrap'>Tra cứu</span>
                 <span className='line-clamp-1 text-wrap'>đơn hàng</span>

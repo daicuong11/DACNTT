@@ -1,4 +1,5 @@
-﻿using PhoneStoreBackend.Enums;
+﻿using PhoneStoreBackend.Entities;
+using PhoneStoreBackend.Enums;
 
 namespace PhoneStoreBackend.DTOs
 {
@@ -13,6 +14,8 @@ namespace PhoneStoreBackend.DTOs
         public bool Active { get; set; }
         public string ProfilePicture { get; set; }
         public bool IsGoogleAccount { get; set; }
+        public ICollection<Address> Addresses { get; set; } = new List<Address>();
+
 
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }

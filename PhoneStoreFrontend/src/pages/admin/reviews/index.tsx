@@ -88,13 +88,12 @@ export default function Reviews() {
         <Button
           type='primary'
           disabled={isReply} // ✅ Không thể click nếu đã trả lời
-          loading={isPending}
           className={`transition-all px-4 py-1 rounded-lg text-white ${
             isReply ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-500 hover:bg-blue-600'
           }`}
           onClick={() => updateReply({ reviewId: record.reviewId, isReply: !isReply })}
         >
-          {isReply ? 'Đã trả lời' : 'Chưa trả lời'}
+          {isReply ? 'Đã liên hệ' : 'Liên hệ ngay'}
         </Button>
       )
     }
@@ -104,7 +103,7 @@ export default function Reviews() {
     <>
       <Table
         columns={columns}
-        loading={isLoading}
+        loading={isLoading || isPending}
         dataSource={reviews || []}
         rowKey='reviewId'
         pagination={{ pageSize: 10 }}
@@ -117,7 +116,7 @@ export default function Reviews() {
             <Descriptions.Item label='Tên'>{selectedUser.name}</Descriptions.Item>
             <Descriptions.Item label='Email'>{selectedUser.email || 'Chưa có'}</Descriptions.Item>
             <Descriptions.Item label='Số điện thoại'>{selectedUser.phoneNumber || 'Chưa có'}</Descriptions.Item>
-            <Descriptions.Item label='Địa chỉ'>{selectedUser.address || 'Chưa cập nhật'}</Descriptions.Item>
+            {/* <Descriptions.Item label='Địa chỉ'>{selectedUser.address || 'Chưa cập nhật'}</Descriptions.Item> */}
           </Descriptions>
         )}
       </Modal>

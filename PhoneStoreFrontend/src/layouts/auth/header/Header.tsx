@@ -43,8 +43,15 @@ const Header: FC<HeaderProps> = ({ showBreadcrumb = true }) => {
       <div className='h-[64px] bg-primary px-2.5'>
         <div className='max-w-[1200px] grid grid-cols-3 mx-auto gap-x-3 leading-[64px]'>
           <div className='flex items-center gap-x-3'>
-            <Link to={'/'} className='py-2 rounded'>
-              <img className='object-cover w-30 h-[40px]' src={'/logo.png'} alt='logo' />
+            <Link to={'/'} className='hidden py-2 rounded md:block'>
+              <img className='object-contain w-30 h-[40px]' src={'/logo_small.png'} alt='logo' />
+            </Link>
+            <Link to={'/'} className='py-2 rounded md:hidden'>
+              <img
+                className='object-contain w-[34px] h-[34px] border border-white rounded'
+                src={'/logo_small.png'}
+                alt='logo'
+              />
             </Link>
 
             <ButtonHeader

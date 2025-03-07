@@ -25,13 +25,18 @@ namespace PhoneStoreBackend.Repository.Implements
 
         public async Task<UserDTO> GetUserByIdAsync(int id)
         {
-            var user = await _context.Users.FindAsync(id);
+            var user = await _context.Users
+                .Include(u => u.Addresses)
+                .FirstOrDefaultAsync(u => u.Id == id);
+
             if (user == null)
             {
                 throw new KeyNotFoundException("User not found.");
             }
+
             return _mapper.Map<UserDTO>(user);
         }
+
 
         public async Task<UserDTO> AddUserAsync(User user)
         {

@@ -65,6 +65,7 @@ namespace PhoneStoreBackend.Repository.Implements
                 .Include(pv => pv.Discount)
                 .Include(v => v.ProductImages)
                 .Include(v => v.ProductSpecifications)
+                .Include(v => v.Reviews)
                 .FirstOrDefaultAsync(p => p.ProductVariantId == id);
 
             if (findProductVariant == null)
@@ -87,6 +88,7 @@ namespace PhoneStoreBackend.Repository.Implements
                 Slug = findProductVariant.Slug,
                 Stock = findProductVariant.Stock,
                 Storage = findProductVariant.Storage,
+                Reviews = findProductVariant.Reviews,
             };
         }
 

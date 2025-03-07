@@ -41,6 +41,7 @@ const PaymentMethodModal: FC<PaymentMethodModal> = ({ isOpen, onClose, onFinish,
         {listPaymentMethod.map((method) => (
           <PaymentMethodItem
             key={method.id}
+            isDisabled={method.disabled}
             isActive={activePaymentMethod?.id === method.id}
             paymentMethod={method}
             onChange={() => setActivePaymentMethod(method)}

@@ -6,6 +6,7 @@ export type PaymentMethodType = {
   id: number
   name: string
   image: string
+  disabled?: boolean
 }
 
 export type ShippingInfoType = {

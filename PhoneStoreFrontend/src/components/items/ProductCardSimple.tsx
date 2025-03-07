@@ -1,4 +1,4 @@
-import { FC, HTMLAttributes, useState } from 'react'
+import { FC, HTMLAttributes, useMemo, useState } from 'react'
 import { ConfigProvider, Flex, Rate, Tag } from 'antd'
 import classNames from 'classnames'
 import { useNavigate } from 'react-router-dom'
@@ -24,6 +24,16 @@ const ProductCardSimple: FC<ProductCardSimpleType> = ({ productVariantId, ...pro
     }
   }
 
+  const rating = useMemo(() => {
+    return productVariant && productVariant?.reviews.length > 0
+      ? productVariant?.reviews.reduce((sum, review) => sum + review.rating, 0) / productVariant?.reviews.length
+      : 0
+  }, [productVariant])
+
+  const countReview = useMemo(() => {
+    return productVariant?.reviews.length
+  }, [productVariant])
+
   return isLoading ? (
     <SkeletonProductCard />
   ) : (
@@ -44,7 +54,7 @@ const ProductCardSimple: FC<ProductCardSimpleType> = ({ productVariantId, ...pro
           <h2 className='h-[60px] text-xs sm:text-sm font-bold text-black/80 line-clamp-3'>
             {productVariant?.fullNameVariant}
           </h2>
-          <div className='flex text-sm sm:text-base items-end gap-1 font-sans font-bold flex-wrap'>
+          <div className='flex flex-wrap items-end gap-1 font-sans text-sm font-bold sm:text-base'>
             <span className='leading-none text-primary'>{formatPrice(productVariant?.price || 0)}</span>
             <span className='text-xs sm:text-sm !leading-none line-through text-slate-600'>
               {formatPrice(getPriceAfterDiscount(productVariant?.price || 0, productVariant?.discountPercentage || 0))}
@@ -61,10 +71,10 @@ const ProductCardSimple: FC<ProductCardSimpleType> = ({ productVariantId, ...pro
                   }
                 }}
               >
-                <Rate value={5} allowHalf disabled className='text-base' />
+                <Rate value={rating} allowHalf disabled className='text-base' />
               </ConfigProvider>
             </div>
-            <div className='text-xs text-gray-500'>17 đánh giá</div>
+            <div className='text-xs text-gray-500'>{countReview} đánh giá</div>
           </div>
         </div>
       </div>

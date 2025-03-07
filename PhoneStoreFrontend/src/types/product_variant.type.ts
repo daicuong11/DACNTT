@@ -54,6 +54,7 @@ export interface VariantBasicResponse {
   stock: number
   imageUrl: string
   reviewRate: number
+  reviews: ReviewType[]
 }
 
 export interface ProductVariantResponse {

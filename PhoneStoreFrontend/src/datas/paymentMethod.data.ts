@@ -15,6 +15,7 @@ export const listPaymentMethod: PaymentMethodType[] = [
   {
     id: 3,
     name: 'Ví MoMo',
-    image: momo_vi_img
+    image: momo_vi_img,
+    disabled: true
   }
 ]

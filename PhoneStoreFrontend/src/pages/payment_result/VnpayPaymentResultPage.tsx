@@ -49,7 +49,7 @@ const VnpayPaymentResultPage = () => {
                 >
                   {data1?.isSuccess ? 'Đặt hàng thành công' : 'Đặt hàng không thành công'}
                 </div>
-                <div className='md:text-sm text-xs font-normal text-gray-500'>
+                <div className='text-xs font-normal text-gray-500 md:text-sm'>
                   {data1?.isSuccess
                     ? 'Vào tra cứu đơn hàng để xem thông tin vận chuyển'
                     : 'Vui lòng kiểm tra lại thông tin đặt hàng & thanh toán'}
@@ -148,7 +148,10 @@ const VnpayPaymentResultPage = () => {
             <div className='mt-6 space-y-3'>
               <div className='uppercase'>Danh sách sản phẩm</div>
               {data?.orderDetails.map((item, index) => (
-                <div className='p-5 space-y-4 bg-white border text-gray-900 border-gray-300 rounded-lg text-[15px]'>
+                <div
+                  key={index}
+                  className='p-5 space-y-4 bg-white border text-gray-900 border-gray-300 rounded-lg text-[15px]'
+                >
                   <div className='flex gap-x-4'>
                     <div className='w-[100px] h-[100px] flex-shrink-0'>
                       <img src={item.productVariant.imageUrl} className='object-contain w-full h-full' />
@@ -193,10 +196,10 @@ const VnpayPaymentResultPage = () => {
           </div>
         ) : (
           <div className='flex flex-row gap-x-3 text-nowrap'>
-            <button onClick={() => navigate('/')} className='btn btn-outline flex-1'>
+            <button onClick={() => navigate('/')} className='flex-1 btn btn-outline'>
               Xem sản phẩm khác
             </button>
-            <button onClick={() => navigate('/cart')} className='btn btn-danger flex-1'>
+            <button onClick={() => navigate('/cart')} className='flex-1 btn btn-danger'>
               Mua lại
             </button>
           </div>

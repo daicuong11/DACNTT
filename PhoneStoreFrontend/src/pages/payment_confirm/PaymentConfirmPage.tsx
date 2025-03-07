@@ -70,24 +70,25 @@ const PaymentConfirmPage = () => {
   }
 
   const handleSearchCoupon = () => {
-    const couponSearch = {
-      couponId: 1,
-      code: couponCodeInput,
-      isPercentage: false,
-      discountValue: 100000,
-      minimumOrderAmount: 100000,
-      maxUsageCount: 100,
-      UsedCount: 0,
-      StartDate: '2025-01-01',
-      EndDate: '2025-12-31',
-      isActive: true,
-      ApplyToCategory: 'all',
-      isSingleUse: false,
-      userCreateId: 1
-    }
-    setCouponActive(couponSearch)
-    dispatch(setCoupon(couponSearch))
-    toast(`Áp dụng mã giảm giá thành công.`)
+    // const couponSearch = {
+    //   couponId: 1,
+    //   code: couponCodeInput,
+    //   isPercentage: false,
+    //   discountValue: 100000,
+    //   minimumOrderAmount: 100000,
+    //   maxUsageCount: 100,
+    //   UsedCount: 0,
+    //   StartDate: '2025-01-01',
+    //   EndDate: '2025-12-31',
+    //   isActive: true,
+    //   ApplyToCategory: 'all',
+    //   isSingleUse: false,
+    //   userCreateId: 1
+    // }
+    // setCouponActive(couponSearch)
+    // dispatch(setCoupon(couponSearch))
+    // toast(`Áp dụng mã giảm giá thành công.`)
+    toast.error('Mã giảm giá không tồn tại')
   }
 
   const handleClearCoupon = () => {

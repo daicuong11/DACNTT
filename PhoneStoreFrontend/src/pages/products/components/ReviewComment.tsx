@@ -2,7 +2,9 @@ import { iphone1 } from '@/assets/images/iphone'
 import { AvatarCustom } from '@/components'
 import { ReviewType } from '@/types/review.type'
 import { formatTime } from '@/utils/fomatTime'
+import { formatterDay } from '@/utils/formatterDay'
 import { ConfigProvider, Divider, Flex, Image, Rate, Tag } from 'antd'
+import { formatDate } from 'date-fns'
 import { Clock } from 'lucide-react'
 import { FC } from 'react'
 
@@ -60,7 +62,7 @@ const ReviewComment: FC<ReviewCommentProps> = ({ review }) => {
       {review.isReply && (
         <div>
           <div className='mt-8 relative bg-primary/5 text-primary py-1.5 px-3 text-sm font-medium text-center border-y border-primary'>
-            Hỗ trợ kỹ thuật đã liên hệ hỗ trợ ngày 17/11/2024
+            Hỗ trợ kỹ thuật đã liên hệ hỗ trợ vào lúc {formatterDay.format(new Date(review.updatedAt))}
             <span className='absolute left-0 h-[calc(100%+8px)] w-1 bg-primary -translate-y-1/2 top-1/2'>
               <span className='absolute w-3 h-2 -translate-x-1/2 rounded-t-sm rounded-b -top-1 left-1/2 bg-primary'></span>
               <span className='absolute w-3 h-2 -translate-x-1/2 rounded-t-sm rounded-b -bottom-1 left-1/2 bg-primary'></span>

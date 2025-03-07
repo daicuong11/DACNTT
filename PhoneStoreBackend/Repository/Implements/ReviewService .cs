@@ -200,7 +200,7 @@ namespace PhoneStoreBackend.Repository.Implements
             }
 
             review.IsReply = isReply;
-            review.UpdatedAt = DateTime.UtcNow;
+            review.UpdatedAt = DateTime.Now;
 
             await _context.SaveChangesAsync();
 

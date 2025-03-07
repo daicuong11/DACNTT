@@ -54,8 +54,15 @@ const Header = () => {
 
       <div className='max-w-[1200px] grid grid-cols-3 mx-auto gap-x-3 leading-[64px]'>
         <div className='flex items-center gap-x-3'>
-          <Link to={'/'} className='py-2 rounded'>
-            <img className='object-cover w-40 h-[30px]' src={'/logo.png'} alt='logo' />
+          <Link to={'/'} className='hidden py-2 rounded md:block'>
+            <img className='object-contain w-30 h-[40px]' src={'/logo_small.png'} alt='logo' />
+          </Link>
+          <Link to={'/'} className='py-2 rounded md:hidden'>
+            <img
+              className='object-contain w-[34px] h-[34px] border border-white rounded'
+              src={'/logo_small.png'}
+              alt='logo'
+            />
           </Link>
 
           <ButtonHeader
@@ -73,7 +80,7 @@ const Header = () => {
           <Search />
         </div>
         <div className='flex items-center justify-end gap-x-3'>
-          <ButtonHeader className='hidden sm:flex' icon={GiaoHangIcon}>
+          <ButtonHeader onClick={() => navigate('/profile/order')} className='hidden sm:flex' icon={GiaoHangIcon}>
             <div className='flex flex-col gap-y-1'>
               <span className='text-wrap'>Tra cứu</span>
               <span className='line-clamp-1 text-wrap'>đơn hàng</span>

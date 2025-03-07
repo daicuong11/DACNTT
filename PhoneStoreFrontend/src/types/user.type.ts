@@ -1,3 +1,5 @@
+import { AddressType } from './address.type'
+
 export interface UserType {
   id: number
   name: string
@@ -8,6 +10,7 @@ export interface UserType {
   active: boolean
   profilePicture: string
   isGoogleAccount: boolean
+  addresses: AddressType[]
   createdAt: string
   updatedAt: string
 }
@@ -20,5 +23,5 @@ export enum RoleEnum {
   ADMIN = 'ADMIN',
   CUSTOMER = 'CUSTOMER',
   STUDENT = 'STUDENT',
-  STAFF = 'STAFF',
+  STAFF = 'STAFF'
 }

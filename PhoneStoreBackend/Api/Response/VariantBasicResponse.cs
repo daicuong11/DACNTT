@@ -24,5 +24,8 @@ namespace PhoneStoreBackend.Api.Response
         public int Stock { get; set; }
 
         public string ImageUrl { get; set; }
+
+        public ICollection<Review> Reviews { get; set; } = new List<Review>();
+
     }
 }

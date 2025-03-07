@@ -7,14 +7,17 @@ interface PaymentMethodItemProps {
   paymentMethod: PaymentMethodType
   isActive: boolean
   onChange: (method: PaymentMethodType) => void
+  isDisabled?: boolean
 }
-const PaymentMethodItem: FC<PaymentMethodItemProps> = ({ paymentMethod, isActive, onChange }) => {
+const PaymentMethodItem: FC<PaymentMethodItemProps> = ({ paymentMethod, isActive, onChange, isDisabled }) => {
   return (
-    <div
+    <button
+      disabled={isDisabled}
       onClick={() => onChange(paymentMethod)}
       className={classNames('flex items-center p-3 border  cursor-pointer rounded-xl gap-x-3 relative transition-all', {
         'border-gray-200': !isActive,
-        'border-primary': isActive
+        'border-primary': isActive,
+        'cursor-not-allowed opacity-50': isDisabled
       })}
     >
       <div className='h-[50px] w-[50px] flex-shrink-0 mx-1.5'>
@@ -26,7 +29,7 @@ const PaymentMethodItem: FC<PaymentMethodItemProps> = ({ paymentMethod, isActive
           <Check size={8} strokeWidth={3} />
         </span>
       )}
-    </div>
+    </button>
   )
 }
 
