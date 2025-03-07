@@ -153,6 +153,96 @@ namespace PhoneStoreBackend.Repository.Implements
             }
         }
 
+        public async Task<ICollection<ProductResponse>> Get15ProductOfCategoryName(ICollection<string> listCategoryName)
+        {
+            const string RAM_KEY = "dung lượng ram";
+            const string SCREEN_SIZE_KEY = "kích thước màn hình";
+            const string STORAGE_KEY_1 = "ổ cứng";
+            const string STORAGE_KEY_2 = "bộ nhớ trong";
+
+            try
+            {
+                // Lấy danh mục theo danh sách tên
+                var findCategories = await _context.Categories
+                    .Where(c => listCategoryName.Contains(c.Name.ToLower()))
+                    .ToListAsync();
+
+                if (!findCategories.Any())
+                {
+                    return new List<ProductResponse>();
+                }
+
+                var categoryIds = findCategories.Select(c => c.CategoryId).ToList();
+
+                // Lấy toàn bộ sản phẩm, đảm bảo Include() đầy đủ
+                var products = await _context.Products
+                    .Where(p => categoryIds.Contains(p.CategoryId))
+                    .Include(p => p.Category) // Đảm bảo Category không null
+                    .Include(p => p.Brand) // Đảm bảo Brand không null
+                    .Include(p => p.ProductVariants)
+                        .ThenInclude(v => v.ProductSpecifications)
+                    .Include(p => p.ProductVariants)
+                        .ThenInclude(v => v.Reviews)
+                    .OrderBy(p => p.ProductId)
+                    .ToListAsync();
+
+                // Kiểm tra nếu danh sách sản phẩm trống
+                if (!products.Any())
+                {
+                    return new List<ProductResponse>();
+                }
+
+                // Nhóm sản phẩm theo danh mục và lấy 15 sản phẩm đầu mỗi nhóm
+                var groupedProducts = products
+                    .GroupBy(p => p.CategoryId)
+                    .SelectMany(g => g.Take(15))
+                    .ToList();
+
+                // Convert danh sách sản phẩm sang ProductResponse
+                var list = groupedProducts.Select(p => new ProductResponse
+                {
+                    ProductId = p.ProductId,
+                    Name = p.Name,
+                    Category = new CategoryRespone
+                    {
+                        CategoryId = p.Category?.CategoryId ?? 0, // Tránh lỗi null
+                        Name = p.Category?.Name ?? "Unknown"
+                    },
+                    Brand = new BrandResponse
+                    {
+                        BrandId = p.Brand?.BrandId ?? 0, // Tránh lỗi null
+                        Name = p.Brand?.Name ?? "Unknown"
+                    },
+                    ProductVariants = p.ProductVariants?.Select(v => new ProductVariantResponse
+                    {
+                        VariantId = v.ProductVariantId,
+                        Slug = v.Slug,
+                        VariantName = v.VariantName,
+                        DiscountPercentage = v.Discount != null && v.Discount.IsActive ? v.Discount.Percentage : 0,
+                        Price = v.Price,
+                        Color = v.Color,
+                        ImageUrl = v.ImageUrl,
+                        CategoryName = p.Category?.Name ?? "Unknown",
+                        BrandName = p.Brand?.Name ?? "Unknown",
+                        ReviewRate = v.Reviews?.Any() == true ? v.Reviews.Average(r => (double?)r.Rating) ?? 0 : 0,
+                        RAM = v.ProductSpecifications?
+                            .FirstOrDefault(spec => spec.Key.ToLower() == RAM_KEY)?.Value ?? "",
+                        ScreenSize = v.ProductSpecifications?
+                            .FirstOrDefault(spec => spec.Key.ToLower() == SCREEN_SIZE_KEY)?.Value ?? "",
+                        Storage = v.ProductSpecifications?
+                            .FirstOrDefault(spec => spec.Key.ToLower() == STORAGE_KEY_1 || spec.Key.ToLower() == STORAGE_KEY_2)
+                            ?.Value ?? ""
+                    }).Take(1).ToList() ?? new List<ProductVariantResponse>()
+                }).ToList();
+
+                return list;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error retrieving products: {ex.Message}", ex);
+            }
+        }
+
 
         public async Task<ICollection<ProductResponse>> GetAllProductOfLaptop()
         {

@@ -1,6 +1,7 @@
 import {
   addProduct,
   addProductWithVariants,
+  get15ProductOfCategoriesName,
   get15ProductOfCategoryName,
   get15ProductSimilar,
   getAllProduct,
@@ -102,6 +103,14 @@ export const useGet15ProductOfCategoryName = (categoryName: string) => {
     queryKey: ['get15ProductOfCategoryName', categoryName],
     queryFn: () => get15ProductOfCategoryName(categoryName),
     enabled: !!categoryName
+  })
+}
+
+export const useGet15ProductOfCategoriesName = (categoryNames: string[]) => {
+  return useQuery({
+    queryKey: ['get15ProductOfCategoriesName', categoryNames],
+    queryFn: () => get15ProductOfCategoriesName(categoryNames),
+    enabled: !!categoryNames.length
   })
 }
 

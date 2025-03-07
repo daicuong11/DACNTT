@@ -129,7 +129,7 @@ const CreateReviewModal: FC<CreateReviewModalProps> = ({ isOpen, closeModal, pro
         >
           {isPending ? (
             <>
-              'Đang gửi...' <LoadingItem />
+              Đang gửi... <LoadingItem />
             </>
           ) : (
             'Gửi đánh giá'

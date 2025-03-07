@@ -37,7 +37,12 @@ const AvatarCustom: React.FC<{ name: string; size?: AvatarSize; role?: string }>
   const initials = name ? name.charAt(0).toUpperCase() : '?'
 
   return (
-    <Avatar size={size} gap={3} style={{ backgroundColor: getColor(name), verticalAlign: 'middle' }}>
+    <Avatar
+      size={size}
+      gap={3}
+      className='flex-shrink-0'
+      style={{ backgroundColor: getColor(name), verticalAlign: 'middle' }}
+    >
       {role && role.toLowerCase() === 'admin'.toLocaleLowerCase() ? 'Admin' : initials}
     </Avatar>
   )

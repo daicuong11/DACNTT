@@ -97,18 +97,20 @@ const ProductComments: FC<ProductCommentsProps> = ({ productVariant }) => {
         ))}
       </div>
 
-      <div className={classNames('my-2', { hidden: !hasNextPage })}>
-        <button
-          disabled={!hasNextPage || isFetching || isFetchingNextPage}
-          onClick={() => fetchNextPage()}
-          className='items-center font-roboto mx-auto text-[15px] w-min text-nowrap px-20 font-medium border border-gray-200 shadow-md btn btn-light hover:border-primary hover:text-primary hover:!bg-red-50 drop-shadow-sm'
-        >
-          {isFetchingNextPage ? 'Đang tải...' : 'Xem thêm'}
-          <span>
-            <ChevronDown size={18} strokeWidth={2} />
-          </span>
-        </button>
-      </div>
+      {hasNextPage && (
+        <div className={classNames('my-2')}>
+          <button
+            disabled={!hasNextPage || isFetching || isFetchingNextPage}
+            onClick={() => fetchNextPage()}
+            className='items-center font-roboto mx-auto text-[15px] w-min text-nowrap px-20 font-medium border border-gray-200 shadow-md btn btn-light hover:border-primary hover:text-primary hover:!bg-red-50 drop-shadow-sm'
+          >
+            {isFetchingNextPage ? 'Đang tải...' : 'Xem thêm'}
+            <span>
+              <ChevronDown size={18} strokeWidth={2} />
+            </span>
+          </button>
+        </div>
+      )}
     </ContainerPanel>
   )
 }

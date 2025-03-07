@@ -115,6 +115,22 @@ namespace PhoneStoreBackend.Controllers
             }
         }
 
+        [HttpPost("categories/15")]
+        public async Task<IActionResult> GetAllProductOfCategories([FromBody] Get15ProductOfCategoryNamesRequest req)
+        {
+            try
+            {
+                var productVariants = await _productRepository.Get15ProductOfCategoryName(req.CategoryNames);
+                var response = Response<ICollection<ProductResponse>>.CreateSuccessResponse(productVariants, "Danh sách sản phẩm: ");
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = Response<object>.CreateErrorResponse($"Đã xảy ra lỗi: {ex.Message}");
+                return BadRequest(errorResponse);
+            }
+        }
+
         [HttpGet("category/{categoryName}/15")]
         public async Task<IActionResult> GetAllProductOfLaptop([FromRoute] string categoryName)
         {

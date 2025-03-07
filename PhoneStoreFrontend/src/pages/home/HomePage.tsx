@@ -1,4 +1,3 @@
-import { Sparkles } from 'lucide-react'
 import useSetDocTitle from '../../hooks/useSetDocTitle'
 import CarouselBanner from './components/CarouselBanner'
 import CategoryContainer from './components/CategoryContainer'
@@ -7,8 +6,9 @@ import LaptopSaleView from './components/LaptopSaleView'
 import MobileSaleView from './components/MobileSaleView'
 import RightBanner from './components/RightBanner'
 import SaleView from './components/SaleView'
+import WatchCameraView from './components/WatchCameraView'
 
-const initPage = ['Máy tính bảng', 'Âm thanh', 'Đồng hồ', 'Camera', 'Phụ kiện', 'Tivi', 'PC', 'Màn hình', 'Máy in']
+const initPage = ['Máy tính bảng', 'Âm thanh', 'Phụ kiện', 'Tivi', 'PC', 'Màn hình', 'Máy in']
 
 const HomePage = () => {
   useSetDocTitle('BC Mobile')
@@ -29,6 +29,7 @@ const HomePage = () => {
         <FlashSaleView />
         <MobileSaleView />
         <LaptopSaleView />
+        <WatchCameraView />
         {initPage.map((categoryName, index) => (
           <SaleView key={index} categoryName={categoryName} />
         ))}

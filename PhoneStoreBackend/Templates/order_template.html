@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #ddd;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .fee,
+        .total {
+            text-align: right;
+            font-size: 1.2em;
+            margin-top: 20px;
+        }
+
+        a {
+            color: blue;
+        }
+
+        a:hover {
+            text-decoration-line: underline
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Xin chào, {{CustomerName}}</h2>
+        <p>
+            Cảm ơn bạn đã đặt hàng tại
+            <strong style="color: #d70018">BC Mobile</strong>. Dưới đây là thông tin
+            đơn hàng của bạn:
+        </p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Tên sản phẩm</th>
+                    <th>Số lượng</th>
+                    <th>Giá</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{OrderDetails}}
+            </tbody>
+        </table>
+        <p class="fee">Phí vận chuyển: <span>{{ShippingFee}} VNĐ</span></p>
+
+        <p class="total">Tổng tiền: <strong>{{TotalAmount}} VNĐ</strong></p>
+        <p>
+            Bạn có thể theo dõi đơn hàng của mình tại
+            <a href="http://localhost:3000/profile/order/order-detail/{{OrderId}}">đây</a>. Xin cảm ơn!
+        </p>
+        <footer>
+            <p>
+                Liên hệ với chúng tôi qua email:
+                <a href="mailto:support@bcmobile.com">support@bcmobile.com</a>
+            </p>
+        </footer>
+    </div>
+</body>
+</html>

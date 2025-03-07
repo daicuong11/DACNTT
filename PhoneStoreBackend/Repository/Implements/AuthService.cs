@@ -70,7 +70,7 @@ namespace PhoneStoreBackend.Repository.Implements
                     PhoneNumber = user.PhoneNumber,
                     Email = user.Email,
                     Password = hashedPassword,
-                    Role = RoleEnum.ADMIN.ToString(),
+                    Role = RoleEnum.CUSTOMER.ToString(),
                     Active = true,
                     IsGoogleAccount = false
                 };

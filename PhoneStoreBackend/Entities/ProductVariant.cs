@@ -23,7 +23,6 @@ namespace PhoneStoreBackend.Entities
         [StringLength(500)]
         public string VariantName { get; set; }
 
-        [StringLength(100)]
         [Required]
         public string Slug { get; set; }
 

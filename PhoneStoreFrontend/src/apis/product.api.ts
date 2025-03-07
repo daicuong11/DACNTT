@@ -29,6 +29,11 @@ export const get15ProductOfCategoryName = async (categoryName: string): Promise<
   return res.data
 }
 
+export const get15ProductOfCategoriesName = async (categoryNames: string[]): Promise<ProductResponse[]> => {
+  const res = await axiosInstance.post(`products/categories/15`, { categoryNames })
+  return res.data
+}
+
 export const getAllProductOfMobile = async (): Promise<ProductResponse[]> => {
   const res = await axiosInstance.get('products/mobile')
   return res.data

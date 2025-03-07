@@ -7,6 +7,10 @@ using PhoneStoreBackend.DbContexts;
 using PhoneStoreBackend.Enums;
 using PhoneStoreBackend.Helpers;
 using PhoneStoreBackend.Repository;
+using System.Text;
+using System.IO;
+using PhoneStoreBackend.Repository.Implements;
+
 
 namespace PhoneStoreBackend.Controllers
 {
@@ -16,11 +20,13 @@ namespace PhoneStoreBackend.Controllers
     {
         private readonly IGHNRepository _gHNRepository;
         private readonly AppDbContext _context;
+        private readonly IEmailRepository _emailRepository;
 
-        public GHNController(IGHNRepository gHNRepository, AppDbContext context)
+        public GHNController(IGHNRepository gHNRepository, AppDbContext context, IEmailRepository emailRepository)
         {
             _gHNRepository = gHNRepository;
             _context = context;
+            _emailRepository = emailRepository;
         }
 
         [HttpPost]
@@ -48,6 +54,10 @@ namespace PhoneStoreBackend.Controllers
                 {
                     return BadRequest(Response<object>.CreateErrorResponse("Địa chỉ giao hàng không được để trống"));
                 }
+
+                string templatePath = Path.Combine(Directory.GetCurrentDirectory(), "Templates", "order_template.html");
+                string emailBody = await System.IO.File.ReadAllTextAsync(templatePath, Encoding.UTF8);
+
 
                 var getListAdress = findOrder.ShippingAddress.Split(',')
                     .Select(x => x.Trim())
@@ -88,6 +98,25 @@ namespace PhoneStoreBackend.Controllers
                         Quantity = od.Quantity,
                     }).ToList()
                 };
+
+                // Format danh sách sản phẩm
+                string orderDetailsHtml = string.Join("", findOrder.OrderDetails.Select(od =>
+                    $"<tr><td>{od.ProductVariant.VariantName}</td><td>{od.Quantity}</td><td>{(od.Price * (1 - od.Discount / 100m)):N0} VNĐ</td></tr>"
+                ));
+
+
+                // Thay thế các biến trong template bằng dữ liệu thực tế
+                emailBody = emailBody
+                    .Replace("{{OrderId}}", findOrder.OrderId.ToString())
+                    .Replace("{{CustomerName}}", findOrder.Customer.Name)
+                    .Replace("{{ShippingAddress}}", findOrder.ShippingAddress)
+                    .Replace("{{OrderDate}}", findOrder.OrderDate.ToString("dd/MM/yyyy"))
+                    .Replace("{{OrderDetails}}", orderDetailsHtml)
+                    .Replace("{{ShippingFee}}", findOrder.ShippingFee.ToString("N0"))
+                    .Replace("{{TotalAmount}}", findOrder.TotalAmount.ToString("N0"));
+
+                await _emailRepository.SendEmailAsync("lydaicuong784@gmail.com", "Xác nhận đơn hàng #" + findOrder.OrderId, emailBody);
+
 
                 var createdGHNOrder = await _gHNRepository.CreateGHNOrder(ghnReq);
                 if (createdGHNOrder == null || string.IsNullOrEmpty(createdGHNOrder.OrderCode))

@@ -51,7 +51,10 @@ const ReviewComment: FC<ReviewCommentProps> = ({ review }) => {
           review.images.split(';').map((image, index) => {
             if (image) {
               return (
-                <span key={index} className='w-32 h-32 overflow-hidden border border-gray-200 rounded-md'>
+                <span
+                  key={index}
+                  className='flex items-center justify-center w-32 h-32 overflow-hidden border border-gray-200 rounded-md'
+                >
                   <Image src={image} alt={`Product image ${index + 1}`} />
                 </span>
               )

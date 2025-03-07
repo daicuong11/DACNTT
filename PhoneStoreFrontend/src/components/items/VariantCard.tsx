@@ -87,7 +87,7 @@ const VariantCard: FC<VariantCardType> = ({ variant, ...props }) => {
               <span className='text-sm leading-none line-through text-slate-600'>{formatPrice(variant.price)}</span>
             )}
           </div>
-          <Flex className='mt-2' gap='4px 0' wrap>
+          <Flex className='mt-1' gap='4px 0' wrap>
             {variant.screenSize && (
               <Tag color='default' className='text-[10px] md:text-[12px] text-gray-500'>
                 {variant.screenSize}
@@ -103,9 +103,14 @@ const VariantCard: FC<VariantCardType> = ({ variant, ...props }) => {
                 {variant.storage.length > 10 ? variant.storage.split('GB')[0] + 'GB' : variant.storage}
               </Tag>
             )}
+            {variant.color && (
+              <Tag color='default' className='text-[10px] md:text-[12px] text-gray-500'>
+                {variant.color}
+              </Tag>
+            )}
           </Flex>
         </div>
-        <div className='flex flex-col justify-end flex-1 mt-2'>
+        <div className='flex flex-col justify-end flex-1'>
           <div className='flex items-center justify-between'>
             <div className={classNames({ invisible: false })}>
               <ConfigProvider

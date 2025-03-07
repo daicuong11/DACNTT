@@ -22,12 +22,7 @@ const listCategory: CategoryRenderType[] = [
       {
         title: 'Hãng điện thoại',
         baseUrl: '/mobile',
-        listSelection: [
-          { title: 'Apple' },
-          { id: 2, title: 'Samsung' },
-          { id: 3, title: 'Xiaomi' },
-          { id: 4, title: 'OPPO' }
-        ]
+        listSelection: [{ title: 'Apple' }, { title: 'Samsung' }, { title: 'Xiaomi' }, { title: 'OPPO' }]
       },
       {
         title: 'Mức giá hiện tại',
@@ -60,13 +55,8 @@ const listCategory: CategoryRenderType[] = [
     options: [
       {
         title: 'Hãng Laptop',
-        baseUrl: '/brand/laptop',
-        listSelection: [
-          { id: 1, title: 'Dell' },
-          { id: 2, title: 'HP' },
-          { id: 3, title: 'Asus' },
-          { id: 4, title: 'Macbook' }
-        ]
+        baseUrl: '/laptop',
+        listSelection: [{ title: 'Macbook' }, { title: 'Asus' }, { title: 'Dell' }, { title: 'HP' }]
       },
       {
         title: 'Mức giá hiện tại',

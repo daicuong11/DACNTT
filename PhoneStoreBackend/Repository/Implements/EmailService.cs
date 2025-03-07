@@ -1,5 +1,6 @@
 ﻿using System.Net.Mail;
 using System.Net;
+using Microsoft.Extensions.Configuration;
 
 namespace PhoneStoreBackend.Repository.Implements
 {
@@ -14,23 +15,37 @@ namespace PhoneStoreBackend.Repository.Implements
 
         public async Task SendEmailAsync(string to, string subject, string body)
         {
-            var smtpClient = new SmtpClient(_configuration["Email:SmtpHost"])
+            try
             {
-                Port = int.Parse(_configuration["Email:Port"]),
-                Credentials = new NetworkCredential(_configuration["Email:Username"], _configuration["Email:Password"]),
-                EnableSsl = bool.Parse(_configuration["Email:EnableSsl"])
-            };
+                using var smtpClient = new SmtpClient
+                {
+                    Host = _configuration["Email:SmtpHost"] ?? throw new InvalidOperationException("SMTP host is not configured."),
+                    Port = int.TryParse(_configuration["Email:Port"], out var port) ? port : throw new InvalidOperationException("Invalid SMTP port."),
+                    Credentials = new NetworkCredential(
+                        _configuration["Email:Username"],
+                        _configuration["Email:Password"]
+                    ),
+                    EnableSsl = bool.TryParse(_configuration["Email:EnableSsl"], out var enableSsl) && enableSsl
+                };
 
-            var mailMessage = new MailMessage
+                using var mailMessage = new MailMessage
+                {
+                    From = new MailAddress(_configuration["Email:From"] ?? throw new InvalidOperationException("Sender email is not configured.")),
+                    Subject = subject,
+                    Body = body,
+                    IsBodyHtml = true
+                };
+
+                mailMessage.To.Add(to);
+
+                await smtpClient.SendMailAsync(mailMessage);
+            }
+            catch (Exception ex)
             {
-                From = new MailAddress(_configuration["Email:From"]),
-                Subject = subject,
-                Body = body,
-                IsBodyHtml = true
-            };
-            mailMessage.To.Add(to);
-
-            await smtpClient.SendMailAsync(mailMessage);
+                // Log lỗi (có thể dùng ILogger)
+                Console.WriteLine($"Lỗi gửi email: {ex.Message}");
+                throw;
+            }
         }
     }
 }

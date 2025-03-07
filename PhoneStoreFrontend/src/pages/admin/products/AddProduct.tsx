@@ -368,7 +368,7 @@ const AddProduct = () => {
                 <div className='flex items-center gap-x-5'>
                   <div
                     dangerouslySetInnerHTML={{ __html: productInput.description || 'Chưa có mô tả' }}
-                    className='line-clamp-1 w-52'
+                    className='h-8 line-clamp-1 w-52'
                   ></div>
                   <CreateProductDescription
                     value={productInput.description}
@@ -378,7 +378,7 @@ const AddProduct = () => {
                   />
                   <button
                     onClick={() => useModalCreateDescription.openModal()}
-                    className='text-sm border border-gray-100 btn btn-light w-44'
+                    className='py-1 text-sm font-medium border border-gray-100 btn btn-light w-44'
                   >
                     <Pencil size={16} strokeWidth={1.6} />
                     {productInput.description ? 'Chỉnh sửa' : 'Thêm mô tả'}
