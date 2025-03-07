@@ -3,7 +3,7 @@ import { AvatarCustom, LoadingItem, ProductCardSimple } from '@/components'
 import { useAppSelector } from '@/hooks'
 import { maskPhoneNumber } from '@/utils/maskPhoneNumber'
 import { EyeFilled, EyeInvisibleFilled, UserOutlined } from '@ant-design/icons'
-import { Avatar, Tag } from 'antd'
+import { Avatar, Empty, Tag } from 'antd'
 import { ChevronDown, ClipboardList, MapPinHouse, Ticket, UserRound } from 'lucide-react'
 import { FC, useMemo, useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
@@ -70,12 +70,12 @@ const ProfilePage: FC<ProfilePageProps> = () => {
             )}
           >
             <div className='flex flex-col items-center justify-center flex-1 gap-y-4'>
-              <h1 className='text-xl sm:text-3xl font-bold'>{ordersAll?.length}</h1>
+              <h1 className='text-xl font-bold sm:text-3xl'>{ordersAll?.length}</h1>
               <h5 className='text-[11px] sm:text-[13px]'>đơn hàng</h5>
             </div>
             <div className='w-[1px] bg-black-2 h-20'></div>
             <div className='flex flex-col items-center justify-center flex-1 gap-y-4'>
-              <h1 className='text-xl sm:text-3xl font-bold'>{formatPrice(totalPay || 0)}</h1>
+              <h1 className='text-xl font-bold sm:text-3xl'>{formatPrice(totalPay || 0)}</h1>
               <h5 className='text-[11px] sm:text-[13px]'>Tổng tiền tích lũy mua sắm</h5>
             </div>
           </div>
@@ -88,7 +88,7 @@ const ProfilePage: FC<ProfilePageProps> = () => {
               <span className='flex items-center justify-center w-12 h-12 rounded-full bg-blue-100/60'>
                 <Ticket size={24} strokeWidth={1.6} />
               </span>
-              <span className='text-xs sm:text-sm font-medium leading-4 text-center font-roboto text-nowrap text-black-2'>
+              <span className='text-xs font-medium leading-4 text-center sm:text-sm font-roboto text-nowrap text-black-2'>
                 Mã giảm giá
               </span>
             </div>
@@ -99,7 +99,7 @@ const ProfilePage: FC<ProfilePageProps> = () => {
               <span className='flex items-center justify-center w-12 h-12 rounded-full bg-blue-100/60'>
                 <ClipboardList size={24} strokeWidth={1.6} />
               </span>
-              <span className='text-xs sm:text-sm font-medium leading-4 text-center font-roboto text-nowrap text-black-2'>
+              <span className='text-xs font-medium leading-4 text-center sm:text-sm font-roboto text-nowrap text-black-2'>
                 Lịch sử mua hàng
               </span>
             </div>
@@ -110,7 +110,7 @@ const ProfilePage: FC<ProfilePageProps> = () => {
               <span className='flex items-center justify-center w-12 h-12 rounded-full bg-blue-100/60'>
                 <MapPinHouse size={24} strokeWidth={1.6} />
               </span>
-              <span className='text-xs sm:text-sm font-medium leading-4 text-center font-roboto text-nowrap text-black-2'>
+              <span className='text-xs font-medium leading-4 text-center sm:text-sm font-roboto text-nowrap text-black-2'>
                 Sổ địa chỉ
               </span>
             </div>
@@ -121,13 +121,13 @@ const ProfilePage: FC<ProfilePageProps> = () => {
               <span className='flex items-center justify-center w-12 h-12 rounded-full bg-blue-100/60'>
                 <UserRound size={24} strokeWidth={1.6} />
               </span>
-              <span className='text-xs sm:text-sm font-medium leading-4 text-center font-roboto text-nowrap text-black-2'>
+              <span className='text-xs font-medium leading-4 text-center sm:text-sm font-roboto text-nowrap text-black-2'>
                 Cập nhật thông tin
               </span>
             </div>
           </div>
         </div>
-        <div className='xl:col-span-2 hidden lg:flex col-span-3 flex-col gap-y-3 '>
+        <div className='flex-col hidden col-span-3 xl:col-span-2 lg:flex gap-y-3 '>
           {rightBannerImages.map((image, index) => (
             <img key={index} src={image.image} className='object-cover border rounded-lg flex-1 min-h-[105.6px]' />
           ))}
@@ -136,6 +136,11 @@ const ProfilePage: FC<ProfilePageProps> = () => {
 
       <div className='mt-5'>
         <div className='mb-3 text-lg font-medium to-black-2'>Sản phẩm bạn yêu thích</div>
+        {wishlist?.length === 0 && (
+          <div className='flex items-center justify-center w-full py-20 text-center'>
+            <Empty description='Bạn chưa có sản phẩm yêu thích nào' />
+          </div>
+        )}
         <div className='grid gap-2.5 grid-cols-2 min-[600px]:grid-cols-3 md:grid-cols-2 min-[1000px]:grid-cols-3 min-[1220px]:grid-cols-4'>
           {isLoadingWishlist ? (
             <div className='flex items-center justify-center'>

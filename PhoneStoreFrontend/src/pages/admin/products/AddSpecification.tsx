@@ -12,12 +12,60 @@ import { useState, useCallback, useEffect } from 'react'
 const getInputs = (category: CategoryType | undefined): SpecificationGroupType[] => {
   if (!category) return []
 
-  const listGroup =
-    category.name === 'Điện thoại'
-      ? groupSpecificationsData[0]
-      : category.name === 'Laptop'
-        ? groupSpecificationsData[1]
-        : []
+  const categoryMapping = {
+    mobile: 'Điện thoại',
+    laptop: 'Laptop',
+    tablet: 'Máy tính bảng',
+    audio: 'Âm thanh',
+    watch: 'Đồng hồ',
+    camera: 'Camera',
+    accessory: 'Phụ kiện',
+    tv: 'Tivi',
+    pc: 'PC',
+    monitor: 'Màn hình',
+    printer: 'Máy in'
+  }
+
+  let listGroup: SpecificationGroupType[] = []
+
+  switch (category.name) {
+    case categoryMapping.mobile:
+      listGroup = groupSpecificationsData[0]
+      break
+    case categoryMapping.laptop:
+      listGroup = groupSpecificationsData[1]
+      break
+    case categoryMapping.tablet:
+      listGroup = groupSpecificationsData[2]
+      break
+    case categoryMapping.audio:
+      listGroup = groupSpecificationsData[3]
+      break
+    case categoryMapping.watch:
+      listGroup = groupSpecificationsData[4]
+      break
+    case categoryMapping.camera:
+      listGroup = groupSpecificationsData[5]
+      break
+    case categoryMapping.accessory:
+      listGroup = groupSpecificationsData[6]
+      break
+    case categoryMapping.tv:
+      listGroup = groupSpecificationsData[7]
+      break
+    case categoryMapping.pc:
+      listGroup = groupSpecificationsData[8]
+      break
+    case categoryMapping.monitor:
+      listGroup = groupSpecificationsData[9]
+      break
+    case categoryMapping.printer:
+      listGroup = groupSpecificationsData[10]
+      break
+    default:
+      listGroup = []
+      break
+  }
 
   return category.productSpecificationGroups.map((group) => ({
     ...group,

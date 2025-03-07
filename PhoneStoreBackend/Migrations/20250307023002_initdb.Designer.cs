@@ -12,7 +12,7 @@ using PhoneStoreBackend.DbContexts;
 namespace PhoneStoreBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250228180417_initdb")]
+    [Migration("20250307023002_initdb")]
     partial class initdb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -230,6 +230,36 @@ namespace PhoneStoreBackend.Migrations
                     b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("PhoneStoreBackend.Entities.Comment", b =>
+                {
+                    b.Property<int>("CommentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CommentId"), 1L, 1);
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ProductVariantId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CommentId");
+
+                    b.HasIndex("ProductVariantId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("PhoneStoreBackend.Entities.Customer", b =>
@@ -621,6 +651,41 @@ namespace PhoneStoreBackend.Migrations
                     b.ToTable("ProductVariants");
                 });
 
+            modelBuilder.Entity("PhoneStoreBackend.Entities.Reply", b =>
+                {
+                    b.Property<int>("ReplyId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReplyId"), 1L, 1);
+
+                    b.Property<int>("CommentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UserId1")
+                        .HasColumnType("int");
+
+                    b.HasKey("ReplyId");
+
+                    b.HasIndex("CommentId");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("UserId1");
+
+                    b.ToTable("Replies");
+                });
+
             modelBuilder.Entity("PhoneStoreBackend.Entities.Review", b =>
                 {
                     b.Property<int>("ReviewId")
@@ -636,14 +701,29 @@ namespace PhoneStoreBackend.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("HasImages")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Images")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsReply")
+                        .HasColumnType("bit");
+
                     b.Property<int>("ProductVariantId")
                         .HasColumnType("int");
 
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("UserId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("VerifiedPurchase")
+                        .HasColumnType("bit");
 
                     b.HasKey("ReviewId");
 
@@ -792,6 +872,25 @@ namespace PhoneStoreBackend.Migrations
                     b.Navigation("Cart");
 
                     b.Navigation("ProductVariant");
+                });
+
+            modelBuilder.Entity("PhoneStoreBackend.Entities.Comment", b =>
+                {
+                    b.HasOne("PhoneStoreBackend.Entities.ProductVariant", "ProductVariant")
+                        .WithMany()
+                        .HasForeignKey("ProductVariantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PhoneStoreBackend.Entities.User", "User")
+                        .WithMany("Comments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProductVariant");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("PhoneStoreBackend.Entities.Notification", b =>
@@ -943,6 +1042,29 @@ namespace PhoneStoreBackend.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("PhoneStoreBackend.Entities.Reply", b =>
+                {
+                    b.HasOne("PhoneStoreBackend.Entities.Comment", "Comment")
+                        .WithMany("Replies")
+                        .HasForeignKey("CommentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PhoneStoreBackend.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("PhoneStoreBackend.Entities.User", null)
+                        .WithMany("Replies")
+                        .HasForeignKey("UserId1");
+
+                    b.Navigation("Comment");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("PhoneStoreBackend.Entities.Review", b =>
                 {
                     b.HasOne("PhoneStoreBackend.Entities.ProductVariant", "ProductVariant")
@@ -1003,6 +1125,11 @@ namespace PhoneStoreBackend.Migrations
                     b.Navigation("Products");
                 });
 
+            modelBuilder.Entity("PhoneStoreBackend.Entities.Comment", b =>
+                {
+                    b.Navigation("Replies");
+                });
+
             modelBuilder.Entity("PhoneStoreBackend.Entities.Customer", b =>
                 {
                     b.Navigation("Order");
@@ -1049,11 +1176,15 @@ namespace PhoneStoreBackend.Migrations
 
                     b.Navigation("Carts");
 
+                    b.Navigation("Comments");
+
                     b.Navigation("Coupons");
 
                     b.Navigation("Notifications");
 
                     b.Navigation("Orders");
+
+                    b.Navigation("Replies");
 
                     b.Navigation("Reviews");
 
