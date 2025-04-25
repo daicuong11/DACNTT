@@ -7,6 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Configs\**" />
+    <Compile Remove="Exceptions\**" />
+    <Content Remove="Configs\**" />
+    <Content Remove="Exceptions\**" />
+    <EmbeddedResource Remove="Configs\**" />
+    <EmbeddedResource Remove="Exceptions\**" />
+    <None Remove="Configs\**" />
+    <None Remove="Exceptions\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="Data\Json\categories.json" />
     <Content Remove="Data\Json\products.json" />
   </ItemGroup>
@@ -31,11 +42,6 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.36.0" />
     <PackageReference Include="VNPAY.NET" Version="6.2.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Configs\" />
-    <Folder Include="Exceptions\" />
   </ItemGroup>
 
   <ItemGroup>
